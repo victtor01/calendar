@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String
+  status    Int      @default(1)
+  birth     DateTime
+  cpf       String
+  photo     String?
+  phone     String?  @unique
+  createdAt DateTime @default(now())
+  updateAt  DateTime @default(now())
+
+  code codes_confirmation[]
+}
+
+model codes_confirmation {
+  id     Int    @id @default(autoincrement())
+  code   String @unique
+  user   users  @relation(fields: [userId], references: [id])
+  userId Int    @unique
+}
