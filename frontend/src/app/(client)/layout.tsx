@@ -7,7 +7,6 @@ import Button from "@/components/button";
 import Link from "next/link";
 import Footer from "@/components/footer";
 import { RiSunLine, RiMoonLine } from "react-icons/ri";
-
 interface layoutProps {
   children: React.ReactNode;
 }
@@ -61,7 +60,7 @@ export default function Layout({ children }: layoutProps) {
           <Header.Division>Logo</Header.Division>
           <Header.Division className="justify-end">
             <Link
-              href={"login"}
+              href={"/login"}
               className="text-lg font-semibold opacity-70 hover:opacity-100"
             >
               Fazer login

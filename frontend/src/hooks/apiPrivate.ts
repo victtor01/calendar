@@ -3,7 +3,7 @@ import api from "@/api";
 
 const refreshToken = async () => {
   try {
-    const access_token = localStorage.getItem("token");
+    const access_token = localStorage.getItem("access_token");
     const refresh_token = localStorage.getItem("refresh_token");
 
     const configApi = {
@@ -17,7 +17,7 @@ const refreshToken = async () => {
     };
 
     const { data } = await api(configApi);
-    localStorage.setItem("token", data.access_token);
+    localStorage.setItem("access_token", data.access_token);
     return data;
   } catch (error) {
     console.log(error);
@@ -29,7 +29,7 @@ export default function useApiPrivate() {
     const interceptorRequest = api.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          const token = localStorage.getItem("token");
+          const token = localStorage.getItem("access_token");
           config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;
@@ -48,7 +48,7 @@ export default function useApiPrivate() {
             _retry = true;
             try {
               const { access_token } = await refreshToken();
-              localStorage.setItem("token", access_token);
+              localStorage.setItem("access_token", access_token);
               originalConfig.headers[
                 "Authorization"
               ] = `Bearer ${access_token}`;

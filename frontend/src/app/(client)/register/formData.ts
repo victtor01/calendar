@@ -7,7 +7,7 @@ export const formData = [
     items: [
       { name: "firstName", span: "Nome", ex: "João Pereira" },
       { name: "lastName", span: "Sobrenome", ex: "da Nóbrega" },
-      { name: "date", span: "Data",type: "date" },
+      { name: "birth", span: "Data",type: "date" },
       { name: "phone", span: "Telefone", ex: "(99) 99999-9999"},
       { name: "cpf", span: "CPF", ex: "111.222.333-44" }
     ],

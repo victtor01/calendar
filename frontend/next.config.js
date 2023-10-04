@@ -6,6 +6,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+
+    skipTrailingSlashRedirect: true,
+  
 };
 
 module.exports = nextConfig;

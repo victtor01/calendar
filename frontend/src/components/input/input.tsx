@@ -1,3 +1,4 @@
+'use client'
 import React, { InputHTMLAttributes } from "react";
 import { UseFormRegisterReturn } from 'react-hook-form'
 import * as S from "./style";

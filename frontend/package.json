@@ -12,7 +12,8 @@
     "@hookform/resolvers": "^3.3.1",
     "@next/font": "^13.5.3",
     "axios": "^1.5.1",
-    "next": "latest",
+    "js-cookie": "^3.0.5",
+    "next": "^13.5.4",
     "react": "latest",
     "react-dom": "latest",
     "react-hook-form": "^7.46.2",
@@ -22,6 +23,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.4",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",

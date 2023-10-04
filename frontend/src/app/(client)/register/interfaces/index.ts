@@ -1,14 +1,14 @@
 import { IconType } from "react-icons";
 
-export interface FormData {
+export interface FormDataProps {
   name: string;
   span?: string;
   ex?: string;
   type?: string;
 }
 
-export interface List {
+export interface ListProps {
   name: string;
   icon: IconType;
-  items?: FormData[];
+  items?: FormDataProps[];
 }
