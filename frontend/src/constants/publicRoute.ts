@@ -1,4 +1,9 @@
-export const PUBLIC_ROUTE = [
-    '/login', 
-    '/register'
-]
+export const ROUTES = {
+    private: [
+        '/home',
+        '/calendar'
+    ],
+    public: [
+        '/login'
+    ]
+}

@@ -7,6 +7,7 @@ import Button from "@/components/button";
 import Link from "next/link";
 import Footer from "@/components/footer";
 import { RiSunLine, RiMoonLine } from "react-icons/ri";
+
 interface layoutProps {
   children: React.ReactNode;
 }

@@ -1,35 +1,43 @@
+"use client";
 import { useEffect } from "react";
 import api from "@/api";
+import { parseCookies } from "nookies";
+import Cookies from "js-cookie";
 
-const refreshToken = async () => {
+export async function refreshToken() {
   try {
-    const access_token = localStorage.getItem("access_token");
-    const refresh_token = localStorage.getItem("refresh_token");
+    const cookies =  parseCookies(); // Não é necessário o argumento de contexto aqui
+    const access_token = cookies.access_token;
+    const refresh_token = cookies.refresh_token;
 
-    const configApi = {
-      method: "post",
-      url: process.env.REACT_APP_HTTP + "/auth/refresh",
-      headers: { Authorization: `Bearer ${refresh_token}` },
-      data: {
+   /* return access_token */
+
+    const { data } = await api.post(
+      "/auth/refresh",
+      {
         access_token,
         refresh_token,
       },
-    };
+      {
+        headers: { Authorization: `Bearer ${refresh_token}` },
+      }
+    );
 
-    const { data } = await api(configApi);
-    localStorage.setItem("access_token", data.access_token);
+    console.log(data);
+
+    /* Cookies.set("access_token", data.access_token); */
     return data;
   } catch (error) {
     console.log(error);
   }
-};
+}
 
 export default function useApiPrivate() {
   useEffect(() => {
     const interceptorRequest = api.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          const token = localStorage.getItem("access_token");
+          const token = Cookies.get("access_token");
           config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;
@@ -47,12 +55,14 @@ export default function useApiPrivate() {
           if (err.response.status === 401 && !_retry) {
             _retry = true;
             try {
-              const { access_token } = await refreshToken();
-              localStorage.setItem("access_token", access_token);
-              originalConfig.headers[
-                "Authorization"
-              ] = `Bearer ${access_token}`;
-              return api(originalConfig);
+              /* const { access_token } = await refreshToken();
+              if (access_token) {
+                Cookies.set("access_token", access_token);
+                originalConfig.headers[
+                  "Authorization"
+                ] = `Bearer ${access_token}`;
+                return api(originalConfig);
+              } */
             } catch (error) {
               console.log(error);
             }
