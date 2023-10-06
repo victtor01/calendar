@@ -1,4 +1,4 @@
 export class confirmEmailDto {
-    userId: string
+    userId: number
     code: string
 }

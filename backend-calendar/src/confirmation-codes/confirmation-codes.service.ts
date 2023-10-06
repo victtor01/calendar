@@ -1,22 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { ConfirmationCodesRepository } from './repositories/codes-confirmation-repository';
 import { ConfirmationCodes } from './entities/confirmation-codes.entity';
+import { EmailService } from 'src/email/email.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ConfirmationCodesService {
   constructor(
     private readonly prismaCodesConfirmationRepository: ConfirmationCodesRepository,
+    private readonly emailService: EmailService,
   ) {}
 
-  async create(userId: number): Promise<ConfirmationCodes> {
-    const min = 100000;
-    const max = 999999;
-    const randomCode = (Math.floor(Math.random() * (max - min + 1)) + min).toString();
+  private min = 100000;
+  private max = 999999;
 
-    return await this.prismaCodesConfirmationRepository.create({
+  private async random(): Promise<string> {
+    return (Math.floor(Math.random() * (this.max - this.min + 1)) + this.min).toString();
+  }
+
+
+  async create(userId: number): Promise<ConfirmationCodes> {
+    userId = typeof userId !== 'number' ? Number(userId) : userId
+
+    const randomCode = await this.random()
+
+    const code = await this.prismaCodesConfirmationRepository.create({
       userId,
       code: randomCode,
     });
-
+  
+    return code
   }
 }

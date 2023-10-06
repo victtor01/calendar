@@ -6,12 +6,18 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }
 
 model users {
   id        Int      @id @default(autoincrement())
+  key       String   @unique @default(uuid())
   firstName String
   lastName  String
   email     String   @unique
@@ -23,6 +29,8 @@ model users {
   phone     String?  @unique
   createdAt DateTime @default(now())
   updateAt  DateTime @default(now())
+
+  role UserRole @default(USER)
 
   code codes_confirmation[]
 }

@@ -18,6 +18,6 @@ import { EmailService } from 'src/email/email.service';
       useClass: PrismaUsersRepository,
     },
   ],
-  exports: [UsersRepository],
+  exports: [UsersRepository, UsersService],
 })
 export class UsersModule {}

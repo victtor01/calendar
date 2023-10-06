@@ -6,7 +6,7 @@ import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: CreateUserDto): Promise<User> {
     return await this.prisma.users.create({
@@ -16,10 +16,16 @@ export class PrismaUsersRepository implements UsersRepository {
     });
   }
 
-  async findOne(email: string): Promise<User | undefined> {
+  async findOne(id: number): Promise<User> {
+    return await this.prisma.users.findFirst({
+      where: { id },
+    });
+  }
+
+  async findOneByKey(key: string): Promise<User> {
     return await this.prisma.users.findUnique({
       where: {
-        email: email,
+        key,
       },
     });
   }

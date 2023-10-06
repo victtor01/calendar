@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -11,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { ConfirmationCodesRepository } from 'src/confirmation-codes/repositories/codes-confirmation-repository';
 import { EmailService } from 'src/email/email.service';
 import { ConfirmationCodesService } from 'src/confirmation-codes/confirmation-codes.service';
+import { ConfirmationCodes } from 'src/confirmation-codes/entities/confirmation-codes.entity';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +31,7 @@ export class AuthService {
       });
     }
 
-    const user = await this.UsersRepository.findOne(email);
+    const user = await this.UsersRepository.findOneByEmail(email);
 
     if (!user) {
       throw new UnauthorizedException({
@@ -51,9 +53,11 @@ export class AuthService {
         text: code,
       });
 
+      const { key: userKey, status } = user;
+
       return {
-        status: 1,
-        userId: user?.id,
+        status,
+        userKey,
       };
     }
 
@@ -67,7 +71,6 @@ export class AuthService {
     return {
       access_token,
       refresh_token,
-      user,
     };
   }
 
@@ -81,11 +84,12 @@ export class AuthService {
     };
   }
 
-  async confirmEmail(userId: number, codeConfirm: string): Promise<boolean> {
+  async confirmEmail(userId: number, codeConfirm: string): Promise<boolean | BadRequestException> {
     try {
-      const { id } = await this.confirmatinCodesRepository.findOne(codeConfirm);
 
-      if (!id) {
+      const { id: codeId } = await this.confirmatinCodesRepository.findOne(codeConfirm);
+
+      if (!codeId) {
         return false;
       }
 
@@ -94,15 +98,28 @@ export class AuthService {
       });
 
       if (!updated) {
-        return true;
+        return false;
       }
 
-      this.confirmatinCodesRepository.delete(id);
+      this.confirmatinCodesRepository.delete(codeId);
 
       return true;
     } catch (error) {
-      return false;
+      return new BadRequestException({
+        message: 'Houve um erro na validação!'
+      })
     }
+  }
+
+  async createSendCode(userId: number): Promise<string> {
+    console.log(userId)
+    const { email } = await this.UsersRepository.findOne(userId);
+    const { code } = await this.confirmationCodesService.create(userId);
+    this.emailService.sendEmail({
+      to: email,
+      text: code,
+    });
+    return code;
   }
 
   private async generateToken(payload: User): Promise<string> {
