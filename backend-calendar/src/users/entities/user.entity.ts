@@ -4,7 +4,7 @@ export class User {
   key: string;
   lastName: string;
   email: string;
-  status: number;
+  status: UserStatus;
   password: string;
   cpf: string;
   photo?: string;
@@ -13,3 +13,5 @@ export class User {
   createdAt: Date;
   updateAt: Date;
 }
+
+export type UserStatus = 'CREATED' | 'VERIFIED' | 'APPROVED'

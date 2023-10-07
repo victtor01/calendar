@@ -7,6 +7,7 @@ import {
   UseInterceptors,
   Param,
   NotFoundException,
+  Request,
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
@@ -24,6 +25,12 @@ export class UsersController {
     private users: UsersRepository,
     private readonly usersService: UsersService,
   ) {}
+
+  @Get('find')
+  async findInfo(@Request() req: any){
+    const { id } = req.user;
+    return await this.usersService.findOne(id)
+  }
 
   @Public()
   @Post('register')
@@ -67,12 +74,12 @@ export class UsersController {
     @Param('email') email: string,
   ): Promise<Omit<User, 'password' | 'cpf'> | NotFoundException> {
     const res = await this.users.findOneByEmail(email);
-    if (!res) {
-      return new NotFoundException({
-        message: 'nenhum usuário encontrado!',
-      });
+    if (res.status === 'CREATED') {
+      const { password, cpf, ...userData } = res;
+      return userData;
     }
-    const { password, cpf, ...userData } = res;
-    return userData;
+    return new NotFoundException({
+      message: 'nenhum usuário encontrado!',
+    });
   }
 }

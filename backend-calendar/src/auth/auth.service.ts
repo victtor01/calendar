@@ -25,6 +25,8 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, password: string): Promise<any> {
+    console.log(email, password)
+
     if (!email || !password) {
       throw new UnauthorizedException({
         message: 'Houve um erro!',
@@ -45,7 +47,7 @@ export class AuthService {
       });
     }
 
-    if (user?.status.toString() === '1') {
+    if (user?.status.toString() === 'CREATED') {
       const { code } = await this.confirmationCodesService.create(user.id);
 
       this.emailService.sendEmail({
@@ -61,6 +63,15 @@ export class AuthService {
       };
     }
 
+    if(user.status.toString() === 'VERIFIED') {
+      const { key: userKey, status } = user;
+
+      return {
+        status,
+        userKey
+      }
+    }
+
     const access_token = await this.generateToken(user);
 
     const refresh_token = await this.jwtService.signAsync(user, {
@@ -71,6 +82,7 @@ export class AuthService {
     return {
       access_token,
       refresh_token,
+      user
     };
   }
 
@@ -94,7 +106,7 @@ export class AuthService {
       }
 
       const updated = await this.UsersRepository.update(userId, {
-        status: 2,
+        status: 'VERIFIED'
       });
 
       if (!updated) {
