@@ -26,7 +26,11 @@ export default async function middleware(request: NextRequest) {
 
   const pathName = request.nextUrl.pathname;
 
-  if (!ROUTES.public.includes(pathName) && !ROUTES.private.includes(pathName)) {
+  if (
+    !ROUTES.public.includes(pathName) &&
+    !ROUTES.private.includes(pathName) &&
+    !ROUTES.admin.includes(pathName)
+  ) {
     return NextResponse.next();
   }
 
@@ -48,11 +52,12 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if(ROUTES.admin.includes(pathName)) {
+    if (!access_token) {
+      return NextResponse.redirect(singInUrl);
+    }
+    return NextResponse.next();
+  }
+
   return NextResponse.next();
 }
-
-/* export const config = {
-    matcher: ['/login', '/home/:path*'],
-}
- */
-/* /_next/static/css/app/(client)/:path*' */

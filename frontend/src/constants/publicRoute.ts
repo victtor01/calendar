@@ -1,9 +1,5 @@
 export const ROUTES = {
-    private: [
-        '/home',
-        '/calendar'
-    ],
-    public: [
-        '/login'
-    ]
-}
+  private: ["/home", "/calendar"],
+  admin: ["/admin"],
+  public: ["/login"],
+};

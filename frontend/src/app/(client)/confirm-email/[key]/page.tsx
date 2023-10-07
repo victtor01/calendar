@@ -11,7 +11,7 @@ interface confirmEmailProps {
 export default async function ConfirmEmail({ params }: confirmEmailProps) {
   const user = await UsersService.findOneByKey(params.key);
 
-  if (!user?.id || !(user.status === 1)) {
+  if (!user?.id || !(user.status === 'CREATED')) {
     return (
       <div className="m-auto w-full max-w-[30rem] justify-center min-h-[50rem] h-full p-10 flex flex-col gap-1">
         <header className="p-10 w-full flex flex-col gap-2">

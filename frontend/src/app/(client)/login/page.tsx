@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImLock } from "react-icons/im";
-import Cookie from 'js-cookie';
+import Cookie from "js-cookie";
 import { useRouter } from "next/navigation";
 
 type LoginUserFormData = z.infer<typeof createUserFormSchema>;
@@ -39,18 +39,39 @@ const useLogin = () => {
         email,
         password,
       });
-      const { access_token, refresh_token } = res;
-      
-      Cookie.set('access_token', access_token, {
-        expires: 1, path: '/'
-      })
 
-      Cookie.set('refresh_token', refresh_token, {
-        expires: 1, path: '/'
-      })
+      if (res.status) {
+        const { status, userKey } = res;
+        if (status === "CREATED") {
+          router.push(`/confirm-email/${userKey}`);
+          return;
+        }
+      }
 
-      router.push('/home')
+      const { access_token, refresh_token, user } = res;
 
+      if (!access_token || !refresh_token) {
+        return new Error("Houve um erro na passagem dos dados!");
+      }
+
+      Cookie.set("access_token", access_token, {
+        expires: 1,
+        path: "/",
+      });
+
+      Cookie.set("refresh_token", refresh_token, {
+        expires: 1,
+        path: "/",
+      });
+
+      const { role } = user;
+
+      if (role === "ADMIN") {
+        router.push("/select");
+        return;
+      }
+
+      router.push("/home");
     } catch (error) {
       console.log(error);
       setError("");
@@ -95,6 +116,7 @@ export default function Login() {
       <Input
         register={register("password")}
         required
+        type="password"
         className={`border focus:border-cyan-500 rounded `}
       >
         <div className="absolute z-10 right-4 pointer-events-none ">

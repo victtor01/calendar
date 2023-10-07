@@ -8,7 +8,7 @@ export interface User {
   key: string;
   lastName: string;
   email: string;
-  status: number;
+  status: string;
   photo: string;
   password: string;
   repeatPassword: string;
@@ -74,23 +74,4 @@ export class UsersService {
 
     return data;
   }
-
- /*  static async setCredentials({ access_token, refresh_token }: TokenAccessProps) {
-    localStorage.setItem("access_token", access_token);
-    localStorage.setItem("refresh_token", refresh_token);
-  }
-
-  static getCredentials() {
-    try {
-      const access_token = localStorage.getItem("access_token");
-      const refresh_token = localStorage.getItem("refresh_token");
-
-      return {
-        access_token,
-        refresh_token,
-      };
-    } catch (error) {
-      console.log(error);
-    }
-  } */
 }
