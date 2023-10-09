@@ -50,6 +50,7 @@ const useLogin = () => {
 
       const { access_token, refresh_token, user } = res;
 
+      console.log(res)
       if (!access_token || !refresh_token) {
         return new Error("Houve um erro na passagem dos dados!");
       }
@@ -65,6 +66,7 @@ const useLogin = () => {
       });
 
       const { role } = user;
+
 
       if (role === "ADMIN") {
         router.push("/select");

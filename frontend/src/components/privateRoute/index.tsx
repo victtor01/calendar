@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-
-export interface  PrivateRouteProps {
-  name: string
+import { Query, useQuery } from "@tanstack/react-query";
+export interface PrivateRouteProps {
+  name: string;
 }
 
 export default function PrivateRoute({
@@ -13,54 +13,41 @@ export default function PrivateRoute({
 }: {
   children: React.ReactNode;
 }) {
-  const { push } = useRouter();
-  const { logged, loading, logout } = usePrivateRoutes();
+  const { isError, isLoading, data, logout } = usePrivateRoutes();
 
-  if (loading) return null;
+  if (isLoading) return null;
 
-  if (!logged) {
-    return <button onClick={logout}>Faça o login</button>;
+  if (!isError || !data) {
+    return <><button onClick={logout}>Faça o login {data.firstName}</button></>;
   }
 
   return children;
 }
 
 function usePrivateRoutes() {
-  const [logged, setLogged] = useState<boolean | undefined>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [role, setRole] = useState<string | null>(null);
-  const router = useRouter();
+  const { push } = useRouter();
   const api = useApiPrivate();
 
-  const logout = () => {
+  const getUserInfo = async () => {
+    return (await api.get("/users/find")).data;
+  };
+
+  const logout = async () => {
     Cookies.remove("access_token");
     Cookies.remove("refresh_token");
     Cookies.remove("adminRote");
-    router.push("/login");
+    push("/login");
   };
 
-  const verify = useCallback(async () => {
-    try {
-      const { data } = await api.get("/users/find");
-      console.log(data);
-      setRole(data.role);
-      setLogged(true);
-    } catch (error) {
-      console.log(error);
-      setLogged(false);
-    } finally {
-      setLoading(false);
-    }
-  }, [setRole, setLogged]);
-
-  useEffect(() => {
-    verify();
-  }, [verify]);
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUserInfo,
+  });
 
   return {
-    logged,
-    loading,
-    role,
+    isError,
+    isLoading,
+    data,
     logout,
   };
 }

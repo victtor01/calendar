@@ -25,7 +25,6 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, password: string): Promise<any> {
-    console.log(email, password)
 
     if (!email || !password) {
       throw new UnauthorizedException({
