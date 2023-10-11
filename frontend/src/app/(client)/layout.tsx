@@ -49,6 +49,7 @@ export default function Layout({ children }: layoutProps) {
   return (
     <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
       <S.Container>
+
         <Header.Root className="p-3 text-xl z-20 border-b border-cyan-400 border-opacity-20">
           <Header.Division className="justify-start">
             <Button
@@ -74,6 +75,7 @@ export default function Layout({ children }: layoutProps) {
             </Link>
           </Header.Division>
         </Header.Root>
+        
         <S.Content>{children}</S.Content>
         <Footer className="border-t border-cyan-500 border-opacity-10">
           Footer

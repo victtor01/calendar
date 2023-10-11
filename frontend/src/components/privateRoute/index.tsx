@@ -17,8 +17,8 @@ export default function PrivateRoute({
 
   if (isLoading) return null;
 
-  if (!isError || !data) {
-    return <><button onClick={logout}>Faça o login {data.firstName}</button></>;
+  if (isError || !data) {
+    return <><button onClick={logout}>Faça o login</button></>;
   }
 
   return children;

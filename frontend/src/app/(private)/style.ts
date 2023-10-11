@@ -2,18 +2,19 @@
 import styled from "styled-components";
 
 export const Container = styled.main`
-  display: flex;
-/*   grid-template-areas:
-    "sidebar content content content"
+  display: grid;
+  grid-template-areas:
+    "sidebar header header header"
     "sidebar content content content"
     "sidebar content content content";
-  grid-template-rows: auto auto auto;
-  grid-template-columns: auto 1fr 1fr 1fr; */
+  grid-template-rows: auto 1fr 1fr;
+  grid-template-columns: auto 1fr 1fr auto;
   grid-gap: 0rem;
-  height: 100vh;
   min-height: 100vh;
-  max-height: 100vh;
   color: ${props => props.theme.text};
+  position: relative;
+  min-width: auto;
+  overflow: auto;
 `;
 
 export const Content = styled.div`
@@ -22,5 +23,7 @@ export const Content = styled.div`
   grid-area: content;
   flex-direction: column;
   height: auto;
-  flex: 1;
+  min-width: auto;
+  overflow: auto;
+  width: auto;
 `;

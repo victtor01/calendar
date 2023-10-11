@@ -1,11 +1,19 @@
-interface labelContentProps {
+import { HTMLAttributes } from "react";
+import { twMerge } from "tailwind-merge";
+
+interface labelContentProps extends HTMLAttributes<HTMLLabelElement> {
   children: React.ReactNode;
 }
 
-export function LabelContent({ children}: labelContentProps) {
+export function LabelContent({ children, ...props }: labelContentProps) {
   return (
-    <label className="flex flex-col w-full gap-1 relative">
-     { children }
+    <label
+      className={twMerge(
+        "flex flex-col w-full gap-1 relative",
+        props.className
+      )}
+    >
+      {children}
     </label>
   );
 }

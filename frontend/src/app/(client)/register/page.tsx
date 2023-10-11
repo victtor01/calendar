@@ -58,11 +58,9 @@ const useRegister = () => {
   async function createUser(body: CreateUserFormData): Promise<void> {
     try {
       const response = await UsersService.create(body);
-      console.log(response)
       const { data } = response;
 
-      if (response.status === 201
-        && response.data.key) {
+      if (response.status === 201 && response.data.key) {
         const { key } = data;
         window.location.href = `/confirm-email/${key}`;
       }
