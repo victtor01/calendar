@@ -58,7 +58,7 @@ const useLayout = () => {
   const router = useRouter();
   const [sidebarShow, setSidebarShow] = useState(false);
   const [theme, setTheme] = useState<string>("light");
-  const widthSidebar = sidebarShow ? "left-[-120%]" : "left-0";
+  const widthSidebar = !sidebarShow ? "left-[-120%]" : "left-0";
 
   const onClickSidebarShow = () => {
     setSidebarShow((prev) => !prev);
@@ -89,7 +89,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <S.Container>
           <Sidebar
             style={{ gridArea: "sidebar" }}
-            className={`w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-cyan-500 bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans}`}
+            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-cyan-500 bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans}`}
           >
             <div className="w-[4rem] h-[4rem] flex justify-center items-center rounded">
               LG
@@ -102,7 +102,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
           </Sidebar>
           <Sidebar
-            className={`w-[100%] z-10 text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-cyan-500 bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans} w-[15rem]`}
+            className={`z-40 w-[100%]  text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-cyan-500 bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans} w-[15rem]`}
           >
             <div className="flex flex-col flex-1">
               <header className="p-3 gap-1 text-xl font-semibold flex-nowrap flex justify-between items-center">
@@ -117,10 +117,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </header>
               <div className="flex flex-col px-4 mt-5 gap-5 flex-1 flex-nowrap">
-                {pages.map(({ name, icon: Icon, href }: Page) => {
+                {pages.map(({ name, icon: Icon, href }: Page, index: number) => {
                   return (
                     <Link
-                      key={name}
+                      key={index}
                       href={href}
                       className=" flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded"
                     >

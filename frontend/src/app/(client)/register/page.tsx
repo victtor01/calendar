@@ -116,7 +116,7 @@ export default function RegisterPage() {
         )}
         {formData.map(
           ({ name, icon: Icon, items }: ListProps, index: number) => (
-            <Label.Root key={`${name}-${index}`} className="mt-5">
+            <Label.Root key={index} className="mt-5">
               <Label.Title>
                 <Icon size="20" />
                 {name}

@@ -9,11 +9,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { fontRoboto } from "@/app/fonts";
+import useApiPrivate from "@/hooks/apiPrivate";
 
 type CreateAccountFormData = z.infer<typeof createAccountFormSchema>;
 
 const createAccountFormSchema = z.object({
-    name: z.string().nonempty()
+    name: z.string().nonempty('Preencha o nome!'),
+    description: z.string()
 });
 
 export const useCreate = () => {
@@ -25,15 +27,24 @@ export const useCreate = () => {
     resolver: zodResolver(createAccountFormSchema),
   });
 
+  const api = useApiPrivate();
+
+  const createAccounts = async (data: CreateAccountFormData) => {
+    console.log(data)
+    const response = await api.post('/accounts/create', data);
+    console.log(response)
+  }
+
   return {
     errors,
     register,
     handleSubmit,
+    createAccounts
   };
 };
 
 export default function Create() {
-  const { errors, register, handleSubmit } = useCreate();
+  const { errors, register, handleSubmit, createAccounts} = useCreate();
 
   return (
     <div className={`flex flex-col w-auto min-w-[28rem] mx-auto my-20`}>
@@ -42,7 +53,7 @@ export default function Create() {
     >
       <Link
         href={"/finance/accounts"}
-        className="bg-sky-200 p-2 px-3 rounded opacity-70 hover:opacity-100 "
+        className="bg-sky-200 p-3 text-lg rounded opacity-70 hover:opacity-100 "
       >
         minhas contas
       </Link>
@@ -50,7 +61,7 @@ export default function Create() {
     <div className="p-2 text-2xl text-cyan-900">
       <h2>Criar uma nova conta</h2>
     </div>
-    <form className="flex flex-col p-2 items-center">
+    <form className="flex flex-col p-2 items-center" onSubmit={handleSubmit(createAccounts)}>
       {formDataLabel.map(({ name, span, ex, type }: FormDataLabel) => {
         const classError = errors[name as keyof CreateAccountFormData]
           ? "shadow-[0_0_0_1px] shadow-red-400 focus:border-none"

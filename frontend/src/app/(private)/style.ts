@@ -14,7 +14,7 @@ export const Container = styled.main`
   color: ${props => props.theme.text};
   position: relative;
   min-width: auto;
-  overflow: auto;
+  overflow: hidden;
 `;
 
 export const Content = styled.div`
@@ -23,7 +23,30 @@ export const Content = styled.div`
   grid-area: content;
   flex-direction: column;
   height: auto;
+  position: relative;
+  min-height: 100%;
   min-width: auto;
   overflow: auto;
   width: auto;
+
+  &::-webkit-scrollbar {
+    width: 12px; /* Largura da barra de rolagem */
+  }
+
+  /* Estilo para o indicador da barra de rolagem (thumb) */
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2); /* Cor de fundo da barra de rolagem */
+
+  }
+
+  /* Estilo para o indicador da barra de rolagem quando passa o mouse */
+  &::-webkit-scrollbar-thumb:hover {
+    opacity: 1; /* Cor de fundo da barra de rolagem quando passa o mouse */
+  }
+
+  /* Estilo para a barra de rolagem (track) */
+  &::-webkit-scrollbar-track {
+    background-color: transparent; /* Cor de fundo da área da barra de rolagem */
+  }
+
 `;

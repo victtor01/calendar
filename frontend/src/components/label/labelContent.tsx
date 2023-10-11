@@ -9,7 +9,7 @@ export function LabelContent({ children, ...props }: labelContentProps) {
   return (
     <label
       className={twMerge(
-        "flex flex-col w-full gap-1 relative",
+        "flex flex-col w-full gap-1 relative h-[100%]",
         props.className
       )}
     >
