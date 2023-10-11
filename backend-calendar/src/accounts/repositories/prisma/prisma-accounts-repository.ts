@@ -8,6 +8,14 @@ import { PrismaService } from 'src/database/prisma.service';
 export class PrismaAccountsRepository implements AccountsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async findAll(userId: number): Promise<Accounts[]> {
+    return await this.prismaService.accounts.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
+
   async create(data: CreateAccountsDto): Promise<Accounts> {
     console.log('passou aqui!');
     console.log(data);
