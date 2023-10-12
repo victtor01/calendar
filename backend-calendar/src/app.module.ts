@@ -9,11 +9,18 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { AccountsModule } from './accounts/accounts.module';
 import { RegistersModule } from './registers/registers.module';
-
 @Module({
-  imports: [UsersModule, ConfirmationCodesModule, AuthModule, EmailModule, AccountsModule, RegistersModule],
+  imports: [
+    UsersModule,
+    ConfirmationCodesModule,
+    AuthModule,
+    EmailModule,
+    AccountsModule,
+    RegistersModule,
+  ],
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

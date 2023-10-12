@@ -100,6 +100,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <FaChevronRight />
             </button>
+            <div className="flex flex-col px-4 mt-5 gap-5 flex-1 flex-nowrap">
+              {pages.map(({ name, icon: Icon, href }: Page) => {
+                return (
+                  <Link
+                    key={name}
+                    href={href}
+                    className=" flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded"
+                  >
+                    <Icon size={"20"} className="min-w-[3rem]" />
+                  </Link>
+                );
+              })}
+            </div>
           </Sidebar>
           <Sidebar
             className={`z-40 w-[100%]  text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-cyan-500 bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans} w-[15rem]`}
