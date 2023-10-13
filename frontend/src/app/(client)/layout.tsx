@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Header from "@/components/header";
 import { ThemeProvider } from "styled-components";
 import * as S from "./style";
@@ -7,6 +7,7 @@ import Button from "@/components/button";
 import Link from "next/link";
 import Footer from "@/components/footer";
 import { RiSunLine, RiMoonLine } from "react-icons/ri";
+import Loading from "./loading";
 
 interface layoutProps {
   children: React.ReactNode;
@@ -63,20 +64,21 @@ export default function Layout({ children }: layoutProps) {
           <Header.Division className="justify-end">
             <Link
               href={"/login"}
-              className="text-lg font-semibold opacity-70 hover:opacity-100"
+              className="rounded py-2 px-3 border border-cyan-500 text-lg font-semibold opacity-70 hover:opacity-100 text-cyan-500 hover:bg-cyan-500 hover:text-white hover:border-none"
             >
               Fazer login
             </Link>
             <Link
               href={"/register"}
-              className="py-2 px-3 text-lg bg-gradient-to-r text-[#fff] from-cyan-500 to-cyan-600 opacity-90 hover:opacity-100 font-semibold transition-opacity duration-200 hover:scale-102 hover:shadow-lg hover:shadow-cyan-400 rounded hover:to-cyan-40"
+              className="py-3 px-4 text-xl text-[#fff] bg-gradient-to-r from-rose-500 to-fuchsia-600 opacity-90 hover:opacity-100 font-semibold transition-opacity duration-200 hover:scale-102 rounded"
             >
               Assinar
             </Link>
           </Header.Division>
         </Header.Root>
-        
-        <S.Content>{children}</S.Content>
+        <Suspense fallback={<Loading/>}>
+          <S.Content>{children}</S.Content>
+        </Suspense>
         <Footer className="border-t border-cyan-500 border-opacity-10">
           Footer
         </Footer>
@@ -84,7 +86,3 @@ export default function Layout({ children }: layoutProps) {
     </ThemeProvider>
   );
 }
-
-/* 
-linear-gradient( 35deg , #4B0082, #7e0d7e
-*/

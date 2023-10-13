@@ -20,8 +20,7 @@ const darkTheme = {
   primary: "#121212",
   secundary: "#181717",
   text: "#ebe8e8",
-  success: "#0f0",
-  error: "#f00",
+  shadow: "#202020",
   lightPurple: "#4B0082",
   darkPurple: "#5a0f8f",
   linearPurple: "",
@@ -32,10 +31,9 @@ const darkTheme = {
 
 const lightTheme = {
   primary: "#ffffff",
-  secundary: "#f1faff",
+  secundary: "#f9fcfe",
+  shadow: "#f6f6f6",
   text: "#000",
-  success: "",
-  error: "",
   lightPurple: "#4B0082",
   darkPurple: "#5a0f8f",
   linearPurple: "",
@@ -60,6 +58,8 @@ const useLayout = () => {
   const [theme, setTheme] = useState<string>("light");
   const widthSidebar = !sidebarShow ? "left-[-120%]" : "left-0";
 
+  const handleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark')
+
   const onClickSidebarShow = () => {
     setSidebarShow((prev) => !prev);
   };
@@ -73,6 +73,7 @@ const useLayout = () => {
 
   return {
     theme,
+    handleTheme,
     logout,
     sidebarShow,
     widthSidebar,
@@ -81,7 +82,7 @@ const useLayout = () => {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { logout, theme, widthSidebar, onClickSidebarShow } = useLayout();
+  const { logout, handleTheme, theme, widthSidebar, onClickSidebarShow } = useLayout();
 
   return (
     <PrivateRoute>
@@ -89,7 +90,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <S.Container>
           <Sidebar
             style={{ gridArea: "sidebar" }}
-            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-cyan-500 bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans}`}
+            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans}`}
           >
             <div className="w-[4rem] h-[4rem] flex justify-center items-center rounded">
               LG
@@ -113,6 +114,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 );
               })}
             </div>
+            <button onClick={handleTheme}>
+              m
+            </button>
           </Sidebar>
           <Sidebar
             className={`z-40 w-[100%]  text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-cyan-500 bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans} w-[15rem]`}

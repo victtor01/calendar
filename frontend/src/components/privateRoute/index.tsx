@@ -1,9 +1,10 @@
 "use client";
 import useApiPrivate from "@/hooks/apiPrivate";
-import { useCallback, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { Query, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "../loading";
+
 export interface PrivateRouteProps {
   name: string;
 }
@@ -15,10 +16,20 @@ export default function PrivateRoute({
 }) {
   const { isError, isLoading, data, logout } = usePrivateRoutes();
 
-  if (isLoading) return null;
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen items-center justify-center flex">
+        <Loading className="bg-cyan-500" />
+      </div>
+    );
+  }
 
   if (isError || !data) {
-    return <><button onClick={logout}>Faça o login</button></>;
+    return (
+      <div className="w-full h-screen items-center justify-center flex">
+        <button onClick={logout} className="bg-cyan-500 p-3 rounded opacity-70 hover:opacity-100">Faça o login</button>
+      </div>
+    );
   }
 
   return children;

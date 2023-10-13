@@ -24,7 +24,7 @@ export const Content = styled.div`
   flex-direction: column;
   height: auto;
   position: relative;
-  min-height: 100%;
+  height: 100vh;
   min-width: auto;
   overflow: auto;
   width: auto;

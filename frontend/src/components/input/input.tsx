@@ -1,11 +1,11 @@
 'use client'
 import React, { InputHTMLAttributes } from "react";
-import { UseFormRegisterReturn } from 'react-hook-form'
+import { UseControllerProps, UseFormRegisterReturn } from 'react-hook-form'
 import * as S from "./style";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   children?: React.ReactNode;
-  register?: UseFormRegisterReturn;
+  register?: UseControllerProps;
 }
 
 export default function Input({ children, register, ...rest }: InputProps) {
