@@ -7,8 +7,13 @@ import { RegistersRepository } from './repositories/registers-repository';
 export class RegistersService {
   constructor(private readonly registersRepository: RegistersRepository) {}
 
+  async findAll(userId: number) {
+    userId = typeof userId != 'number' ? Number(userId) : userId;
+    return await this.registersRepository.findAll(userId);
+  }
+
   async create(data: CreateRegisterDto): Promise<Register> {
     data.value = Number(data.value);
-    return this.registersRepository.create(data);
+    return await this.registersRepository.create(data);
   }
 }

@@ -7,8 +7,17 @@ import { PrismaService } from 'src/database/prisma.service';
 @Injectable()
 export class PrismaRegistersRepository implements RegistersRepository {
   constructor(private readonly prisma: PrismaService) {}
+
+  async findAll(userId: number): Promise<Register[]> {
+    return await this.prisma.registers.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
+
   async create(data: CreateRegisterDto): Promise<Register> {
-    const { accountId, ...rest } = data;
+    const { accountId, userId, ...rest } = data;
 
     return await this.prisma.registers.create({
       data: {
@@ -16,6 +25,11 @@ export class PrismaRegistersRepository implements RegistersRepository {
         account: {
           connect: {
             id: accountId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
           },
         },
       },

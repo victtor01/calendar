@@ -46,6 +46,7 @@ model users {
 
   code    codes_confirmation[]
   account accounts[]
+  registers registers[]
 }
 
 model codes_confirmation {
@@ -75,5 +76,7 @@ model registers {
   createAt    DateTime     @default(now())
   updateAt    DateTime     @default(now())
   accountId   Int
+  userId Int
+  user users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   account     accounts     @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

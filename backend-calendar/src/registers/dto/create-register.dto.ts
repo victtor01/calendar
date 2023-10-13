@@ -6,5 +6,6 @@ export class CreateRegisterDto {
   value: number;
   type: RegisterType;
   accountId: number;
+  userId: number;
   date?: Date;
 }

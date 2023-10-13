@@ -99,7 +99,7 @@ export class AuthService {
     try {
 
       const { id: codeId } = await this.confirmatinCodesRepository.findOne(codeConfirm);
-
+      
       if (!codeId) {
         return false;
       }
@@ -107,6 +107,8 @@ export class AuthService {
       const updated = await this.UsersRepository.update(userId, {
         status: 'VERIFIED'
       });
+
+      console.log(updated)
 
       if (!updated) {
         return false;
@@ -116,6 +118,7 @@ export class AuthService {
 
       return true;
     } catch (error) {
+      console.log(error)
       return new BadRequestException({
         message: 'Houve um erro na validação!'
       })
