@@ -50,7 +50,6 @@ export default function Layout({ children }: layoutProps) {
   return (
     <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
       <S.Container>
-
         <Header.Root className="p-3 text-xl z-20 border-b border-cyan-400 border-opacity-20">
           <Header.Division className="justify-start">
             <Button

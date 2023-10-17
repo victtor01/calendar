@@ -20,7 +20,6 @@ const createRegisterFormSchema = z.object({
   description: z.string(),
   date: z
     .string()
-    .nonempty("Defina a data corretamente!")
     .refine((value) => new Date(value)),
 });
 

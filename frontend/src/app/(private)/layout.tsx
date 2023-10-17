@@ -49,7 +49,7 @@ interface Page {
 const pages: Page[] = [
   { name: "Calendar", icon: BsFillCalendarRangeFill, href: "/calendar" },
   { name: "Finance", icon: FiTrendingUp, href: "/finance" },
-  { name: "Clientes", icon: BiSolidGroup, href: "" },
+  { name: "Clientes", icon: BiSolidGroup, href: "clients" },
 ];
 
 const useLayout = () => {
