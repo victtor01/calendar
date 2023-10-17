@@ -10,6 +10,7 @@ import {
   Request,
   HttpStatus,
   HttpCode,
+  Delete,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './repositories/users-repository';
@@ -25,13 +26,18 @@ export class UsersController {
     private users: UsersRepository,
     private readonly usersService: UsersService,
   ) {}
-
-  @Get('find')
-  async findInfo(@Request() req: any){
-    const { id } = req.user;
-    return await this.usersService.findOne(id)
+  
+  @Get('')
+  async findAll(@Request() req: any) {
+    return await this.usersService.findAll(req.user.id);
   }
-
+  
+  @Get('find')
+  async findInfo(@Request() req: any) {
+    const { id } = req.user;
+    return await this.usersService.findOne(id);
+  }
+  
   @Public()
   @Post('register')
   @UseInterceptors(

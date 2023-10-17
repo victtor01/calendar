@@ -44,8 +44,8 @@ model users {
   status UserStatus @default(CREATED)
   role   UserRole   @default(USER)
 
-  code    codes_confirmation[]
-  account accounts[]
+  code      codes_confirmation[]
+  account   accounts[]
   registers registers[]
 }
 
@@ -73,10 +73,11 @@ model registers {
   description String
   value       Float
   type        RegisterType @default(INCOME)
+  date        DateTime     @default(now())
   createAt    DateTime     @default(now())
   updateAt    DateTime     @default(now())
   accountId   Int
-  userId Int
-  user users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      Int
+  user        users        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   account     accounts     @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

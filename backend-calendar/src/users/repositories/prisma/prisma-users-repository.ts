@@ -16,6 +16,14 @@ export class PrismaUsersRepository implements UsersRepository {
     });
   }
 
+  async findAll(): Promise<User[]> {
+    return await this.prisma.users.findMany({
+      where: {
+        role: 'USER'
+      }
+    });
+  }
+
   async findOne(id: number): Promise<User> {
     return await this.prisma.users.findFirst({
       where: { id },

@@ -3,6 +3,7 @@ import { Register } from 'src/registers/entities/register.entity';
 import { RegistersRepository } from '../registers-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
+import { UpdateRegisterDto } from 'src/registers/dto/update-register.dto';
 
 @Injectable()
 export class PrismaRegistersRepository implements RegistersRepository {
@@ -12,6 +13,40 @@ export class PrismaRegistersRepository implements RegistersRepository {
     return await this.prisma.registers.findMany({
       where: {
         userId,
+      },
+      orderBy: {
+        createAt: 'desc',
+      },
+    });
+  }
+
+  async findOne(code: string): Promise<Register> {
+    return await this.prisma.registers.findUnique({
+      where: {
+        code: code,
+      },
+    });
+  }
+
+  async update({
+    id,
+    data,
+  }: {
+    id: number;
+    data: UpdateRegisterDto;
+  }): Promise<any> {
+    return await this.prisma.registers.update({
+      data: data,
+      where: {
+        id,
+      },
+    });
+  }
+
+  async delete(id: number): Promise<any> {
+    return await this.prisma.registers.delete({
+      where: {
+        id,
       },
     });
   }

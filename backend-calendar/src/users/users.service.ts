@@ -54,4 +54,17 @@ export class UsersService {
   async findOne(userId: number) {
     return await this.usersRepository.findOne(userId);
   }
+
+  async findAll(userId: number): Promise<User[] | UnauthorizedException> {
+    userId = typeof userId === 'number' ? userId : Number(userId);
+    const user = await this.usersRepository.findOne(userId);
+
+    if (user.role === 'USER') {
+      return new UnauthorizedException({
+        message: 'Você não tem poderes para fazer essa requisição!',
+      });
+    }
+
+    return await this.usersRepository.findAll();
+  }
 }
