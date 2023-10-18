@@ -47,6 +47,9 @@ model users {
   code      codes_confirmation[]
   account   accounts[]
   registers registers[]
+  clients   clients[]
+  services  services[]
+  events    events[]
 }
 
 model codes_confirmation {
@@ -80,4 +83,50 @@ model registers {
   userId      Int
   user        users        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   account     accounts     @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model clients {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique @default(uuid())
+  firstName String
+  lastName  String
+  email     String
+  cpf       String?
+  cep       String?
+  phone     String?
+  street    String?
+  birth     DateTime?
+  createAt  DateTime @default(now())
+  updateAt  DateTime @default(now())
+  userId    Int
+
+  events events[]
+  user   users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model services {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique @default(uuid())
+  name        String   @unique
+  price       Float
+  description String?
+  createAt    DateTime @default(now())
+  updateAt    DateTime @default(now())
+  userId      Int
+  events      events[]
+  user        users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model events {
+  id          Int        @id @default(autoincrement())
+  code        String     @unique @default(uuid())
+  name        String
+  description String
+  date        DateTime
+  createAt    DateTime   @default(now())
+  updateAt    DateTime   @default(now())
+  userId      Int
+  clients     clients[]
+  services    services[]
+  user        users      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
