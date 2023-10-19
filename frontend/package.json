@@ -9,6 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.9",
+    "@fullcalendar/daygrid": "^6.1.9",
+    "@fullcalendar/interaction": "^6.1.9",
+    "@fullcalendar/react": "^6.1.9",
+    "@fullcalendar/timegrid": "^6.1.9",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.3.1",
     "@next/font": "^13.5.3",
     "@nextui-org/react": "^2.1.13",
@@ -17,6 +24,7 @@
     "framer-motion": "^10.16.4",
     "js-cookie": "^3.0.5",
     "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
     "next": "^13.5.4",
     "nextjs-toploader": "^1.5.3",
     "nookies": "^2.5.2",

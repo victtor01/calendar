@@ -23,7 +23,49 @@ body {
       transparent,
       rgb(var(--background-end-rgb))
     )
-  rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb));
   overflow: hidden;
   height: 100vh;
+}
+
+.fc-header-toolbar {
+  display: inline-block;
+  padding: 4px 4px;
+
+  @apply space-x-8;
+}
+
+.fc-day {
+  @apply m-8;
+}
+
+.fc-scrollgrid-sync-table {
+  @apply w-full;
+}
+
+.fc-view {
+  @apply w-full h-full lg:h-3/4 xl:h-2/3 bg-white;
+}
+
+.fc-h-event {
+  @apply bg-cyan-500 border border-cyan-600;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  @apply bg-cyan-100;
+}
+
+.fc .fc-button {
+  @apply bg-cyan-800 hover:bg-cyan-900;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  @apply bg-cyan-600;
+}
+
+.fc .fc-button-primary:disabled {
+  @apply bg-cyan-600;
+}
+.fc-v-event {
+  @apply bg-cyan-500 border-none;
 }

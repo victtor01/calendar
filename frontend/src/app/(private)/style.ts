@@ -1,5 +1,5 @@
-'use client'
-import styled from "styled-components";
+"use client";
+import styled, { css } from "styled-components";
 
 export const Container = styled.main`
   display: grid;
@@ -11,7 +11,7 @@ export const Container = styled.main`
   grid-template-columns: auto 1fr 1fr auto;
   grid-gap: 0rem;
   min-height: 100vh;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
   position: relative;
   min-width: auto;
   overflow: hidden;
@@ -35,8 +35,7 @@ export const Content = styled.div`
 
   /* Estilo para o indicador da barra de rolagem (thumb) */
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.2); /* Cor de fundo da barra de rolagem */
-
+    background-color: rgba(0, 0, 0, 0.2); /* Cor de fundo da barra de rolagem */
   }
 
   /* Estilo para o indicador da barra de rolagem quando passa o mouse */
@@ -48,5 +47,4 @@ export const Content = styled.div`
   &::-webkit-scrollbar-track {
     background-color: transparent; /* Cor de fundo da área da barra de rolagem */
   }
-
 `;
