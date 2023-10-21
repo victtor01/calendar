@@ -44,13 +44,13 @@ model users {
   status UserStatus @default(CREATED)
   role   UserRole   @default(USER)
 
-  code        codes_confirmation[]
-  account     accounts[]
-  registers   registers[]
-  clients     clients[]
-  services    services[]
-  modelEvents modelEvents[]
-  events      events[]
+  code            codes_confirmation[]
+  account         accounts[]
+  registers       registers[]
+  clients         clients[]
+  services        services[]
+  eventsTemplates eventsTemplates[]
+  events          events[]
 }
 
 model codes_confirmation {
@@ -101,7 +101,8 @@ model clients {
   updateAt  DateTime  @default(now())
   userId    Int
 
-  user users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  events events[]
+  user   users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model services {
@@ -116,12 +117,12 @@ model services {
   user        users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model modelEvents {
+model eventsTemplates {
   id          Int      @id @default(autoincrement())
   code        String   @unique @default(uuid())
-  title       String
+  name        String
   description String
-  date        DateTime
+  color       String?
   createAt    DateTime @default(now())
   updateAt    DateTime @default(now())
   userId      Int
@@ -129,9 +130,24 @@ model modelEvents {
 }
 
 model events {
-  id     Int      @id @default(autoincrement())
-  start  DateTime @default(now())
-  end    DateTime
-  userId Int
-  user   users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id          Int              @id @default(autoincrement())
+  name        String
+  description String?
+  color       String?
+  start       DateTime         @default(now())
+  end         DateTime
+  createAt    DateTime         @default(now())
+  updateAt    DateTime         @default(now())
+  allDay      Boolean          @default(true)
+  userId      Int
+  clients     clients[]
+  comments    eventsComments[]
+  user        users            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model eventsComments {
+  id      Int    @id @default(autoincrement())
+  content String
+  eventId Int
+  event   events @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

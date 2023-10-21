@@ -98,17 +98,21 @@ export class AuthService {
   async confirmEmail(userId: number, codeConfirm: string): Promise<boolean | BadRequestException> {
     try {
 
-      const { id: codeId } = await this.confirmatinCodesRepository.findOne(codeConfirm);
+      const { id: codeId, code} = await this.confirmatinCodesRepository.findOne(codeConfirm);
       
       if (!codeId) {
         return false;
       }
 
+      if(codeConfirm !== code) {
+        return new BadRequestException({
+          message: 'Os códigos não coecidem!'
+        })
+      }
+
       const updated = await this.UsersRepository.update(userId, {
         status: 'VERIFIED'
       });
-
-      console.log(updated)
 
       if (!updated) {
         return false;

@@ -10,6 +10,9 @@ import { AuthGuard } from './auth/auth.guard';
 import { AccountsModule } from './accounts/accounts.module';
 import { RegistersModule } from './registers/registers.module';
 import { ClientsModule } from './clients/clients.module';
+import { EventsTemplatesModule } from './events-templates/events-templates.module';
+import { EventsModule } from './events/events.module';
+import { EventsCommentsModule } from './events-comments/events-comments.module';
 @Module({
   imports: [
     UsersModule,
@@ -19,6 +22,9 @@ import { ClientsModule } from './clients/clients.module';
     AccountsModule,
     RegistersModule,
     ClientsModule,
+    EventsTemplatesModule,
+    EventsModule,
+    EventsCommentsModule,
   ],
   controllers: [AppController],
   providers: [
