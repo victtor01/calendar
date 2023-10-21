@@ -38,7 +38,7 @@ export default function Admin() {
   return (
     <div className="w-full h-auto flex flex-wrap p-3">
       {users?.map((user: User) => (
-      <div className="flex flex-col bg-green-200 p-2">
+      <div className="flex flex-col bg-green-200 p-2" key={user.id}>
         <div className="w-[12rem] h-[12rem] flex bg-red-200">
         </div>
         <div className="flex">

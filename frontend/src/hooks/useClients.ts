@@ -20,16 +20,16 @@ export interface Clients {
 export const useClients = () => {
   const api = useApiPrivate();
 
+  const get = async (): Promise<Clients[]> => {
+    return (await api.get("/clients")).data;
+  };
+
+  const { data: clients } = useQuery<Clients[]>({
+    queryKey: ["clients"],
+    queryFn: get,
+  });
+
   const getClients = () => {
-    const get = async (): Promise<Clients[]> => {
-      return (await api.get("/clients")).data;
-    };
-
-    const { data: clients } = useQuery<Clients[]>({
-      queryKey: ["clients"],
-      queryFn: get,
-    });
-
     return {
       clients,
     };

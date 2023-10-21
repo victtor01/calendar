@@ -18,7 +18,7 @@ const createAccountFormSchema = z.object({
     description: z.string()
 });
 
-export const useCreate = () => {
+const useCreate = () => {
   const {
     register,
     handleSubmit,
@@ -30,9 +30,7 @@ export const useCreate = () => {
   const api = useApiPrivate();
 
   const createAccounts = async (data: CreateAccountFormData) => {
-    console.log(data)
     const response = await api.post('/accounts/create', data);
-    console.log(response)
   }
 
   return {
@@ -43,7 +41,7 @@ export const useCreate = () => {
   };
 };
 
-export default function Create() {
+const Create = () => {
   const { errors, register, handleSubmit, createAccounts} = useCreate();
 
   return (
@@ -95,3 +93,5 @@ export default function Create() {
   </div>
   );
 }
+
+export default Create

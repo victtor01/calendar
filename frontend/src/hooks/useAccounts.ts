@@ -11,16 +11,16 @@ export interface Accounts {
 export const useAccounts = () => {
   const api = useApiPrivate();
 
+  const get = async (): Promise<Accounts[]> => {
+    return (await api.get("/accounts")).data;
+  };
+
+  const { data: accounts } = useQuery<Accounts[]>({
+    queryKey: ["accounts"],
+    queryFn: get,
+  });
+
   const getAccounts = () => {
-    const get = async (): Promise<Accounts[]> => {
-      return (await api.get("/accounts")).data;
-    };
-
-    const { data: accounts } = useQuery<Accounts[]>({
-      queryKey: ["accounts"],
-      queryFn: get,
-    });
-
     return {
       accounts,
     };

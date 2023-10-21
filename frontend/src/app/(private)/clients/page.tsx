@@ -61,7 +61,7 @@ export default function Clients() {
       <div className="w-auto flex min-w-[40rem] flex-col gap-2">
         <div className="text-xl text-cyan-600 mt-5">Todos os meus clientes</div>
         {clients?.map((item: Client) => (
-          <Register.Root>
+          <Register.Root key={item.id}>
             <Register.Compartiment>
               <Register.Title>Primeiro nome</Register.Title>
               <Register.Content>{item.firstName}</Register.Content>

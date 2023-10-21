@@ -29,7 +29,7 @@ export function useAdminRouter() {
     } finally {
       setLoading(false);
     }
-  }, [setRole, setLoading]);
+  }, [api, push, setRole, setLoading]);
 
   useEffect(() => {
     valide();

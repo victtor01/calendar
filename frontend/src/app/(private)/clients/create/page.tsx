@@ -71,7 +71,7 @@ const useCreate = () => {
   };
 };
 
-export default function create() {
+export default function Create() {
   const { handleSubmit, createClient, control, errors, reset } = useCreate();
 
   return (

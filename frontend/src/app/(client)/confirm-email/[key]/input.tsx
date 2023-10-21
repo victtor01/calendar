@@ -35,11 +35,11 @@ function useSubmitCode(userId: number) {
 }
 
 export function SubmitCode({ userId }: submitCodeProps) {
+  const { code, onChangeCode, onSubmit } = useSubmitCode(userId);
+  
   if (!userId) {
     return;
   }
-
-  const { code, onChangeCode, onSubmit } = useSubmitCode(userId);
 
   return (
     <>
