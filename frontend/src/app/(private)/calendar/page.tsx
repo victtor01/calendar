@@ -9,22 +9,14 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
-import * as S from "./style";
 import useEventsTemplates, {
   EventsTemplates,
 } from "@/hooks/useEventsTemplates";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/hooks/queryClient";
-
-interface Event {
-  id: number;
-  name: string;
-  end: Date | string;
-  start: Date | string;
-  allDay?: boolean;
-  color?: string;
-}
+import { useRouter } from "next/navigation";
+import { Event } from "./types";
 
 function renderEventContent(arg: any) {
   const { event } = arg;
@@ -37,8 +29,8 @@ function renderEventContent(arg: any) {
 
 const useCalendar = () => {
   const api = useApiPrivate();
+  const { push } = useRouter();
   const { data: eventsTemplates } = useEventsTemplates().getAll();
-  const [showModal, setShowModal] = useState<boolean>(false);
 
   const { data: allEvents } = useQuery({
     queryKey: ["events"],
@@ -46,6 +38,14 @@ const useCalendar = () => {
       return (await api.get("/events")).data;
     },
   });
+
+  function eventDetails(arg: any) {
+    const { id } = arg.event;
+    const { code } = allEvents.filter(
+      (even: Event) => even.id.toString() === id.toString()
+    )[0];
+    push(`/calendar/details/${code}`);
+  }
 
   async function handleEventReceive(arg: any) {
     const { event } = arg;
@@ -71,7 +71,6 @@ const useCalendar = () => {
       end: dateEnd.format("YYYY-MM-DDTHH:mm:ss.SSS"),
     };
 
-    console.log(updatedData);
     await api
       .put(`/events/update/${updatedEvent.id}`, updatedData)
       .catch((err) => console.log(err));
@@ -89,7 +88,7 @@ const useCalendar = () => {
       return;
     }
 
-    const response = await api.post("/events/create", {
+    await api.post("/events/create", {
       name: data.draggedEl.innerText,
       description: "Teste",
       allDay: data.allDay,
@@ -121,12 +120,18 @@ const useCalendar = () => {
     allEvents,
     handleEventReceive,
     addEvent,
+    eventDetails,
   };
 };
 
 export default function Calendar() {
-  const { eventsTemplates, allEvents, handleEventReceive, addEvent } =
-    useCalendar();
+  const {
+    eventsTemplates,
+    allEvents,
+    handleEventReceive,
+    addEvent,
+    eventDetails,
+  } = useCalendar();
 
   return (
     <div className="flex gap-4 p-4 max-h-auto w-full max-w-[80rem]">
@@ -148,16 +153,16 @@ export default function Calendar() {
           height={"auto"}
           eventDrop={handleEventReceive}
           drop={(data) => addEvent(data)}
-          eventClick={() => null}
+          eventClick={(data: any) => eventDetails(data)}
           eventBackgroundColor="rgba(0,0,0,0)"
           eventClassNames={"p-1 m-1 overflow-hidden"}
         />
       </div>
       <div
         id="draggable-el"
-        className="min-w-[13rem] rounded-md mt-16 p-2 gap-2 flex flex-col border border-zinc-500 border-opacity-20"
+        className="min-w-[12rem] rounded-md mt-16 gap-2 flex flex-col"
       >
-        <h1 className="font-bold text-lg text-center opacity-70">
+        <h1 className="font-bold text-lg p-2 rounded text-center text-white bg-cyan-800">
           Modelos de eventos
         </h1>
         {eventsTemplates?.map((event: EventsTemplates) => (
