@@ -4,6 +4,7 @@ import { EventsComments } from 'src/events-comments/entities/events-comments.ent
 export class Events {
   id: number;
   name: string;
+  code: string;
   description?: string;
   color?: string;
   start: Date;

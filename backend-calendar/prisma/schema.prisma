@@ -131,6 +131,7 @@ model eventsTemplates {
 
 model events {
   id          Int              @id @default(autoincrement())
+  code        String           @unique @default(uuid())
   name        String
   description String?
   color       String?

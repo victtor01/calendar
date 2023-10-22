@@ -4,6 +4,7 @@ import { EventsRepository } from '../events-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { UpdateEventsDto } from 'src/events/dto/update-events.dto';
+import { findEventsDto } from 'src/events/dto/find-events.dto';
 
 @Injectable()
 export class PrismaEventsRepository implements EventsRepository {
@@ -20,6 +21,15 @@ export class PrismaEventsRepository implements EventsRepository {
     return await this.prismaService.events.update({
       where: { id },
       data: rest,
+    });
+  }
+
+  async findOne({ code, userId }: findEventsDto): Promise<Events> {
+    return await this.prismaService.events.findFirst({
+      where: {
+        code,
+        userId,
+      },
     });
   }
 
