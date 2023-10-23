@@ -18,9 +18,7 @@ const createRegisterFormSchema = z.object({
   name: z.string().nonempty("Preencha o nome!"),
   value: z.string().nonempty("Preencha o valor!"),
   description: z.string(),
-  date: z
-    .string()
-    .refine((value) => new Date(value)),
+  date: z.string().refine((value) => new Date(value)),
 });
 
 const useCreate = () => {
@@ -76,15 +74,14 @@ const useCreate = () => {
     const type = optionFinance;
     const { id: accountId } = optionAccount;
 
+    const data = {
+      ...formData,
+      accountId,
+      type,
+    };
+
     try {
-      const data = {
-        ...formData,
-        accountId,
-        type,
-      };
-
       await api.post("/registers/create", data);
-
       setOnSuccessMesage("enviado com sucesso!");
     } catch (error) {
       setErrorMessage("Houve um erro inesperado, tente novamente mais tarde!");

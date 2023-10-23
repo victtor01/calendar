@@ -7,7 +7,7 @@ interface labelTitleProps extends HTMLAttributes<HTMLLabelElement>{
 
 export function LabelTitle({ children, ...rest}: labelTitleProps) {
   return (
-    <div className={twMerge("w-full text-lg font-semibold flex items-center gap-1", rest.className)}>
+    <div className={twMerge("w-full text-normal font-semibold flex items-center gap-1 opacity-50", rest.className)}>
       {children}
     </div>
   );

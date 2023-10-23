@@ -172,12 +172,7 @@ export default function Calendar() {
             key={event.id}
             className="fc-event w-full p-2 overflow-hidden flex bg-cyan-500 text-white relative rounded"
           >
-            <span
-              className="absolute left-0 top-0 h-full w-1"
-              /* style={{
-                  background: event?.color || "cyan",
-                }} */
-            />
+            <span className="absolute left-0 top-0 h-full w-1" />
             {event.name}
           </div>
         ))}
