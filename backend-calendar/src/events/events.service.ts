@@ -2,7 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventsRepository } from './repositories/events-repository';
 import { CreateEventsDto } from './dto/create-events.dto';
 import { Events } from './entities/events.entity';
-import { parseISO } from 'date-fns';
+import { formatISO, parseISO } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 import { UpdateEventsDto } from './dto/update-events.dto';
 import { findEventsDto } from './dto/find-events.dto';
 
@@ -15,14 +16,15 @@ export class EventsService {
   }
 
   async create(data: CreateEventsDto): Promise<Events> {
-    data.start = parseISO(data.start.toString());
+    data.start = new Date(data.start.toString());
     data.end = parseISO(data.end.toString());
     return await this.eventsRepository.create(data);
   }
 
   async update(data: UpdateEventsDto): Promise<any> {
-    data.start = parseISO(data.start.toString());
+    data.start = parseISO(data.start.toString())
     data.end = parseISO(data.end.toString());
+    console.log(data);
     return await this.eventsRepository.update(data);
   }
 
