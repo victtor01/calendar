@@ -6,4 +6,11 @@ export interface Event {
   start: Date | string;
   allDay?: boolean;
   color?: string;
+  comments?: CommentsEvents[]
+}
+
+interface CommentsEvents {
+  id: number
+  content: string
+  eventId: number
 }

@@ -53,6 +53,7 @@ function usePrivateRoutes() {
   const { data, isError, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getUserInfo,
+    
   });
 
   return {

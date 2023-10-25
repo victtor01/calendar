@@ -6,7 +6,7 @@ import interactionPlugin, {
   DropArg,
 } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import moment from "moment-timezone";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
 import useEventsTemplates, {
@@ -39,25 +39,18 @@ const useCalendar = () => {
     },
   });
 
-  function eventDetails(arg: any) {
-    const { id } = arg.event;
-    const { code } = allEvents.filter(
-      (even: Event) => even.id.toString() === id.toString()
-    )[0];
-    push(`/calendar/details/${code}`);
-  }
-
+  
   async function handleEventReceive(arg: any) {
     const { event } = arg;
-
+    
     const updatedEvent = allEvents.find(
       (upEvent: Event) => upEvent.id.toString() === event.id.toString()
-    );
+      );
 
-    if (!updatedEvent) {
+      if (!updatedEvent) {
       return;
     }
-
+    
     updatedEvent.allDay = event.allDay;
 
     const dateStart = moment(event.start).tz("America/Sao_Paulo");
@@ -72,16 +65,32 @@ const useCalendar = () => {
     };
 
     await api
-      .put(`/events/update/${updatedEvent.id}`, updatedData)
-      .catch((err) => console.log(err));
+    .put(`/events/update/${updatedEvent.id}`, updatedData)
+    .catch((err) => console.log(err));
 
-    queryClient.refetchQueries(["events"]);
+    queryClient.setQueryData(["events"], (prevData: any) => {
+      if (prevData) {
+        return prevData.map((event: any) =>
+          event.id === updatedEvent.id ? updatedData : event
+        );
+      } else {
+        return prevData;
+      }
+    });
   }
 
+  function eventDetails(arg: any) {
+    const { id } = arg.event;
+    const { code } = allEvents.filter(
+      (even: Event) => even.id.toString() === id.toString()
+    )[0];
+    push(`/calendar/details/${code}`);
+  }
+  
   async function addEvent(data: DropArg) {
     const templete = eventsTemplates.filter(
       (even: EventsTemplates) =>
-        even.id.toString() === data.draggedEl.id.toString()
+      even.id.toString() === data.draggedEl.id.toString()
     )[0];
 
     if (!templete) {
@@ -155,7 +164,7 @@ export default function Calendar() {
           drop={(data) => addEvent(data)}
           eventClick={(data: any) => eventDetails(data)}
           eventBackgroundColor="rgba(0,0,0,0)"
-          eventClassNames={"p-1 m-1 overflow-hidden"}
+          eventClassNames={"p-1 m-1"}
         />
       </div>
       <div
