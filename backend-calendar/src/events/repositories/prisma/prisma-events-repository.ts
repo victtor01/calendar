@@ -30,6 +30,9 @@ export class PrismaEventsRepository implements EventsRepository {
         code,
         userId,
       },
+      include: {
+        comments: true,
+      },
     });
   }
 
