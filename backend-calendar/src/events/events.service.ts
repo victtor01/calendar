@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventsRepository } from './repositories/events-repository';
 import { CreateEventsDto } from './dto/create-events.dto';
 import { Events } from './entities/events.entity';
-import { formatISO, parseISO } from 'date-fns';
+import { addDays, formatISO, parseISO, subDays } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
 import { UpdateEventsDto } from './dto/update-events.dto';
 import { findEventsDto } from './dto/find-events.dto';
@@ -21,10 +21,22 @@ export class EventsService {
     return await this.eventsRepository.create(data);
   }
 
-  async update(data: UpdateEventsDto): Promise<any> {
-    data.start = parseISO(data.start.toString())
+  async update(data: UpdateEventsDto): Promise<Events> {
+    data.start = parseISO(data.start.toString());
     data.end = parseISO(data.end.toString());
     return await this.eventsRepository.update(data);
+  }
+
+  async findByWeek(userId: number): Promise<Events[]> {
+    const today = new Date();
+    const threeDaysAgo = subDays(today, 3);
+    const threeDaysLater = addDays(today, 3);
+
+    return await this.eventsRepository.findByDate({
+      userId,
+      start: threeDaysAgo,
+      end: threeDaysLater,
+    });
   }
 
   async findOne({ code, userId }: findEventsDto) {

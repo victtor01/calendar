@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { UpdateEventsDto } from 'src/events/dto/update-events.dto';
 import { findEventsDto } from 'src/events/dto/find-events.dto';
+import { findEventsByDateDto } from 'src/events/dto/find-events-by-date.dto';
 
 @Injectable()
 export class PrismaEventsRepository implements EventsRepository {
@@ -34,6 +35,23 @@ export class PrismaEventsRepository implements EventsRepository {
         comments: true,
       },
     });
+  }
+
+  async findByDate(data: findEventsByDateDto): Promise<Events[]> {
+    const { userId, start, end } = data;
+    const res = await this.prismaService.events.findMany({
+      where: {
+        userId,
+        start: {
+          gte: start,
+          lte: end,
+        },
+      },
+      orderBy: {
+        start: 'asc', // 'desc' indica ordenação decrescente (do mais recente para o mais antigo)
+      },
+    });
+    return res;
   }
 
   async create(data: CreateEventsDto): Promise<Events> {

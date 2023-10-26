@@ -21,6 +21,11 @@ export class EventsController {
     return await this.eventsService.getAll(req.user.id);
   }
 
+  @Get('/find/week')
+  async findWeek(@Request() req: { user: User }) {
+    return await this.eventsService.findByWeek(Number(req.user.id));
+  }
+
   @Get('/find/:param')
   async findOne(@Request() req: { user: User }, @Param('param') identifier: string) {
     return await this.eventsService.findOne({
