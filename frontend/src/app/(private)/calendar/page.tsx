@@ -106,6 +106,7 @@ const useCalendar = () => {
     });
 
     queryClient.invalidateQueries(["events"]);
+    queryClient.invalidateQueries(["events-weeks"]);
   }
 
   useEffect(() => {
@@ -143,7 +144,7 @@ export default function Calendar() {
   } = useCalendar();
 
   return (
-    <div className="flex gap-4 p-4 max-h-auto w-full max-w-[80rem]">
+    <div className="flex gap-4 p-4 max-h-auto mx-auto w-full max-w-[80rem]">
       <div className="col-span-8 max-h-auto">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
@@ -164,7 +165,7 @@ export default function Calendar() {
           drop={(data) => addEvent(data)}
           eventClick={(data: any) => eventDetails(data)}
           eventBackgroundColor="rgba(0,0,0,0)"
-          eventClassNames={"p-1 m-1"}
+          eventClassNames={"p-1 m-1 gap-2"}
         />
       </div>
       <div

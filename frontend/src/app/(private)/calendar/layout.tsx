@@ -70,7 +70,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   } = useLayout();
 
   return (
-    <div className="flex flex-col w-full justify-center items-center gap-2 p-3">
+    <div className="flex flex-col w-full gap-2 p-3 h-full min-h-auto">
       <header className=" w-full items-center flex justify-between rounded bg-transparent">
         <div className="opacity-70">
           <Link
@@ -87,6 +87,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           >
             Novo modelo
           </button>
+          <Link
+            href={"/calendar/week"}
+            className="opacity-80 hover:opacity-100 text-white rounded p-3 bg-cyan-600 "
+          >
+            Minha semana
+          </Link>
           <Link
             href={"/calendar"}
             className="opacity-80 hover:opacity-100 rounded p-3 text-white bg-gradient-to-r from-rose-500 to-fuchsia-600"

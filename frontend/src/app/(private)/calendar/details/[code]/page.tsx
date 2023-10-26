@@ -212,7 +212,7 @@ export default function Details({
               <Controller
                 control={control}
                 name={"color"}
-                defaultValue={event.color || "#000000"}
+                defaultValue={event.color || "#01f9f1"}
                 render={({ field }: { field: OmitAllday }) => {
                   return <input {...field} type="color" />;
                 }}

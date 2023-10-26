@@ -15,6 +15,7 @@ import { BiSolidGroup } from "react-icons/bi";
 import Button from "@/components/button";
 import { ThemeProvider } from "styled-components";
 import { RxExit } from "react-icons/rx";
+import { RiMoonLine, RiSunLine } from "react-icons/ri";
 
 const darkTheme = {
   primary: "#121212",
@@ -50,6 +51,7 @@ const pages: Page[] = [
   { name: "Calendar", icon: BsFillCalendarRangeFill, href: "/calendar" },
   { name: "Finance", icon: FiTrendingUp, href: "/finance" },
   { name: "Clientes", icon: BiSolidGroup, href: "/clients" },
+  { name: "Configurações", icon: BsFillGearFill, href: "/clients"}
 ];
 
 const useLayout = () => {
@@ -58,7 +60,9 @@ const useLayout = () => {
   const [theme, setTheme] = useState<string>("light");
   const widthSidebar = !sidebarShow ? "left-[-120%]" : "left-0";
 
-  const handleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark')
+  const handleTheme = () =>
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  const IconTheme = theme === "dark" ? RiMoonLine : RiSunLine;
 
   const onClickSidebarShow = () => {
     setSidebarShow((prev) => !prev);
@@ -78,11 +82,19 @@ const useLayout = () => {
     sidebarShow,
     widthSidebar,
     onClickSidebarShow,
+    IconTheme,
   };
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { logout, handleTheme, theme, widthSidebar, onClickSidebarShow } = useLayout();
+  const {
+    logout,
+    handleTheme,
+    theme,
+    widthSidebar,
+    onClickSidebarShow,
+    IconTheme,
+  } = useLayout();
 
   return (
     <PrivateRoute>
@@ -114,8 +126,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 );
               })}
             </div>
-            <button onClick={handleTheme}>
-              m
+            <button onClick={handleTheme} className="p-6">
+              <IconTheme />
             </button>
           </Sidebar>
           <Sidebar
@@ -134,26 +146,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </header>
               <div className="flex flex-col px-4 mt-5 gap-5 flex-1 flex-nowrap">
-                {pages.map(({ name, icon: Icon, href }: Page, index: number) => {
-                  return (
-                    <Link
-                      key={index}
-                      href={href}
-                      className=" flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded"
-                    >
-                      <Icon size={"20"} className="min-w-[3rem]" />
-                      {name}
-                    </Link>
-                  );
-                })}
+                {pages.map(
+                  ({ name, icon: Icon, href }: Page, index: number) => {
+                    return (
+                      <Link
+                        key={index}
+                        href={href}
+                        className=" flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded"
+                      >
+                        <Icon size={"20"} className="min-w-[3rem]" />
+                        {name}
+                      </Link>
+                    );
+                  }
+                )}
               </div>
-              <div className="w-full p-4 flex gap-2 py-5 items-center">
-                <Link href={""}>
-                  <BsFillGearFill size="25" />
-                </Link>
-                <Button onClick={logout}>
-                  <RxExit size="25" />
-                </Button>
+              <div className="w-full p-4 flex gap-5 items-center">
+                <button
+                  onClick={handleTheme}
+                  className="opacity-60 hover:opacity-100"
+                >
+                  <IconTheme size="20"/>
+                </button>
+                <button onClick={logout}>
+                  <RxExit size="20" className="opacity-60 hover:opacity-100" />
+                </button>
               </div>
             </div>
           </Sidebar>

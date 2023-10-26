@@ -31,7 +31,6 @@ body {
 .fc-header-toolbar {
   display: inline-block;
   padding: 4px 4px;
-
   @apply space-x-8;
 }
 
@@ -41,6 +40,42 @@ body {
 
 .fc-scrollgrid-sync-table {
   @apply w-full;
+
+}
+.fc-scrollgrid-sync-inner {
+  background-color: transparent;
+
+}
+.fc-daygrid-day-frame {
+  border: none;
+}
+
+.fc-timegrid-now-indicator-line {
+  @aplly bg-red-700 !important;
+}
+
+.fc-scrollgrid, .fc-scrollgrid * {
+  background-color: transparent;
+  @apply border-zinc-500 border-opacity-20 !important;
+}
+
+.fc-col-header  {
+  @apply bg-cyan-700 text-white;
+}
+
+.fc {
+  background-color: transparent;
+}
+
+.fc-dayGridMonth-view {
+  @apply bg-zinc-100 border-none bg-opacity-10 !important
+}
+
+.fc-view-harness {
+  background-color: transparent !important;
+}
+.fc-view-harness-passive {
+  background-color: transparent !important;
 }
 
 .fc-view {
