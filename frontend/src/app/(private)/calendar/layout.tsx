@@ -1,5 +1,4 @@
 "use client";
-import Header from "@/components/header";
 import Link from "next/link";
 import {
   Modal,
@@ -14,7 +13,6 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useApiPrivate from "@/hooks/apiPrivate";
-import useEventsTemplates from "@/hooks/useEventsTemplates";
 import { queryClient } from "@/hooks/queryClient";
 
 type CreateModelEventFormData = z.infer<typeof createModelEventFormSchema>;
@@ -70,8 +68,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   } = useLayout();
 
   return (
-    <div className="flex flex-col w-full gap-2 p-3 h-full min-h-auto">
-      <header className=" w-full items-center flex justify-between rounded bg-transparent">
+    <div className="flex flex-col w-full h-full min-h-auto">
+      <header className=" w-full items-center flex justify-between rounded bg-transparent p-2 ">
         <div className="opacity-70">
           <Link
             href={"/calendar"}
@@ -83,19 +81,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex gap-2">
           <button
             onClick={handleShowModalAddEvent}
-            className="opacity-80 hover:opacity-100 text-white rounded p-3 bg-cyan-600 "
+            className="opacity-90 hover:opacity-100 text-white rounded p-3 bg-cyan-600 "
           >
             Novo modelo
           </button>
           <Link
             href={"/calendar/week"}
-            className="opacity-80 hover:opacity-100 text-white rounded p-3 bg-cyan-600 "
+            className="opacity-90 hover:opacity-100 text-white rounded p-3 bg-cyan-600 "
           >
             Minha semana
           </Link>
           <Link
             href={"/calendar"}
-            className="opacity-80 hover:opacity-100 rounded p-3 text-white bg-gradient-to-r from-rose-500 to-fuchsia-600"
+            className="opacity-90 hover:opacity-100 rounded p-3 text-white bg-gradient-to-r from-rose-500 to-fuchsia-600"
           >
             Novo evento
           </Link>

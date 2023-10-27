@@ -7,6 +7,15 @@ import { Event } from "../types";
 import { BsArrowRightShort, BsCheck } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
 import { useState } from "react";
+import Link from "next/link";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from "@nextui-org/react";
 
 const timeZone = "America/New_York"; // Por exemplo, Nova Iorque
 
@@ -25,6 +34,8 @@ function useWeek() {
     },
   });
   const [itemsForDelete, setItemsForDelete] = useState<number[] | null>(null);
+  const [showModalDeleteItems, setShowModalDeleteItems] =
+    useState<boolean>(false);
 
   const today = moment().tz(timeZone);
   const yesterday = moment().subtract(1, "days").tz(timeZone);
@@ -63,9 +74,22 @@ function useWeek() {
     });
   }
 
+  async function deleteItems() {
+    if (itemsForDelete) {
+      const res = await api.delete(`/events/delete-many/`, {
+        data: { ids: [...itemsForDelete] },
+      });
+      console.log(res);
+    }
+  }
+
+  const handleShowModalDeleteItems = () =>
+    setShowModalDeleteItems((prev) => !prev);
+
   return {
     query: { events, isLoading },
     utils: { itemsForDelete, addItemForDelete },
+    modal: { handleShowModalDeleteItems, deleteItems, showModalDeleteItems },
   };
 }
 
@@ -73,6 +97,7 @@ export default function Week() {
   const {
     query: { events, isLoading },
     utils: { itemsForDelete, addItemForDelete },
+    modal: { handleShowModalDeleteItems, deleteItems, showModalDeleteItems },
   } = useWeek();
 
   if (isLoading) {
@@ -85,7 +110,10 @@ export default function Week() {
         <h1 className={`text-2xl opacity-50 ${fontInter}`}>Minha semana</h1>
         <div className="flex">
           {itemsForDelete && itemsForDelete?.length > 0 && (
-            <button className="flex opacity-60 hover:bg-zinc-200 rounded-full hover:bg-opacity-20 p-3 hover:opacity-100">
+            <button
+              onClick={handleShowModalDeleteItems}
+              className="flex opacity-60 hover:bg-zinc-200 rounded-full hover:bg-opacity-20 p-3 hover:opacity-100"
+            >
               <BiTrash size="21" />
             </button>
           )}
@@ -96,11 +124,21 @@ export default function Week() {
           Object.entries(events)?.map(([name, value], index) => (
             <div
               key={index}
-              className="w-full min-h-[20rem] min-w-[20rem] flex flex-1 flex-col "
+              className="w-full min-w-[20rem] flex flex-1 flex-col "
             >
-              <header className="flex w-full p-4 rounded bg-cyan-300">
-                <h1 className="text-gray-700 text-xl">{name}</h1>
+              <header className="flex w-full bg-zinc-200 p-3 bg-opacity-10 pl-3 justify-between items-center ">
+                <h1 className="text-xl">{name}</h1>
+                <span className="bg-cyan-500 text-white rounded p-2">
+                  {moment(new Date()).format("DD / MM / YYYY")}
+                </span>
               </header>
+              {value?.length < 1 && (
+                <div className="flex w-full px-3">
+                  <span className="opacity-80 p-3 text-normal w-full bg-cyan-100 rounded">
+                    Sem eventos nesse dia!
+                  </span>
+                </div>
+              )}
               {value?.map((item: Event) => {
                 const backgroundButton = itemsForDelete?.includes(item.id)
                   ? "bg-cyan-400 border-none"
@@ -108,7 +146,7 @@ export default function Week() {
                 return (
                   <div
                     key={item.id}
-                    className="opacity-70 hover:opacity-100 border-b border-zinc-500 border-opacity-30 flex p-3 items-center gap-3"
+                    className="opacity-70 bg-zinc-300 bg-opacity-10 hover:opacity-100 border-b border-zinc-500 border-opacity-30 flex p-3 items-center gap-3"
                   >
                     {item.color && (
                       <span
@@ -120,7 +158,9 @@ export default function Week() {
                       onClick={() => addItemForDelete(item.id)}
                       className={`${backgroundButton} flex justify-center text-white items-center border border-zinc-300 w-5 h-5 rounded cursor-pointe`}
                     >
-                      {itemsForDelete?.includes(item.id) && <BsCheck size="18"/>}
+                      {itemsForDelete?.includes(item.id) && (
+                        <BsCheck size="18" />
+                      )}
                     </button>
                     <div className="flex flex-1">{item.name}</div>
                     <div className="flex">
@@ -135,9 +175,12 @@ export default function Week() {
                         .format("HH[h]mm")}
                     </div>
                     <div className="flex">
-                      <button className="flex text-white justify-center items-center rounded bg-cyan-500 w-8 h-8">
+                      <Link
+                        href={`/calendar/details/${item.code}`}
+                        className="flex text-white justify-center items-center rounded bg-cyan-500 w-8 h-8"
+                      >
                         <BsArrowRightShort size="25" />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 );
@@ -145,6 +188,49 @@ export default function Week() {
             </div>
           ))}
       </div>
+      <Modal
+        onOpenChange={handleShowModalDeleteItems}
+        isDismissable={false}
+        isOpen={showModalDeleteItems && !!itemsForDelete}
+        className="bg-zinc-900"
+      >
+        <ModalContent className="flex">
+          <ModalHeader className="flex flex-col gap-1">
+            Deletar Item(s)
+          </ModalHeader>
+          <form>
+            <ModalBody>
+              <p className="text-lg">
+                Tem certeza que Deseja Exlcluir{" "}
+                <span className="text-rose-600">
+                  {itemsForDelete?.length} evento(s)?
+                </span>
+              </p>
+              <p>
+                Após excluir não terá como recuperar esses eventos de nenhum
+                forma!
+              </p>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="primary"
+                className="rounded-lg opacity-80 hover:opacity-100"
+                onClick={() => null}
+              >
+                Fechar
+              </Button>
+              <Button
+                onClick={deleteItems}
+                color="danger"
+                className="rounded-lg bg-rose-600 opacity-80 hover:opacity-100"
+                type="button"
+              >
+                Excluir!
+              </Button>
+            </ModalFooter>
+          </form>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

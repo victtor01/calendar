@@ -40,11 +40,9 @@ body {
 
 .fc-scrollgrid-sync-table {
   @apply w-full;
-
 }
 .fc-scrollgrid-sync-inner {
   background-color: transparent;
-
 }
 .fc-daygrid-day-frame {
   border: none;
@@ -54,12 +52,15 @@ body {
   @aplly bg-red-700 !important;
 }
 
-.fc-scrollgrid, .fc-scrollgrid * {
-  background-color: transparent;
+.fc-scrollgrid,
+.fc-scrollgrid-section, .fc-scrollgrid-sync-table td, .fc-scrollgrid-sync-table table{
   @apply border-zinc-500 border-opacity-20 !important;
 }
+.fc-scrollgrid * {
+  @Apply bg-red-200 border-none !important;
+}
 
-.fc-col-header  {
+.fc-col-header {
   @apply bg-cyan-700 text-white;
 }
 
@@ -68,7 +69,7 @@ body {
 }
 
 .fc-dayGridMonth-view {
-  @apply bg-zinc-100 border-none bg-opacity-10 !important
+  @apply bg-zinc-100 border-none bg-opacity-10 !important;
 }
 
 .fc-view-harness {

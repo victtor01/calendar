@@ -17,15 +17,12 @@ import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/hooks/queryClient";
 import { useRouter } from "next/navigation";
 import { Event } from "./types";
+import { motion } from "framer-motion";
 
-function renderEventContent(arg: any) {
-  const { event } = arg;
-  return (
-    <div>
-      <strong>{event?.extendedProps.name}</strong>
-    </div>
-  );
-}
+const variants = {
+  pageInitial: { opacity: 0, x: 40, y: 0 },
+  pageAnimate: { opacity: 1, x: 0, y: 0 },
+};
 
 const useCalendar = () => {
   const api = useApiPrivate();
@@ -39,18 +36,17 @@ const useCalendar = () => {
     },
   });
 
-  
   async function handleEventReceive(arg: any) {
     const { event } = arg;
-    
+
     const updatedEvent = allEvents.find(
       (upEvent: Event) => upEvent.id.toString() === event.id.toString()
-      );
+    );
 
-      if (!updatedEvent) {
+    if (!updatedEvent) {
       return;
     }
-    
+
     updatedEvent.allDay = event.allDay;
 
     const dateStart = moment(event.start).tz("America/Sao_Paulo");
@@ -65,8 +61,8 @@ const useCalendar = () => {
     };
 
     await api
-    .put(`/events/update/${updatedEvent.id}`, updatedData)
-    .catch((err) => console.log(err));
+      .put(`/events/update/${updatedEvent.id}`, updatedData)
+      .catch((err) => console.log(err));
 
     queryClient.setQueryData(["events"], (prevData: any) => {
       if (prevData) {
@@ -86,11 +82,11 @@ const useCalendar = () => {
     )[0];
     push(`/calendar/details/${code}`);
   }
-  
+
   async function addEvent(data: DropArg) {
     const templete = eventsTemplates.filter(
       (even: EventsTemplates) =>
-      even.id.toString() === data.draggedEl.id.toString()
+        even.id.toString() === data.draggedEl.id.toString()
     )[0];
 
     if (!templete) {
@@ -144,49 +140,63 @@ export default function Calendar() {
   } = useCalendar();
 
   return (
-    <div className="flex gap-4 p-4 max-h-auto mx-auto w-full max-w-[80rem]">
-      <div className="col-span-8 max-h-auto">
-        <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-          headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek",
-          }}
-          events={allEvents as EventSourceInput}
-          nowIndicator={true}
-          editable={true}
-          droppable={true}
-          selectable={true}
-          selectMirror={true}
-          eventContent={renderEventContent}
-          height={"auto"}
-          eventDrop={handleEventReceive}
-          drop={(data) => addEvent(data)}
-          eventClick={(data: any) => eventDetails(data)}
-          eventBackgroundColor="rgba(0,0,0,0)"
-          eventClassNames={"p-1 m-1 gap-2"}
-        />
+    <motion.main
+      variants={variants}
+      initial="pageInitial"
+      animate="pageAnimate"
+      transition={{ type: "linear"}}
+    >
+      <div className="flex gap-4 p-4 max-h-auto mx-auto w-full max-w-[80rem]">
+        <div className="col-span-8 max-h-auto">
+          <FullCalendar
+            plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+            headerToolbar={{
+              left: "prev,next today",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek",
+            }}
+            events={
+              allEvents?.map((event: Event) => {
+                const { name, ...rest } = event;
+                return {
+                  title: event.name,
+                  ...rest,
+                };
+              }) as EventSourceInput
+            }
+            nowIndicator={true}
+            editable={true}
+            droppable={true}
+            selectable={true}
+            selectMirror={true}
+            /* eventContent={renderEventContent} */
+            height={"auto"}
+            eventDrop={handleEventReceive}
+            drop={(data) => addEvent(data)}
+            eventClick={(data: any) => eventDetails(data)}
+            eventClassNames={"p-2 m-1 gap-2 overflow-hidden"}
+          />
+        </div>
+        <div
+          id="draggable-el"
+          className="min-w-[12rem] rounded-md mt-16 gap-2 flex flex-col"
+        >
+          <h1 className="font-bold text-lg p-2 rounded text-center text-white bg-cyan-800">
+            Modelos de eventos
+          </h1>
+          {eventsTemplates?.map((event: EventsTemplates) => (
+            <div
+              id={event.id.toString()}
+              title={event.name}
+              key={event.id}
+              className="fc-event w-full p-2 overflow-hidden flex bg-cyan-500 text-white relative rounded"
+            >
+              <span className="absolute left-0 top-0 h-full w-1" />
+              {event.name}
+            </div>
+          ))}
+        </div>
       </div>
-      <div
-        id="draggable-el"
-        className="min-w-[12rem] rounded-md mt-16 gap-2 flex flex-col"
-      >
-        <h1 className="font-bold text-lg p-2 rounded text-center text-white bg-cyan-800">
-          Modelos de eventos
-        </h1>
-        {eventsTemplates?.map((event: EventsTemplates) => (
-          <div
-            id={event.id.toString()}
-            title={event.name}
-            key={event.id}
-            className="fc-event w-full p-2 overflow-hidden flex bg-cyan-500 text-white relative rounded"
-          >
-            <span className="absolute left-0 top-0 h-full w-1" />
-            {event.name}
-          </div>
-        ))}
-      </div>
-    </div>
+    </motion.main>
   );
 }

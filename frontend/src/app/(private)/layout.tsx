@@ -16,6 +16,7 @@ import Button from "@/components/button";
 import { ThemeProvider } from "styled-components";
 import { RxExit } from "react-icons/rx";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
+import { motion } from "framer-motion";
 
 const darkTheme = {
   primary: "#121212",
@@ -51,7 +52,7 @@ const pages: Page[] = [
   { name: "Calendar", icon: BsFillCalendarRangeFill, href: "/calendar" },
   { name: "Finance", icon: FiTrendingUp, href: "/finance" },
   { name: "Clientes", icon: BiSolidGroup, href: "/clients" },
-  { name: "Configurações", icon: BsFillGearFill, href: "/clients"}
+  { name: "Configurações", icon: BsFillGearFill, href: "/clients" },
 ];
 
 const useLayout = () => {
@@ -84,6 +85,11 @@ const useLayout = () => {
     onClickSidebarShow,
     IconTheme,
   };
+};
+
+const variants = {
+  hidden: { opacity: 0, x: -200, y: 0 },
+  enter: { opacity: 1, x: 0, y: 0 },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -166,7 +172,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   onClick={handleTheme}
                   className="opacity-60 hover:opacity-100"
                 >
-                  <IconTheme size="20"/>
+                  <IconTheme size="20" />
                 </button>
                 <button onClick={logout}>
                   <RxExit size="20" className="opacity-60 hover:opacity-100" />
