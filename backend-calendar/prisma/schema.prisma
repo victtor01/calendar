@@ -39,7 +39,7 @@ model users {
   photo     String?
   phone     String?  @unique
   createdAt DateTime @default(now())
-  updateAt  DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   status UserStatus @default(CREATED)
   role   UserRole   @default(USER)
@@ -78,8 +78,8 @@ model registers {
   value       Float
   type        RegisterType @default(INCOME)
   date        DateTime     @default(now())
-  createAt    DateTime     @default(now())
-  updateAt    DateTime     @default(now())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
   accountId   Int
   userId      Int
   user        users        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -97,8 +97,8 @@ model clients {
   phone     String?
   street    String?
   birth     DateTime?
-  createAt  DateTime  @default(now())
-  updateAt  DateTime  @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
   userId    Int
 
   events events[]
@@ -111,10 +111,12 @@ model services {
   name        String   @unique
   price       Float
   description String?
-  createAt    DateTime @default(now())
-  updateAt    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
   userId      Int
-  user        users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  events events[]
+  user   users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model eventsTemplates {
@@ -123,8 +125,8 @@ model eventsTemplates {
   name        String
   description String
   color       String?
-  createAt    DateTime @default(now())
-  updateAt    DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
   userId      Int
   user        users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
@@ -137,18 +139,21 @@ model events {
   color       String?
   start       DateTime         @default(now())
   end         DateTime
-  createAt    DateTime         @default(now())
-  updateAt    DateTime         @default(now())
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @default(now())
   allDay      Boolean          @default(true)
   userId      Int
   clients     clients[]
   comments    eventsComments[]
+  services    services[]
   user        users            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model eventsComments {
-  id      Int    @id @default(autoincrement())
-  content String
-  eventId Int
-  event   events @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id        Int      @id @default(autoincrement())
+  content   String
+  eventId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  event     events   @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

@@ -10,8 +10,8 @@ export class Events {
   start: Date;
   allDay: boolean;
   end: Date;
-  createAt: Date;
-  updateAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
   userId: number;
   clients?: Clients[];
   comments?: EventsComments[];

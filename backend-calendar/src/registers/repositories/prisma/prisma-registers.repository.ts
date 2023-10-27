@@ -15,7 +15,7 @@ export class PrismaRegistersRepository implements RegistersRepository {
         userId,
       },
       orderBy: {
-        createAt: 'desc',
+        createdAt: 'desc',
       },
     });
   }

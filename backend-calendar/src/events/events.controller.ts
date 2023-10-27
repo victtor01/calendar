@@ -6,6 +6,7 @@ import {
   Get,
   Put,
   Param,
+  Delete,
 } from '@nestjs/common';
 import { CreateEventsDto } from './dto/create-events.dto';
 import { User } from 'src/users/entities/user.entity';
@@ -27,11 +28,14 @@ export class EventsController {
   }
 
   @Get('/find/:param')
-  async findOne(@Request() req: { user: User }, @Param('param') identifier: string) {
+  async findOne(
+    @Request() req: { user: User },
+    @Param('param') identifier: string,
+  ) {
     return await this.eventsService.findOne({
       userId: req.user.id,
-      code: identifier
-    })
+      code: identifier,
+    });
   }
 
   @Post('create')
@@ -48,5 +52,15 @@ export class EventsController {
   ) {
     body.id = Number(id);
     return await this.eventsService.update(body);
+  }
+
+  @Delete('delete-many')
+  async deleteMany(
+    @Body() array: { ids: number[] },
+    @Request() req: { user: User },
+  ) {
+    const { ids } = array;
+    const userId = Number(req.user.id);
+    return await this.eventsService.deleteMany({ ids, userId });
   }
 }

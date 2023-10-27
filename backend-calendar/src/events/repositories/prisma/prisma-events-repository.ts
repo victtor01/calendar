@@ -6,6 +6,7 @@ import { PrismaService } from 'src/database/prisma.service';
 import { UpdateEventsDto } from 'src/events/dto/update-events.dto';
 import { findEventsDto } from 'src/events/dto/find-events.dto';
 import { findEventsByDateDto } from 'src/events/dto/find-events-by-date.dto';
+import { DeleteManyEventsDto } from 'src/events/dto/delete-many-events.dto';
 
 @Injectable()
 export class PrismaEventsRepository implements EventsRepository {
@@ -32,7 +33,28 @@ export class PrismaEventsRepository implements EventsRepository {
         userId,
       },
       include: {
-        comments: true,
+        comments: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    });
+  }
+
+  async delete(id: number): Promise<any> {
+    return await this.prismaService.events.delete({
+      where: { id },
+    });
+  }
+
+  async deleteMany({ ids, userId }: DeleteManyEventsDto): Promise<any> {
+    return await this.prismaService.events.deleteMany({
+      where: {
+        userId,
+        id: {
+          in: ids,
+        },
       },
     });
   }

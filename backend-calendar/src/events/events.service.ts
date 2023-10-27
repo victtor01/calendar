@@ -6,6 +6,8 @@ import { addDays, formatISO, parseISO, subDays } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
 import { UpdateEventsDto } from './dto/update-events.dto';
 import { findEventsDto } from './dto/find-events.dto';
+import { DeleteEventsDto } from './dto/delete-events.dto';
+import { DeleteManyEventsDto } from './dto/delete-many-events.dto';
 
 @Injectable()
 export class EventsService {
@@ -36,6 +38,17 @@ export class EventsService {
       userId,
       start: threeDaysAgo,
       end: threeDaysLater,
+    });
+  }
+
+  async delete({ code, userId }: DeleteEventsDto): Promise<any> {
+    const findEvent = await this.eventsRepository.findOne({ code, userId });
+  }
+
+  async deleteMany({ ids, userId }: DeleteManyEventsDto): Promise<any> {
+    const eventsPertences = this.eventsRepository.deleteMany({
+      ids,
+      userId,
     });
   }
 

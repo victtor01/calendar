@@ -14,7 +14,7 @@ export class User {
   phone?: string;
   birth: Date;
   createdAt: Date;
-  updateAt: Date;
+  updatedAt: Date;
 }
 
 export type UserRole = 'ADMIN' | 'USER'

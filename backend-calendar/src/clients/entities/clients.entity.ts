@@ -9,7 +9,7 @@ export class Clients {
   phone?: string;
   street?: string;
   birth?: Date;
-  createAt: Date;
-  updateAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
   userId: number;
 }

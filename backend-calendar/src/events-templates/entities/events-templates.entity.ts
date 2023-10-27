@@ -4,7 +4,7 @@ export class eventsTemplates {
   name: string;
   color?: string;
   description: string;
-  createAt: Date;
-  updateAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
   userId: number;
 }

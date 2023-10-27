@@ -8,7 +8,7 @@ export class Register {
     value: number;
     type: RegisterType;
     date: Date;
-    createAt: Date;
-    updateAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
     accountId: number;
 }
