@@ -64,6 +64,13 @@ const useCalendar = () => {
       .put(`/events/update/${updatedEvent.id}`, updatedData)
       .catch((err) => console.log(err));
 
+    const { code } = updatedData;
+    queryClient.setQueryData(["event", code], (prevData: any) => {
+      if (prevData) {
+        return updatedData;
+      }
+    });
+
     queryClient.setQueryData(["events"], (prevData: any) => {
       if (prevData) {
         return prevData.map((event: any) =>
@@ -144,7 +151,7 @@ export default function Calendar() {
       variants={variants}
       initial="pageInitial"
       animate="pageAnimate"
-      transition={{ type: "linear"}}
+      transition={{ type: "linear" }}
     >
       <div className="flex gap-4 p-4 max-h-auto mx-auto w-full max-w-[80rem]">
         <div className="col-span-8 max-h-auto">

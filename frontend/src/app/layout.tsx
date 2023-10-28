@@ -7,8 +7,8 @@ import "./globals.css";
 import { motion } from "framer-motion";
 
 const variants = {
-  pageInitial: { opacity: 0, x: -200, y: 0 },
-  pageAnimate: { opacity: 1, x: 0, y: 0 },
+  pageInitial: { opacity: 0},
+  pageAnimate: { opacity: 1 },
 };
 
 export default function RootLayout({

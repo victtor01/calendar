@@ -9,6 +9,7 @@ export interface Clients {
   email: string;
   cpf?: string;
   cep?: string;
+  color?: string;
   phone?: string;
   street?: string;
   birth?: Date;

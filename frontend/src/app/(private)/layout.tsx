@@ -16,10 +16,9 @@ import Button from "@/components/button";
 import { ThemeProvider } from "styled-components";
 import { RxExit } from "react-icons/rx";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
-import { motion } from "framer-motion";
 
 const darkTheme = {
-  primary: "#121212",
+  primary: "rgb(24 24 27)",
   secundary: "#181717",
   text: "#ebe8e8",
   shadow: "#202020",
@@ -32,7 +31,7 @@ const darkTheme = {
 };
 
 const lightTheme = {
-  primary: "#ffffff",
+  primary: "#fcfcfc",
   secundary: "#f9fcfe",
   shadow: "#f6f6f6",
   text: "#000",
@@ -108,7 +107,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <S.Container>
           <Sidebar
             style={{ gridArea: "sidebar" }}
-            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans}`}
+            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-gradient-to-b from-cyan-500 bg-gradient-opacity-20 to-cyan-800 ${fontOpenSans}`}
           >
             <div className="w-[4rem] h-[4rem] flex justify-center items-center rounded">
               LG

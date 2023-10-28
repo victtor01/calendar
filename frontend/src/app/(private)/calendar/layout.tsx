@@ -73,7 +73,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="opacity-70">
           <Link
             href={"/calendar"}
-            className="opacity-80 hover:opacity-100 rounded p-3 text-white bg-cyan-600"
+            className="opacity-80 hover:opacity-100 p-3 text-white bg-cyan-600"
           >
             Calendário
           </Link>
@@ -81,19 +81,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex gap-2">
           <button
             onClick={handleShowModalAddEvent}
-            className="opacity-90 hover:opacity-100 text-white rounded p-3 bg-cyan-600 "
+            className="opacity-90 hover:opacity-100 text-white p-3 bg-cyan-600 "
           >
             Novo modelo
           </button>
           <Link
             href={"/calendar/week"}
-            className="opacity-90 hover:opacity-100 text-white rounded p-3 bg-cyan-600 "
+            className="opacity-90 hover:opacity-100 text-white p-3 bg-cyan-600 "
           >
             Minha semana
           </Link>
           <Link
             href={"/calendar"}
-            className="opacity-90 hover:opacity-100 rounded p-3 text-white bg-gradient-to-r from-rose-500 to-fuchsia-600"
+            className="opacity-90 hover:opacity-100 p-3 text-white bg-gradient-to-r from-rose-500 to-fuchsia-600"
           >
             Novo evento
           </Link>
