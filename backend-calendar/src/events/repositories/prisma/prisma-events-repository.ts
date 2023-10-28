@@ -38,6 +38,11 @@ export class PrismaEventsRepository implements EventsRepository {
             createdAt: 'desc',
           },
         },
+        clients: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     });
   }
