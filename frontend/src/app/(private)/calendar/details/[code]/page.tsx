@@ -5,9 +5,11 @@ import moment from "moment-timezone";
 import { Controller } from "react-hook-form";
 import Input from "@/components/input/input";
 import {
+  BsArrowLeft,
   BsFillPeopleFill,
   BsFillPersonLinesFill,
   BsFillSendFill,
+  BsFillTrashFill,
   BsListNested,
   BsPenFill,
 } from "react-icons/bs";
@@ -20,6 +22,9 @@ import useDetails, {
   OmitAllday,
 } from "./useDatails";
 import { fontRoboto } from "@/app/fonts";
+import { BiArchiveIn } from "react-icons/bi";
+import * as S from "./style";
+import { FiTrash } from "react-icons/fi";
 
 const variants = {
   pageInitial: { opacity: 0, x: 40, y: 0 },
@@ -48,6 +53,8 @@ export default function Details({
   };
 }) {
   const {
+    edit: { handleEditingClient, editingClient },
+    query: { event, isLoading },
     form: {
       labelFormEventsData,
       handleSubmit,
@@ -61,13 +68,12 @@ export default function Details({
       contentEventsComments,
       createEventsComments,
     },
-    query: { event, isLoading },
-    edit: { handleEditingClient, editingClient },
     clients: {
-      clients,
-      isLoadingClients,
       handleAddNewClient,
-      clientesSelecteds,
+      handleAllClients,
+      isLoadingClients,
+      showAllClients,
+      clients,
     },
   } = useDetails(code);
 
@@ -76,14 +82,34 @@ export default function Details({
   }
 
   return (
-    <motion.main
+    <S.Container
       variants={variants}
       initial="pageInitial"
       animate="pageAnimate"
+      className="flex max-w-[90rem] m-10 bg-white w-[95%] mx-auto flex-col pb-5 gap-2 border border-zinc-400 border-opacity-30 shadow rounded-xl mt-3"
       transition={{ type: "lienar" }}
     >
-      <div className="w-full h-full flex gap-7 mt-5 relative justify-center">
-        <div className="flex flex-row flex-wrap gap-2 w-full p-10">
+      <div className="flex justify-between gap-3 p-2 bg-gray-400 bg-opacity-10 rounded-t-lg">
+        <div className="flex">
+          <Button className="flex gap-3 items-center opacity-60">
+            <BsArrowLeft/>
+            Voltar
+          </Button>
+        </div>
+        <div className="flex gap-3">
+          <Button className="opacity-60 hover:bg-zinc-500 rounded hover:bg-opacity-20 rounded-full">
+            <FiTrash size="20" />
+          </Button>
+          <Button className="opacity-60 hover:bg-zinc-500 rounded hover:bg-opacity-20 rounded-full">
+            <BiArchiveIn size="20" />
+          </Button>
+          <Button className="bg-gradient-to-r from-rose-500 to-fuchsia-600 text-white rounded p-3">
+            Finalizar Evento
+          </Button>
+        </div>
+      </div>
+      <div className="w-full h-full pt-4 flex relative justify-between rounded-xl">
+        <div className="flex flex-row flex-wrap gap-2 w-full">
           <form
             className="flex flex-col max-w-[25rem] w-full gap-2 mx-auto items-center"
             onSubmit={handleSubmit(updateEvents)}
@@ -153,7 +179,7 @@ export default function Details({
                         type="button"
                         disabled={!editingClient}
                         className={`p-3 flex w-full justify-center items-center text-white rounded ${
-                          !!field.value ? "bg-emerald-400" : "bg-rose-500"
+                          !!field.value ? "bg-cyan-500" : "bg-rose-500"
                         }`}
                         onClick={() =>
                           field.onChange(field.value ? false : true)
@@ -203,11 +229,11 @@ export default function Details({
                   <Button
                     onClick={() => reset()}
                     type="button"
-                    className="bg-gradient-to-r rounded text-white from-cyan-500 to-blue-500 flex p-3 "
+                    className="rounded flex p-3 "
                   >
                     Limpar
                   </Button>
-                  <Button className="flex-1 bg-gradient-to-r from-rose-500 to-fuchsia-600 rounded text-white flex justify-center p-3">
+                  <Button className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded text-white flex justify-center p-3">
                     Salvar
                   </Button>
                 </div>
@@ -280,10 +306,21 @@ export default function Details({
                   <AiOutlineSearch size="20" />
                 </Button>
               </div>
+              <div className="w-full flex gap-3">
+                <Button
+                  onClick={handleAllClients}
+                  type="button"
+                  className="p-3 bg-cyan-500 rounded text-white"
+                >
+                  {showAllClients
+                    ? "Todos os clientes"
+                    : "Somente os selecionados"}
+                </Button>
+              </div>
               <div className="flex gap-1 flex-col w-full flex-1 max-h-[30rem] overflow-auto">
                 {clients?.map((client: Clients) => {
-                  const selected: boolean = clientesSelecteds?.includes(
-                    client.id
+                  const selected: boolean = event.clients?.some(
+                    (cli: Clients) => cli.id === client.id
                   );
                   const classSelected = selected
                     ? "bg-rose-500"
@@ -311,6 +348,6 @@ export default function Details({
           </form>
         </div>
       </div>
-    </motion.main>
+    </S.Container>
   );
 }

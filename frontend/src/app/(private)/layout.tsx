@@ -31,7 +31,7 @@ const darkTheme = {
 };
 
 const lightTheme = {
-  primary: "#fcfcfc",
+  primary: "#f5fafa",
   secundary: "#f9fcfe",
   shadow: "#f6f6f6",
   text: "#000",

@@ -69,7 +69,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col w-full h-full min-h-auto">
-      <header className=" w-full items-center flex justify-between rounded bg-transparent p-2 ">
+      <header className=" w-full items-center flex justify-between bg-transparent p-2 ">
         <div className="opacity-70">
           <Link
             href={"/calendar"}

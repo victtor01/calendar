@@ -133,8 +133,8 @@ export default function Week() {
                 </span>
               </header>
               {value?.length < 1 && (
-                <div className="flex w-full px-3">
-                  <span className="opacity-80 p-3 text-normal w-full bg-cyan-100 rounded">
+                <div className="flex w-full">
+                  <span className="opacity-80 p-3 text-normal text-black w-full bg-cyan-200 mt-3 rounded">
                     Sem eventos nesse dia!
                   </span>
                 </div>

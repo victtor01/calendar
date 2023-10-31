@@ -18,6 +18,7 @@ import { queryClient } from "@/hooks/queryClient";
 import { useRouter } from "next/navigation";
 import { Event } from "./types";
 import { motion } from "framer-motion";
+import * as S from './style';
 
 const variants = {
   pageInitial: { opacity: 0, x: 40, y: 0 },
@@ -151,10 +152,11 @@ export default function Calendar() {
       variants={variants}
       initial="pageInitial"
       animate="pageAnimate"
+      className="p-2 w-auto flex-1"
       transition={{ type: "linear" }}
     >
-      <div className="flex gap-4 p-4 max-h-auto mx-auto w-full max-w-[80rem]">
-        <div className="col-span-8 max-h-auto">
+      <S.Content className="flex gap-4 p-4 shadow justify-center max-w-[95rem]                                                             ] flex-wrap mx-auto rounded-lg">
+        <div className="col-span-8 max-h-auto w-full max-w-[80rem]">
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
             headerToolbar={{
@@ -203,7 +205,7 @@ export default function Calendar() {
             </div>
           ))}
         </div>
-      </div>
+      </S.Content>
     </motion.main>
   );
 }

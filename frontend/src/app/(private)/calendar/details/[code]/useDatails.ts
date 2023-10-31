@@ -7,6 +7,7 @@ import { queryClient } from "@/hooks/queryClient";
 import { z } from "zod";
 import { ChangeEvent, useState } from "react";
 import { Event } from "../../types";
+import { Clients } from "@/hooks/useClients";
 
 const createEventsFormSchema = z.object({
   name: z.string().nonempty("Preencha o nome!"),
@@ -36,48 +37,65 @@ const useDetails = (code: string) => {
     control,
     handleSubmit,
     reset,
-    formState: { errors},
+    formState: { errors },
   } = useForm<CreateEventsFormData>({
     resolver: zodResolver(createEventsFormSchema),
   });
 
   const [editingClient, setEditingClient] = useState(false);
 
+  const [showAllClients, setShowAllClients] = useState<boolean>(false);
+
+  const handleAllClients = () => setShowAllClients((prev) => !prev);
+
   const [contentEventsComments, setContentEventsComments] =
     useState<string>("");
-
-  const [clientesSelecteds, setClientesSelectds] = useState<number[]>([]);
 
   //'ef9a432d-3c36-4f69-a145-ddf2820a218a'
   const { data: event, isLoading } = useQuery(["event", code], async () => {
     return (await api.get(`/events/find/${code}`)).data;
   });
 
-  const { data: clients, isLoading: isLoadingClients } = useQuery({
+  const { data: allClients, isLoading: isLoadingClients } = useQuery({
     queryKey: ["clients"],
     queryFn: async () => {
       return (await api.get("/clients")).data;
     },
   });
 
+  const clients = showAllClients
+    ? allClients
+    : event?.clients
+    ? event?.clients
+    : [];
+
   function onChangeContentEventsComments(e: ChangeEvent<HTMLInputElement>) {
     setContentEventsComments(e.target.value.toString());
   }
 
-  function handleAddNewClient(id: number) {
-    if (clientesSelecteds.includes(id)) {
-      setClientesSelectds((prev: number[]) => {
-        return prev?.filter((item) => item !== id);
+  async function handleAddNewClient(id: number) {
+    const clientsSelecteds = event.clients.map((client: Clients) => client.id);
+
+    // Se o id já estiver presente, excluir
+    if (clientsSelecteds.includes(id)) {
+      await api.put(`/events/update/connections/${event.id}`, {
+        disconnections: [id],
       });
+      queryClient.invalidateQueries(["event", event.code]);
       return;
     }
-    setClientesSelectds((prev) => [...prev, id]);
+
+    await api.put(`/events/update/connections/${event.id}`, {
+      connections: [id],
+    });
+
+    queryClient.invalidateQueries(["event", event.code]);
+
   }
 
   const handleEditingClient = () => setEditingClient((prev) => !prev);
 
   async function updateEvents(data: CreateEventsFormData) {
-
     const updated = (await api.put(`/events/update/${event.id}`, data)).data;
     queryClient.setQueryData(["event", code], (prevData: any) => {
       return {
@@ -92,7 +110,7 @@ const useDetails = (code: string) => {
         item.id === updated.id ? { ...item, ...updated } : item
       );
     });
-    
+
     setEditingClient(false);
   }
 
@@ -160,9 +178,10 @@ const useDetails = (code: string) => {
     },
     clients: {
       clients,
+      showAllClients,
       isLoadingClients,
       handleAddNewClient,
-      clientesSelecteds,
+      handleAllClients,
     },
   };
 };
