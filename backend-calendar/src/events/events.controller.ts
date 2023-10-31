@@ -12,6 +12,7 @@ import { CreateEventsDto } from './dto/create-events.dto';
 import { User } from 'src/users/entities/user.entity';
 import { EventsService } from './events.service';
 import { UpdateEventsDto } from './dto/update-events.dto';
+import { UpdateConnectManyDto } from './dto/update-connect-many.dto';
 
 @Controller('events')
 export class EventsController {
@@ -52,6 +53,20 @@ export class EventsController {
   ) {
     body.id = Number(id);
     return await this.eventsService.update(body);
+  }
+
+  @Put('update/connections/:id')
+  async updateConnections(
+    @Body() data: { connections: number[]; disconnections: number[] },
+    @Request() req: { user: User },
+    @Param('id') id: number,
+  ) {
+    console.log(data);
+    return await this.eventsService.updateConnections({
+      userId: Number(req.user.id),
+      eventId: Number(id),
+      data,
+    });
   }
 
   @Delete('delete-many')

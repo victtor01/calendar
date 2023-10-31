@@ -7,6 +7,7 @@ import { UpdateEventsDto } from 'src/events/dto/update-events.dto';
 import { findEventsDto } from 'src/events/dto/find-events.dto';
 import { findEventsByDateDto } from 'src/events/dto/find-events-by-date.dto';
 import { DeleteManyEventsDto } from 'src/events/dto/delete-many-events.dto';
+import { UpdateConnectManyDto } from 'src/events/dto/update-connect-many.dto';
 
 @Injectable()
 export class PrismaEventsRepository implements EventsRepository {
@@ -79,6 +80,39 @@ export class PrismaEventsRepository implements EventsRepository {
       },
     });
     return res;
+  }
+
+  async connectMany({
+    eventId,
+    connects,
+    disconnects,
+  }: UpdateConnectManyDto): Promise<any> {
+    return await this.prismaService.events.update({
+      where: {
+        id: eventId,
+      },
+      data: {
+        clients: {
+          connect: connects,
+          disconnect: disconnects,
+        },
+      },
+    });
+  }
+
+  async findById({
+    id,
+    userId,
+  }: {
+    id: number;
+    userId: number;
+  }): Promise<Events> {
+    return await this.prismaService.events.findUnique({
+      where: { id, userId },
+      include: {
+        clients: true
+      }
+    });
   }
 
   async create(data: CreateEventsDto): Promise<Events> {

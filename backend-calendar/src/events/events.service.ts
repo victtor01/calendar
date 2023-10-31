@@ -8,6 +8,7 @@ import { UpdateEventsDto } from './dto/update-events.dto';
 import { findEventsDto } from './dto/find-events.dto';
 import { DeleteEventsDto } from './dto/delete-events.dto';
 import { DeleteManyEventsDto } from './dto/delete-many-events.dto';
+import { UpdateConnectManyDto } from './dto/update-connect-many.dto';
 
 @Injectable()
 export class EventsService {
@@ -49,6 +50,53 @@ export class EventsService {
     const eventsPertences = this.eventsRepository.deleteMany({
       ids,
       userId,
+    });
+  }
+
+  async updateConnections({
+    userId,
+    eventId,
+    data,
+  }: {
+    userId: number;
+    eventId: number;
+    data: { connections: number[]; disconnections: number[] };
+  }): Promise<any> {
+    const { connections, disconnections } = data;
+    const event: Events = await this.eventsRepository.findById({
+      id: eventId,
+      userId,
+    });
+
+    const { clients } = event;
+
+    if (!clients || clients?.length < 1) {
+      const connects = connections.map((conn) => ({ id: conn }));
+      await this.eventsRepository.connectMany({
+        eventId,
+        connects,
+        disconnects: [],
+      });
+      return;
+    }
+
+    const connects =
+      connections
+        ?.filter(
+          (connectionId) =>
+            !clients?.some((client) => client.id === connectionId),
+        )
+        ?.map((id) => ({ id })) || [];
+
+    const disconnects =
+      clients
+        ?.filter((client) => disconnections?.includes(client.id))
+        .map((item) => ({ id: item.id })) || [];
+
+    await this.eventsRepository.connectMany({
+      eventId,
+      connects,
+      disconnects,
     });
   }
 
