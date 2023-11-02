@@ -10,9 +10,12 @@ export class Events {
   start: Date;
   allDay: boolean;
   end: Date;
+  status: Status;
   createdAt: Date;
   updatedAt: Date;
   userId: number;
   clients?: Clients[];
   comments?: EventsComments[];
 }
+
+type Status = 'ACTIVATED' | 'CONCLUDED' | 'FILED';

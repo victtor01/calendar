@@ -4,6 +4,9 @@ export class UpdateEventsDto {
     description?: string;
     color?: string;
     allDay?: boolean;
+    status?: Status;
     start?: Date;
     end?: Date;
 }
+
+type Status = "ACTIVATED" | "CONCLUDED" | "FILED"

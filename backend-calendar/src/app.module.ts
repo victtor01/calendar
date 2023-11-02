@@ -13,6 +13,8 @@ import { ClientsModule } from './clients/clients.module';
 import { EventsTemplatesModule } from './events-templates/events-templates.module';
 import { EventsModule } from './events/events.module';
 import { EventsCommentsModule } from './events-comments/events-comments.module';
+import { ModuleModule } from './module/module.module';
+import { ServicesModule } from './services/services.module';
 @Module({
   imports: [
     UsersModule,
@@ -25,6 +27,8 @@ import { EventsCommentsModule } from './events-comments/events-comments.module';
     EventsTemplatesModule,
     EventsModule,
     EventsCommentsModule,
+    ModuleModule,
+    ServicesModule,
   ],
   controllers: [AppController],
   providers: [

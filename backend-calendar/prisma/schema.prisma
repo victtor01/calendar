@@ -125,10 +125,16 @@ model eventsTemplates {
   name        String
   description String
   color       String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
   userId      Int
   user        users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+enum EventsStatus {
+  ACTIVATED
+  CONCLUDED
+  FILED
 }
 
 model events {
@@ -139,10 +145,11 @@ model events {
   color       String?
   start       DateTime         @default(now())
   end         DateTime
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @default(now())
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @default(now())
   allDay      Boolean          @default(true)
   userId      Int
+  status      EventsStatus     @default(ACTIVATED)
   clients     clients[]
   comments    eventsComments[]
   services    services[]

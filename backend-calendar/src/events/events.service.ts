@@ -111,4 +111,19 @@ export class EventsService {
       userId,
     });
   }
+
+  async deleteOne({ userId, id }) {
+    const event = this.eventsRepository.findById({
+      userId,
+      id,
+    });
+
+    if(!event) {
+      return new BadRequestException({
+        message: 'você não tem permissão para excluir esse evento'
+      });
+    }
+
+    return await this.eventsRepository.delete(id);
+  }
 }

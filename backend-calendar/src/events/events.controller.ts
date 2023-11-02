@@ -7,6 +7,8 @@ import {
   Put,
   Param,
   Delete,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { CreateEventsDto } from './dto/create-events.dto';
 import { User } from 'src/users/entities/user.entity';
@@ -61,11 +63,19 @@ export class EventsController {
     @Request() req: { user: User },
     @Param('id') id: number,
   ) {
-    console.log(data);
     return await this.eventsService.updateConnections({
       userId: Number(req.user.id),
       eventId: Number(id),
       data,
+    });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Delete('delete/:id')
+  async deleteOne(@Request() req: { user: User }, @Param('id') id: number) {
+    return await this.eventsService.deleteOne({
+      userId: Number(req.user.id),
+      id: Number(id),
     });
   }
 
