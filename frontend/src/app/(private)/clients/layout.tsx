@@ -1,26 +1,28 @@
+'use client'
+import Header from "@/components/header";
 import Link from "next/link";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-screen w-full items-center jusitfy-center flex flex-col gap-2">
-      <header className="min-h-auto p-2 flex w-full border-b border-zinc-500 border-opacity-20 items-center justify-between">
-        <div className="">Teste</div>
-        <div className="flex gap-4">
+    <>
+      <Header.Root className="shadow min-h-auto p-2 flex w-full border-b border-zinc-500 border-opacity-20 items-center justify-between">
+        <div className="opacity-60 p-3">Clientes</div>
+        <div className="flex gap-2">
           <Link
-            className="text-black opacity-80 hover:opacity-100 p-3 bg-sky-200 rounded min-w-[4rem] flex justify-center"
+            className="text-black opacity-80 hover:opacity-100 p-3 bg-sky-200 rounded-md min-w-[4rem] flex justify-center"
             href={"/clients"}
           >
-            Clientes
+            Meus clientes
           </Link>
           <Link
-            className="opacity-80 hover:opacity-100 p-3 bg-gradient-to-r from-rose-500 to-fuchsia-600 text-white rounded min-w-[4rem] flex justify-center"
+            className="opacity-80 px-5 hover:opacity-100 p-3 bg-gradient-to-r from-rose-500 to-fuchsia-600 text-white rounded-md min-w-[4rem] flex justify-center"
             href={"clients/create"}
           >
-            New
+            Criar
           </Link>
         </div>
-      </header>
+      </Header.Root>
       {children}
-    </div>
+    </>
   );
 }

@@ -4,7 +4,7 @@ import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-timezone";
 import { Event } from "../types";
-import { BsArrowRightShort, BsCheck } from "react-icons/bs";
+import { BsArrowLeft, BsArrowRightShort, BsCheck } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
 import { useState } from "react";
 import Link from "next/link";
@@ -107,7 +107,10 @@ export default function Week() {
   return (
     <div className="flex flex-col w-full p-2 items-center gap-3 mt-10">
       <div className="w-full flex max-w-[90rem] min-h-[3rem] rounded justify-between items-center">
-        <h1 className={`text-2xl opacity-50 ${fontInter}`}>Minha semana</h1>
+        <Link href={'/calendar'} className="flex items-center p-3 gap-3 opacity-50 hover:opacity-90 bg-cyan-300 bg-opacity-40">
+          <BsArrowLeft />
+          <h1 className={`text-lg ${fontInter}`}>Calendário</h1>
+        </Link>
         <div className="flex">
           {itemsForDelete && itemsForDelete?.length > 0 && (
             <button

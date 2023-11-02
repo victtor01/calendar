@@ -14,6 +14,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
+import * as S from './style';
 
 type CreateModelEventFormData = z.infer<typeof createModelEventFormSchema>;
 
@@ -38,12 +39,14 @@ const useLayout = () => {
   const handleShowModalAddEvent = () => setShowModalAddEvent((prev) => !prev);
 
   const createEventTemplate = async (data: CreateModelEventFormData) => {
-    const { data: eventsTemplatesData } = await api.post("/events-templates/create", data)
+    const { data: eventsTemplatesData } = await api.post(
+      "/events-templates/create",
+      data
+    );
 
-    queryClient.invalidateQueries(['events-templates'])
+    queryClient.invalidateQueries(["events-templates"]);
 
     console.log(eventsTemplatesData);
-
   };
 
   return {
@@ -69,36 +72,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col w-full h-full min-h-auto">
-      <header className=" w-full items-center flex justify-between bg-transparent p-2 ">
-        <div className="opacity-70">
-          <Link
-            href={"/calendar"}
-            className="opacity-80 hover:opacity-100 p-3 text-white bg-cyan-600"
-          >
-            Calendário
-          </Link>
-        </div>
-        <div className="flex gap-2">
+      <S.Header className=" w-full items-center flex justify-between bg-transparent p-2 shadow">
+        <div className="p-2 opacity-60">Calendário</div>
+        <div className="flex gap-2 items-center">
           <button
             onClick={handleShowModalAddEvent}
-            className="opacity-90 hover:opacity-100 text-white p-3 bg-cyan-600 "
+            className="opacity-90 hover:opacity-100 text-white p-3 bg-cyan-600 rounded-md "
           >
             Novo modelo
           </button>
           <Link
             href={"/calendar/week"}
-            className="opacity-90 hover:opacity-100 text-white p-3 bg-cyan-600 "
+            className="opacity-90 hover:opacity-100 text-white p-3 bg-cyan-600 rounded-md "
           >
             Minha semana
           </Link>
           <Link
             href={"/calendar"}
-            className="opacity-90 hover:opacity-100 p-3 text-white bg-gradient-to-r from-rose-500 to-fuchsia-600"
+            className="opacity-90 hover:opacity-100 p-3 text-white rounded-md bg-gradient-to-r from-rose-500 to-fuchsia-600"
           >
-            Novo evento
+            Criar
           </Link>
         </div>
-      </header>
+      </S.Header>
       <Modal
         onOpenChange={handleShowModalAddEvent}
         isDismissable={false}

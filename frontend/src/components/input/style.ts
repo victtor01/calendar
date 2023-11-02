@@ -32,7 +32,7 @@ export const Input = styled.div`
     min-height: 3.5rem;
     height: 100%;
     width: 100%;
-    background: ${({ theme }) => theme.primary};
+    background: transparent;
     z-index: 1;
     padding: 0rem 0.2rem 0 1rem;
     align-items: center;

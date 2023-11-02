@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { convertToBreadcrumb } from "@/helpers/convertToBreadcrumb";
 import { RxSlash } from "react-icons/rx";
-
+import * as S from './style';
 interface layoutProps {
   children: React.ReactNode;
 }
@@ -22,7 +22,7 @@ export default function Layout({ children }: layoutProps) {
 
   return (
     <>
-      <header className={`text-white p-3 flex items-center justify-between`}>
+      <Header.Root className={`z-10 text-white p-3 flex items-center justify-between shadow`}>
         <div className="justify-start">
           <div className="flex items-center bg-gradient-to-r from-cyan-500 to-cyan-600 rounded">
             {pathNames?.map((segment, index) => {
@@ -55,8 +55,10 @@ export default function Layout({ children }: layoutProps) {
             Contas
           </Link>
         </div>
-      </header>
+      </Header.Root>
+      <div className="min-w-auto flex w-full p-3 h-auto flex-1">
       {children}
+      </div>
     </>
   );
 }

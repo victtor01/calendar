@@ -9,17 +9,19 @@ import { BsFillCalendarRangeFill, BsFillGearFill } from "react-icons/bs";
 import { FiTrendingUp } from "react-icons/fi";
 import Link from "next/link";
 import { fontOpenSans } from "../fonts";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BiSolidGroup } from "react-icons/bi";
 import Button from "@/components/button";
 import { ThemeProvider } from "styled-components";
 import { RxExit } from "react-icons/rx";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
+import { PiSuitcaseSimple } from "react-icons/pi";
+import Loading from "@/components/loading";
 
 const darkTheme = {
   primary: "rgb(24 24 27)",
-  secundary: "#181717",
+  secundary: "#202020",
   text: "#ebe8e8",
   shadow: "#202020",
   lightPurple: "#4B0082",
@@ -32,7 +34,7 @@ const darkTheme = {
 
 const lightTheme = {
   primary: "#f5fafa",
-  secundary: "#f9fcfe",
+  secundary: "#ffffff",
   shadow: "#f6f6f6",
   text: "#000",
   lightPurple: "#4B0082",
@@ -51,6 +53,7 @@ const pages: Page[] = [
   { name: "Calendar", icon: BsFillCalendarRangeFill, href: "/calendar" },
   { name: "Finance", icon: FiTrendingUp, href: "/finance" },
   { name: "Clientes", icon: BiSolidGroup, href: "/clients" },
+  { name: "Serviços", icon: PiSuitcaseSimple, href: "/services" },
   { name: "Configurações", icon: BsFillGearFill, href: "/clients" },
 ];
 
@@ -107,7 +110,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <S.Container>
           <Sidebar
             style={{ gridArea: "sidebar" }}
-            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-gradient-to-b from-cyan-500 bg-gradient-opacity-20 to-cyan-800 ${fontOpenSans}`}
+            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-gradient-to-b from-cyan-600 bg-gradient-opacity-20 to-cyan-900 ${fontOpenSans}`}
           >
             <div className="w-[4rem] h-[4rem] flex justify-center items-center rounded">
               LG
@@ -136,7 +139,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
           </Sidebar>
           <Sidebar
-            className={`z-40 w-[100%]  text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-cyan-500 bg-gradient-to-b from-cyan-500 to-cyan-700 ${fontOpenSans} w-[15rem]`}
+            className={`z-40 w-[100%]  text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
           >
             <div className="flex flex-col flex-1">
               <header className="p-3 gap-1 text-xl font-semibold flex-nowrap flex justify-between items-center">
@@ -179,7 +182,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           </Sidebar>
-          <S.Content>{children}</S.Content>
+          <Suspense fallback={<Loading />}>
+            <S.Content>{children}</S.Content>
+          </Suspense>
         </S.Container>
       </ThemeProvider>
     </PrivateRoute>

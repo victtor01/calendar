@@ -44,7 +44,7 @@ const ButtonTrash = ({ children, ...props }: ButtonProps) => {
   return (
     <button
       {...props}
-      className="opacity-90 flex hover:opacity-100 px-3 h-10 w-10 justify-center items-center bg-red-400 rounded gap-1 flex"
+      className="text-white opacity-90 flex hover:opacity-100 px-3 h-10 w-10 justify-center items-center bg-red-400 rounded gap-1 flex"
     >
       <BsFillTrashFill />
       {children}
@@ -56,7 +56,7 @@ const ButtonEdit = ({ children, ...props }: ButtonProps) => {
   return (
     <button
       {...props}
-      className="opacity-90 hover:opacity-100 h-10 w-10 justify-center items-center bg-gradient-to-r from-cyan-500 to-blue-500 rounded flex flex-col gap-1"
+      className="text-white opacity-90 hover:opacity-100 h-10 w-10 justify-center items-center bg-gradient-radial from-cyan-500 to-blue-500 rounded flex flex-col gap-1"
     >
       <BiSolidPencil />
       {children}

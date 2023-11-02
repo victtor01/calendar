@@ -93,9 +93,9 @@ export default function Registers() {
 
   return (
     <>
-      <div className="flex-col mx-auto mt-10 p-3 flex w-full items-center h-[100%]">
+      <div className="whitespace-nowrap flex-col m-auto p-1 flex w-auto">
         <div
-          className={`max-w-[60rem] p-2 rounded-lg w-[98%] flex mb-3 item-center gap-3 ${fontOpenSans}`}
+          className={`max-w-[60rem] flex p-2 rounded-lg mb-3 gap-3 ${fontOpenSans}`}
         >
           <Link
             href={"/finance"}
@@ -107,7 +107,7 @@ export default function Registers() {
             <h2 className="text-2xl text-cyan-500">Todos os registros</h2>
           </div>
         </div>
-        <div className=" flex w-full items-center flex-col p-3 flex-1 h-auto rounded-t-3xl">
+        <div className=" flex items-center flex-col p-3 h-auto w-full">
           <div className="w-full max-w-[60rem] flex flex-col gap-2">
             {registers &&
               registers?.map((register: Register) => {

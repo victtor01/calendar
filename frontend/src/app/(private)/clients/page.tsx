@@ -57,8 +57,8 @@ export default function Clients() {
   const { clients } = useClientsHook().getClients();
 
   return (
-    <>
-      <div className="w-auto flex min-w-[40rem] flex-col gap-2">
+    <div className="flex flex-col m-auto">
+      <div className="w-full flex max-w-[70rem] flex-col gap-2">
         <div className="text-xl text-cyan-600 mt-5">Todos os meus clientes</div>
         {clients?.map((item: Client) => (
           <Register.Root key={item.id}>
@@ -142,6 +142,6 @@ export default function Clients() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </div>
   );
 }

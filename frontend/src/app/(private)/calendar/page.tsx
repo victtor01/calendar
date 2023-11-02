@@ -152,7 +152,7 @@ export default function Calendar() {
       variants={variants}
       initial="pageInitial"
       animate="pageAnimate"
-      className="p-2 w-auto flex-1"
+      className="p-2 m-auto flex"
       transition={{ type: "linear" }}
     >
       <S.Content className="flex gap-4 p-4 shadow justify-center max-w-[95rem]                                                             ] flex-wrap mx-auto rounded-lg">
@@ -178,7 +178,6 @@ export default function Calendar() {
             droppable={true}
             selectable={true}
             selectMirror={true}
-            /* eventContent={renderEventContent} */
             height={"auto"}
             eventDrop={handleEventReceive}
             drop={(data) => addEvent(data)}

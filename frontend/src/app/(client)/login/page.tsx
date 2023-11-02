@@ -50,7 +50,7 @@ const useLogin = () => {
 
       const { access_token, refresh_token, user } = res;
 
-      console.log(res)
+      console.log(res);
       if (!access_token || !refresh_token) {
         return new Error("Houve um erro na passagem dos dados!");
       }
@@ -66,7 +66,6 @@ const useLogin = () => {
       });
 
       const { role } = user;
-
 
       if (role === "ADMIN") {
         router.push("/select");
@@ -94,7 +93,7 @@ export default function Login() {
   return (
     <Form
       onSubmit={handleSubmit(onSubmit)}
-      className={`rounded mt-20 max-w-[27rem] min-h-[40rem] ${fontOpenSans}`}
+      className={`rounded mt-20 max-w-[27rem] min-h-[40rem] relative ${fontOpenSans}`}
     >
       <div className="flex flex-col mb-4 gap-1">
         <div className={`text-[2rem] w-full text-cyan-500 ${fontRoboto}`}>
@@ -104,6 +103,7 @@ export default function Login() {
           Bem vindo de volta! Faça o login digitando seu email logo abaixo.
         </div>
       </div>
+    
       <Input
         required
         register={register("email")}
