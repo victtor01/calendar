@@ -92,8 +92,9 @@ export default function Login() {
   const { onSubmit, handleSubmit, register, errors, error } = useLogin();
   return (
     <Form
+      bgTheme
       onSubmit={handleSubmit(onSubmit)}
-      className={`rounded mt-20 max-w-[27rem] min-h-[40rem] relative ${fontOpenSans}`}
+      className={`rounded-md m-auto max-w-[27rem] h-auto relative shadow ${fontOpenSans}`}
     >
       <div className="flex flex-col mb-4 gap-1">
         <div className={`text-[2rem] w-full text-cyan-500 ${fontRoboto}`}>
@@ -103,7 +104,7 @@ export default function Login() {
           Bem vindo de volta! Faça o login digitando seu email logo abaixo.
         </div>
       </div>
-    
+
       <Input
         required
         register={register("email")}

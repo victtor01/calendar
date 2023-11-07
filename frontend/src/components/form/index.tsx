@@ -4,7 +4,7 @@ import * as S from "./style";
 
 interface formProps extends FormHTMLAttributes<HTMLFormElement> {
   children: ReactNode;
-  bg?: string;
+  bgTheme?: boolean;
 }
 
 export default function Form({ children, ...rest }: formProps) {

@@ -28,8 +28,8 @@ const darkTheme = {
 };
 
 const lightTheme = {
-  primary: "rgba(245,249,255,1)",
-  secundary: "rgba(240,246,252,1) ",
+  primary: "rgba(238,240,248,1) ",
+  secundary: "#fff",
   text: "#000",
   success: "",
   error: "",
@@ -50,7 +50,7 @@ export default function Layout({ children }: layoutProps) {
   return (
     <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
       <S.Container>
-        <Header.Root className="p-3 text-xl z-20 border-b border-cyan-400 border-opacity-20">
+        <Header.Root className="p-3 text-xl z-20 shadow">
           <Header.Division className="justify-start">
             <Button
               onClick={handleTheme}

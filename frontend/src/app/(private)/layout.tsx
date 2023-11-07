@@ -5,10 +5,15 @@ import Cookies from "js-cookie";
 import * as S from "./style";
 import { Sidebar } from "@/components/sidebar";
 import { IconType } from "react-icons";
-import { BsFillCalendarRangeFill, BsFillGearFill } from "react-icons/bs";
+import {
+  BsCalendarRange,
+  BsFillCalendarRangeFill,
+  BsFillGearFill,
+  BsHouse,
+} from "react-icons/bs";
 import { FiTrendingUp } from "react-icons/fi";
 import Link from "next/link";
-import { fontOpenSans } from "../fonts";
+import { fontInter, fontOpenSans } from "../fonts";
 import { Suspense, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BiSolidGroup } from "react-icons/bi";
@@ -18,6 +23,7 @@ import { RxExit } from "react-icons/rx";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import { PiSuitcaseSimple } from "react-icons/pi";
 import Loading from "@/components/loading";
+import Header from "@/components/header";
 
 const darkTheme = {
   primary: "rgb(24 24 27)",
@@ -33,8 +39,8 @@ const darkTheme = {
 };
 
 const lightTheme = {
-  primary: "#f5fafa",
-  secundary: "#ffffff",
+  primary: "rgba(238,240,248,1) ",
+  secundary: "#fff",
   shadow: "#f6f6f6",
   text: "#000",
   lightPurple: "#4B0082",
@@ -50,7 +56,8 @@ interface Page {
 }
 
 const pages: Page[] = [
-  { name: "Calendar", icon: BsFillCalendarRangeFill, href: "/calendar" },
+  { name: "Home", icon: BsHouse, href: "/home" },
+  { name: "Calendar", icon: BsCalendarRange, href: "/calendar" },
   { name: "Finance", icon: FiTrendingUp, href: "/finance" },
   { name: "Clientes", icon: BiSolidGroup, href: "/clients" },
   { name: "Serviços", icon: PiSuitcaseSimple, href: "/services" },
@@ -110,7 +117,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <S.Container>
           <Sidebar
             style={{ gridArea: "sidebar" }}
-            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-gradient-to-b from-cyan-600 bg-gradient-opacity-20 to-cyan-900 ${fontOpenSans}`}
+            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-gradient-to-b from-cyan-700 bg-gradient-opacity-20 to-cyan-900 ${fontOpenSans}`}
           >
             <div className="w-[4rem] h-[4rem] flex justify-center items-center rounded">
               LG
@@ -139,7 +146,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
           </Sidebar>
           <Sidebar
-            className={`z-40 w-[100%]  text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
+            className={`z-40 w-[100%] text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
           >
             <div className="flex flex-col flex-1">
               <header className="p-3 gap-1 text-xl font-semibold flex-nowrap flex justify-between items-center">
@@ -183,7 +190,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </Sidebar>
           <Suspense fallback={<Loading />}>
-            <S.Content>{children}</S.Content>
+            <S.Content>
+              {/* <div className="absolute top-0 translate-x-[-50%] left-[50%] p-3 bg-zinc-600 z-20">
+                  sef
+              </div> */}
+              {children}
+            </S.Content>
           </Suspense>
         </S.Container>
       </ThemeProvider>

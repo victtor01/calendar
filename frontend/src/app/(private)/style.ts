@@ -46,6 +46,6 @@ export const Content = styled.div`
 
   /* Estilo para a barra de rolagem (track) */
   &::-webkit-scrollbar-track {
-    background-color: transparent; /* Cor de fundo da área da barra de rolagem */
+    background-color: ${({theme}) => theme.secundary}; /* Cor de fundo da área da barra de rolagem */
   }
 `;
