@@ -3,19 +3,16 @@
 import styled from "styled-components";
 
 export const Container = styled.main`
-  display: grid;
+ /*  display: grid;
   grid-template-areas:
     "header header header header"
     "content content content content"
     "footer footer footer footer";
-  grid-template-rows: auto 1fr auto; /* Ajuste as alturas conforme necessário */
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 0rem;
+  grid-template-rows: auto 1fr auto; 
+  grid-template-columns: 1fr 1fr 1fr 1fr; */
+  /* grid-gap: 0rem; */
+  display: flex;
   flex-direction: column;
-  overflow: auto;
-  height: 100vh;
-  min-height: 100vh;
-  max-height: 100vh;
   color: ${props => props.theme.text};
 `;
 
@@ -25,7 +22,8 @@ export const Content = styled.div`
   grid-area: content;
   flex-direction: column;
   height: auto;
+  min-height: auto;
+  position: relative;
   flex: 1;
-  padding: 2rem;
   min-height: 50rem;
 `;

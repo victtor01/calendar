@@ -75,7 +75,7 @@ export default function Layout({ children }: layoutProps) {
             </Link>
           </Header.Division>
         </Header.Root>
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <S.Content>{children}</S.Content>
         </Suspense>
         <Footer className="border-t border-cyan-500 border-opacity-10">

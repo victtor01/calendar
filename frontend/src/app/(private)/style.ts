@@ -10,12 +10,13 @@ export const Container = styled.main`
   grid-template-rows: auto 1fr 1fr;
   grid-template-columns: auto 1fr 1fr auto;
   grid-gap: 0rem;
-  min-height: 100vh;
+  height: 100%;
   color: ${(props) => props.theme.text};
   position: relative;
   min-width: auto;
   overflow: hidden;
   background-color: ${props => props.theme.primary};
+
 `;
 
 export const Content = styled.div`

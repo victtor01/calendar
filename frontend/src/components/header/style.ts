@@ -2,7 +2,7 @@
 import styled from "styled-components";
 
 interface ContainerProps {
-  bgTheme: boolean;
+  bgTheme?: boolean;
 }
 
 export const Container = styled.header`
@@ -13,7 +13,7 @@ export const Container = styled.header`
   width: max-content;
   grid-area: header;
   position: sticky;
-  z-index: 10;
+  z-index: 50;
   left: 0;
   top: 0;
 `;

@@ -22,5 +22,6 @@ export const Sidebar = styled.div`
     background-color: transparent; /* Cor de fundo da área da barra de rolagem */
   }
 
+  z-index: 60;
   /* Estilo para a barra de rolagem (track) quando passa o mouse */
 `;

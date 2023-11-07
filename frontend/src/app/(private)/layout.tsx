@@ -117,7 +117,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <S.Container>
           <Sidebar
             style={{ gridArea: "sidebar" }}
-            className={`z-30 w-[4rem] text-white relative min-h-screen items-center flex flex-col bg-gradient-to-b from-cyan-700 bg-gradient-opacity-20 to-cyan-900 ${fontOpenSans}`}
+            className={`z-50 w-[4rem] text-white relative overflow-hidden h-full items-center flex flex-col bg-gradient-to-b from-cyan-700 bg-gradient-opacity-20 to-cyan-900 ${fontOpenSans}`}
           >
             <div className="w-[4rem] h-[4rem] flex justify-center items-center rounded">
               LG
@@ -146,7 +146,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
           </Sidebar>
           <Sidebar
-            className={`z-40 w-[100%] text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
+            className={`w-[100%] text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
           >
             <div className="flex flex-col flex-1">
               <header className="p-3 gap-1 text-xl font-semibold flex-nowrap flex justify-between items-center">
