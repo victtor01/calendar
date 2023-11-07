@@ -21,4 +21,12 @@ export class PrismaServicesRepository implements ServicesRepository {
       },
     });
   }
+
+  async findAll(userId: number): Promise<Service[]> {
+    return await this.prisma.services.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
 }

@@ -1,20 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Request,
+} from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Controller('services')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Post()
-  create(@Body() createServiceDto: CreateServiceDto) {
-    return this.servicesService.create(createServiceDto);
+  create(
+    @Body() createServiceDto: CreateServiceDto,
+    @Request() req: { user: User },
+  ) {
+    return this.servicesService.create({
+      data: createServiceDto,
+      userId: Number(req.user.id),
+    });
   }
 
   @Get()
-  findAll() {
-    return this.servicesService.findAll();
+  findAll(@Request() req: { user: User }) {
+    return this.servicesService.findAll(+req.user.id);
   }
 
   @Get(':id')

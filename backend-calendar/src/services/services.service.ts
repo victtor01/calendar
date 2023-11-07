@@ -25,12 +25,13 @@ export class ServicesService {
     }
 
     data.userId = Number(userId);
+    data.price = parseFloat(data.price.toString());
 
     return await this.serviceRepository.create(data);
   }
 
-  findAll() {
-    return `This action returns all services`;
+  async findAll(userId: number) {
+    return await this.serviceRepository.findAll(Number(userId));
   }
 
   findOne(id: number) {
