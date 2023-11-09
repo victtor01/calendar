@@ -25,5 +25,5 @@ export const Content = styled.div`
   min-height: auto;
   position: relative;
   flex: 1;
-  min-height: 50rem;
+  min-height: 90vh;
 `;

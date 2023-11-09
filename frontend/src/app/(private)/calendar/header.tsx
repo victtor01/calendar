@@ -15,11 +15,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
 import * as S from "./style";
-import UserComponents from "@/components/userComponents";
-import { GrAdd, GrAddCircle } from "react-icons/gr";
-import { BsCalendar2Week, BsPenFill } from "react-icons/bs";
-import { IoAddSharp } from "react-icons/io5";
 import { MdBackupTable } from "react-icons/md";
+import { BsCalendar2Week } from "react-icons/bs";
+import { IoAddSharp } from "react-icons/io5";
 
 type CreateModelEventFormData = z.infer<typeof createModelEventFormSchema>;
 
@@ -28,7 +26,7 @@ const createModelEventFormSchema = z.object({
   description: z.string(),
 });
 
-const useLayout = () => {
+const useHeader = () => {
   const {
     control,
     handleSubmit,
@@ -69,40 +67,39 @@ const useLayout = () => {
   };
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Header() {
   const {
     model: { showModalAddEvent, handleShowModalAddEvent },
     form: { control, handleSubmit, createEventTemplate, reset, errors },
-  } = useLayout();
+  } = useHeader();
 
   return (
-    <div className="flex flex-col w-full h-full min-h-auto">
-      <S.Header className=" w-full items-center flex justify-between p-2 shadow">
-        <div className="p-2 opacity-60">Calendário</div>
+    <div className="flex flex-col w-full h-full min-h-auto ">
+      <S.Header className=" w-full items-center flex justify-between p-2 rounded-md shadow">
+        <div className="p-2 opacity-60 text-lg font-semibold">Calendário</div>
         <div className="flex gap-2 items-center">
           <button
             onClick={handleShowModalAddEvent}
             className="opacity-90 flex gap-3 items-center hover:opacity-100 text-white p-3 bg-cyan-600 rounded-md "
           >
-            <MdBackupTable/>
+            <MdBackupTable />
             Novo modelo
           </button>
           <Link
             href={"/calendar/week"}
             className="opacity-90 flex gap-2 items-center hover:opacity-100 text-white p-3 bg-cyan-600 rounded-md "
           >
-            <BsCalendar2Week/>
+            <BsCalendar2Week />
             Minha semana
           </Link>
           <Link
             href={"/calendar"}
             className="opacity-90 flex items-center gap-2 hover:opacity-100 p-3 text-white rounded-md bg-gradient-to-r from-rose-500 to-fuchsia-600"
           >
-            <IoAddSharp size="20"/>
+            <IoAddSharp size="20" />
             Criar
           </Link>
         </div>
-        <UserComponents />
       </S.Header>
       <Modal
         onOpenChange={handleShowModalAddEvent}
@@ -158,7 +155,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </form>
         </ModalContent>
       </Modal>
-      {children}
     </div>
   );
 }

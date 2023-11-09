@@ -3,14 +3,15 @@ import { twMerge } from "tailwind-merge";
 import * as S from './style';
 
 interface sidebarProps extends HTMLAttributes<HTMLDivElement>{
-    children: React.ReactNode
+    children: React.ReactNode;
+    bgTheme?: boolean;
 }
 
-export function Sidebar({children, ...props}: sidebarProps) {
+export function Sidebar({children, bgTheme = false, ...props}: sidebarProps) {
     const { className, ...rest } = props;
 
     return (
-        <S.Sidebar {...rest} className={twMerge('', className)}>
+        <S.Sidebar $bgTheme={bgTheme} {...rest} className={twMerge('', className)}>
             {children}
         </S.Sidebar>
     )

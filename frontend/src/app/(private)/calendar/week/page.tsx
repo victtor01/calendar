@@ -7,6 +7,7 @@ import { Event } from "../types";
 import { BsArrowLeft, BsArrowRightShort, BsCheck } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
 import { useState } from "react";
+import * as S from './style';
 import Link from "next/link";
 import {
   Modal,
@@ -129,12 +130,12 @@ export default function Week() {
               key={index}
               className="w-full min-w-[20rem] flex flex-1 flex-col "
             >
-              <header className="flex w-full bg-zinc-200 p-3 bg-opacity-10 pl-3 justify-between items-center ">
+              <S.Header className="flex w-full bg-zinc-200 p-3 bg-opacity-10 pl-3 justify-between items-center ">
                 <h1 className="text-xl">{name}</h1>
                 <span className="bg-cyan-500 text-white rounded p-2">
                   {moment(new Date()).format("DD / MM / YYYY")}
                 </span>
-              </header>
+              </S.Header>
               {value?.length < 1 && (
                 <div className="flex w-full">
                   <span className="opacity-80 p-3 text-normal text-black w-full bg-cyan-200 mt-3 rounded">
@@ -147,7 +148,7 @@ export default function Week() {
                   ? "bg-cyan-400 border-none"
                   : "bg-transparent";
                 return (
-                  <div
+                  <S.Header
                     key={item.id}
                     className="opacity-70 bg-zinc-300 bg-opacity-10 hover:opacity-100 border-b border-zinc-500 border-opacity-30 flex p-3 items-center gap-3"
                   >
@@ -185,7 +186,7 @@ export default function Week() {
                         <BsArrowRightShort size="25" />
                       </Link>
                     </div>
-                  </div>
+                  </S.Header>
                 );
               })}
             </div>

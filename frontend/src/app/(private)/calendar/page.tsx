@@ -18,7 +18,8 @@ import { queryClient } from "@/hooks/queryClient";
 import { useRouter } from "next/navigation";
 import { Event } from "./types";
 import { motion } from "framer-motion";
-import * as S from './style';
+import * as S from "./style";
+import Header from "./header";
 
 const variants = {
   pageInitial: { opacity: 0, x: 40, y: 0 },
@@ -155,7 +156,8 @@ export default function Calendar() {
       className="p-2 m-auto flex"
       transition={{ type: "linear" }}
     >
-      <S.Content className="flex gap-4 p-4 shadow justify-center max-w-[95rem]                                                             ] flex-wrap mx-auto rounded-lg">
+      <S.Content className="flex gap-4 p-4 shadow flex-col justify-center max-w-[95rem] mx-auto rounded-lg">
+        <Header />
         <div className="col-span-8 max-h-auto w-full max-w-[80rem]">
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}

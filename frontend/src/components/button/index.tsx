@@ -3,7 +3,7 @@ import React, { ButtonHTMLAttributes } from "react";
 import { twMerge } from 'tailwind-merge';
 
 interface buttonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
-    children: React.ReactNode
+    children?: React.ReactNode
 }
 
 export default function Button({children, ...rest}: buttonProps) {

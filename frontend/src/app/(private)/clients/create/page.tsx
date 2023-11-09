@@ -76,7 +76,8 @@ export default function Create() {
 
   return (
     <Form
-      className="max-w-[30rem] mb-[5rem]"
+      bgTheme
+      className="max-w-[30rem] m-auto"
       onSubmit={handleSubmit(createClient)}
     >
       {labelFormData.map((form: LabelFormData, index: number) => (

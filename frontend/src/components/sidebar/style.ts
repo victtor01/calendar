@@ -1,6 +1,14 @@
 import styled from "styled-components";
 
-export const Sidebar = styled.div`
+interface SidebarProps {
+  $bgTheme: boolean;
+}
+
+export const Sidebar = styled.div<SidebarProps>`
+
+  ${props => props.$bgTheme && `
+    background-color: ${props.theme.secundary};
+  `}
 
   &::-webkit-scrollbar {
     width: 12px; /* Largura da barra de rolagem */

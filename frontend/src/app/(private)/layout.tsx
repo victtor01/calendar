@@ -1,6 +1,7 @@
 "use client";
+
 import PrivateRoute from "@/components/privateRoute";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import * as S from "./style";
 import { Sidebar } from "@/components/sidebar";
@@ -13,7 +14,7 @@ import {
 } from "react-icons/bs";
 import { FiTrendingUp } from "react-icons/fi";
 import Link from "next/link";
-import { fontInter, fontOpenSans } from "../fonts";
+import { fontInter, fontOpenSans, fontRoboto } from "../fonts";
 import { Suspense, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BiSolidGroup } from "react-icons/bi";
@@ -24,10 +25,11 @@ import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import { PiSuitcaseSimple } from "react-icons/pi";
 import Loading from "@/components/loading";
 import Header from "@/components/header";
+import UserComponents from "@/components/userComponents";
 
 const darkTheme = {
-  primary: "rgb(24 24 27)",
-  secundary: "#202020",
+  primary: "#101010",
+  secundary: "#141820",
   text: "#ebe8e8",
   shadow: "#202020",
   lightPurple: "#4B0082",
@@ -61,7 +63,7 @@ const pages: Page[] = [
   { name: "Finance", icon: FiTrendingUp, href: "/finance" },
   { name: "Clientes", icon: BiSolidGroup, href: "/clients" },
   { name: "Serviços", icon: PiSuitcaseSimple, href: "/services" },
-  { name: "Configurações", icon: BsFillGearFill, href: "/clients" },
+  { name: "Configure", icon: BsFillGearFill, href: "/clients" },
 ];
 
 const useLayout = () => {
@@ -85,6 +87,8 @@ const useLayout = () => {
     router.push("/login");
   };
 
+  const currentPath = usePathname().split('/')[1];
+
   return {
     theme,
     handleTheme,
@@ -92,6 +96,7 @@ const useLayout = () => {
     sidebarShow,
     widthSidebar,
     onClickSidebarShow,
+    currentPath,
     IconTheme,
   };
 };
@@ -105,6 +110,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const {
     logout,
     handleTheme,
+    currentPath,
     theme,
     widthSidebar,
     onClickSidebarShow,
@@ -116,27 +122,46 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         <S.Container>
           <Sidebar
+            bgTheme
             style={{ gridArea: "sidebar" }}
-            className={`z-50 w-[4rem] text-white relative overflow-hidden h-full items-center flex flex-col bg-gradient-to-b from-cyan-700 bg-gradient-opacity-20 to-cyan-900 ${fontOpenSans}`}
+            className={`z-50 w-[4rem] lg:w-[13rem] m-1 rounded-md relative overflow-x-hidden h-auto items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
           >
-            <div className="w-[4rem] h-[4rem] flex justify-center items-center rounded">
-              LG
+            <div className="w-full h-[4rem] flex justify-center items-center rounded ">
+              <Header.Division
+                bgTheme={false}
+                className={
+                  "flex-none p-2 m-2 bg-transparent font-semibold text-md opacity-50" +
+                  ` ${fontRoboto}`
+                }
+              >
+                <div>
+                  <img
+                    src="logo3.png"
+                    className="rounded-full"
+                    width={40}
+                    height={40}
+                  />
+                </div>
+                <span className="hidden lg:flex">CalendarUD</span>
+              </Header.Division>
             </div>
             <button
               onClick={onClickSidebarShow}
-              className="relative w-[3rem] opacity-70 hover:opacity-100 rounded h-[3rem] flex items-center bg-cyan-600 justify-center p-3 "
+              className="relative w-[3rem] lg:hidden opacity-70 hover:opacity-100 rounded min-h-[3rem] flex items-center bg-cyan-600 justify-center p-3 "
             >
               <FaChevronRight />
             </button>
             <div className="flex flex-col px-4 mt-5 gap-5 flex-1 flex-nowrap">
               {pages.map(({ name, icon: Icon, href }: Page) => {
+                const selected = currentPath === href.substring(1);
                 return (
                   <Link
                     key={name}
                     href={href}
-                    className=" flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded"
+                    className={`flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded transition-all ${selected ? 'text-cyan-500 gap-5' : ''}`}
                   >
                     <Icon size={"20"} className="min-w-[3rem]" />
+                    <span className="hidden lg:flex">{name}</span>
                   </Link>
                 );
               })}
@@ -189,13 +214,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           </Sidebar>
+          <Header.Root className="justify-between p-1 m-1 w-auto">
+            <Header.Division
+              className={
+                "flex-none p-2 mx-2 bg-cyan-500 rounded-md font-semibold opacity-30 text-lg" +
+                ` ${fontRoboto}`
+              }
+            >
+             Olá, Victor!
+            </Header.Division>
+            <Header.Division className="flex-none rounded-full">
+              <UserComponents />
+            </Header.Division>
+          </Header.Root>
           <Suspense fallback={<Loading />}>
-            <S.Content>
-              {/* <div className="absolute top-0 translate-x-[-50%] left-[50%] p-3 bg-zinc-600 z-20">
-                  sef
-              </div> */}
-              {children}
-            </S.Content>
+            <S.Content>{children}</S.Content>
           </Suspense>
         </S.Container>
       </ThemeProvider>

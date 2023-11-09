@@ -17,6 +17,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import Link from "next/link";
+import Header from "@/components/header";
 
 const useClients = () => {
   const [itemDelete, setItemDelete] = useState<Client | null>(null);
@@ -58,6 +59,22 @@ export default function Clients() {
 
   return (
     <div className="flex flex-col m-auto">
+      <Header.Root bgTheme={false} className="min-h-auto px-1 flex w-full border-zinc-500 border-opacity-20 items-center justify-between">
+        <div className="flex gap-2 flex-1">
+         {/*  <Link
+            className="text-black opacity-80 hover:opacity-100 p-3 bg-sky-200 rounded-md min-w-[4rem] flex justify-center"
+            href={"/clients"}
+          >
+            Meus clientes
+          </Link> */}
+          <Link
+            className="opacity-80 px-5 flex-1 p-3 hover:opacity-100 bg-gradient-to-r from-rose-500 to-fuchsia-600 text-white rounded-md min-w-[4rem] flex justify-center"
+            href={"clients/create"}
+          >
+            Criar
+          </Link>
+        </div>
+      </Header.Root>
       <div className="w-full flex max-w-[70rem] flex-col gap-2">
         <div className="text-xl text-cyan-600 mt-5">Todos os meus clientes</div>
         {clients?.map((item: Client) => (
@@ -72,7 +89,7 @@ export default function Clients() {
             </Register.Compartiment>
             <Register.Compartiment>
               <Register.Title>Telefone</Register.Title>
-              <Register.Content>{item.phone || '-'}</Register.Content>
+              <Register.Content>{item.phone || "-"}</Register.Content>
             </Register.Compartiment>
             <Register.Compartiment className="flex-none flex-row">
               <Register.ButtonTrash onClick={() => handleItemDelete(item)} />
@@ -82,12 +99,12 @@ export default function Clients() {
         ))}
         {!clients ||
           (clients?.length < 1 && (
-            <div className="flex flex-col text-lg opacity-70">
+            <div className="flex flex-col text-lg bg-zinc-700 text-white p-3 rounded">
               <div>Ainda não tem nenhum Cliente Cadastrado</div>
               <div>
                 <Link
                   href={"clients/create"}
-                  className="text-cyan-500 opacity-80 hover:opacity-100"
+                  className="text-cyan-400 opacity-80 hover:opacity-100"
                 >
                   Cadastre seu primeiro cliente!
                 </Link>

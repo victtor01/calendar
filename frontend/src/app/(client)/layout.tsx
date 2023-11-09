@@ -14,8 +14,8 @@ interface layoutProps {
 }
 
 const darkTheme = {
-  primary: "rgb(24 24 27)",
-  secundary: "#242424",
+  primary: "#000 ",
+  secundary: "#363636",
   text: "#ebe8e8",
   success: "#0f0",
   error: "#f00",
