@@ -25,14 +25,12 @@ export const Input = styled.div`
     z-index: 2;
     pointer-events: none;
     justify-content: center;
-    background-color: ${({ theme }) => theme.primary};
   }
 
   & input {
     min-height: 3.5rem;
     height: 100%;
     width: 100%;
-    background: transparent;
     z-index: 1;
     padding: 0rem 0.2rem 0 1rem;
     align-items: center;
@@ -40,6 +38,7 @@ export const Input = styled.div`
     outline: none;
     transition: 0.2s;
     font-weight: 600;
+    background-color: transparent;
     color: ${({ theme }) => theme.text};
     border: 1px solid ${({ theme }) => theme.border};
     appearance: inherit;
@@ -68,5 +67,6 @@ export const Input = styled.div`
     font-size: 0.8rem;
     top: 0%;
     left: 0.5rem;
+    background-color: ${({ theme }) => theme.primary};
   }
 `;

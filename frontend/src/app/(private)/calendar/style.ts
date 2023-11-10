@@ -7,5 +7,5 @@ export const Content = styled(motion.main)`
 `
 export const Header = styled.header`
     
-    background: ${({theme}) => theme.primary};
+   /*  background: ${({theme}) => theme.primary}; */
 `

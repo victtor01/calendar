@@ -14,11 +14,10 @@ interface layoutProps {
 }
 
 const darkTheme = {
-  primary: "#000 ",
-  secundary: "#363636",
+  primary: "#101010",
+  secundary: "#222225",
   text: "#ebe8e8",
-  success: "#0f0",
-  error: "#f00",
+  shadow: "#202020",
   lightPurple: "#4B0082",
   darkPurple: "#5a0f8f",
   linearPurple: "",
@@ -36,7 +35,7 @@ const lightTheme = {
   lightPurple: "",
   darkPurple: "",
   linearPurple: "",
-  border: "#d8d3d3",
+  border: "#b8b8b8",
 };
 
 export default function Layout({ children }: layoutProps) {

@@ -23,7 +23,7 @@ export default function Finance() {
 
   return (
     <Form
-      className={`${fontOpenSans} m-auto flex flex-col max-w-[35rem] w-[100%] min-h-auto relative shadow p-3 rounded-md`}
+      className={`${fontOpenSans} m-auto flex flex-col max-w-[35rem] w-[100%] min-h-auto relative shadow p-1 rounded-md`}
     >
       <S.Header
         className={`z-10 flex items-center justify-between rounded-md overflow-hidden`}
@@ -46,9 +46,9 @@ export default function Finance() {
             })}
           </div>
         </div> */}
-        <div className={"justify-end flex gap-2 font-semibold opacity-100 bg-cyan-600 text-white p-5 h-full  " + ` ${fontRoboto} `}>
-          <div className=" text-lg  opacity-90">
-            <h1>Criar uma novo registro</h1>
+        <div className={"justify-end flex gap-2 font-semibold opacity-100 px-2" + ` ${fontRoboto} `}>
+          <div className=" text-xl opacity-50">
+            <h1>Criar Registro</h1>
           </div>
         </div>
         <div className="justify-end flex gap-2 text-white p-2">

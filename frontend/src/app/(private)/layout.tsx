@@ -29,7 +29,7 @@ import UserComponents from "@/components/userComponents";
 
 const darkTheme = {
   primary: "#101010",
-  secundary: "#141820",
+  secundary: "#222225",
   text: "#ebe8e8",
   shadow: "#202020",
   lightPurple: "#4B0082",
@@ -48,7 +48,7 @@ const lightTheme = {
   lightPurple: "#4B0082",
   darkPurple: "#5a0f8f",
   linearPurple: "",
-  border: "#d8d3d3",
+  border: "#f0f0f00",
 };
 
 interface Page {
@@ -124,8 +124,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Sidebar
             bgTheme
             style={{ gridArea: "sidebar" }}
-            className={`z-50 w-[4rem] lg:w-[13rem] m-1 rounded-md relative overflow-x-hidden h-auto items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
+            className={`z-50 w-[4rem] lg:w-[13rem] m-1 rounded-md relative overflow-x-hidden overflow-y-auto items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
           >
+            <S.Bubble/>
             <div className="w-full h-[4rem] flex justify-center items-center rounded ">
               <Header.Division
                 bgTheme={false}
@@ -166,8 +167,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 );
               })}
             </div>
-            <button onClick={handleTheme} className="p-6">
+            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30"/>
+            <button onClick={handleTheme} className="p-4 flex items-center gap-3">
+              <RxExit />
+              <span className="hidden lg:flex">Logout</span>
+            </button>
+            <button onClick={handleTheme} className="p-4 flex items-center gap-3">
               <IconTheme />
+              <span className="hidden lg:flex">Tema: {theme === 'dark' ? 'Escuro' : 'Claro'}</span>
             </button>
           </Sidebar>
           <Sidebar
@@ -214,7 +221,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
           </Sidebar>
-          <Header.Root className="justify-between p-1 m-1 w-auto">
+          <Header.Root className="justify-between p-1 m-2 rounded-md w-auto">
             <Header.Division
               className={
                 "flex-none p-2 mx-2 bg-cyan-500 rounded-md font-semibold opacity-30 text-lg" +

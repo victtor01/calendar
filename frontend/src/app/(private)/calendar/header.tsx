@@ -75,8 +75,8 @@ export default function Header() {
 
   return (
     <div className="flex flex-col w-full h-full min-h-auto ">
-      <S.Header className=" w-full items-center flex justify-between p-2 rounded-md shadow">
-        <div className="p-2 opacity-60 text-lg font-semibold">Calendário</div>
+      <S.Header className=" w-full items-center flex justify-between rounded-md">
+        <div className="p-2 opacity-60 text-xl font-semibold">Calendário</div>
         <div className="flex gap-2 items-center">
           <button
             onClick={handleShowModalAddEvent}

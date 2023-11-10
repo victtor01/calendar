@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ImLock } from "react-icons/im";
 import Cookie from "js-cookie";
 import { useRouter } from "next/navigation";
+import * as S from "./style";
 
 type LoginUserFormData = z.infer<typeof createUserFormSchema>;
 
@@ -91,45 +92,48 @@ const useLogin = () => {
 export default function Login() {
   const { onSubmit, handleSubmit, register, errors, error } = useLogin();
   return (
-    <Form
-      bgTheme={false}
-      onSubmit={handleSubmit(onSubmit)}
-      className={`rounded-md m-auto max-w-[27rem] h-auto relative ${fontOpenSans}`}
-    >
-      <div className="flex flex-col mb-4 gap-1">
-        <div className={`text-[2rem] w-full text-cyan-500 ${fontRoboto}`}>
-          Login
+    <>
+      <S.Bubble />
+      <Form
+        bgTheme={false}
+        onSubmit={handleSubmit(onSubmit)}
+        className={`rounded-md m-auto max-w-[27rem] h-auto relative bg-zinc-400 bg-opacity-10 backdrop-blur-3xl  ${fontOpenSans}`}
+      >
+        <div className="flex flex-col mb-4 gap-1">
+          <div className={`text-[2rem] w-full text-cyan-500 ${fontRoboto}`}>
+            Login
+          </div>
+          <div className={`text-[1.2rem] font-semibold opacity-70`}>
+            Bem vindo de volta! Faça o login digitando seu email logo abaixo.
+          </div>
         </div>
-        <div className={`text-[1.2rem] font-semibold opacity-70`}>
-          Bem vindo de volta! Faça o login digitando seu email logo abaixo.
-        </div>
-      </div>
 
-      <Input
-        required
-        register={register("email")}
-        className={`border focus:border-cyan-500 rounded `}
-      >
-        <div className="absolute z-10 right-4 pointer-events-none ">
-          <MdMail className="opacity-40" size="20" />
-        </div>
-        <span>Email</span>
-      </Input>
-      {errors.email && <>{errors.email.message}</>}
-      <Input
-        register={register("password")}
-        required
-        type="password"
-        className={`border focus:border-cyan-500 rounded `}
-      >
-        <div className="absolute z-10 right-4 pointer-events-none ">
-          <ImLock className="opacity-40" size="20" />
-        </div>
-        <span>Password</span>
-      </Input>
-      <Button className="bg-gradient-to-r from-cyan-300 to-cyan-400 w-full py-4 text-gray-700 font-normal text-lg rounded font-semibold">
-        Entrar
-      </Button>
-    </Form>
+        <Input
+          required
+          register={register("email")}
+          className={`border focus:border-cyan-500 rounded `}
+        >
+          <div className="absolute z-10 right-4 pointer-events-none ">
+            <MdMail className="opacity-40" size="20" />
+          </div>
+          <span>Email</span>
+        </Input>
+        {errors.email && <>{errors.email.message}</>}
+        <Input
+          register={register("password")}
+          required
+          type="password"
+          className={`border focus:border-cyan-500 rounded `}
+        >
+          <div className="absolute z-10 right-4 pointer-events-none ">
+            <ImLock className="opacity-40" size="20" />
+          </div>
+          <span>Password</span>
+        </Input>
+        <Button className="bg-gradient-to-r from-cyan-300 to-cyan-400 w-full py-4 text-gray-700 font-normal text-lg rounded font-semibold">
+          Entrar
+        </Button>
+      </Form>
+    </>
   );
 }
