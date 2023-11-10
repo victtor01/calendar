@@ -5,4 +5,5 @@ export abstract class ConfirmationCodesRepository {
     abstract findOne(code: string) : Promise<ConfirmationCodes>
     abstract create(body: CreateConfirmationCodesDto) : Promise<ConfirmationCodes>
     abstract delete(id: number) : Promise<boolean>
+    abstract findOneByUserId(userId: number): Promise<ConfirmationCodes>
 }

@@ -24,6 +24,13 @@ export class ConfirmationCodesService {
 
     const randomCode = await this.random()
 
+    const codeExists = await this.prismaCodesConfirmationRepository.findOneByUserId(+userId);
+
+    if(codeExists) {
+      console.log(codeExists);
+      return codeExists
+    }
+
     const code = await this.prismaCodesConfirmationRepository.create({
       userId,
       code: randomCode,

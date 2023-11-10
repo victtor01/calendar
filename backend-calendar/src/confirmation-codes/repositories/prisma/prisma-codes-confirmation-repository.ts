@@ -10,6 +10,14 @@ export class PrismaCodesConfirmationRepository
 {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findOneByUserId(userId: number): Promise<ConfirmationCodes> {
+    return await this.prisma.codes_confirmation.findFirst({
+      where: {
+        userId
+      }
+    })
+  }
+
   async findOne(code: string): Promise<ConfirmationCodes> {
     return await this.prisma.codes_confirmation.findFirst({
       where: {
