@@ -13,7 +13,7 @@ export default function DashboardComponent({
   return (
     <S.Container
       className={twMerge(
-        "flex flex-1 p-3 rounded-md shadow-md flex-col relative",
+        "flex flex-1 rounded-md shadow-md flex-col relative",
         props.className
       )}
     >

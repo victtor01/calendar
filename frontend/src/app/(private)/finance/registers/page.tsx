@@ -110,7 +110,7 @@ export default function Registers() {
         <div className=" flex items-center flex-col p-3 h-auto w-full">
           <div className="w-full max-w-[60rem] flex flex-col gap-2">
             {registers &&
-              registers?.map((register: Register) => {
+              registers?.map((register: Register, index: number) => {
                 const type = register.type === "INCOME" ? "Entrada" : "Saída";
                 const classType =
                   register.type === "INCOME"
@@ -118,7 +118,10 @@ export default function Registers() {
                     : "text-red-400";
 
                 return (
-                  <Register.Root key={register.id}>
+                  <Register.Root
+                    key={register.id}
+                    transition={{ delay: index / 10 }}
+                  >
                     <Register.Compartiment>
                       <Register.Title>Nome</Register.Title>
                       <Register.Content>{register.name}</Register.Content>

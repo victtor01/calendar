@@ -1,6 +1,6 @@
 "use client";
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Container = styled.main`
  /*  display: grid;
@@ -26,4 +26,6 @@ export const Content = styled.div`
   position: relative;
   flex: 1;
   min-height: 90vh;
+  width: 100%;
+
 `;

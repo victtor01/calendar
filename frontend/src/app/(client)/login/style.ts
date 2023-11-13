@@ -1,6 +1,18 @@
 'use client'
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const animation = keyframes`
+  0%, 100%{
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3rem);
+  }
+`
+
 
 export const Bubble = styled.div`
   width: 100%;
@@ -8,6 +20,8 @@ export const Bubble = styled.div`
   position: absolute;
   z-index: 0;
   overflow: hidden;
+
+  animation: ${animation} 5s infinite ease-in-out;
 
   &::before {
     content: "";
@@ -19,9 +33,9 @@ export const Bubble = styled.div`
     transform: translate(-50%, -50%) rotate(160deg);
     padding: 2rem;
     border-radius: 100% 0% 96% 4% / 59% 0% 100% 41%  ;
-    filter: blur(60px) contrast(400%) brightness(60%);
-    opacity: 0.2;
-    background: linear-gradient(34deg, #6157FF, #74FEBD);
+    filter: blur(2rem) contrast(110%) brightness(100%);
+    opacity: 0.1;
+    background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
   }
 
   /* &::after {

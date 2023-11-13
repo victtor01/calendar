@@ -72,10 +72,9 @@ export const Bubble = styled.div`
     top: 0;
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61% ;
-    backdrop-filter: blur(20px);
-    filter: blur(30px);
+    filter: blur(2em);
     opacity: 0.1;
-    background: linear-gradient(34deg, #6157FF, #74FEBD);
+    background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
   }
 
   &::after {
@@ -87,8 +86,8 @@ export const Bubble = styled.div`
     right: 0;
     padding: 2rem;
     border-radius:  77% 23% 17% 83% / 35% 61% 39% 65% ;
-    filter: blur(50px);
+    filter: blur(2em);
     opacity: 0.1;
-    background: linear-gradient(34deg, #6157FF, #74FEBD);
+    background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
   }
 `;

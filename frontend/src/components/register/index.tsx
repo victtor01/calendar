@@ -3,8 +3,14 @@ import { BsFillTrashFill } from "react-icons/bs";
 import * as S from "./style";
 import { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
+import { HTMLMotionProps, MotionProps } from "framer-motion";
 
-interface compartimentProps extends HTMLAttributes<HTMLDivElement> {
+const variants = {
+  pageInitial: { opacity: 0 },
+  pageAnimate: { opacity: 1 },
+};
+
+interface compartimentProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
 }
 
@@ -29,12 +35,19 @@ const CompartimentTitle = ({ children, ...props }: compartimentProps) => {
 };
 
 const CompartimentContent = ({ children, ...props }: compartimentProps) => {
-  return <div className={twMerge("flex text-lg", props.className)}>{children}</div>;
+  return (
+    <div className={twMerge("flex text-lg", props.className)}>{children}</div>
+  );
 };
 
 const RegisterRoot = ({ children, ...props }: compartimentProps) => {
   return (
-    <S.Root className="shadow hover:shadow-xl opacity-90 hover:opacity-100 items-center rounded-2xl gap-4 flex flex-wrap w-full p-4 bg-zinc-800 text-white roudned">
+    <S.Root
+      initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}
+      {...props}
+      className="shadow hover:shadow-xl opacity-90 hover:opacity-100 items-center rounded-2xl gap-4 flex flex-wrap w-full p-4 bg-zinc-800 text-white roudned"
+    >
       {children}
     </S.Root>
   );

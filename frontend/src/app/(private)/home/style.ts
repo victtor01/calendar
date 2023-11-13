@@ -36,7 +36,7 @@ export const Bubble = styled.div<BubbleProps>`
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
   top: 0;
   left: 0;
@@ -50,8 +50,7 @@ export const Bubble = styled.div<BubbleProps>`
     left: ${props => props.$left || 0};
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
-    backdrop-filter: blur(40px);
-    filter: blur(30px);
+    filter: blur(2em) brightness(80%);
     opacity: 0.1;
     background: linear-gradient(34deg, #6157ff, #74febd);
   }

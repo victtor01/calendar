@@ -29,7 +29,7 @@ import UserComponents from "@/components/userComponents";
 
 const darkTheme = {
   primary: "#101010",
-  secundary: "#222225",
+  secundary: "#1f1d2b",
   text: "#ebe8e8",
   shadow: "#202020",
   lightPurple: "#4B0082",
@@ -63,7 +63,7 @@ const pages: Page[] = [
   { name: "Finance", icon: FiTrendingUp, href: "/finance" },
   { name: "Clientes", icon: BiSolidGroup, href: "/clients" },
   { name: "Serviços", icon: PiSuitcaseSimple, href: "/services" },
-  { name: "Configure", icon: BsFillGearFill, href: "/clients" },
+  { name: "Configure", icon: BsFillGearFill, href: "/configurations" },
 ];
 
 const useLayout = () => {
@@ -87,7 +87,7 @@ const useLayout = () => {
     router.push("/login");
   };
 
-  const currentPath = usePathname().split('/')[1];
+  const currentPath = usePathname().split("/")[1];
 
   return {
     theme,
@@ -126,7 +126,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             style={{ gridArea: "sidebar" }}
             className={`z-50 w-[4rem] lg:w-[13rem] m-1 rounded-md relative overflow-x-hidden overflow-y-auto items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
           >
-            <S.Bubble/>
+            <S.Bubble />
             <div className="w-full h-[4rem] flex justify-center items-center rounded ">
               <Header.Division
                 bgTheme={false}
@@ -159,7 +159,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link
                     key={name}
                     href={href}
-                    className={`flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded transition-all ${selected ? 'text-cyan-500 gap-5' : ''}`}
+                    className={`flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded transition-all ${
+                      selected ? "text-cyan-500 gap-5" : ""
+                    }`}
                   >
                     <Icon size={"20"} className="min-w-[3rem]" />
                     <span className="hidden lg:flex">{name}</span>
@@ -167,14 +169,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 );
               })}
             </div>
-            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30"/>
-            <button onClick={handleTheme} className="p-4 flex items-center gap-3">
+            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+            <button
+              onClick={handleTheme}
+              className="p-4 flex items-center gap-3"
+            >
               <RxExit />
               <span className="hidden lg:flex">Logout</span>
             </button>
-            <button onClick={handleTheme} className="p-4 flex items-center gap-3">
+            <button onClick={logout} className="p-4 flex items-center gap-3">
               <IconTheme />
-              <span className="hidden lg:flex">Tema: {theme === 'dark' ? 'Escuro' : 'Claro'}</span>
+              <span className="hidden lg:flex">
+                Tema: {theme === "dark" ? "Escuro" : "Claro"}
+              </span>
             </button>
           </Sidebar>
           <Sidebar
@@ -208,17 +215,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   }
                 )}
               </div>
-              <div className="w-full p-4 flex gap-5 items-center">
-                <button
-                  onClick={handleTheme}
-                  className="opacity-60 hover:opacity-100"
-                >
-                  <IconTheme size="20" />
-                </button>
-                <button onClick={logout}>
-                  <RxExit size="20" className="opacity-60 hover:opacity-100" />
-                </button>
-              </div>
+              <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+              <button
+                onClick={handleTheme}
+                className="p-4 flex items-center gap-3"
+              >
+                <RxExit />
+                <span className="flex">Logout</span>
+              </button>
+              <button onClick={logout} className="p-4 flex items-center gap-3">
+                <IconTheme />
+                <span className="flex">
+                  Tema: {theme === "dark" ? "Escuro" : "Claro"}
+                </span>
+              </button>
             </div>
           </Sidebar>
           <Header.Root className="justify-between p-1 m-2 rounded-md w-auto">
@@ -228,7 +238,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 ` ${fontRoboto}`
               }
             >
-             Olá, Victor!
+              Olá, Victor!
             </Header.Division>
             <Header.Division className="flex-none rounded-full">
               <UserComponents />
