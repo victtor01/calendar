@@ -11,7 +11,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImLock } from "react-icons/im";
 import Cookie from "js-cookie";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import * as S from "./style";
 
 type LoginUserFormData = z.infer<typeof createUserFormSchema>;
@@ -91,6 +91,8 @@ const useLogin = () => {
 
 export default function Login() {
   const { onSubmit, handleSubmit, register, errors, error } = useLogin();
+  const pathName = usePathname();
+
   return (
     <>
       <S.Bubble />

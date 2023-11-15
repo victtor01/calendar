@@ -3,7 +3,7 @@
 import Register from "@/components/register";
 import moment from "moment";
 import { GoSearch } from "react-icons/go";
-import { Service } from "./types";
+import { Service } from "../../../types/services";
 import { useQuery } from "@tanstack/react-query";
 import useApiPrivate from "@/hooks/apiPrivate";
 import Loading from "@/components/loading";
@@ -20,6 +20,7 @@ import { queryClient } from "@/hooks/queryClient";
 import * as S from "./styles";
 import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface ItemDeleteProps {
   id: number;
@@ -42,9 +43,17 @@ function useServices() {
     setItemDelete(value);
 
   async function deleteItem() {
-    if (itemDelete && itemDelete?.id) {
+    if (itemDelete && itemDelete.id) {
       await api.delete(`/services/${itemDelete.id}`);
-      queryClient.invalidateQueries(["services"]);
+      queryClient.setQueryData(["services"], (data: any) => {
+        if (data) {
+          const updatedData = data.filter(
+            (item: any) => item.id !== itemDelete.id
+          );
+          return updatedData;
+        }
+        return data;
+      });
       handleItemDelete(null);
     }
   }
@@ -74,14 +83,19 @@ export default function Services() {
     <>
       <div className="flex flex-col m-auto max-w-[50rem] w-full p-2 gap-3 relative overflow-visible">
         <S.Bubble />
-        <div className="flex p-0 items-center justify-between">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="flex p-0 items-center justify-between"
+        >
           <div>
             <div className="flex items-center gap-3">
               <Link
                 href="/services/create"
                 className="bg-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
               >
-                <IoMdAdd/>
+                <IoMdAdd />
                 Criar
               </Link>
             </div>
@@ -92,40 +106,44 @@ export default function Services() {
               <GoSearch size="20" className="text-white" />
             </button>
           </div>
-        </div>
-        {services?.map((item: Service, index: number) => {
-          return (
-            <Register.Root key={index} transition={{ delay: index/10 }}>
-              <Register.Compartiment>
-                <Register.Title>Nome</Register.Title>
-                <Register.Content>{item.name}</Register.Content>
-              </Register.Compartiment>
-              <Register.Compartiment>
-                <Register.Title>Descrição</Register.Title>
-                <Register.Content>{item?.description || "-"}</Register.Content>
-              </Register.Compartiment>
-              <Register.Compartiment>
-                <Register.Title>preço</Register.Title>
-                <Register.Content>{item?.price}</Register.Content>
-              </Register.Compartiment>
-              <Register.Compartiment>
-                <Register.Title>Criado em</Register.Title>
-                <Register.Content>
-                  {moment(item.createdAt).format("YYYY / MM / DD")}{" "}
-                </Register.Content>
-              </Register.Compartiment>
-              <Register.ButtonTrash
-                onClick={() =>
-                  handleItemDelete({
-                    name: item.name,
-                    id: item.id,
-                  })
-                }
-              />
-              <Register.ButtonEdit />
-            </Register.Root>
-          );
-        })}
+        </motion.div>
+        <AnimatePresence mode="sync">
+          {services?.map((item: Service, index: number) => {
+            return (
+              <Register.Root layout key={index} transition={{ delay: index / 10, type: 'spring'}}>
+                <Register.Compartiment>
+                  <Register.Title>Nome</Register.Title>
+                  <Register.Content>{item.name}</Register.Content>
+                </Register.Compartiment>
+                <Register.Compartiment>
+                  <Register.Title>Descrição</Register.Title>
+                  <Register.Content>
+                    {item?.description || "-"}
+                  </Register.Content>
+                </Register.Compartiment>
+                <Register.Compartiment>
+                  <Register.Title>preço</Register.Title>
+                  <Register.Content>{item?.price}</Register.Content>
+                </Register.Compartiment>
+                <Register.Compartiment>
+                  <Register.Title>Criado em</Register.Title>
+                  <Register.Content>
+                    {moment(item.createdAt).format("YYYY / MM / DD")}{" "}
+                  </Register.Content>
+                </Register.Compartiment>
+                <Register.ButtonTrash
+                  onClick={() =>
+                    handleItemDelete({
+                      name: item.name,
+                      id: item.id,
+                    })
+                  }
+                />
+                <Register.ButtonEdit />
+              </Register.Root>
+            );
+          })}
+        </AnimatePresence>
       </div>
       <Modal
         onOpenChange={() => handleItemDelete(null)}

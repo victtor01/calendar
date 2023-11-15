@@ -13,6 +13,8 @@ import { useForm } from "react-hook-form";
 import * as S from "./style";
 import { z } from "zod";
 import { UsersService } from "@/hooks/users";
+import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
@@ -79,8 +81,9 @@ const useRegister = () => {
 
 export default function RegisterPage() {
   const { register, handleSubmit, createUser, errors } = useRegister();
+
   return (
-    <div className={`flex flex-col mb-10 ${fontOpenSans}`}>
+    <>
       <div
         className={`w-full h-[40rem] bg-cyan-100 relative overflow-hidden mx-auto  ${fontRoboto}`}
       >
@@ -171,6 +174,6 @@ export default function RegisterPage() {
           Enviar
         </Button>
       </Form>
-    </div>
+    </>
   );
 }

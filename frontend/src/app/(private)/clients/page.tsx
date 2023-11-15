@@ -1,13 +1,15 @@
 "use client";
-import Input from "@/components/input/input";
+
+import { ChangeEvent, useState } from "react";
 import Register from "@/components/register";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
+import Header from "@/components/header";
+import Link from "next/link";
 import {
   Clients as Client,
   useClients as useClientsHook,
 } from "@/hooks/useClients";
-import { ChangeEvent, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -16,8 +18,7 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
-import Link from "next/link";
-import Header from "@/components/header";
+import { useRouter } from "next/navigation";
 
 const useClients = () => {
   const [itemDelete, setItemDelete] = useState<Client | null>(null);
@@ -29,9 +30,7 @@ const useClients = () => {
   const api = useApiPrivate();
 
   const deleteItem = async (item: Client) => {
-    if (nameConfirmDelete !== item.firstName) {
-      return;
-    }
+    if (nameConfirmDelete !== item.firstName) return;
     const { id } = item;
     await api.delete(`/clients/delete/${id}`);
     queryClient.invalidateQueries(["clients"]);
@@ -48,6 +47,7 @@ const useClients = () => {
 };
 
 export default function Clients() {
+  const { push } = useRouter();
   const {
     itemDelete,
     handleItemDelete,
@@ -59,14 +59,11 @@ export default function Clients() {
 
   return (
     <div className="flex flex-col m-auto">
-      <Header.Root bgTheme={false} className="min-h-auto px-1 flex w-full border-zinc-500 border-opacity-20 items-center justify-between">
+      <Header.Root
+        bgTheme={false}
+        className="min-h-auto px-1 flex w-full border-zinc-500 border-opacity-20 items-center justify-between"
+      >
         <div className="flex gap-2 flex-1">
-         {/*  <Link
-            className="text-black opacity-80 hover:opacity-100 p-3 bg-sky-200 rounded-md min-w-[4rem] flex justify-center"
-            href={"/clients"}
-          >
-            Meus clientes
-          </Link> */}
           <Link
             className="opacity-80 px-5 flex-1 p-3 hover:opacity-100 bg-gradient-to-r from-rose-500 to-fuchsia-600 text-white rounded-md min-w-[4rem] flex justify-center"
             href={"clients/create"}
@@ -93,7 +90,9 @@ export default function Clients() {
             </Register.Compartiment>
             <Register.Compartiment className="flex-none flex-row">
               <Register.ButtonTrash onClick={() => handleItemDelete(item)} />
-              <Register.ButtonEdit />
+              <Register.ButtonEdit
+                onClick={() => push(`/clients/${item.code}`)}
+              />
             </Register.Compartiment>
           </Register.Root>
         ))}

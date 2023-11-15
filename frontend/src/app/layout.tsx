@@ -20,14 +20,10 @@ export default function RootLayout({
     <QueryClientProvider client={queryClient}>
       <html lang="pt-br">
         <body>
-          <motion.main
-            variants={variants}
-            initial="pageInitial"
-            animate="pageAnimate"
-          >
+
             <NextTopLoader color="#17919f" showSpinner={false} crawl={false} />
             {children}
-          </motion.main>
+
         </body>
       </html>
     </QueryClientProvider>

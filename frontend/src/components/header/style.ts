@@ -17,7 +17,7 @@ export const Container = styled.header<ContainerProps>`
   min-width: auto;
   width: auto;
   grid-area: header;
-  z-index: 50;
+  z-index: 5;
   left: 0;
   top: 0;
   grid-area: header;

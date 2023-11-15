@@ -1,8 +1,9 @@
 "use client";
 
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled(motion.div)`
   background-color: transparent;
   width: 100%;
   max-width: 80rem;
@@ -10,6 +11,7 @@ export const Container = styled.div`
   margin: 3% auto;
   display: flex;
   flex-direction: column;
+  position: relative;
   gap: 1rem;
 `;
 
@@ -26,10 +28,9 @@ export const TitleComponent = styled.div`
   display: flex;
 `;
 
-
 interface BubbleProps {
-    $top?: string;
-    $left?: string;
+  $top?: string;
+  $left?: string;
 }
 
 export const Bubble = styled.div<BubbleProps>`
@@ -46,26 +47,17 @@ export const Bubble = styled.div<BubbleProps>`
     width: 100%;
     height: 100%;
     position: absolute;
-    top: ${props => props.$top || 0};
-    left: ${props => props.$left || 0};
+    top: ${(props) => props.$top || 0};
+    left: ${(props) => props.$left || 0};
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
     filter: blur(2em) brightness(80%);
     opacity: 0.1;
     background: linear-gradient(34deg, #6157ff, #74febd);
   }
+`;
 
-/*   &::after {
-    content: "";
-    width: 150%;
-    height: 70%;
-    position: absolute;
-    top: 40%;
-    right: 0;
-    padding: 2rem;
-    border-radius: 77% 23% 17% 83% / 35% 61% 39% 65%;
-    filter: blur(50px);
-    opacity: 0.2;
-    background: linear-gradient(34deg, #6157ff, #74febd);
-  } */
+export const Modal = styled(motion.div)`
+  background-color: ${({ theme }) => theme.secundary};
+  border: 1px solid  ${({ theme }) => theme.border};
 `;

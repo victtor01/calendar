@@ -3,7 +3,7 @@ import { fontInter } from "@/app/fonts";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-timezone";
-import { Event } from "../types";
+import { Event } from "../../../../types/events";
 import { BsArrowLeft, BsArrowRightShort, BsCheck } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
 import { useState } from "react";

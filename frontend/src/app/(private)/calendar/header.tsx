@@ -78,13 +78,13 @@ export default function Header() {
       <S.Header className=" w-full items-center flex justify-between rounded-md">
         <div className="p-2 opacity-60 text-xl font-semibold">Calendário</div>
         <div className="flex gap-2 items-center">
-          <button
+          <Button
             onClick={handleShowModalAddEvent}
             className="opacity-90 flex gap-3 items-center hover:opacity-100 text-white p-3 bg-cyan-600 rounded-md "
           >
             <MdBackupTable />
             Novo modelo
-          </button>
+          </Button>
           <Link
             href={"/calendar/week"}
             className="opacity-90 flex gap-2 items-center hover:opacity-100 text-white p-3 bg-cyan-600 rounded-md "
@@ -105,7 +105,7 @@ export default function Header() {
         onOpenChange={handleShowModalAddEvent}
         isDismissable={false}
         isOpen={showModalAddEvent}
-        className="bg-zinc-900"
+        className="bg-zinc-900 z-30"
       >
         <ModalContent className="flex">
           <ModalHeader className="flex flex-col gap-1">

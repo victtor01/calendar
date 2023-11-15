@@ -3,7 +3,7 @@ import { BsFillTrashFill } from "react-icons/bs";
 import * as S from "./style";
 import { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
-import { HTMLMotionProps, MotionProps } from "framer-motion";
+import { HTMLMotionProps } from "framer-motion";
 
 const variants = {
   pageInitial: { opacity: 0 },
@@ -43,10 +43,10 @@ const CompartimentContent = ({ children, ...props }: compartimentProps) => {
 const RegisterRoot = ({ children, ...props }: compartimentProps) => {
   return (
     <S.Root
-      initial={{ opacity: 0, x: -100 }}
+      initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
       {...props}
-      className="shadow hover:shadow-xl opacity-90 hover:opacity-100 items-center rounded-2xl gap-4 flex flex-wrap w-full p-4 bg-zinc-800 text-white roudned"
+      className="shadow hover:shadow-lg opacity-90 hover:opacity-100 items-center rounded-xl gap-4 flex flex-wrap w-full p-4 bg-zinc-800 text-white"
     >
       {children}
     </S.Root>

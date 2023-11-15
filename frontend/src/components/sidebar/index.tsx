@@ -1,8 +1,9 @@
-import { HTMLAttributes } from "react";
+
 import { twMerge } from "tailwind-merge";
 import * as S from './style';
+import { HTMLMotionProps } from "framer-motion";
 
-interface sidebarProps extends HTMLAttributes<HTMLDivElement>{
+interface sidebarProps extends HTMLMotionProps<"div">{
     children: React.ReactNode;
     bgTheme?: boolean;
 }

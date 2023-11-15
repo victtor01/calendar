@@ -1,25 +1,25 @@
 "use client";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
-import interactionPlugin, {
-  Draggable,
-  DropArg,
-} from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect } from "react";
 import moment from "moment-timezone";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
-import useEventsTemplates, {
-  EventsTemplates,
-} from "@/hooks/useEventsTemplates";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/hooks/queryClient";
 import { useRouter } from "next/navigation";
-import { Event } from "./types";
+import { Event } from "../../../types/events";
 import { motion } from "framer-motion";
 import * as S from "./style";
 import Header from "./header";
+import useEventsTemplates, {
+  EventsTemplates,
+} from "@/hooks/useEventsTemplates";
+import interactionPlugin, {
+  Draggable,
+  DropArg,
+} from "@fullcalendar/interaction";
 
 const variants = {
   pageInitial: { opacity: 0, x: 40, y: 0 },
@@ -133,8 +133,8 @@ const useCalendar = () => {
   return {
     eventsTemplates,
     allEvents,
-    handleEventReceive,
     addEvent,
+    handleEventReceive,
     eventDetails,
   };
 };

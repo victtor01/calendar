@@ -133,10 +133,10 @@ export default function Edit({ params: { code } }: EditProps) {
             render={({ field }) => (
               <Label.Root className="m-0">
                 <span className=" opacity-90">{item.span}</span>
-                <Input
-                  register={field}
+                <input
+                  {...field}
                   type={item?.type || "text"}
-                  className="rounded focus:border-cyan-500"
+                  className={`outline-none placeholder:opacity-40 rounded appearance-none focus:shadow rounded-md transition-shadow p-4 outline-none bg-zinc-400 bg-opacity-5`}
                   placeholder={item?.ex}
                   autoComplete="off"
                 />
@@ -155,10 +155,10 @@ export default function Edit({ params: { code } }: EditProps) {
           render={({ field }) => (
             <Label.Root className="m-0">
               <span className="opacity-90">Data</span>
-              <Input
-                register={field}
+              <input
+                {...field}
                 type="date"
-                className="rounded focus:border-cyan-500"
+                className={`outline-none placeholder:opacity-40 rounded appearance-none focus:shadow rounded-md transition-shadow p-4 outline-none bg-zinc-400 bg-opacity-5`}
                 required
                 autoComplete="off"
               />
@@ -174,7 +174,7 @@ export default function Edit({ params: { code } }: EditProps) {
               <span className="opacity-90">Descrição</span>
               <textarea
                 {...field}
-                className=" focus:border-cyan-500 p-2 border outline-none bg-transparent border-zinc-500 border-opacity-40 rounded"
+                className={`outline-none placeholder:opacity-40 rounded appearance-none focus:shadow rounded-md transition-shadow p-4 outline-none bg-zinc-400 bg-opacity-5`}
               />
             </Label.Root>
           )}

@@ -80,13 +80,13 @@ export const Bubble = styled.div`
   &::after {
     content: "";
     width: 100%;
-    height: 70%;
+    height: 40%;
     position: absolute;
     top: 40%;
     right: 0;
     padding: 2rem;
     border-radius:  77% 23% 17% 83% / 35% 61% 39% 65% ;
-    filter: blur(2em);
+    filter: blur(2em) ;
     opacity: 0.1;
     background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
   }

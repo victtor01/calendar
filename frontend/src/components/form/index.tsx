@@ -1,9 +1,10 @@
 'use client'
-import React, { ReactNode, FormHTMLAttributes } from "react";
+import React, { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import * as S from "./style";
+import { HTMLMotionProps } from "framer-motion";
 
-interface formProps extends FormHTMLAttributes<HTMLFormElement> {
+interface formProps extends HTMLMotionProps<"form"> {
   children: ReactNode;
   bgTheme?: boolean | undefined;
 }

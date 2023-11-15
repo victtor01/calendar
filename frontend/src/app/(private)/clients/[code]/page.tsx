@@ -53,7 +53,7 @@ const useCreate = () => {
 
   const api = useApiPrivate();
 
-  const createClient = async (data: CreateClientFormData) => {
+  const submit = async (data: CreateClientFormData) => {
     const response = await api.post("/clients/create", data);
     if (response.data) {
       queryClient.invalidateQueries(["clients"]);
@@ -64,22 +64,21 @@ const useCreate = () => {
 
   return {
     handleSubmit,
-    createClient,
+    submit,
     control,
     errors,
     reset,
   };
 };
 
-
 export default function Create() {
-  const { handleSubmit, createClient, control, errors, reset } = useCreate();
+  const { handleSubmit, submit, control, errors, reset } = useCreate();
 
   return (
     <Form
       bgTheme
       className="max-w-[30rem] m-auto"
-      onSubmit={handleSubmit(createClient)}
+      onSubmit={handleSubmit(submit)}
     >
       {labelFormData.map((form: LabelFormData, index: number) => (
         <Label.Root

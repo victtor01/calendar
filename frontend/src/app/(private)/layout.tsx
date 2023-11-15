@@ -27,6 +27,8 @@ import Loading from "@/components/loading";
 import Header from "@/components/header";
 import UserComponents from "@/components/userComponents";
 
+/* #1f1d2b */
+
 const darkTheme = {
   primary: "#101010",
   secundary: "#1f1d2b",
@@ -102,19 +104,28 @@ const useLayout = () => {
 };
 
 const variants = {
-  hidden: { opacity: 0, x: -200, y: 0 },
-  enter: { opacity: 1, x: 0, y: 0 },
+  open: {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    left: '0%',
+  },
+  hidden: {
+    borderTopRightRadius: '50%',
+    borderBottomRightRadius: '50%',
+    left: "-100%",
+  },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const {
-    logout,
-    handleTheme,
-    currentPath,
-    theme,
-    widthSidebar,
     onClickSidebarShow,
+    handleTheme,
+    logout,
+    currentPath,
+    sidebarShow,
+    widthSidebar,
     IconTheme,
+    theme,
   } = useLayout();
 
   return (
@@ -124,7 +135,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Sidebar
             bgTheme
             style={{ gridArea: "sidebar" }}
-            className={`z-50 w-[4rem] lg:w-[13rem] m-1 rounded-md relative overflow-x-hidden overflow-y-auto items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
+            className={`w-[4rem] lg:w-[13rem] m-1 rounded-md relative overflow-x-hidden overflow-y-auto items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
           >
             <S.Bubble />
             <div className="w-full h-[4rem] flex justify-center items-center rounded ">
@@ -170,14 +181,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               })}
             </div>
             <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+            <button onClick={logout} className="p-4 flex items-center gap-3">
+              <RxExit />
+              <span className="hidden lg:flex">Logout</span>
+            </button>
             <button
               onClick={handleTheme}
               className="p-4 flex items-center gap-3"
             >
-              <RxExit />
-              <span className="hidden lg:flex">Logout</span>
-            </button>
-            <button onClick={logout} className="p-4 flex items-center gap-3">
               <IconTheme />
               <span className="hidden lg:flex">
                 Tema: {theme === "dark" ? "Escuro" : "Claro"}
@@ -185,7 +196,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
           </Sidebar>
           <Sidebar
-            className={`w-[100%] text-white overflow-y-scroll ${widthSidebar} transition-[left] duration-500 absolute h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
+            animate={sidebarShow ? "open" : "hidden"}
+            variants={variants}
+            transition={{ duration: 0.4 }}
+            className={`w-[100%] text-white max-h-[100%] overflow-y-scroll absolute h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
           >
             <div className="flex flex-col flex-1">
               <header className="p-3 gap-1 text-xl font-semibold flex-nowrap flex justify-between items-center">

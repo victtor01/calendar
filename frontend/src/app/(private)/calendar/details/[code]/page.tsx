@@ -145,9 +145,7 @@ export default function Details({
       className="p-2 m-auto flex w-full"
       transition={{ type: "linear" }}
     >
-      <S.Container
-        className="flex max-w-[90rem] m-10 bg-white w-full m-auto flex-col pb-5 gap-2 shadow-md rounded-md"
-      >
+      <S.Container className="flex max-w-[90rem] m-10 bg-white w-full m-auto flex-col pb-5 gap-2 shadow-md rounded-md">
         <div className="flex justify-between gap-3 p-2 bg-gray-400 bg-opacity-10 rounded-t-lg">
           <div className="flex">
             <Link

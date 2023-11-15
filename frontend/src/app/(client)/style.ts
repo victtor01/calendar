@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import styled, { keyframes } from "styled-components";
 
 export const Container = styled.main`
@@ -16,7 +17,7 @@ export const Container = styled.main`
   color: ${props => props.theme.text};
 `;
 
-export const Content = styled.div`
+export const Content = styled(motion.div)`
   background-color: ${({ theme }) => theme.primary};
   display: flex;
   grid-area: content;

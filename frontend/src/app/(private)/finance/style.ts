@@ -2,10 +2,6 @@
 
 import styled from "styled-components"
 
-export const Header = styled.header`
-    /* background-color: ${({ theme }) => theme.primary}; */
-`
-
 export const Form = styled.div`
     background-color: ${({ theme }) => theme.secundary};
 `
@@ -13,3 +9,10 @@ export const Form = styled.div`
 export const Links = styled.div`
     background-color:  ${({ theme }) => theme.secundary};
 `
+export const Container = styled.main`
+    background-color: ${({ theme }) => theme.secundary};
+`
+
+export const Registers = styled.div`
+  background-color: ${({ theme }) => theme.secundary};
+`;

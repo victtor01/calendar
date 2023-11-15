@@ -1,10 +1,11 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
 interface SidebarProps {
   $bgTheme: boolean;
 }
 
-export const Sidebar = styled.div<SidebarProps>`
+export const Sidebar = styled(motion.div)<SidebarProps>`
 
   ${props => props.$bgTheme && `
     background-color: ${props.theme.secundary};
@@ -30,6 +31,6 @@ export const Sidebar = styled.div<SidebarProps>`
     background-color: transparent; /* Cor de fundo da área da barra de rolagem */
   }
 
-  z-index: 60;
+  z-index: 10;
   /* Estilo para a barra de rolagem (track) quando passa o mouse */
 `;

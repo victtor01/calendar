@@ -2,7 +2,7 @@ import { z } from "zod";
 import { ControllerRenderProps, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import moment from "moment";
-import { Event } from "../../types";
+import { Event } from "../../../../../types/events";
 import { queryClient } from "@/hooks/queryClient";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useState } from "react";

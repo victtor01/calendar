@@ -1,6 +1,6 @@
 "use client";
-import Input from "@/components/input/input";
-import { formDataLabel, FormDataLabel } from "./formData";
+
+import { formDataLabel, FormDataLabel } from "../formData";
 import Label from "@/components/label";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
@@ -89,37 +89,43 @@ const useCreate = () => {
   }
 
   return {
-    control,
-    handleSubmit,
-    createRegister,
-    handleOptionfinance,
-    handleOptionAccount,
-    onChangeOptionAccount,
-    classOptionFinance,
-    onSuccessMessage,
-    refOptionAccount,
-    optionFinance,
-    optionAccount,
-    errors,
-    errorMessage,
+    form: {
+      control,
+      handleSubmit,
+      createRegister,
+      handleOptionfinance,
+    },
+    utils: {
+      handleOptionAccount,
+      onChangeOptionAccount,
+      refOptionAccount,
+    },
+    styles: {
+      button: {
+        classOptionFinance,
+      },
+    },
+    events: {
+      onSuccessMessage,
+      errorMessage,
+      errors,
+    },
+    data: {
+      optionFinance,
+      optionAccount,
+    },
   };
 };
 
 export const Create = () => {
   const {
-    control,
-    handleSubmit,
-    createRegister,
-    handleOptionfinance,
-    handleOptionAccount,
-    onChangeOptionAccount,
-    onSuccessMessage,
-    classOptionFinance,
-    refOptionAccount,
-    optionFinance,
-    optionAccount,
-    errors,
-    errorMessage,
+    form: { control, handleSubmit, createRegister, handleOptionfinance },
+    utils: { handleOptionAccount, onChangeOptionAccount, refOptionAccount },
+    events: { onSuccessMessage, errorMessage, errors },
+    data: { optionFinance, optionAccount },
+    styles: {
+      button: { classOptionFinance },
+    },
   } = useCreate();
 
   const { accounts } = useAccounts().getAccounts();
@@ -154,10 +160,10 @@ export const Create = () => {
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <Input
+                  <input
                     type={type}
-                    register={field}
-                    className={`${classError} border focus:border-cyan-600 placeholder:opacity-40 rounded appearance-none px-3e`}
+                    {...field}
+                    className={`${classError} outline-none placeholder:opacity-40 rounded appearance-none focus:shadow rounded-md transition-shadow p-4 outline-none bg-zinc-400 bg-opacity-5`}
                     autoComplete="off"
                     placeholder={`exp: ${ex}`}
                   />
@@ -185,7 +191,7 @@ export const Create = () => {
             name="description"
             style={{ resize: "none" }}
             placeholder="Escreva um breve resumo sobre o registro..."
-            className="bg-transparent border border-zinc-500 border-opacity-40 focus:border-cyan-500 w-full min-h-[10rem] outline-none rounded p-2 text-xl"
+            className="bg-transparent focus:border-cyan-500 w-full min-h-[10rem] outline-none rounded p-2 text-xl"
           />
         )}
       />
