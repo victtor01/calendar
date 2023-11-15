@@ -3,6 +3,8 @@ import { Service } from 'src/services/entities/service.entity';
 import { ServicesRepository } from '../services-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
+import { DeleteServiceDto } from 'src/services/dto/delete-service.dto';
+import { findServiceDto } from 'src/services/dto/find-service.dto';
 
 @Injectable()
 export class PrismaServicesRepository implements ServicesRepository {
@@ -26,6 +28,29 @@ export class PrismaServicesRepository implements ServicesRepository {
     return await this.prisma.services.findMany({
       where: {
         userId,
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+  }
+
+  async delete({ userId, id }: DeleteServiceDto): Promise<boolean> {
+    const deleted = await this.prisma.services.delete({
+      where: {
+        userId,
+        id,
+      },
+    });
+
+    return deleted ? true : false;
+  }
+
+  async findOne({ userId, id }: findServiceDto): Promise<Service> {
+    return await this.prisma.services.findFirst({
+      where: {
+        userId,
+        id,
       },
     });
   }

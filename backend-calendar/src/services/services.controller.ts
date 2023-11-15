@@ -44,7 +44,11 @@ export class ServicesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.servicesService.remove(+id);
+  remove(@Param('id') id: string, @Request() req: { user: User }) {
+    const userId = req.user.id;
+    return this.servicesService.delete({
+      id: +id,
+      userId: +userId,
+    });
   }
 }

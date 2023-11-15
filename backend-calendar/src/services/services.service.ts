@@ -6,6 +6,7 @@ import {
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { ServicesRepository } from './repositories/services-repository';
+import { DeleteServiceDto } from './dto/delete-service.dto';
 
 @Injectable()
 export class ServicesService {
@@ -42,7 +43,10 @@ export class ServicesService {
     return `This action updates a #${id} service`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} service`;
+  async delete({ userId, id }: DeleteServiceDto) {
+    return await this.serviceRepository.delete({
+      userId,
+      id,
+    });
   }
 }
