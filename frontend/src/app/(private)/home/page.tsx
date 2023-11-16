@@ -113,7 +113,7 @@ export default function Home() {
           </DashboardComponent>
         </S.Component>
 
-        {/* {selectedId && (
+       {/*  {selectedId && (
           <motion.div
             key={`modal`}
             className="fixed top-0 left-0 w-full h-screen bg-zinc-900 bg-opacity-10 z-[15] flex justify-center items-center"

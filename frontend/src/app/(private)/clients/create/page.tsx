@@ -6,9 +6,12 @@ import Input from "@/components/input/input";
 import Label from "@/components/label";
 import { IoAlertCircleSharp } from "react-icons/io5";
 import Form from "@/components/form";
-import Button from "@/components/button";
+import { Button } from "@nextui-org/react";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
+import { GoArrowLeft } from "react-icons/go";
+import { fontInter, fontOpenSans } from "@/app/fonts";
+import Link from "next/link";
 
 interface LabelFormData {
   name: string;
@@ -71,7 +74,6 @@ const useCreate = () => {
   };
 };
 
-
 export default function Create() {
   const { handleSubmit, createClient, control, errors, reset } = useCreate();
 
@@ -81,6 +83,12 @@ export default function Create() {
       className="max-w-[30rem] m-auto"
       onSubmit={handleSubmit(createClient)}
     >
+      <div className="flex-1 w-full flex">
+        <Link href={'/clients'} className="rounded w-full justify-center flex items-center transition-all duration-300 gap-1 hover:gap-3 opacity-60 max-w-[8rem] hover:opacity-100">
+          <GoArrowLeft size="20" />
+          <span className={`text-xl ${fontOpenSans} font-semibold`} >Clientes</span>
+        </Link>
+      </div>
       {labelFormData.map((form: LabelFormData, index: number) => (
         <Label.Root
           key={`${form.name}-${index}`}
@@ -94,10 +102,10 @@ export default function Create() {
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <Input
-                register={field}
+              <input
+                {...field}
                 type={form?.type || "text"}
-                className={`border focus:border-cyan-600 placeholder:opacity-40 rounded appearance-none px-3e`}
+                className="focus:shadow rounded-md transition-shadow p-4 outline-none bg-zinc-400 bg-opacity-5"
                 autoComplete="off"
                 placeholder={form.ex ? `ex: ${form.ex}` : ""}
               />
@@ -113,13 +121,13 @@ export default function Create() {
       ))}
       <div className="flex w-full gap-2">
         <Button
-          className="bg-gradient-to-r from-cyan-600 to-blue-600 rounded p-3 text-lg text-white"
+          className="bg-gradient-to-r from-cyan-600 to-blue-600 rounded p-6 text-lg text-white"
           type="button"
           onClick={() => reset()}
         >
           Limpar
         </Button>
-        <Button className="opacity-80 bg-gradient-to-r from-rose-500 to-fuchsia-600 rounded p-3 flex-1 text-lg text-white">
+        <Button className="opacity-80 bg-gradient-to-r from-rose-500 to-fuchsia-600 rounded p-6 flex-1 text-lg text-white">
           Concluído
         </Button>
       </div>

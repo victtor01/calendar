@@ -1,9 +1,10 @@
 import { BiSolidPencil } from "react-icons/bi";
-import { BsFillTrashFill } from "react-icons/bs";
+import { BsFillPenFill, BsFillTrashFill } from "react-icons/bs";
 import * as S from "./style";
 import { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 import { HTMLMotionProps } from "framer-motion";
+import { FaTrash } from "react-icons/fa";
 
 const variants = {
   pageInitial: { opacity: 0 },
@@ -57,9 +58,9 @@ const ButtonTrash = ({ children, ...props }: ButtonProps) => {
   return (
     <button
       {...props}
-      className="text-white opacity-90 flex hover:opacity-100 px-3 h-10 w-10 justify-center items-center bg-red-400 rounded gap-1 flex"
+      className="hover:text-rose-500 opacity-70 flex hover:opacity-100  h-7 w-7 justify-center items-center rounded gap-1 flex"
     >
-      <BsFillTrashFill />
+      <FaTrash size="18" />
       {children}
     </button>
   );
@@ -69,9 +70,9 @@ const ButtonEdit = ({ children, ...props }: ButtonProps) => {
   return (
     <button
       {...props}
-      className="text-white opacity-90 hover:opacity-100 h-10 w-10 justify-center items-center bg-gradient-radial from-cyan-500 to-blue-500 rounded flex flex-col gap-1"
+      className="hover:text-cyan-500 opacity-70 hover:opacity-100 h-7 w-7 justify-center items-center rounded flex flex-col gap-1 flex"
     >
-      <BiSolidPencil />
+       <BsFillPenFill size="18"/>
       {children}
     </button>
   );

@@ -15,6 +15,7 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         "gradient-conic-purple": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops)",
+        "gradient-45": "linear-gradient(45deg, var(--tw-gradient-stops))"
       },
       filter: {
         'custom-filter': 'var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)',

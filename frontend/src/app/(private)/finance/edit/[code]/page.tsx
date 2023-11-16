@@ -13,6 +13,8 @@ import moment from "moment";
 import { queryClient } from "@/hooks/queryClient";
 import { useRouter } from "next/navigation";
 import Button from "@/components/button";
+import Link from "next/link";
+import { GoArrowLeft } from "react-icons/go";
 
 type CreateRegisterFormData = z.infer<typeof createRegisterFormSchema>;
 type OptionFinance = "INCOME" | "EXPENSE";
@@ -120,9 +122,10 @@ export default function Edit({ params: { code } }: EditProps) {
           {onMessageSucess}
         </div>
       )}
-      <div className="text-2xl text-cyan-600 w-full">
-        Informações do registro
-      </div>
+      <Link href={'/finance'} className="flex items-center gap-3 hover:gap-5 transition-[gap] text-2xl opacity-60 hover:opacity-100 w-full">
+      <GoArrowLeft size="20"/>
+        Registros
+      </Link>
       <div className="text-white flex flex-col w-full gap-5">
         {labelFormData?.map((item: LabelFormData) => (
           <Controller

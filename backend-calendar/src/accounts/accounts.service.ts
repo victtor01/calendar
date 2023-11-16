@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaAccountsRepository } from './repositories/prisma/prisma-accounts-repository';
 import { AccountsRepository } from './repositories/accounts-repository';
 import { Accounts } from './entities/accounts.entity';
@@ -9,7 +9,21 @@ import { accounts } from '@prisma/client';
 export class AccountsService {
   constructor(private readonly accountsRepository: AccountsRepository) {}
 
-  async create(body: CreateAccountsDto): Promise<Accounts> {
+  async create(body: CreateAccountsDto): Promise<Accounts | BadRequestException> {
+    if(!body.name || !body.name) {
+      return new BadRequestException({
+        message: 'Falta campos para criar uma nova conta'
+      })
+    }
+
+    const allAccounts = await this.accountsRepository.findAll(+body.userId);
+
+    if(allAccounts.length >= 10) {
+      return new BadRequestException({
+        message: 'máximo de contas alcançada!'
+      })
+    }
+    
     return await this.accountsRepository.create(body);
   }
 

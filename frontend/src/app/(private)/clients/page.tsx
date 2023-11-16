@@ -6,10 +6,8 @@ import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
 import Header from "@/components/header";
 import Link from "next/link";
-import {
-  Clients as Client,
-  useClients as useClientsHook,
-} from "@/hooks/useClients";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   Modal,
   ModalContent,
@@ -18,7 +16,10 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import {
+  Clients as Client,
+  useClients as useClientsHook,
+} from "@/hooks/useClients";
 
 const useClients = () => {
   const [itemDelete, setItemDelete] = useState<Client | null>(null);
@@ -63,14 +64,18 @@ export default function Clients() {
         bgTheme={false}
         className="min-h-auto px-1 flex w-full border-zinc-500 border-opacity-20 items-center justify-between"
       >
-        <div className="flex gap-2 flex-1">
+        <motion.div 
+        initial={{ opacity: 0}}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="flex gap-2 flex-1">
           <Link
             className="opacity-80 px-5 flex-1 p-3 hover:opacity-100 bg-gradient-to-r from-rose-500 to-fuchsia-600 text-white rounded-md min-w-[4rem] flex justify-center"
             href={"clients/create"}
           >
             Criar
           </Link>
-        </div>
+        </motion.div>
       </Header.Root>
       <div className="w-full flex max-w-[70rem] flex-col gap-2">
         <div className="text-xl text-cyan-600 mt-5">Todos os meus clientes</div>

@@ -10,6 +10,7 @@ import Button from "@/components/button";
 import { useRef, useState } from "react";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { Accounts, useAccounts } from "@/hooks/useAccounts";
+import { motion } from "framer-motion";
 
 type CreateRegisterFormData = z.infer<typeof createRegisterFormSchema>;
 type OptionFinance = "INCOME" | "EXPENSE";
@@ -199,16 +200,17 @@ export const Create = () => {
         <span className="text-[1rem] font-semibold opacity-60">
           Selecione a conta
         </span>
-        <button
+        <motion.button
+          whileTap={{ scale: 0.97 }}
           onClick={handleOptionAccount}
           type="button"
-          className="bg-transparent border border-zinc-500 border-opacity-40 text-lg font-semibold w-full text-zinc-400 flex p-4 rounded"
+          className="bg-zinc-400 bg-opacity-10 text-lg font-semibold w-full text-zinc-400 flex p-4 rounded"
         >
           {optionAccount?.name || "Nenhuma conta selecionada!"}
-        </button>
-        <div
+        </motion.button>
+        <motion.div
           ref={refOptionAccount}
-          className="hidden overflow-auto text-white flex flex-col absolute top-[100%] h-[8rem] rounded mt-2 z-10 shadow-lg p-2 bg-zinc-700 w-full"
+          className="hidden overflow-auto text-white flex flex-col absolute top-[100%] h-[8rem] rounded mt-2 z-10 shadow-lg bg-zinc-500 bg-opacity-70 backdrop-blur-lg w-full"
         >
           {accounts &&
             accounts!.map((item: Accounts, index: number) => (
@@ -216,12 +218,12 @@ export const Create = () => {
                 key={index}
                 onClick={() => onChangeOptionAccount(item)}
                 type="button"
-                className="w-full flex p-2 hover:bg-cyan-500 rounded"
+                className="w-full flex p-3 opacity-60 hover:opacity-100 bg-zinc-900 bg-opacity-50"
               >
                 {item.name}
               </button>
             ))}
-        </div>
+        </motion.div>
       </div>
       <div className="flex gap-2 items-center w-full justify-between">
         <Button
@@ -237,12 +239,13 @@ export const Create = () => {
           {optionFinance === "INCOME" ? "Entrada" : "Saída"}
         </div>
       </div>
-      <Button
+      <motion.button
+        whileTap={{ scale: 0.97 }}
         type="submit"
-        className="z-2 text-white font-semibold text-lg bg-gradient-to-r from-cyan-500 via-cyan-400 to-sky-400 w-full mt-4 py-4 rounded"
+        className="z-2 text-white font-semibold text-lg bg-gradient-45 from-purple-500 to-blue-500 w-full mt-4 py-4 rounded"
       >
-        ENVIAR
-      </Button>
+        Enviar
+      </motion.button>
     </form>
   );
 };

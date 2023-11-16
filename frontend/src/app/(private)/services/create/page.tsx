@@ -55,6 +55,9 @@ export default function Create() {
 
   return (
     <S.Form
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0}}
+      transition={{ duration: 0.2 }}
       onSubmit={handleSubmit(addService)}
       className="m-auto gap-3 max-w-[30rem] flex flex-col w-full shadow p-4 rounded-md"
     >

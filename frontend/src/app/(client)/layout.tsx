@@ -7,7 +7,8 @@ import Button from "@/components/button";
 import Link from "next/link";
 import Footer from "@/components/footer";
 import { RiSunLine, RiMoonLine } from "react-icons/ri";
-import Loading from "@/components/loading"
+import Loading from "@/components/loading";
+import { AnimatePresence } from "framer-motion";
 
 interface layoutProps {
   children: React.ReactNode;
@@ -77,7 +78,7 @@ export default function Layout({ children }: layoutProps) {
           </Header.Root>
           <Suspense fallback={<Loading />}>
             <S.Content>
-              {children}
+              <AnimatePresence>{children}</AnimatePresence>
             </S.Content>
           </Suspense>
           <Footer className="border-t border-cyan-500 border-opacity-10">

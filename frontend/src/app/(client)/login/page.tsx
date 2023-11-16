@@ -97,6 +97,10 @@ export default function Login() {
     <>
       <S.Bubble />
       <Form
+        key={pathName}
+        exit={{ opacity: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         bgTheme={false}
         onSubmit={handleSubmit(onSubmit)}
         className={`rounded-md m-auto max-w-[27rem] h-auto relative bg-zinc-400 bg-opacity-10 backdrop-blur-3xl  ${fontOpenSans}`}

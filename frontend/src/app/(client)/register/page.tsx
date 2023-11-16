@@ -81,9 +81,15 @@ const useRegister = () => {
 
 export default function RegisterPage() {
   const { register, handleSubmit, createUser, errors } = useRegister();
+  const pathName = usePathname();
 
   return (
-    <>
+    <motion.div
+      key={pathName}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div
         className={`w-full h-[40rem] bg-cyan-100 relative overflow-hidden mx-auto  ${fontRoboto}`}
       >
@@ -174,6 +180,6 @@ export default function RegisterPage() {
           Enviar
         </Button>
       </Form>
-    </>
+    </motion.div>
   );
 }

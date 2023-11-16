@@ -1,4 +1,5 @@
 "use client";
+
 import Register from "@/components/register";
 import Link from "next/link";
 import useApiPrivate from "@/hooks/apiPrivate";
@@ -19,6 +20,8 @@ import Loading from "@/components/loading";
 import moment from "moment";
 import { IoMdAdd } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
+import { FaCreditCard } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 export type RegisterType = "INCOME" | "EXPENSE";
 
@@ -97,22 +100,37 @@ export default function Registers() {
       <div className="whitespace-nowrap w-full max-w-[50rem] flex-col m-auto flex w-auto">
         <div className="flex p-1 items-center justify-between">
           <div>
-            <div className="flex items-center gap-3">
+            <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex items-center gap-3">
+              <Link
+                href="/finance/accounts"
+                className="bg-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
+              >
+                <FaCreditCard />
+                Contas
+              </Link>
               <Link
                 href="/finance/create"
-                className="bg-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
+                className="bg-gradient-45 from-purple-500 to-blue-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
               >
                 <IoMdAdd />
                 Criar
               </Link>
-            </div>
+            </motion.div>
           </div>
-          <div className="flex gap-3 items-center w-auto backdrop-blur-md">
+          <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="flex gap-3 items-center w-auto backdrop-blur-md">
             <input className="focus:shadow rounded-lg w-full outline-none p-1 transition-shadow border-none p-3 bg-zinc-400 bg-opacity-10" />
             <button className="w-[4rem] h-[3rem] rounded-md opacity-70 hover:opacity-80 bg-cyan-400 items-center justify-center flex">
               <GoSearch size="20" className="text-white" />
             </button>
-          </div>
+          </motion.div>
         </div>
         <div className=" flex items-center flex-col p-1 h-auto w-full">
           <div className="w-full max-w-[60rem] flex flex-col gap-2">
@@ -164,9 +182,7 @@ export default function Registers() {
                       />
                       <Register.ButtonEdit
                         onClick={() =>
-                          router.push(
-                            `/finance/edit/${register.code}`
-                          )
+                          router.push(`/finance/edit/${register.code}`)
                         }
                       />
                     </Register.Compartiment>

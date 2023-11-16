@@ -7,7 +7,10 @@ import { BsArrowLeft } from "react-icons/bs";
 export default function CreateRegister() {
   return (
     <S.Container
-      className={`${fontOpenSans} m-auto flex flex-col max-w-[35rem] w-[100%] min-h-auto relative shadow p-1 rounded-md`}
+      initial={{ opacity: 0, x: 10}}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3 }}
+      className={`${fontOpenSans} m-auto flex flex-col max-w-[32rem] w-[100%] min-h-auto relative shadow p-1 rounded-md`}
     >
       <header
         className={`z-10 flex items-center justify-between rounded-md overflow-hidden`}
@@ -17,14 +20,13 @@ export default function CreateRegister() {
             href={"/finance"}
             className="p-3 w-[8rem] justify-center flex items-center gap-2 hover:gap-4 transition-[gap] rounded-md opacity-80 hover:opacity-100 bg-cyan-500 "
           >
-            <BsArrowLeft size="18"/>
+            <BsArrowLeft size="18" />
             Registros
           </Link>
         </div>
         <div
           className={
-            "justify-end flex gap-2 font-semibold opacity-100 px-2" +
-            `  `
+            "justify-end flex gap-2 font-semibold opacity-100 px-2" + `  `
           }
         >
           <div className="text-xl opacity-70 p-3">
