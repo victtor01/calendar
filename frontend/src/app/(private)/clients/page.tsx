@@ -20,6 +20,9 @@ import {
   Clients as Client,
   useClients as useClientsHook,
 } from "@/hooks/useClients";
+import { IoMdAdd } from "react-icons/io";
+import { GoSearch } from "react-icons/go";
+import { FaUser } from "react-icons/fa";
 
 const useClients = () => {
   const [itemDelete, setItemDelete] = useState<Client | null>(null);
@@ -59,26 +62,33 @@ export default function Clients() {
   const { clients } = useClientsHook().getClients();
 
   return (
-    <div className="flex flex-col m-auto">
-      <Header.Root
-        bgTheme={false}
-        className="min-h-auto px-1 flex w-full border-zinc-500 border-opacity-20 items-center justify-between"
-      >
-        <motion.div 
-        initial={{ opacity: 0}}
+    <div className="flex flex-col m-auto w-full max-w-[40rem] gap-4">
+      <motion.div
+        initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="flex gap-2 flex-1">
-          <Link
-            className="opacity-80 px-5 flex-1 p-3 hover:opacity-100 bg-gradient-to-r from-rose-500 to-fuchsia-600 text-white rounded-md min-w-[4rem] flex justify-center"
-            href={"clients/create"}
-          >
-            Criar
-          </Link>
-        </motion.div>
-      </Header.Root>
-      <div className="w-full flex max-w-[70rem] flex-col gap-2">
-        <div className="text-xl text-cyan-600 mt-5">Todos os meus clientes</div>
+        className="flex p-0 items-center justify-between"
+      >
+        <div>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/clients/create"
+              className="bg-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
+            >
+              <IoMdAdd />
+              Criar
+            </Link>
+          </div>
+        </div>
+        <div className="flex gap-3 items-center w-auto backdrop-blur-md">
+          <input className="focus:shadow rounded-lg w-full outline-none p-1 transition-shadow border-none p-3 bg-zinc-400 bg-opacity-10" />
+          <button className="w-[4rem] h-[3rem] rounded-md opacity-70 hover:opacity-80 bg-cyan-400 items-center justify-center flex">
+            <GoSearch size="20" className="text-white" />
+          </button>
+        </div>
+      </motion.div>
+
+      <div className="w-full flex max-w-[70rem] flex-col gap-2 ">
         {clients?.map((item: Client) => (
           <Register.Root key={item.id}>
             <Register.Compartiment>

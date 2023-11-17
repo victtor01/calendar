@@ -6,7 +6,7 @@ import styled from "styled-components";
 export const Container = styled(motion.div)`
   background-color: transparent;
   width: 100%;
-  max-width: 80rem;
+  max-width: 70rem;
   height: auto;
   margin: 3% auto;
   display: flex;
@@ -59,5 +59,29 @@ export const Bubble = styled.div<BubbleProps>`
 
 export const Modal = styled(motion.div)`
   background-color: ${({ theme }) => theme.secundary};
-  border: 1px solid  ${({ theme }) => theme.border};
+  border: 1px solid ${({ theme }) => theme.border};
 `;
+
+export const Circle = styled.circle`
+  opacity: 0.3;
+
+  stroke-dashoffset: 0;
+  stroke-width: 15%;
+  fill: none;
+`;
+
+export const Progress = styled(motion.circle)`
+  stroke-dashoffset: 0;
+  stroke-width: 15%;
+  fill: none;
+  stroke-linecap: round;
+`;
+
+export const ContentComponent = styled.div`
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  position: relative;
+
+`

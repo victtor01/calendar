@@ -127,7 +127,7 @@ export default function Create() {
         >
           Limpar
         </Button>
-        <Button className="opacity-80 bg-gradient-to-r from-rose-500 to-fuchsia-600 rounded p-6 flex-1 text-lg text-white">
+        <Button type="submit" className="opacity-80 bg-gradient-to-r from-rose-500 to-fuchsia-600 rounded p-6 flex-1 text-lg text-white">
           Concluído
         </Button>
       </div>

@@ -107,11 +107,11 @@ const variants = {
   open: {
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
-    left: '0%',
+    left: "0%",
   },
   hidden: {
-    borderTopRightRadius: '50%',
-    borderBottomRightRadius: '50%',
+    borderTopRightRadius: "50%",
+    borderBottomRightRadius: "50%",
     left: "-100%",
   },
 };
@@ -245,11 +245,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </button>
             </div>
           </Sidebar>
-          <Header.Root className="justify-between p-1 m-2 rounded-md w-auto">
+          <Header.Root
+            className="justify-between m-auto relative overflow-hidden rounded-[0px_0px_10px_10px] shadow w-auto "
+            style={{
+              width: "100%",
+            }}
+          >
+            <span className="absolute p-3 bg-cyan-400 bg-opacity-50 h-full w-[15rem] z-[-1] transform -skew-x-[-26deg] left-[-20px]"/>
             <Header.Division
               className={
-                "flex-none p-2 mx-2 bg-cyan-500 rounded-md font-semibold opacity-30 text-lg" +
-                ` ${fontRoboto}`
+                "flex-none p-2 mx-2 bg-cyan-500 rounded-md font-semibold text-lg" +
+                ` ${fontOpenSans}`
               }
             >
               Olá, Victor!

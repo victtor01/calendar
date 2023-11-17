@@ -17,13 +17,18 @@ import { useState } from "react";
 import { queryClient } from "@/hooks/queryClient";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/loading";
-import moment from "moment";
+import moment from "moment-timezone";
 import { IoMdAdd } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
 import { FaCreditCard } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+import 'moment/locale/pt-br';
+import 'moment-timezone';
+
 export type RegisterType = "INCOME" | "EXPENSE";
+
+moment.tz.setDefault('America/Sao_Paulo');
 
 interface Register {
   id: number;
@@ -173,10 +178,10 @@ export default function Registers() {
                     <Register.Compartiment>
                       <Register.Title>Data</Register.Title>
                       <Register.Content>
-                        {moment(register.date).format("DD / MM / YYYY")}
+                        {moment(register.date).tz('America/Sao_Paulo').fromNow()}
                       </Register.Content>
                     </Register.Compartiment>
-                    <Register.Compartiment className="flex-row flex-none text-zinc-100">
+                    <Register.Compartiment className="flex-row flex-none">
                       <Register.ButtonTrash
                         onClick={() => handleItemDelete(register)}
                       />
