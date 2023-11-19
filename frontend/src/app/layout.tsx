@@ -7,7 +7,7 @@ import "./globals.css";
 import { motion } from "framer-motion";
 
 const variants = {
-  pageInitial: { opacity: 0},
+  pageInitial: { opacity: 0 },
   pageAnimate: { opacity: 1 },
 };
 
@@ -20,10 +20,8 @@ export default function RootLayout({
     <QueryClientProvider client={queryClient}>
       <html lang="pt-br">
         <body>
-
-            <NextTopLoader color="#17919f" showSpinner={false} crawl={false} />
-            {children}
-
+          <NextTopLoader color="#17919f" showSpinner={false} crawl={false} />
+          {children}
         </body>
       </html>
     </QueryClientProvider>

@@ -38,8 +38,8 @@ interface Register {
   value: number;
   type: RegisterType;
   date: Date;
-  createAt: Date;
-  updateAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
   accountId: number;
 }
 
@@ -99,6 +99,8 @@ export default function Registers() {
   if (isError) {
     return null;
   }
+
+  console.log(registers)
 
   return (
     <>
@@ -178,7 +180,7 @@ export default function Registers() {
                     <Register.Compartiment>
                       <Register.Title>Data</Register.Title>
                       <Register.Content>
-                        {moment(register.date).tz('America/Sao_Paulo').fromNow()}
+                       {moment(register.createdAt).tz('America/Sao_Paulo').fromNow()}
                       </Register.Content>
                     </Register.Compartiment>
                     <Register.Compartiment className="flex-row flex-none">

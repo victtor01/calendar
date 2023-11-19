@@ -30,6 +30,10 @@ body {
 
 }
 
+/* .fc-scroller-harness {
+  background-color: red !important;
+} */
+
 .fc-header-toolbar {
   display: inline-block;
   padding: 4px 4px;
@@ -54,10 +58,14 @@ body {
   @aplly bg-red-700 !important;
 }
 
-.fc-scrollgrid,
-.fc-scrollgrid-section, .fc-scrollgrid-sync-table td, .fc-scrollgrid-sync-table table{
+.fc-scrollgrid, .fc-scrollgrid-section, .fc-scrollgrid-sync-table td, .fc-scrollgrid-sync-table table{
   @apply border-zinc-500 border-opacity-20 !important;
 }
+
+/* .fc-scrollgrid {
+  border: none !important;
+} */
+
 .fc-scrollgrid * {
   @Apply bg-red-200 border-none !important;
 }
@@ -71,8 +79,9 @@ body {
 }
 
 .fc-dayGridMonth-view {
-  @apply bg-zinc-100 border-none bg-opacity-10 !important;
-}
+  /*  @apply bg-zinc-100 border-none bg-opacity-10 !important; */
+   background-color: transparent !important;
+ }
 
 .fc-view-harness {
   background-color: transparent !important;
@@ -107,3 +116,4 @@ body {
 .fc-v-event {
   @apply bg-cyan-500 border-none;
 }
+

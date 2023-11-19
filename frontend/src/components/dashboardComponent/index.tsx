@@ -13,6 +13,7 @@ export default function DashboardComponent({
 }: DarhboardProps) {
   return (
     <S.Container
+      key={""}
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       {...props}

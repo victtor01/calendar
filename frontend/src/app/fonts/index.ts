@@ -1,4 +1,4 @@
-import { Roboto, Open_Sans, Inter } from "next/font/google";
+import { Roboto, Open_Sans, Inter, Varela_Round } from "next/font/google";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -13,8 +13,14 @@ const openSans = Open_Sans({
 const inter = Inter({
   subsets: ["latin"],
   weight: ["500", "700"],
-})
+});
+
+const valela = Varela_Round({
+  subsets: ["latin-ext"],
+  weight: ["400"],
+});
 
 export const fontRoboto = roboto.className;
 export const fontOpenSans = openSans.className;
 export const fontInter = inter.className;
+export const fontValela = valela.className;

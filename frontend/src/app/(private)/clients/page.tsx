@@ -4,7 +4,6 @@ import { ChangeEvent, useState } from "react";
 import Register from "@/components/register";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
-import Header from "@/components/header";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -22,7 +21,93 @@ import {
 } from "@/hooks/useClients";
 import { IoMdAdd } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
-import { FaUser } from "react-icons/fa";
+import { FaAngleRight, FaPhoneSquareAlt } from "react-icons/fa";
+import { MdAccessTime, MdEmail } from "react-icons/md";
+import moment from "moment-timezone";
+import * as S from "./style";
+import { fontValela } from "@/app/fonts";
+
+moment.locale("pt-br");
+
+const ClientComponent = ({ item, index }: { item: Client; index: number }) => {
+  const [showDetails, setShowDetails] = useState<boolean>(false);
+
+  const handleShowDetails = () => setShowDetails((prev) => !prev);
+
+  return (
+    <motion.div
+      key={index}
+      initial={{ opacity: 0, y: 9 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index / 4, type: "spring" }}
+      className="flex w-[20rem] h-auto flex-col gap-2"
+    >
+      <S.ClientPhoto
+        $src="cliente.png"
+        className="w-full h-[10rem] bg-zinc-500 bg-opacity-10 overflow-hidden"
+      />
+      <S.ClientContent
+        initial={{ maxHeight: "4.4rem" }}
+        animate={{
+          maxHeight: showDetails ? "8.4rem" : "4.6rem",
+        }}
+        transition={{
+          duration: 1,
+          type: "spring",
+        }}
+        className="bg-zinc-600 bg-opacity-30 shadow relative p-3 flex flex-col gap-1 overflow-hidden"
+      >
+        <h2 className={`text-lg font-semibold ${fontValela}`}>
+          {item.firstName}
+        </h2>
+        <motion.span className="text-md opacity-70 flex items-center gap-1">
+          <MdEmail />
+          {item?.email}
+        </motion.span>
+        <button
+          onClick={handleShowDetails}
+          className="absolute opacity-60 right-0 top-1 p-1 flex items-center gap-1"
+        >
+          <span className="text-sm">Detalhes</span>
+          <FaAngleRight
+            size="17"
+            className={`${
+              showDetails ? "rotate-[90deg]" : "rotate-[0deg]"
+            } transition-[transform]`}
+          />
+        </button>
+        <motion.span
+          animate={{
+            opacity: showDetails ? 0.7 : 0,
+            y: showDetails ? 0 : 10,
+          }}
+          transition={{
+            delay: showDetails ? 0 : 0.2,
+          }}
+          className="text-md opacity-70 flex items-center gap-1"
+        >
+          <FaPhoneSquareAlt />
+          <span>{item.phone}</span>
+        </motion.span>
+        <motion.span
+          animate={{
+            opacity: showDetails ? 0.7 : 0,
+            y: showDetails ? 0 : 10,
+          }}
+          transition={{
+            delay: showDetails ? 0.2 : 0,
+          }}
+          className="text-md opacity-70 flex items-center gap-1"
+        >
+          <MdAccessTime />
+          <span>
+            {moment(item.createAt).format("dddd,  DD [de] MMMM [de] YYYY")}
+          </span>
+        </motion.span>
+      </S.ClientContent>
+    </motion.div>
+  );
+};
 
 const useClients = () => {
   const [itemDelete, setItemDelete] = useState<Client | null>(null);
@@ -51,7 +136,6 @@ const useClients = () => {
 };
 
 export default function Clients() {
-  const { push } = useRouter();
   const {
     itemDelete,
     handleItemDelete,
@@ -62,7 +146,7 @@ export default function Clients() {
   const { clients } = useClientsHook().getClients();
 
   return (
-    <div className="flex flex-col m-auto w-full max-w-[40rem] gap-4">
+    <div className="flex flex-col p-4 w-full  gap-4">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -88,28 +172,9 @@ export default function Clients() {
         </div>
       </motion.div>
 
-      <div className="w-full flex max-w-[70rem] flex-col gap-2 ">
-        {clients?.map((item: Client) => (
-          <Register.Root key={item.id}>
-            <Register.Compartiment>
-              <Register.Title>Primeiro nome</Register.Title>
-              <Register.Content>{item.firstName}</Register.Content>
-            </Register.Compartiment>
-            <Register.Compartiment>
-              <Register.Title>Email</Register.Title>
-              <Register.Content>{item?.email || "-"}</Register.Content>
-            </Register.Compartiment>
-            <Register.Compartiment>
-              <Register.Title>Telefone</Register.Title>
-              <Register.Content>{item.phone || "-"}</Register.Content>
-            </Register.Compartiment>
-            <Register.Compartiment className="flex-none flex-row">
-              <Register.ButtonTrash onClick={() => handleItemDelete(item)} />
-              <Register.ButtonEdit
-                onClick={() => push(`/clients/${item.code}`)}
-              />
-            </Register.Compartiment>
-          </Register.Root>
+      <div className="w-full flex flex gap-2 flex-wrap">
+        {clients?.map((item: Client, index: number) => (
+          <ClientComponent item={item} index={index} />
         ))}
         {!clients ||
           (clients?.length < 1 && (

@@ -16,7 +16,7 @@ interface layoutProps {
 
 const darkTheme = {
   primary: "#101010",
-  secundary: "#222225",
+  secundary: "#1f1d2b",
   text: "#ebe8e8",
   shadow: "#202020",
   lightPurple: "#4B0082",
@@ -64,13 +64,13 @@ export default function Layout({ children }: layoutProps) {
             <Header.Division className="justify-end">
               <Link
                 href={"/login"}
-                className="rounded py-2 px-3 border border-cyan-500 text-lg font-semibold opacity-70 hover:opacity-100 text-cyan-500 hover:bg-cyan-500 hover:text-white hover:border-none"
+                className="rounded py-3 px-4 border border-cyan-500 text-lg font-semibold opacity-70 hover:opacity-100 text-cyan-500 hover:bg-cyan-500 hover:text-white"
               >
                 Fazer login
               </Link>
               <Link
                 href={"/register"}
-                className="py-3 px-4 text-xl text-[#fff] bg-gradient-to-r from-rose-500 to-fuchsia-600 opacity-90 hover:opacity-100 font-semibold transition-opacity duration-200 hover:scale-102 rounded"
+                className="py-3 px-4 text-xl text-[#fff] bg-gradient-45 from-purple-500 to-cyan-500 opacity-90 hover:opacity-100 font-semibold transition-opacity duration-200 hover:scale-102 rounded"
               >
                 Assinar
               </Link>

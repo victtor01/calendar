@@ -6,13 +6,14 @@ import styled from "styled-components";
 export const Container = styled(motion.div)`
   background-color: transparent;
   width: 100%;
-  max-width: 70rem;
+  max-width: 90rem;
   height: auto;
-  margin: 3% auto;
+  margin: auto;
   display: flex;
   flex-direction: column;
   position: relative;
   gap: 1rem;
+  padding: 1rem;
 `;
 
 export const Component = styled.div`
@@ -41,6 +42,7 @@ export const Bubble = styled.div<BubbleProps>`
   overflow: hidden;
   top: 0;
   left: 0;
+  pointer-events: none;
 
   &::before {
     content: "";
@@ -60,6 +62,20 @@ export const Bubble = styled.div<BubbleProps>`
 export const Modal = styled(motion.div)`
   background-color: ${({ theme }) => theme.secundary};
   border: 1px solid ${({ theme }) => theme.border};
+  position: relative;
+
+  &::before {
+    content: "";
+    width: 99%;
+    position: absolute;
+    background-color: red;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    height: 0.4rem;
+    border-radius: 0.3rem 0.3rem 0 0;
+    background: linear-gradient(45deg, #6157ff, #74febd);
+  }
 `;
 
 export const Circle = styled.circle`
@@ -83,5 +99,9 @@ export const ContentComponent = styled.div`
   align-items: center;
   display: flex;
   position: relative;
+`;
 
-`
+export const ComponentRegister = styled(motion.div)`
+  border-bottom: 2px solid ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.secundary};
+`;
