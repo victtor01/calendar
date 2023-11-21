@@ -10,6 +10,7 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
+  Legend,
 } from "recharts";
 import * as S from "./style";
 import { fontOpenSans } from "@/app/fonts";
@@ -18,9 +19,9 @@ const data = [
   { id: 1, value: 100, date: moment().format("YYYY-MM-DD"), despesa: 34 },
   {
     id: 2,
-    value: 120,
+    value: 150,
     date: moment().add(1, "days").format("YYYY-MM-DD"),
-    despesa: 69,
+    despesa: 120,
   },
   {
     id: 3,
@@ -28,19 +29,38 @@ const data = [
     date: moment().add(2, "days").format("YYYY-MM-DD"),
     despesa: 57,
   },
+  {
+    id: 3,
+    value: 150,
+    date: moment().add(3, "days").format("YYYY-MM-DD"),
+    despesa: 65,
+  },
 ];
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip backdrop-blur-xl flex p-3 flex-col shadow-md bg-zinc-700 bg-opacity-5">
+        <p className="label">{`${label} : ${payload[0].value}`}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
 
 export default function Finance() {
   return (
-    <motion.div className="flex flex-1 p-3 rounded-md flex-col z-40 backdrop-blur-xl">
+    <motion.div className="flex flex-1 p-3 ounded-md flex-col z-40 backdrop-blur-xl">
       <S.TitleComponent>
-        <div className={`font-semibold opacity-70 ${fontOpenSans}`}>
-          Entrada e saída de capital
+        <div
+          className={`font-semibold opacity-70 p-2 flex-col ${fontOpenSans}`}
+        >
+          <h2>Entrada e saída de capital</h2>
+          <div className="text-cyan-300 text-xl">22.3%</div>
         </div>
-        <div className="text-cyan-300">22.3%</div>
       </S.TitleComponent>
-
-      <ResponsiveContainer width="98%" height="100%" className="m-auto">
+      <ResponsiveContainer height="100%" className="m-auto">
         <AreaChart data={data} className="overflow-visible">
           <defs>
             <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
@@ -52,18 +72,9 @@ export default function Finance() {
               <stop offset="200%" stopColor="#db1111" stopOpacity="0.0" />
             </linearGradient>
           </defs>
-          <Area
-            /* type={"monotone"} */
-            dataKey="value"
-            stroke="#64C9F3"
-            fill="url(#color)"
-          />
-          <Area
-            /* type={"monotone"} */
-            dataKey="despesa"
-            stroke="#ff3300"
-            fill="url(#color-despesa)"
-          />
+          <Area dataKey="value" stroke="#64C9F3" fill="url(#color)" />
+          <Area dataKey="despesa" stroke="#ff3300" fill="url(#color-despesa)" />
+          <Tooltip content={<CustomTooltip />} />
           <XAxis
             dataKey="date"
             axisLine={false}
@@ -71,7 +82,10 @@ export default function Finance() {
             opacity={0.8}
             height={30}
             padding={"gap"}
+            tickMargin={10}
+            minTickGap={5}
           />
+          <Legend />
           <YAxis
             dataKey="value"
             axisLine={false}
@@ -81,8 +95,8 @@ export default function Finance() {
             className="bg-red-200"
             tickFormatter={(number) => `${number.toFixed(2)}`}
             opacity={0.8}
+            tickMargin={10}
           />
-          <Tooltip />
           <CartesianGrid opacity={0.1} vertical={false} />
         </AreaChart>
       </ResponsiveContainer>

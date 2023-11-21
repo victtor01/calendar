@@ -6,70 +6,17 @@ import { Clients } from "@/hooks/useClients";
 
 const useDetails = (code: string) => {
   const api = useApiPrivate();
-  const [showAllClients, setShowAllClients] = useState<boolean>(false);
 
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
 
-  const handleShowModalDelete = () => setShowModalDelete((prev) => !prev);
-  const handleAllClients = () => setShowAllClients((prev) => !prev);
+  const [showModalFinish, setShowModalFinish] = useState<boolean>(false);
 
-  const [contentEventsComments, setContentEventsComments] =
-    useState<string>("");
+  const handleShowModalFinish = () => setShowModalFinish((prev) => !prev);
+  const handleShowModalDelete = () => setShowModalDelete((prev) => !prev);
 
   const { data: event, isLoading } = useQuery(["event", code], async () => {
     return (await api.get(`/events/find/${code}`)).data;
   });
-
-  const { data: allClients, isLoading: isLoadingClients } = useQuery({
-    queryKey: ["clients"],
-    queryFn: async () => {
-      return (await api.get("/clients")).data;
-    },
-  });
-
-  const clients = showAllClients
-    ? allClients
-    : event?.clients
-    ? event?.clients
-    : [];
-
-  function onChangeContentEventsComments(e: ChangeEvent<HTMLInputElement>) {
-    setContentEventsComments(e.target.value.toString());
-  }
-
-  async function handleAddNewClient(id: number) {
-    const clientsSelecteds = event.clients.map((client: Clients) => client.id);
-
-    if (clientsSelecteds.includes(id)) {
-      await api.put(`/events/update/connections/${event.id}`, {
-        disconnections: [id],
-      });
-      queryClient.invalidateQueries(["event", event.code]);
-      return;
-    }
-
-    await api.put(`/events/update/connections/${event.id}`, {
-      connections: [id],
-    });
-
-    queryClient.invalidateQueries(["event", event.code]);
-  }
-
-  async function createEventsComments() {
-    const comment = (
-      await api.post("/events-comments/create", {
-        content: contentEventsComments,
-        eventId: event.id,
-      })
-    ).data;
-
-    queryClient.setQueryData(["event", code], (prevData: any) => {
-      return {
-        ...prevData,
-        comments: prevData.comments ? [comment, ...prevData.comments] : [],
-      };
-    });
-  }
 
   async function deleteEvent() {
     const res = await api.delete(`/events/delete/${event.id}`);
@@ -83,23 +30,10 @@ const useDetails = (code: string) => {
   }
 
   return {
-    comments: {
-      onChangeContentEventsComments,
-      contentEventsComments,
-      createEventsComments,
-    },
 
     query: {
       event,
       isLoading,
-    },
-
-    clients: {
-      clients,
-      showAllClients,
-      isLoadingClients,
-      handleAddNewClient,
-      handleAllClients,
     },
 
     modalDelete: {
@@ -110,6 +44,12 @@ const useDetails = (code: string) => {
     events: {
       deleteEvent,
     },
+
+    modalFinish: {
+      showModalFinish,
+      handleShowModalFinish,
+      setShowModalFinish,
+    }
   };
 };
 

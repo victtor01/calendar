@@ -8,13 +8,12 @@ import { Sidebar } from "@/components/sidebar";
 import { IconType } from "react-icons";
 import {
   BsCalendarRange,
-  BsFillCalendarRangeFill,
   BsFillGearFill,
   BsHouse,
 } from "react-icons/bs";
 import { FiTrendingUp } from "react-icons/fi";
 import Link from "next/link";
-import { fontInter, fontOpenSans, fontRoboto, fontValela } from "../fonts";
+import { fontOpenSans, fontRoboto, fontValela } from "../fonts";
 import { Suspense, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BiSolidGroup } from "react-icons/bi";
@@ -123,7 +122,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     logout,
     currentPath,
     sidebarShow,
-    widthSidebar,
     IconTheme,
     theme,
   } = useLayout();

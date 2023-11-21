@@ -23,12 +23,12 @@ import { GoSearch } from "react-icons/go";
 import { FaCreditCard } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-import 'moment/locale/pt-br';
-import 'moment-timezone';
+import "moment/locale/pt-br";
+import "moment-timezone";
 
 export type RegisterType = "INCOME" | "EXPENSE";
 
-moment.tz.setDefault('America/Sao_Paulo');
+moment.tz.setDefault("America/Sao_Paulo");
 
 interface Register {
   id: number;
@@ -100,18 +100,17 @@ export default function Registers() {
     return null;
   }
 
-  console.log(registers)
-
   return (
     <>
       <div className="whitespace-nowrap w-full max-w-[50rem] flex-col m-auto flex w-auto">
         <div className="flex p-1 items-center justify-between">
           <div>
-            <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex items-center gap-3">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="flex items-center gap-3"
+            >
               <Link
                 href="/finance/accounts"
                 className="bg-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
@@ -128,11 +127,12 @@ export default function Registers() {
               </Link>
             </motion.div>
           </div>
-          <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="flex gap-3 items-center w-auto backdrop-blur-md">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="flex gap-3 items-center w-auto backdrop-blur-md"
+          >
             <input className="focus:shadow rounded-lg w-full outline-none p-1 transition-shadow border-none p-3 bg-zinc-400 bg-opacity-10" />
             <button className="w-[4rem] h-[3rem] rounded-md opacity-70 hover:opacity-80 bg-cyan-400 items-center justify-center flex">
               <GoSearch size="20" className="text-white" />
@@ -143,12 +143,10 @@ export default function Registers() {
           <div className="w-full max-w-[60rem] flex flex-col gap-2">
             {registers &&
               registers?.map((register: Register, index: number) => {
-                const type = register.type === "INCOME" ? "Entrada" : "Saída";
                 const classType =
                   register.type === "INCOME"
-                    ? "text-emerald-500"
-                    : "text-red-400";
-
+                    ? "bg-emerald-500 text-emerald-500"
+                    : "bg-rose-500 text-rose-700";
                 return (
                   <Register.Root
                     key={register.id}
@@ -164,23 +162,29 @@ export default function Registers() {
                         {register?.description}
                       </Register.Content>
                     </Register.Compartiment>
-                    <Register.Compartiment>
+                    {/*  <Register.Compartiment>
                       <Register.Title>Status</Register.Title>
                       <Register.Content className={classType}>
                         {type}
                       </Register.Content>
-                    </Register.Compartiment>
+                    </Register.Compartiment> */}
                     <Register.Compartiment>
                       <Register.Title>Valor</Register.Title>
-                      <Register.Content className={classType}>
-                        {register.type === "INCOME" ? "+ " : "- "}
-                        {convertToRealMoney.format(register.value)}
+                      <Register.Content>
+                        <div
+                          className={` p-2 w-auto min-w-[5rem] flex justify-center bg-opacity-20 text-xs rounded font-semibold ${classType}`}
+                        >
+                          {register.type === "INCOME" ? "+ " : "- "}
+                          {convertToRealMoney.format(register.value)}
+                        </div>
                       </Register.Content>
                     </Register.Compartiment>
                     <Register.Compartiment>
                       <Register.Title>Data</Register.Title>
                       <Register.Content>
-                       {moment(register.createdAt).tz('America/Sao_Paulo').fromNow()}
+                        {moment(register.createdAt)
+                          .tz("America/Sao_Paulo")
+                          .fromNow()}
                       </Register.Content>
                     </Register.Compartiment>
                     <Register.Compartiment className="flex-row flex-none">

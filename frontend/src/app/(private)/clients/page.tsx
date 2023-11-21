@@ -46,65 +46,70 @@ const ClientComponent = ({ item, index }: { item: Client; index: number }) => {
         $src="cliente.png"
         className="w-full h-[10rem] bg-zinc-500 bg-opacity-10 overflow-hidden"
       />
-      <S.ClientContent
-        initial={{ maxHeight: "4.4rem" }}
-        animate={{
-          maxHeight: showDetails ? "8.4rem" : "4.6rem",
-        }}
-        transition={{
-          duration: 1,
-          type: "spring",
-        }}
-        className="bg-zinc-600 bg-opacity-30 shadow relative p-3 flex flex-col gap-1 overflow-hidden"
-      >
-        <h2 className={`text-lg font-semibold ${fontValela}`}>
-          {item.firstName}
-        </h2>
-        <motion.span className="text-md opacity-70 flex items-center gap-1">
-          <MdEmail />
-          {item?.email}
-        </motion.span>
-        <button
-          onClick={handleShowDetails}
-          className="absolute opacity-60 right-0 top-1 p-1 flex items-center gap-1"
-        >
-          <span className="text-sm">Detalhes</span>
-          <FaAngleRight
-            size="17"
-            className={`${
-              showDetails ? "rotate-[90deg]" : "rotate-[0deg]"
-            } transition-[transform]`}
-          />
-        </button>
-        <motion.span
+      <div className="relative max-h-[4.4rem] min-h-[4.4rem]">
+        <S.ClientContent
+          initial={{ maxHeight: "4.4rem" }}
           animate={{
-            opacity: showDetails ? 0.7 : 0,
-            y: showDetails ? 0 : 10,
+            maxHeight: showDetails ? "8.4rem" : "4.6rem",
           }}
           transition={{
-            delay: showDetails ? 0 : 0.2,
+            duration: 1,
+            type: "spring",
           }}
-          className="text-md opacity-70 flex items-center gap-1"
+          style={{
+            zIndex: showDetails ? 10 : 1,
+          }}
+          className={"bg-zinc-600 bg-opacity-30 absolute relative p-3 flex flex-col gap-1 overflow-hidden transition-shadow" + ` ${showDetails ? 'shadow-2xl' : 'shadow-none'}`}
         >
-          <FaPhoneSquareAlt />
-          <span>{item.phone}</span>
-        </motion.span>
-        <motion.span
-          animate={{
-            opacity: showDetails ? 0.7 : 0,
-            y: showDetails ? 0 : 10,
-          }}
-          transition={{
-            delay: showDetails ? 0.2 : 0,
-          }}
-          className="text-md opacity-70 flex items-center gap-1"
-        >
-          <MdAccessTime />
-          <span>
-            {moment(item.createAt).format("dddd,  DD [de] MMMM [de] YYYY")}
-          </span>
-        </motion.span>
-      </S.ClientContent>
+          <h2 className={`text-lg font-semibold ${fontValela}`}>
+            {item.firstName}
+          </h2>
+          <button
+            onClick={handleShowDetails}
+            className="absolute opacity-60 right-0 top-1 p-1 flex items-center gap-1"
+          >
+            <span className="text-sm">Detalhes</span>
+            <FaAngleRight
+              size="17"
+              className={`${
+                showDetails ? "rotate-[90deg]" : "rotate-[0deg]"
+              } transition-[transform]`}
+            />
+          </button>
+          <motion.span className="text-md opacity-70 flex items-center gap-1">
+            <MdEmail />
+            {item?.email}
+          </motion.span>
+          <motion.span
+            animate={{
+              opacity: showDetails ? 0.7 : 0,
+              y: showDetails ? 0 : 10,
+            }}
+            transition={{
+              delay: showDetails ? 0 : 0.2,
+            }}
+            className="text-md opacity-70 flex items-center gap-1"
+          >
+            <FaPhoneSquareAlt />
+            <span>{item.phone}</span>
+          </motion.span>
+          <motion.span
+            animate={{
+              opacity: showDetails ? 0.7 : 0,
+              y: showDetails ? 0 : 10,
+            }}
+            transition={{
+              delay: showDetails ? 0.2 : 0,
+            }}
+            className="text-md opacity-70 flex items-center gap-1"
+          >
+            <MdAccessTime />
+            <span>
+              {moment(item.createAt).format("dddd,  DD [de] MMMM [de] YYYY")}
+            </span>
+          </motion.span>
+        </S.ClientContent>
+      </div>
     </motion.div>
   );
 };

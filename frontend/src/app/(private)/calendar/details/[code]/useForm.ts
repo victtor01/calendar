@@ -1,4 +1,4 @@
-import { z } from "zod";
+/* import { z } from "zod";
 import { ControllerRenderProps, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import moment from "moment";
@@ -6,6 +6,7 @@ import { Event } from "../../../../../types/events";
 import { queryClient } from "@/hooks/queryClient";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 const createEventsFormSchema = z.object({
   name: z.string().nonempty("Preencha o nome!"),
@@ -28,7 +29,7 @@ export interface LabelFormEventsDataProps {
   default?: string;
 }
 
-export function useFormDetails(event: Event) {
+export function useFormDetails(code: string) {
   const {
     control,
     handleSubmit,
@@ -43,6 +44,10 @@ export function useFormDetails(event: Event) {
   const [editingClient, setEditingClient] = useState<boolean>(false);
 
   const api = useApiPrivate();
+
+  const { data: event, isLoading } = useQuery(["event", code], async () => {
+    return (await api.get(`/events/find/${code}`)).data;
+  });
 
   const labelFormEventsData = [
     { name: "name", span: "Nome" },
@@ -69,6 +74,7 @@ export function useFormDetails(event: Event) {
   ];
 
   async function updateEvents(data: CreateEventsFormData) {
+
     const updated = (await api.put(`/events/update/${event.id}`, data)).data;
     const { code } = event;
     queryClient.setQueryData(["event", code], (prevData: any) => {
@@ -101,5 +107,7 @@ export function useFormDetails(event: Event) {
       handleEditingClient,
       editingClient,
     },
+    data: { event, isLoading },
   };
 }
+ */

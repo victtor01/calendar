@@ -1,17 +1,38 @@
 "use client";
 
 import DashboardComponent from "@/components/dashboardComponent";
+import { AnimatePresence, motion } from "framer-motion";
 import { fontOpenSans } from "@/app/fonts";
 import Events from "./sendEmail";
-import NewClients from "./newClients";
+import NewClients from "./clients";
 import NewServices from "./newServices";
 import Finance from "./finance";
 import Registers from "./registers";
-import { Button } from "@nextui-org/react";
-import * as S from "./style";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
+import * as S from "./style";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  YAxis,
+} from "recharts";
+
+function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+const data: any = [];
+for (let i = 0; i < 15; i++) {
+  data.push({
+    id: i,
+    value: getRandomInt(0, 2000),
+  });
+}
 
 function useHome() {
   const [showModalFilter, setShowModalFilter] = useState<boolean>(false);
@@ -123,16 +144,38 @@ export default function Home() {
         <DashboardComponent
           key={"component1"}
           transition={{ delay: 0.5 }}
-          className=" w-auto min-h-[12rem]"
+          className=" w-auto min-h-[12rem] p-3"
         >
           <S.Bubble $top="20%" />
-
-          <div className="flex flex-1 p-3 rounded-md flex-col z-40 backdrop-blur-xl">
-            <S.TitleComponent>
-              <div>Teste</div>
-              <div>25.3%</div>
-            </S.TitleComponent>
-          </div>
+          <S.TitleComponent>
+            <div
+              className={`font-semibold opacity-70 px-4 flex-col py-2 ${fontOpenSans}`}
+            >
+              <h2>Entrada e saída de capital</h2>
+              <div className="text-cyan-300 text-xl">22.3%</div>
+            </div>
+          </S.TitleComponent>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart width={300} height={100} data={data}>
+              <Line
+                type="monotone"
+                dataKey="value"
+                stroke="#8884d8"
+                strokeWidth={3}
+              />
+              <Tooltip />
+              <YAxis
+                dataKey="value"
+                axisLine={false}
+                tickLine={false}
+                tickCount={8}
+                width={70}
+                tickFormatter={(number) => `${number.toFixed(2)}`}
+                opacity={0.8}
+              />
+              <CartesianGrid opacity={0.1} vertical={false} />
+            </LineChart>
+          </ResponsiveContainer>
         </DashboardComponent>
         <DashboardComponent
           key={"component2"}

@@ -1,3 +1,4 @@
+import { Clients } from './clients';
 export interface Event {
   id: number;
   name: string;
@@ -8,6 +9,7 @@ export interface Event {
   allDay?: boolean;
   color?: string;
   comments?: CommentsEvents[];
+  clients?: Clients[];
 }
 
 interface CommentsEvents {

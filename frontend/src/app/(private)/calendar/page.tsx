@@ -158,53 +158,55 @@ export default function Calendar() {
     >
       <S.Content className="flex gap-4 p-4 shadow flex-col justify-center max-w-[95rem] mx-auto rounded-lg">
         <Header />
-        <div className="col-span-8 max-h-auto w-full max-w-[80rem]">
-          <FullCalendar
-            plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-            headerToolbar={{
-              left: "prev,next today",
-              center: "title",
-              right: "dayGridMonth,timeGridWeek",
-            }}
-            events={
-              allEvents?.map((event: Event) => {
-                const { name, ...rest } = event;
-                return {
-                  title: event.name,
-                  ...rest,
-                };
-              }) as EventSourceInput
-            }
-            nowIndicator={true}
-            editable={true}
-            droppable={true}
-            selectable={true}
-            selectMirror={true}
-            height={"auto"}
-            eventDrop={handleEventReceive}
-            drop={(data) => addEvent(data)}
-            eventClick={(data: any) => eventDetails(data)}
-            eventClassNames={"p-2 m-1 gap-2 overflow-hidden"}
-          />
-        </div>
-        <div
-          id="draggable-el"
-          className="min-w-[12rem] rounded-md mt-16 gap-2 flex flex-col"
-        >
-          <h1 className="font-bold text-lg p-2 rounded text-center text-white bg-cyan-800">
-            Modelos de eventos
-          </h1>
-          {eventsTemplates?.map((event: EventsTemplates) => (
-            <div
-              id={event.id.toString()}
-              title={event.name}
-              key={event.id}
-              className="fc-event w-full p-2 overflow-hidden flex bg-cyan-500 text-white relative rounded"
-            >
-              <span className="absolute left-0 top-0 h-full w-1" />
-              {event.name}
-            </div>
-          ))}
+        <div className="flex flex-1 gap-2">
+          <div className="col-span-8 max-h-auto w-full max-w-[80rem]">
+            <FullCalendar
+              plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+              headerToolbar={{
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek",
+              }}
+              events={
+                allEvents?.map((event: Event) => {
+                  const { name, ...rest } = event;
+                  return {
+                    title: event.name,
+                    ...rest,
+                  };
+                }) as EventSourceInput
+              }
+              nowIndicator={true}
+              editable={true}
+              droppable={true}
+              selectable={true}
+              selectMirror={true}
+              height={"auto"}
+              eventDrop={handleEventReceive}
+              drop={(data) => addEvent(data)}
+              eventClick={(data: any) => eventDetails(data)}
+              eventClassNames={"p-2 m-1 gap-2 overflow-hidden"}
+            />
+          </div>
+          <div
+            id="draggable-el"
+            className="min-w-[12rem] roun/ded-md mt-16 gap-2 flex flex-col"
+          >
+            <h1 className="font-bold text-lg p-2 rounded text-center text-white bg-cyan-800">
+              Modelos de eventos
+            </h1>
+            {eventsTemplates?.map((event: EventsTemplates) => (
+              <div
+                id={event.id.toString()}
+                title={event.name}
+                key={event.id}
+                className="fc-event w-full p-2 overflow-hidden flex bg-cyan-500 text-white relative rounded"
+              >
+                <span className="absolute left-0 top-0 h-full w-1" />
+                {event.name}
+              </div>
+            ))}
+          </div>
         </div>
       </S.Content>
     </motion.main>

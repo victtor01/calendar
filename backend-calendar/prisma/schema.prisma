@@ -27,6 +27,12 @@ enum RegisterType {
   EXPENSE
 }
 
+enum EventsStatus {
+  ACTIVATED
+  CONCLUDED
+  FILED
+}
+
 model users {
   id        Int      @id @default(autoincrement())
   key       String   @unique @default(uuid())
@@ -129,12 +135,6 @@ model eventsTemplates {
   updatedAt   DateTime @default(now())
   userId      Int
   user        users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-enum EventsStatus {
-  ACTIVATED
-  CONCLUDED
-  FILED
 }
 
 model events {

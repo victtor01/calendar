@@ -77,7 +77,7 @@ const useEdit = (code: string) => {
     setOnMessageSucess("Registro atualizado com sucesso!");
 
     setTimeout(() => {
-      push("/finance/registers");
+      push("/finance");
     }, 1000);
   };
 
