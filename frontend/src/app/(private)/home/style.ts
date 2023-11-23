@@ -82,13 +82,13 @@ export const Circle = styled.circle`
   opacity: 0.3;
 
   stroke-dashoffset: 0;
-  stroke-width: 15%;
+  stroke-width: 10%;
   fill: none;
 `;
 
 export const Progress = styled(motion.circle)`
   stroke-dashoffset: 0;
-  stroke-width: 15%;
+  stroke-width: 10%;
   fill: none;
   stroke-linecap: round;
 `;

@@ -63,8 +63,6 @@ function useFinance() {
     finance?.forEach((item: Sumary) => {
       const day = moment(item.createdAt).format("DD/MM/YYYY");
       const itemSum = Number(item._sum.value) || 0;
-  
-      console.log(day)
 
       const existingIndex = data.findIndex(
         (entry) => moment(entry.date, "DD/MM/YYYY").format("DD/MM/YYYY") === day
@@ -82,8 +80,7 @@ function useFinance() {
         data.push(entry);
       }
     });
-  
-    console.log(data);
+
     return data;
   })();
 
