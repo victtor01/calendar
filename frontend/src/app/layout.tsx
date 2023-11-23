@@ -4,12 +4,8 @@ import { queryClient } from "@/hooks/queryClient";
 import NextTopLoader from "nextjs-toploader";
 import "../styles/nprogress.css";
 import "./globals.css";
-import { motion } from "framer-motion";
-
-const variants = {
-  pageInitial: { opacity: 0 },
-  pageAnimate: { opacity: 1 },
-};
+import "moment/locale/pt-br";
+import "moment-timezone";
 
 export default function RootLayout({
   children,

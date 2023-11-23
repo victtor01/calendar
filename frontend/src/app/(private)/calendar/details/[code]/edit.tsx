@@ -10,10 +10,11 @@ import { z } from "zod";
 import { ControllerRenderProps, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import moment from "moment";
-import { Event } from "../../../../../types/events";
 import { queryClient } from "@/hooks/queryClient";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useState } from "react";
+import { Event } from "@/types/events";
+import { AnimatePresence, motion } from "framer-motion";
 
 const createEventsFormSchema = z.object({
   name: z.string().nonempty("Preencha o nome!"),
@@ -51,10 +52,6 @@ export function useFormDetails(event: Event) {
   const [editingClient, setEditingClient] = useState<boolean>(false);
 
   const api = useApiPrivate();
-
-  /*  const { data: event, isLoading } = useQuery(["event", code], async () => {
-    return (await api.get(`/events/find/${code}`)).data;
-  }); */
 
   const labelFormEventsData = [
     { name: "name", span: "Nome" },
@@ -250,23 +247,31 @@ export default function Edit({ event }: { event: Event }) {
         </Label.Content>
       </Label.Root>
       <div className="flex w-full gap-2 justify-between">
-        {editingClient && (
-          <div className="flex flex-1 gap-2">
-            <Button
-              onClick={() => reset()}
-              type="button"
-              className="rounded flex p-3 "
+        <AnimatePresence>
+          {editingClient && (
+            <motion.div
+              key={"div-submit-edit"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-1 gap-2"
             >
-              Limpar
-            </Button>
-            <Button
-              type="submit"
-              className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded text-white flex justify-center p-3"
-            >
-              Salvar
-            </Button>
-          </div>
-        )}
+              <Button
+                onClick={() => reset()}
+                type="button"
+                className="rounded flex p-3 "
+              >
+                Limpar
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded text-white flex justify-center p-3"
+              >
+                Salvar
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </form>
   );

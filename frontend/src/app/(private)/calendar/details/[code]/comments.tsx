@@ -5,10 +5,10 @@ import Input from "@/components/input/input";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
 import { Event } from "@/types/events";
-import { Button } from "@nextui-org/react";
 import { ChangeEvent, useState } from "react";
 import { BsFillSendFill, BsListNested } from "react-icons/bs";
 import moment from "moment-timezone";
+import { motion } from "framer-motion";
 
 interface CommentsProps {
   event: Event;
@@ -53,6 +53,7 @@ export default function Comments({ event }: CommentsProps) {
     contentEventsComments,
     createEventsComments,
   } = useComments({ event });
+
   return (
     <form className="flex flex-col max-w-[30rem] w-full gap-2 justify-center  mx-auto items-center">
       <div
@@ -69,17 +70,21 @@ export default function Comments({ event }: CommentsProps) {
             placeholder="Exemple"
             className="w-full p-3 rounded border border-zinc-500 border-opacity-20 bg-white bg-opacity-50 outline-none"
           />
-          <Button
-            onClick={createEventsComments}
+          <motion.button
             type="button"
+            whileTap={{ scale: 0.95 }}
+            onClick={createEventsComments}
             className="w-14 flex items-center justify-center h-12 bg-cyan-500 rounded text-white "
           >
             <BsFillSendFill />
-          </Button>
+          </motion.button>
         </div>
         <div className="flex flex-col mt-2 gap-1 w-full flex-1 max-h-[30rem] overflow-auto">
           {event?.comments?.map((item: any, index: any) => (
-            <div
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: index / 10 }}
               key={index}
               className="flex flex-col gap-2 bg-gray-400 bg-opacity-10 border border-zinc-300 border-opacity-10 opacity-80 hover:opacity-100 justify-center p-3 pl-4 relative min-h-auto"
             >
@@ -93,7 +98,7 @@ export default function Comments({ event }: CommentsProps) {
                 <span className="bg-cyan-600 h-full w-1 absolute top-0 left-0" />
                 <div className="flex-1 flex text-justify">{item.content}</div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

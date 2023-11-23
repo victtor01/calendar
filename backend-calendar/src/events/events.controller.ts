@@ -16,6 +16,14 @@ import { EventsService } from './events.service';
 import { UpdateEventsDto } from './dto/update-events.dto';
 import { UpdateConnectManyDto } from './dto/update-connect-many.dto';
 
+/* 
+ / => Pegar todos
+ /find/week => Pegar os registros da semana
+ /find/:param => Pegar por código
+ /create => Criar Novo registro
+ /update/:id => Atualizar Registro
+*/
+
 @Controller('events')
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
@@ -38,6 +46,19 @@ export class EventsController {
     return await this.eventsService.findOne({
       userId: req.user.id,
       code: identifier,
+    });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('find-by-date')
+  async findByDate(
+    @Body() data: { start: string; end: string },
+    @Request() req: { user: User },
+  ) {
+    return await this.eventsService.findByDate({
+      userId: +req.user.id,
+      start: new Date(data.start),
+      end: new Date(data.end),
     });
   }
 
@@ -87,5 +108,19 @@ export class EventsController {
     const { ids } = array;
     const userId = Number(req.user.id);
     return await this.eventsService.deleteMany({ ids, userId });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Put('connect-services/:id')
+  async connectService(
+    @Body() data: { serviceId: number },
+    @Request() req: { user: User },
+    @Param('id') eventId: number,
+  ) {
+    return await this.eventsService.connectService({
+      eventId: +eventId,
+      serviceId: +data.serviceId,
+      userId: +req.user.id,
+    });
   }
 }

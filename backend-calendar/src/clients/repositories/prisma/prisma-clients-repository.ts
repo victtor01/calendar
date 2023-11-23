@@ -12,6 +12,9 @@ export class PrismaClientsRepository implements ClientsRepository {
   async findAll(userId: number): Promise<Clients[]> {
     return await this.prisma.clients.findMany({
       where: { userId },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
@@ -37,6 +40,6 @@ export class PrismaClientsRepository implements ClientsRepository {
       },
     });
 
-    return !!response
+    return !!response;
   }
 }

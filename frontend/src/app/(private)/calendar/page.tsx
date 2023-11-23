@@ -1,4 +1,5 @@
 "use client";
+
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -104,7 +105,7 @@ const useCalendar = () => {
 
     await api.post("/events/create", {
       name: data.draggedEl.innerText,
-      description: "Teste",
+      description: "",
       allDay: data.allDay,
       start: data.date.toISOString(),
       end: data.date.toISOString(),

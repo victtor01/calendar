@@ -6,11 +6,7 @@ import Cookies from "js-cookie";
 import * as S from "./style";
 import { Sidebar } from "@/components/sidebar";
 import { IconType } from "react-icons";
-import {
-  BsCalendarRange,
-  BsFillGearFill,
-  BsHouse,
-} from "react-icons/bs";
+import { BsCalendarRange, BsFillGearFill, BsHouse } from "react-icons/bs";
 import { FiTrendingUp } from "react-icons/fi";
 import Link from "next/link";
 import { fontOpenSans, fontRoboto, fontValela } from "../fonts";
@@ -25,6 +21,7 @@ import { PiSuitcaseSimple } from "react-icons/pi";
 import Loading from "@/components/loading";
 import Header from "@/components/header";
 import UserComponents from "@/components/userComponents";
+import Image from "next/image";
 
 /* #1f1d2b */
 
@@ -145,11 +142,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 }
               >
                 <div>
-                  <img
-                    src="logo3.png"
+                  <Image
+                    src="/logo3.png"
                     className="rounded-full"
                     width={40}
                     height={40}
+                    alt="image-logo"
                   />
                 </div>
                 <span className="hidden lg:flex">CalendarUD</span>
@@ -168,11 +166,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link
                     key={name}
                     href={href}
-                    className={`flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded transition-all ${
+                    className={`flex-nowrap flex items-center gap-2 text-md opacity-80 hover:opacity-100 p-1 rounded transition-all ${
                       selected ? "text-cyan-500 gap-5" : ""
                     }`}
                   >
-                    <Icon size={"20"} className="min-w-[3rem]" />
+                    <Icon size={"18"} className="min-w-[3rem]" />
                     <span className="hidden lg:flex">{name}</span>
                   </Link>
                 );

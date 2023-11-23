@@ -9,7 +9,7 @@ import Link from "next/link";
 import useApiPrivate from "@/hooks/apiPrivate";
 
 const createServicesFormSchema = z.object({
-  name: z.string().nonempty(),
+  name: z.string(),
   description: z.string(),
   price: z.string(),
 });
@@ -33,6 +33,7 @@ function useCreate() {
   const api = useApiPrivate();
 
   async function addService(data: CreateServicesFormSchema) {
+    console.log("Teste");
     console.log(data);
     const res = await api.post("/services", data);
     console.log(res);
@@ -56,7 +57,7 @@ export default function Create() {
   return (
     <S.Form
       initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0}}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
       onSubmit={handleSubmit(addService)}
       className="m-auto gap-3 max-w-[30rem] flex flex-col w-full shadow p-4 rounded-md"
@@ -84,6 +85,7 @@ export default function Create() {
                     autoComplete="off"
                     {...field}
                   />
+                  {errors[name as keyof CreateServicesFormSchema]?.message}
                 </Label.Root>
               )}
             />
@@ -92,6 +94,7 @@ export default function Create() {
         <Controller
           name="description"
           control={control}
+          defaultValue=""
           render={({ field }) => (
             <Label.Root className="m-0">
               <Label.Title>Descrição</Label.Title>
@@ -105,11 +108,9 @@ export default function Create() {
           )}
         />
       </section>
-      <footer className=" flex items-center justify-between">
-        <button className="bg-cyan-400 bg-opacity-60 p-3 px-4 opacity-70 hover:opacity-100 rounded">
-          Salvar
-        </button>
-      </footer>
+      <button className="bg-cyan-400 bg-opacity-60 p-3 px-4 opacity-70 hover:opacity-100 rounded">
+        Salvar
+      </button>
     </S.Form>
   );
 }

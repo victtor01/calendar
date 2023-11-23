@@ -8,8 +8,6 @@ import useApiPrivate from "@/hooks/apiPrivate";
 import Loading from "@/components/loading";
 import { Register } from "@/types/registers";
 import moment from "moment-timezone";
-import "moment/locale/pt-br";
-import "moment-timezone";
 
 moment.tz.setDefault("America/Sao_Paulo");
 

@@ -1,4 +1,6 @@
-import { Clients } from './clients';
+import { Clients } from "./clients";
+import { Service } from "./services";
+
 export interface Event {
   id: number;
   name: string;
@@ -10,6 +12,7 @@ export interface Event {
   color?: string;
   comments?: CommentsEvents[];
   clients?: Clients[];
+  services?: Service[];
 }
 
 interface CommentsEvents {

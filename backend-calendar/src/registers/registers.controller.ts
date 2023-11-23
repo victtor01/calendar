@@ -11,6 +11,7 @@ import {
 import { CreateRegisterDto } from './dto/create-register.dto';
 import { RegistersService } from './registers.service';
 import { UpdateRegisterDto } from './dto/update-register.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Controller('registers')
 export class RegistersController {
@@ -24,6 +25,18 @@ export class RegistersController {
   @Get('/find/:code')
   async findOne(@Param('code') code: string) {
     return await this.registerService.findOne(code);
+  }
+
+  @Post('/find/sumary-by-date')
+  async sumatyByDate(
+    @Request() req: { user: User },
+    @Body() data: { start: string; end: string },
+  ) {
+    return await this.registerService.sumaryByDate({
+      userId: +req.user.id,
+      start: new Date(data.start),
+      end: new Date(data.end),
+    });
   }
 
   @Post('create')
@@ -44,8 +57,11 @@ export class RegistersController {
     @Param('code') code: string,
     @Request() req: any,
   ) {
-    console.log(data);
-    return await this.registerService.update({ userId: req.user.id, code, data });
+    return await this.registerService.update({
+      userId: req.user.id,
+      code,
+      data,
+    });
   }
 
   @Delete('delete/:id')

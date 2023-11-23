@@ -2,13 +2,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventsRepository } from './repositories/events-repository';
 import { CreateEventsDto } from './dto/create-events.dto';
 import { Events } from './entities/events.entity';
-import { addDays, formatISO, parseISO, subDays } from 'date-fns';
-import { formatInTimeZone } from 'date-fns-tz';
+import { addDays, parseISO, subDays, parse, format} from 'date-fns';
 import { UpdateEventsDto } from './dto/update-events.dto';
 import { findEventsDto } from './dto/find-events.dto';
 import { DeleteEventsDto } from './dto/delete-events.dto';
 import { DeleteManyEventsDto } from './dto/delete-many-events.dto';
-import { UpdateConnectManyDto } from './dto/update-connect-many.dto';
+import { UpdateConnectService } from './dto/update-connect-service';
+import { findEventsByDateDto } from './dto/find-events-by-date.dto';
 
 @Injectable()
 export class EventsService {
@@ -42,15 +42,63 @@ export class EventsService {
     });
   }
 
+  async findByDate({
+    userId,
+    start,
+    end,
+  }: findEventsByDateDto): Promise<Events[]> {
+    console.log(start, end);
+    return await this.eventsRepository.findByDate({
+      userId,
+      start,
+      end,
+    });
+  }
+
   async delete({ code, userId }: DeleteEventsDto): Promise<any> {
-    const findEvent = await this.eventsRepository.findOne({ code, userId });
+    await this.eventsRepository.findOne({ code, userId });
   }
 
   async deleteMany({ ids, userId }: DeleteManyEventsDto): Promise<any> {
-    const eventsPertences = this.eventsRepository.deleteMany({
+    await this.eventsRepository.deleteMany({
       ids,
       userId,
     });
+  }
+
+  async connectService({
+    eventId,
+    serviceId,
+    userId,
+  }: UpdateConnectService): Promise<any> {
+    const event = await this.eventsRepository.findById({
+      id: eventId,
+      userId,
+    });
+
+    if (!event) {
+      return new BadRequestException({
+        message: 'Evento não encontrado!',
+      });
+    }
+
+    const service = event?.services?.filter(
+      (item) => item.id.toString() === serviceId.toString(),
+    );
+
+    if (service[0]?.id) {
+      return await this.eventsRepository.discconectService({
+        eventId,
+        serviceId,
+        userId,
+      });
+    } else {
+      return await this.eventsRepository.connectService({
+        eventId,
+        serviceId,
+        userId,
+      });
+    }
   }
 
   async updateConnections({
@@ -118,9 +166,9 @@ export class EventsService {
       id,
     });
 
-    if(!event) {
+    if (!event) {
       return new BadRequestException({
-        message: 'você não tem permissão para excluir esse evento'
+        message: 'você não tem permissão para excluir esse evento',
       });
     }
 

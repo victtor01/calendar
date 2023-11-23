@@ -134,7 +134,7 @@ export default function Details({
                   className="fixed top-0 left-0 w-full h-screen bg-zinc-900 bg-opacity-10 z-[15] backdrop-blur-md flex justify-center items-center"
                 >
                   <S.Modal
-                    className="bg-zinc-800 flex flex-col rounded-md w-[30rem] p-3 h-auto relative z-[100]"
+                    className="bg-zinc-800 flex flex-col rounded-md w-[30rem] p-3 h-auto relative z-[10]"
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -40 }}
@@ -174,7 +174,7 @@ export default function Details({
             <Edit event={event} />
             <Comments event={event} />
             <Clients event={event} />
-            <Services clientsServices={event?.services} />
+            <Services event={event} />
           </div>
         </div>
         <ModalDelete

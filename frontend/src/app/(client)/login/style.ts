@@ -9,7 +9,7 @@ const animation = keyframes`
   }
   50% {
     opacity: 1;
-    transform: translateY(-3rem);
+    transform: translateY(-2rem);
   }
 `
 
@@ -33,7 +33,7 @@ export const Bubble = styled.div`
     transform: translate(-50%, -50%) rotate(160deg);
     padding: 2rem;
     border-radius: 100% 0% 96% 4% / 59% 0% 100% 41%  ;
-    filter: blur(2rem) contrast(110%) brightness(100%);
+    filter: blur(2rem) contrast(300%) brightness(100%);
     opacity: 0.1;
     background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
   }

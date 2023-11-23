@@ -14,34 +14,18 @@ import {
 } from "recharts";
 import * as S from "./style";
 import { fontOpenSans } from "@/app/fonts";
-
-const data = [
-  { id: 1, value: 100, date: moment().format("YYYY-MM-DD"), despesa: 34 },
-  {
-    id: 2,
-    value: 150,
-    date: moment().add(1, "days").format("YYYY-MM-DD"),
-    despesa: 120,
-  },
-  {
-    id: 3,
-    value: 90,
-    date: moment().add(2, "days").format("YYYY-MM-DD"),
-    despesa: 57,
-  },
-  {
-    id: 3,
-    value: 150,
-    date: moment().add(3, "days").format("YYYY-MM-DD"),
-    despesa: 65,
-  },
-];
+import { convertToRealMoney } from "@/helpers/convertToRealMoney";
+import useApiPrivate from "@/hooks/apiPrivate";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/loading";
+import { RegisterType } from "@/types/registers";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip backdrop-blur-xl flex p-3 flex-col shadow-md bg-zinc-700 bg-opacity-5">
         <p className="label">{`${label} : ${payload[0].value}`}</p>
+        <p className="label">{`${label} : ${payload[1].value}`}</p>
       </div>
     );
   }
@@ -49,7 +33,72 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+interface Sumary {
+  createdAt: Date;
+  type: RegisterType;
+  _sum: { value: number };
+}
+
+function useFinance() {
+  const api = useApiPrivate();
+
+  const start = moment().startOf("month").format("MM/DD/YYYY");
+  const end = moment().endOf("month").format("MM/DD/YYYY");
+
+  const { data: finance, isLoading } = useQuery<Sumary[]>({
+    queryKey: ["registers", "sumary"],
+    queryFn: async () => {
+      return (
+        await api.post("/registers/find/sumary-by-date", {
+          start,
+          end,
+        })
+      ).data;
+    },
+  });
+
+  const registers = (() => {
+    const data: any[] = [];
+  
+    finance?.forEach((item: Sumary) => {
+      const day = moment(item.createdAt).format("DD/MM/YYYY");
+      const itemSum = Number(item._sum.value) || 0;
+  
+      console.log(day)
+
+      const existingIndex = data.findIndex(
+        (entry) => moment(entry.date, "DD/MM/YYYY").format("DD/MM/YYYY") === day
+      );
+  
+      if (existingIndex !== -1) {
+        data[existingIndex].value += item.type === "INCOME" ? itemSum : 0;
+        data[existingIndex].despesa += item.type !== "INCOME" ? itemSum : 0;
+      } else {
+        const entry = {
+          date: day,
+          value: item.type === "INCOME" ? itemSum : 0,
+          despesa: item.type !== "INCOME" ? itemSum : 0,
+        };
+        data.push(entry);
+      }
+    });
+  
+    console.log(data);
+    return data;
+  })();
+
+  return {
+    finance,
+    registers,
+    isLoading,
+  };
+}
+
 export default function Finance() {
+  const { finance, registers, isLoading } = useFinance();
+
+  if (isLoading) return <Loading />;
+
   return (
     <motion.div className="flex flex-1 p-3 ounded-md flex-col z-40 backdrop-blur-xl">
       <S.TitleComponent>
@@ -61,7 +110,7 @@ export default function Finance() {
         </div>
       </S.TitleComponent>
       <ResponsiveContainer height="100%" className="m-auto">
-        <AreaChart data={data} className="overflow-visible">
+        <AreaChart data={registers} className="overflow-visible">
           <defs>
             <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#64C9F3" stopOpacity="0.4" />
@@ -91,9 +140,8 @@ export default function Finance() {
             axisLine={false}
             tickLine={false}
             tickCount={8}
-            width={70}
-            className="bg-red-200"
-            tickFormatter={(number) => `${number.toFixed(2)}`}
+            width={100}
+            tickFormatter={(number) => `${convertToRealMoney.format(number)}`}
             opacity={0.8}
             tickMargin={10}
           />

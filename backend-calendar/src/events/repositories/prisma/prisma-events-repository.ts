@@ -8,6 +8,7 @@ import { findEventsDto } from 'src/events/dto/find-events.dto';
 import { findEventsByDateDto } from 'src/events/dto/find-events-by-date.dto';
 import { DeleteManyEventsDto } from 'src/events/dto/delete-many-events.dto';
 import { UpdateConnectManyDto } from 'src/events/dto/update-connect-many.dto';
+import { UpdateConnectService } from 'src/events/dto/update-connect-service';
 
 @Injectable()
 export class PrismaEventsRepository implements EventsRepository {
@@ -44,6 +45,11 @@ export class PrismaEventsRepository implements EventsRepository {
             createdAt: 'desc',
           },
         },
+        services: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     });
   }
@@ -76,7 +82,7 @@ export class PrismaEventsRepository implements EventsRepository {
         },
       },
       orderBy: {
-        start: 'asc', // 'desc' indica ordenação decrescente (do mais recente para o mais antigo)
+        start: 'asc',
       },
     });
     return res;
@@ -100,6 +106,46 @@ export class PrismaEventsRepository implements EventsRepository {
     });
   }
 
+  async connectService({
+    eventId,
+    serviceId,
+    userId,
+  }: UpdateConnectService): Promise<any> {
+    return await this.prismaService.events.update({
+      where: {
+        id: eventId,
+        userId,
+      },
+      data: {
+        services: {
+          connect: {
+            id: serviceId,
+          },
+        },
+      },
+    });
+  }
+
+  async discconectService({
+    eventId,
+    serviceId,
+    userId,
+  }: UpdateConnectService): Promise<Events> {
+    return await this.prismaService.events.update({
+      where: {
+        id: eventId,
+        userId,
+      },
+      data: {
+        services: {
+          disconnect: {
+            id: serviceId,
+          },
+        },
+      },
+    });
+  }
+
   async findById({
     id,
     userId,
@@ -110,8 +156,9 @@ export class PrismaEventsRepository implements EventsRepository {
     return await this.prismaService.events.findUnique({
       where: { id, userId },
       include: {
-        clients: true
-      }
+        clients: true,
+        services: true,
+      },
     });
   }
 

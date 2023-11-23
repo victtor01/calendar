@@ -3,7 +3,7 @@
 import DashboardComponent from "@/components/dashboardComponent";
 import { AnimatePresence, motion } from "framer-motion";
 import { fontOpenSans } from "@/app/fonts";
-import Events from "./sendEmail";
+import Events from "./events";
 import NewClients from "./clients";
 import NewServices from "./newServices";
 import Finance from "./finance";
@@ -133,8 +133,8 @@ export default function Home() {
           <Finance />
         </DashboardComponent>
         <DashboardComponent
-          key={"registerss"}
-          style={{ flex: 2, overflow: "auto", height: "20rem" }}
+          key={"registers"}
+          style={{ flex: 2, overflow: "auto", height: "20rem", width: "10rem" }}
         >
           <S.Bubble $left="-30%" $top={"0%"} />
           <Registers />
@@ -177,6 +177,8 @@ export default function Home() {
             </LineChart>
           </ResponsiveContainer>
         </DashboardComponent>
+      </S.Component>
+      <S.Component>
         <DashboardComponent
           key={"component2"}
           transition={{ delay: 0.6 }}

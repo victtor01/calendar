@@ -1,8 +1,8 @@
 import { IoMdExit, IoMdNotificationsOutline } from "react-icons/io";
 import Button from "../button";
-import { IoExitOutline } from "react-icons/io5";
-import { fontOpenSans, fontRoboto } from "@/app/fonts";
+import { fontRoboto } from "@/app/fonts";
 import { useState } from "react";
+import Image from "next/image";
 
 type Select = "NOTIFICATION" | "EXIT" | "USER" | null;
 
@@ -31,14 +31,14 @@ export default function UserComponents() {
       >
         <IoMdExit size="20" />
       </Button>
-      <Button
-        className="flex bg-cyan-500 relative h-10 w-10 items-center overflow-hidden rounded-full"
-        style={{
-          backgroundImage: 'url("persson2.jpg")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+      <Button className="flex bg-cyan-500 relative h-10 w-10 items-center overflow-hidden rounded-full">
+        <Image
+          src={"/persson2.jpg"}
+          fill
+          objectFit={"cover"}
+          alt="imagen-perfil"
+        />
+      </Button>
     </div>
   );
 }

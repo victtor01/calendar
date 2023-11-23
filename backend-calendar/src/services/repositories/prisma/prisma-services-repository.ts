@@ -30,8 +30,8 @@ export class PrismaServicesRepository implements ServicesRepository {
         userId,
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: 'desc',
+      },
     });
   }
 

@@ -4,14 +4,27 @@ import { Register } from './entities/register.entity';
 import { RegistersRepository } from './repositories/registers-repository';
 import { UpdateRegisterDto } from './dto/update-register.dto';
 import { parseISO, format } from 'date-fns';
+import { FindSumaryByDateDto } from './dto/find-register-sumary';
 
 @Injectable()
 export class RegistersService {
   constructor(private readonly registersRepository: RegistersRepository) {}
 
-  async findAll(userId: number) {
+  async findAll(userId: number): Promise<Register[]> {
     userId = typeof userId != 'number' ? Number(userId) : userId;
     return await this.registersRepository.findAll(userId);
+  }
+
+  async sumaryByDate({
+    start,
+    end,
+    userId,
+  }: FindSumaryByDateDto): Promise<any> {
+    return await this.registersRepository.sumaryByDate({
+      userId,
+      start,
+      end,
+    });
   }
 
   async create(data: CreateRegisterDto): Promise<Register> {
@@ -48,7 +61,7 @@ export class RegistersService {
       const { id } = pertences;
       data.value = parseFloat(data.value.toString());
 
-      data.date = parseISO(data.date.toString()); 
+      data.date = parseISO(data.date.toString());
 
       const updated = await this.registersRepository.update({ id, data });
 
