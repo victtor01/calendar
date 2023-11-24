@@ -69,21 +69,19 @@ export default function Events() {
 
   if (isLoading || isLoadingLastMonth) return <Loading />;
 
-  console.log(porcetage);
-
   return (
     <motion.div className="flex flex-1 p-3 rounded-md flex-col z-40 backdrop-blur-xl">
       <S.TitleComponent>
         <div className={`font-semibold opacity-70 ${fontOpenSans}`}>
-          Events esse Mês
+          Eventos
         </div>
-        <div className="text-cyan-300">25.3%</div>
+        <div className="text-cyan-300">{porcetage}%</div>
       </S.TitleComponent>
       <S.ContentComponent>
         <div className="flex flex-col gap-1 p-2">
           <IoCalendarClearSharp size="22" className="text-cyan-500" />
           <span className="text-xl font-semibold">{events?.length}</span>
-          <p className="text-sm text-cyan-500">Events esse Mês</p>
+          <p className="text-sm text-cyan-500">Eventos esse Mês</p>
         </div>
         <div className="relative items-center justify-center flex">
           <svg
@@ -94,7 +92,7 @@ export default function Events() {
           >
             <S.Circle
               cx="50"
-              cy="50"
+              cy="60"
               r="30"
               pathLength="1"
               className="stroke-cyan-400"
@@ -108,15 +106,15 @@ export default function Events() {
                 type: "spring",
               }}
               cx="50"
-              cy="50"
+              cy="60"
               r="30"
               pathLength="1"
               className="stroke-cyan-500 relative"
             ></S.Progress>
           </svg>
-          <span className="p-2 absolute font-semibold opacity-50 text-cyan-600">
+          {/* <span className="p-2 absolute font-semibold opacity-50 text-cyan-600">
             {porcetage || 0}%
-          </span>
+          </span> */}
         </div>
       </S.ContentComponent>
     </motion.div>

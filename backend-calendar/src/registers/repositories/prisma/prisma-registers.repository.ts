@@ -4,7 +4,8 @@ import { RegistersRepository } from '../registers-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { UpdateRegisterDto } from 'src/registers/dto/update-register.dto';
-import { FindSumaryByDateDto } from 'src/registers/dto/find-register-sumary';
+import { FindSumaryByDateDto } from 'src/registers/dto/find-register-sumary.dto';
+import { FindRegisterWithPageDto } from 'src/registers/dto/find-register-with-page.dto';
 
 @Injectable()
 export class PrismaRegistersRepository implements RegistersRepository {
@@ -40,6 +41,24 @@ export class PrismaRegistersRepository implements RegistersRepository {
       },
     });
   }
+
+  async findAllWithPage({
+    userId,
+    start,
+    end,
+  }: FindRegisterWithPageDto): Promise<Register[]> {
+    return await this.prisma.registers.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip: start,
+      take: end - start,
+    });
+  }
+
   async findOne(code: string): Promise<Register> {
     return await this.prisma.registers.findUnique({
       where: {

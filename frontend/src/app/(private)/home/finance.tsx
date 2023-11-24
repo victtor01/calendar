@@ -13,7 +13,7 @@ import {
   Legend,
 } from "recharts";
 import * as S from "./style";
-import { fontOpenSans } from "@/app/fonts";
+import { fontOpenSans, fontValela } from "@/app/fonts";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
@@ -23,10 +23,15 @@ import { RegisterType } from "@/types/registers";
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="custom-tooltip backdrop-blur-xl flex p-3 flex-col shadow-md bg-zinc-700 bg-opacity-5">
-        <p className="label">{`${label} : ${payload[0].value}`}</p>
-        <p className="label">{`${label} : ${payload[1].value}`}</p>
-      </div>
+      <S.Theme className="custom-tooltip backdrop-blur-xl flex p-3 flex-col shadow-md bg-zinc-700 bg-opacity-5">
+        <div className={`justify-center items-center ${fontValela} `}>{label}</div>
+        <p className="text-emerald-500">
+          Entrada: {`${convertToRealMoney.format(payload[0].value)}`}
+        </p>
+        <p className="text-rose-500">
+          Saída: {`${convertToRealMoney.format(payload[1].value)}`}
+        </p>
+      </S.Theme>
     );
   }
 
@@ -59,7 +64,7 @@ function useFinance() {
 
   const registers = (() => {
     const data: any[] = [];
-  
+
     finance?.forEach((item: Sumary) => {
       const day = moment(item.createdAt).format("DD/MM/YYYY");
       const itemSum = Number(item._sum.value) || 0;
@@ -67,7 +72,7 @@ function useFinance() {
       const existingIndex = data.findIndex(
         (entry) => moment(entry.date, "DD/MM/YYYY").format("DD/MM/YYYY") === day
       );
-  
+
       if (existingIndex !== -1) {
         data[existingIndex].value += item.type === "INCOME" ? itemSum : 0;
         data[existingIndex].despesa += item.type !== "INCOME" ? itemSum : 0;

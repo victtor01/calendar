@@ -22,6 +22,17 @@ export class RegistersController {
     return await this.registerService.findAll(req.user.id);
   }
 
+  @Get('/page/:page?/')
+  async findAllWithPage(
+    @Request() req: { user: User },
+    @Param('page') page?: string,
+  ) {
+    return await this.registerService.findAllWithPage({
+      userId: +req.user.id,
+      page,
+    });
+  }
+
   @Get('/find/:code')
   async findOne(@Param('code') code: string) {
     return await this.registerService.findOne(code);

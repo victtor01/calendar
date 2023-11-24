@@ -105,3 +105,8 @@ export const ComponentRegister = styled(motion.div)`
   border-bottom: 2px solid ${({ theme }) => theme.primary};
   background-color: ${({ theme }) => theme.secundary};
 `;
+
+export const Theme = styled.div`
+  background-color: ${({ theme }) => theme.secundary};
+  color: ${({ theme }) => theme.text};
+`;

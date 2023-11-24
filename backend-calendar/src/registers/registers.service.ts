@@ -4,7 +4,8 @@ import { Register } from './entities/register.entity';
 import { RegistersRepository } from './repositories/registers-repository';
 import { UpdateRegisterDto } from './dto/update-register.dto';
 import { parseISO, format } from 'date-fns';
-import { FindSumaryByDateDto } from './dto/find-register-sumary';
+import { FindSumaryByDateDto } from './dto/find-register-sumary.dto';
+import { FindRegisterWithPageDto } from './dto/find-register-with-page.dto';
 
 @Injectable()
 export class RegistersService {
@@ -34,6 +35,34 @@ export class RegistersService {
 
   async delete(id: number): Promise<any> {
     return await this.registersRepository.delete(Number(id));
+  }
+
+  async findAllWithPage(data: { userId: number; page: string }): Promise<{
+    registers: Register[];
+    countPage: number;
+  }> {
+    const NUM_PAGES = 5;
+
+    const { userId, page } = data;
+    const start = Number(page) * NUM_PAGES - NUM_PAGES || 0;
+    const end = Number(page) * NUM_PAGES || NUM_PAGES;
+
+    const registers = await this.registersRepository.findAllWithPage({
+      userId,
+      start,
+      end,
+    });
+
+    const countPage = await (async () => {
+      const total = (await this.registersRepository.findAll(userId)).length;
+      const numPages = total / NUM_PAGES;
+      return Math.ceil(numPages);
+    })();
+
+    return {
+      registers,
+      countPage,
+    };
   }
 
   async update({

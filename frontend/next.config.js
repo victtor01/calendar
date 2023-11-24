@@ -4,7 +4,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-
+  experimental: {
+    typedRoutes: true,
+  },
   skipTrailingSlashRedirect: true,
 };
 

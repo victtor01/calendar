@@ -29,29 +29,26 @@ export default function NewClients() {
           >
             <S.Circle
               cx="50"
-              cy="50"
+              cy="60"
               r="30"
               pathLength="1"
               className="stroke-cyan-400"
             />
             <S.Progress
               initial={{ pathLength: 0 }}
-              animate={{ pathLength: 0.77 }}
+              animate={{ pathLength: 0.7 }}
               transition={{
                 duration: 2,
                 delay: 0.2,
                 type: "spring",
               }}
               cx="50"
-              cy="50"
+              cy="60"
               r="30"
               pathLength="1"
               className="stroke-cyan-500 relative"
             ></S.Progress>
           </svg>
-          <span className="p-2 absolute font-semibold opacity-50 text-cyan-600">
-            77%
-          </span>
         </div>
       </S.ContentComponent>
     </motion.div>

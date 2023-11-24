@@ -22,7 +22,7 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 const Compartiment = ({ children, ...props }: compartimentProps) => {
   return (
     <div
-      className={twMerge(`flex flex-col gap-1 flex flex-1`, props.className)}
+      className={twMerge(`flex flex-col gap-1 flex flex-1 w-auto`, props.className)}
     >
       {children}
     </div>
@@ -37,7 +37,7 @@ const CompartimentTitle = ({ children, ...props }: compartimentProps) => {
 
 const CompartimentContent = ({ children, ...props }: compartimentProps) => {
   return (
-    <div className={twMerge("flex text-lg", props.className)}>{children}</div>
+    <div className={twMerge("flex text-lg break-words overflow-hidden ", props.className)}>{children}</div>
   );
 };
 
@@ -47,7 +47,7 @@ const RegisterRoot = ({ children, ...props }: compartimentProps) => {
       initial={{ opacity: 0, x: -50 }}
       animate={{ opacity: 1, x: 0 }}
       {...props}
-      className="shadow hover:shadow-lg opacity-90 hover:opacity-100 items-center rounded-xl gap-4 flex flex-wrap w-full p-4 bg-zinc-800 text-white"
+      className="shadow hover:shadow-lg opacity-90 hover:opacity-100 items-center rounded-xl gap-4 flex w-full p-4 bg-zinc-800 text-white"
     >
       {children}
     </S.Root>
