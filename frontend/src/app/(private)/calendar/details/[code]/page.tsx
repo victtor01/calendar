@@ -21,6 +21,8 @@ import Edit from "./edit";
 import Comments from "./comments";
 import Clients from "./clients";
 import Services from "./services";
+import { fontInter, fontValela } from "@/app/fonts";
+import Label from "@/components/label";
 
 const variants = {
   pageInitial: { opacity: 0, x: 40, y: 0 },
@@ -125,13 +127,13 @@ export default function Details({
               >
                 Finalizar Evento
               </motion.button>
-              {showModalFinish && (
+              {showModalFinish && event && (
                 <motion.div
                   key={`modal-finish`}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="fixed top-0 left-0 w-full h-screen bg-zinc-900 bg-opacity-10 z-[15] backdrop-blur-md flex justify-center items-center"
+                  className="fixed top-0 left-0 w-full h-screen bg-zinc-900 bg-opacity-10 z-[15] backdrop-blur-lg flex justify-center items-center"
                 >
                   <S.Modal
                     className="bg-zinc-800 flex flex-col rounded-md w-[30rem] p-3 h-auto relative z-[10]"
@@ -154,13 +156,27 @@ export default function Details({
                         <IoClose size="24" />
                       </button>
                     </motion.div>
-                    <div className="flex flex-col">
-                      <header>Finalizar tarefa</header>
-                      <section className="flex w-full flex-col">
-                        <label>
-                          <span>Nome</span>
-                          <input className="bg-zinc-400 bg-opacity-20" />
-                        </label>
+                    <div className="flex flex-col gap-5">
+                      <header>
+                        <h1 className={`${fontInter} font-semibold`}>
+                          Finalizar tarefa
+                        </h1>
+                      </header>
+                      <section className="flex w-full flex-wrap gap-3">
+                        <Label.Root className="my-0 gap-0 w-auto flex-1">
+                          <span className={`${fontInter} text-sm`}>Nome</span>
+                          <p className="font-semibold text-purple-600 text-lg">
+                            {event?.name}
+                          </p>
+                        </Label.Root>
+                        <Label.Root className="my-0 gap-0 w-auto flex-1">
+                          <span className={`${fontInter} text-sm`}>
+                            Descrição
+                          </span>
+                          <p className="font-semibold text-purple-600 text-lg">
+                            {event?.description}
+                          </p>
+                        </Label.Root>
                       </section>
                     </div>
                   </S.Modal>
@@ -171,10 +187,14 @@ export default function Details({
         </div>
         <div className="w-full h-full pt-4 flex relative justify-between rounded-xl">
           <div className="flex flex-row flex-wrap gap-2 w-full">
-            <Edit event={event} />
-            <Comments event={event} />
-            <Clients event={event} />
-            <Services event={event} />
+            {event && (
+              <>
+                <Edit event={event} />
+                <Comments event={event} />
+                <Clients event={event} />
+                <Services event={event} />
+              </>
+            )}
           </div>
         </div>
         <ModalDelete

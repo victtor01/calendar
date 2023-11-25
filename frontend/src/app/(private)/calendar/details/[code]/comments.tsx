@@ -48,6 +48,7 @@ function useComments({ event }: CommentsProps) {
 }
 
 export default function Comments({ event }: CommentsProps) {
+
   const {
     onChangeContentEventsComments,
     contentEventsComments,

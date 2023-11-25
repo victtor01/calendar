@@ -128,7 +128,10 @@ const ContentNotEditingClient = () => (
   </>
 );
 
-export default function Edit({ event }: { event: Event }) {
+export default function Edit({ event }: { event: Event | undefined }) {
+
+  if(!event) return; 
+
   const {
     form: { labelFormEventsData, handleSubmit, control, errors, reset },
     utils: { updateEvents, handleEditingClient, editingClient },

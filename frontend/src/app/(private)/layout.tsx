@@ -67,7 +67,7 @@ const pages: Page[] = [
 const useLayout = () => {
   const router = useRouter();
   const [sidebarShow, setSidebarShow] = useState(false);
-  const [theme, setTheme] = useState<string>("light");
+  const [theme, setTheme] = useState<string>("dark");
   const widthSidebar = !sidebarShow ? "left-[-120%]" : "left-0";
 
   const handleTheme = () =>

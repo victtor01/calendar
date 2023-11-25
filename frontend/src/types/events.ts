@@ -8,6 +8,7 @@ export interface Event {
   end: Date | string;
   start: Date | string;
   status?: Status;
+  description?: string;
   allDay?: boolean;
   color?: string;
   comments?: CommentsEvents[];

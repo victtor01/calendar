@@ -63,14 +63,14 @@ export default function Accounts() {
         className={`${fontOpenSans} overflow-auto flex items-center gap-2`}
       >
         <Link
-          href={"/finance"}
+          href={"/finance/"}
           className="bg-cyan-500 flex items-center gap-3 text-white p-2 px-3 rounded opacity-90 hover:opacity-100 "
         >
           <BsArrowLeft size="18" />
           Voltar
         </Link>
         <Link
-          href={"accounts/create"}
+          href={"/finance/accounts/create/"}
           className="bg-gradient-45 from-purple-500 to-blue-500 flex items-center gap-3 text-white p-2 px-3  rounded opacity-90 hover:opacity-100 "
         >
           <IoMdAdd />
