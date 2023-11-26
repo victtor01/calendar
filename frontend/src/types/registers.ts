@@ -12,3 +12,8 @@ export interface Register {
 }
 
 export type RegisterType = "INCOME" | "EXPENSE";
+
+export interface RegisterPage {
+  registers: Register[],
+  countPage: number,
+}

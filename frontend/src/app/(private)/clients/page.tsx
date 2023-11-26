@@ -105,7 +105,7 @@ const ClientComponent = ({ item, index }: { item: Client; index: number }) => {
           >
             <MdAccessTime />
             <span>
-              {moment(item.createAt).format("dddd,  DD [de] MMMM [de] YYYY")}
+              {moment(item.createdAt).format("dddd,  DD [de] MMMM [de] YYYY")}
             </span>
           </motion.span>
         </S.ClientContent>

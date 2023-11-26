@@ -7,7 +7,7 @@ export interface Event {
   code: string;
   end: Date | string;
   start: Date | string;
-  status?: Status;
+  status: Status;
   description?: string;
   allDay?: boolean;
   color?: string;

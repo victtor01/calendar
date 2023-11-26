@@ -5,6 +5,10 @@ import * as S from "./style";
 import { fontOpenSans } from "@/app/fonts";
 import { FaUser } from "react-icons/fa";
 
+function useNewClients() {
+ 
+}
+
 export default function NewClients() {
   return (
     <motion.div className="flex flex-1 p-3 rounded-md flex-col z-40 backdrop-blur-xl">

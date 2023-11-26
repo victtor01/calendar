@@ -16,8 +16,8 @@ function useRegisters() {
 
   const { data: registers, isLoading: loadingRegisters } = useQuery({
     queryKey: ["registers"],
-    queryFn: async () => {
-      return (await api.get("registers")).data;
+    queryFn: async (): Promise<Register[]> => {
+      return (await api.get("/registers/page/1")).data.registers;
     },
   });
 
@@ -60,7 +60,7 @@ export default function Registers() {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
-              delay: index / 4,
+              delay: index / 6,
               type: "spring",
               duration: 0.6,
             }}

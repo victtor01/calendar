@@ -20,13 +20,10 @@ import Loading from "@/components/loading";
 import moment from "moment-timezone";
 import { IoMdAdd } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
-import {
-  FaAngleRight,
-  FaChevronLeft,
-  FaChevronRight,
-  FaCreditCard,
-} from "react-icons/fa";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import * as S from "../style";
+import { FaChevronLeft, FaChevronRight, FaCreditCard } from "react-icons/fa";
+import { MdFilterList } from "react-icons/md";
 
 export type RegisterType = "INCOME" | "EXPENSE";
 
@@ -126,8 +123,10 @@ export default function Registers({
     if (page > 0) {
       paginationLinks.push(
         <Link
-          className={`p-2 w-10 flex justify-center items-center bg-opacity-5 transition-background opacity-90 ${
-            currentPage === page ? 'bg-cyan-500 bg-opacity-100 text-white' : 'bg-zinc-500'
+          className={`p-2 w-10 flex justify-center rounded items-center font-semibold transition-background opacity-100 ${
+            currentPage === page
+              ? "bg-cyan-500 bg-opacity-90 text-white"
+              : "bg-zinc-400 bg-opacity-20"
           }`}
           key={page}
           href={`/finance/${page}`}
@@ -139,9 +138,10 @@ export default function Registers({
   }
 
   return (
-    <div className="whitespace-nowrap w-full max-w-[50rem] flex-col m-auto flex w-auto">
-      <div className="flex p-1 items-center justify-between">
-        <div>
+    <div className="whitespace-nowrap w-full max-w-[55rem] flex-col m-auto flex w-auto">
+      <header className="relative flex p-2 items-center justify-between rounded">
+        <S.Bubble />
+        <div className="z-10">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -164,20 +164,13 @@ export default function Registers({
             </Link>
           </motion.div>
         </div>
-        <div className="flex gap-2">
-          <Link
-            className="flex items-center"
-            href={`/finance/${currentPage > 1 ? currentPage - 1 : currentPage}`}
-          >
-            <FaChevronLeft />
-          </Link>
-          {paginationLinks}
-          <Link
-            className="flex items-center"
-            href={`/finance/${currentPage + 1}`}
-          >
-            <FaChevronRight />
-          </Link>
+        <div className="flex gap-2 z-10">
+          <AnimatePresence>
+            <motion.button className="p-0 rounded items-center p-3 px-4 opacity-50 hover:opacity-100 flex gap-3 bg-gradient-45 from-cyan-500 to-blue-400 bg-opacity-70 text-white">
+              <MdFilterList size="20" />
+              <span>Filtrar</span>
+            </motion.button>
+          </AnimatePresence>
         </div>
         <motion.div
           initial={{ opacity: 0 }}
@@ -190,8 +183,8 @@ export default function Registers({
             <GoSearch size="20" className="text-white" />
           </button>
         </motion.div>
-      </div>
-      <div className=" flex items-center flex-col p-1 h-auto w-full">
+      </header>
+      <section className=" flex items-center flex-col p-1 h-auto w-full">
         <div className="w-full max-w-[60rem] flex flex-col gap-2">
           {registers &&
             registers?.map((register: Register, index: number) => {
@@ -263,7 +256,7 @@ export default function Registers({
             </div>
           )}
         </div>
-      </div>
+      </section>
       <Modal
         onOpenChange={() => handleItemDelete(null)}
         isOpen={itemDelete !== null}
@@ -296,6 +289,21 @@ export default function Registers({
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <div className="flex gap-2 p-3 justify-end">
+        <Link
+          className="flex items-center opacity-40 hover:opacity-70"
+          href={`/finance/${currentPage > 1 ? currentPage - 1 : currentPage}`}
+        >
+          <FaChevronLeft />
+        </Link>
+        {paginationLinks}
+        <Link
+          className="flex items-center opacity-40 hover:opacity-70"
+          href={`/finance/${currentPage + 1}`}
+        >
+          <FaChevronRight />
+        </Link>
+      </div>
     </div>
   );
 }

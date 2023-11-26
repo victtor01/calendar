@@ -116,11 +116,11 @@ export default function Finance() {
           <defs>
             <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#64C9F3" stopOpacity="0.4" />
-              <stop offset="200%" stopColor="#64C9F3" stopOpacity="0.0" />
+              <stop offset="100%" stopColor="#64C9F3" stopOpacity="0.0" />
             </linearGradient>
             <linearGradient id="color-despesa" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#db1111" stopOpacity="0.4" />
-              <stop offset="200%" stopColor="#db1111" stopOpacity="0.0" />
+              <stop offset="100%" stopColor="#db1111" stopOpacity="0.0" />
             </linearGradient>
           </defs>
           <Area dataKey="value" stroke="#64C9F3" fill="url(#color)" />
@@ -137,8 +137,7 @@ export default function Finance() {
             minTickGap={5}
           />
           <Legend />
-          <YAxis
-            dataKey="value"
+           <YAxis
             axisLine={false}
             tickLine={false}
             tickCount={8}

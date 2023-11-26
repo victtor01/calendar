@@ -41,7 +41,7 @@ export class RegistersService {
     registers: Register[];
     countPage: number;
   }> {
-    const NUM_PAGES = 5;
+    const NUM_PAGES = 15;
 
     const { userId, page } = data;
     const start = Number(page) * NUM_PAGES - NUM_PAGES || 0;

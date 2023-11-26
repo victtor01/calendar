@@ -17,9 +17,10 @@ const useDetails = (code: string) => {
   const { data: event, isLoading } = useQuery(["event", code], async (): Promise<Event> => {
     return (await api.get(`/events/find/${code}`)).data;
   });
-
+  
   async function deleteEvent() {
     if(!event) return; 
+
     const res = await api.delete(`/events/delete/${event.id}`);
 
     if (!(res.statusText === "OK")) {
@@ -29,6 +30,8 @@ const useDetails = (code: string) => {
     queryClient.setQueryData(["event", event.code], {});
     queryClient.removeQueries(["event", event.code]);
   }
+
+  
 
   return {
 

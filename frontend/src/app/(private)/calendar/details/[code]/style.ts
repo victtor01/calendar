@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
 export const Container = styled.main`
-    background-color: ${({theme}) => theme.secundary};
-    border: 1px solid ${({theme}) => theme.border};
-`
+  background-color: ${({ theme }) => theme.secundary};
+  border: 1px solid ${({ theme }) => theme.border};
+`;
 
 export const Bubble = styled.div`
   width: 100%;
@@ -49,4 +49,11 @@ export const Modal = styled(motion.div)`
     border-radius: 0.3rem 0.3rem 0 0;
     background: linear-gradient(45deg, #6157ff, #74febd);
   }
+`;
+
+export const Separator = styled.span`
+  width: 100%;
+  background: linear-gradient(45deg, transparent, #6157ff, transparent);
+  height: 1px;
+  display: flex;
 `;
