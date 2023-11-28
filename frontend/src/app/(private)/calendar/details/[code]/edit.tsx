@@ -37,7 +37,8 @@ export interface LabelFormEventsDataProps {
   default?: string;
 }
 
-export function useFormDetails(event: Event) {
+export function useFormDetails(event: Event | undefined) {
+
   const {
     control,
     handleSubmit,
@@ -78,7 +79,10 @@ export function useFormDetails(event: Event) {
   ];
 
   async function updateEvents(data: CreateEventsFormData) {
-    const updated = (await api.put(`/events/update/${event.id}`, data)).data;
+    if(!event) {
+      return;
+    }
+    const updated = (await api.put(`/events/update/${event?.id}`, data)).data;
     const { code } = event;
     queryClient.setQueryData(["event", code], (prevData: any) => {
       return {
@@ -130,12 +134,13 @@ const ContentNotEditingClient = () => (
 
 export default function Edit({ event }: { event: Event | undefined }) {
 
-  if(!event) return; 
-
+  
   const {
     form: { labelFormEventsData, handleSubmit, control, errors, reset },
     utils: { updateEvents, handleEditingClient, editingClient },
   } = useFormDetails(event);
+  
+  if(!event) return; 
 
   return (
     <form

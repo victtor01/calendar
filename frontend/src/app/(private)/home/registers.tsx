@@ -15,7 +15,7 @@ function useRegisters() {
   const api = useApiPrivate();
 
   const { data: registers, isLoading: loadingRegisters } = useQuery({
-    queryKey: ["registers"],
+    queryKey: ["registers-page", "registers"],
     queryFn: async (): Promise<Register[]> => {
       return (await api.get("/registers/page/1")).data.registers;
     },
@@ -42,7 +42,7 @@ export default function Registers() {
   }
 
   return (
-    <motion.div className="flex w-full relative flex-col flex-1 z-[10]">
+    <motion.div className="flex w-full relative flex-col flex-1 z-[10] min-w-[20rem]">
       <S.ComponentRegister
         style={{ background: "transparent" }}
         className={`${fontValela} p-2 sticky top-0 backdrop-blur-md`}

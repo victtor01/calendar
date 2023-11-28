@@ -47,7 +47,6 @@ export class EventsService {
     start,
     end,
   }: findEventsByDateDto): Promise<Events[]> {
-    console.log(start, end);
     return await this.eventsRepository.findByDate({
       userId,
       start,

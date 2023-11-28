@@ -6,6 +6,7 @@ import { UpdateRegisterDto } from './dto/update-register.dto';
 import { parseISO, format } from 'date-fns';
 import { FindSumaryByDateDto } from './dto/find-register-sumary.dto';
 import { FindRegisterWithPageDto } from './dto/find-register-with-page.dto';
+import { FindRegisterByDateDto } from './dto/find-register-by-date.dto';
 
 @Injectable()
 export class RegistersService {
@@ -63,6 +64,10 @@ export class RegistersService {
       registers,
       countPage,
     };
+  }
+
+  async findByDate(data: FindRegisterByDateDto): Promise<Register[]> {
+    return await this.registersRepository.findByDate(data);
   }
 
   async update({

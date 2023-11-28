@@ -75,7 +75,11 @@ export default function Header() {
 
   return (
     <div className="flex flex-col w-full h-full min-h-auto ">
-      <S.Header className=" w-full items-center flex justify-between rounded-md">
+      <S.Header 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.4 }}
+      className=" w-full items-center flex justify-between rounded-md">
         <div className="p-2 opacity-60 text-xl font-semibold">Calendário</div>
         <div className="flex gap-2 items-center">
           <button

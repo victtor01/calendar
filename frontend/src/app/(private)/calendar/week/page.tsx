@@ -18,8 +18,6 @@ import {
   Button,
 } from "@nextui-org/react";
 
-const timeZone = "America/New_York"; // Por exemplo, Nova Iorque
-
 interface EventsProps {
   eventsToday: Event[];
   eventsYesterday: Event[];
@@ -38,9 +36,10 @@ function useWeek() {
   const [showModalDeleteItems, setShowModalDeleteItems] =
     useState<boolean>(false);
 
-  const today = moment().tz(timeZone);
-  const yesterday = moment().subtract(1, "days").tz(timeZone);
-  const tomorrow = moment().add(1, "days").tz(timeZone);
+  const today = moment();
+  const yesterday = moment().subtract(1, "days");
+  const tomorrow = moment().add(1, "days");
+
 
   const events: EventsProps = {
     eventsYesterday: [],
@@ -48,7 +47,7 @@ function useWeek() {
     eventsTomorrow: [],
   };
 
-  if (weekEvents && weekEvents.length > 0) {
+  if (weekEvents?.length > 0) {
     weekEvents.forEach((event: Event) => {
       const eventDate = moment(event.start);
 
@@ -136,7 +135,7 @@ export default function Week() {
               <S.Header className="flex w-full bg-zinc-200 p-3 bg-opacity-10 pl-3 justify-between items-center ">
                 <h1 className="text-xl">{name}</h1>
                 <span className="bg-cyan-500 text-white rounded p-2">
-                  {moment(new Date()).format("DD / MM / YYYY")}
+                  {moment(new Date()).subtract().format("DD / MM / YYYY")}
                 </span>
               </S.Header>
               {value?.length < 1 && (

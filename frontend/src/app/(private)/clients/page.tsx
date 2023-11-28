@@ -179,7 +179,7 @@ export default function Clients() {
 
       <div className="w-full flex flex gap-2 flex-wrap">
         {clients?.map((item: Client, index: number) => (
-          <ClientComponent item={item} index={index} />
+          <ClientComponent item={item} key={index} index={index} />
         ))}
         {!clients ||
           (clients?.length < 1 && (

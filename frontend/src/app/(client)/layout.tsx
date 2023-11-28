@@ -51,8 +51,11 @@ export default function Layout({ children }: layoutProps) {
     <>
       <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
         <S.Container>
-          <Header.Root className="p-3 text-xl z-20 shadow">
-            <Header.Division className="justify-start">
+          <Header.Root 
+          className="p-3 text-xl text-white z-20 top-0 w-full bg-gradient-45 from-purple-600 to-cyan-500" 
+          bgTheme={false}
+          >
+            <Header.Division className="justify-start" bgTheme={false}>
               <Button
                 onClick={handleTheme}
                 className="flex items-center justify-center"
@@ -60,11 +63,11 @@ export default function Layout({ children }: layoutProps) {
                 <TextTheme />
               </Button>
             </Header.Division>
-            <Header.Division>Logo</Header.Division>
-            <Header.Division className="justify-end">
+            <Header.Division bgTheme={false}>Logo</Header.Division>
+            <Header.Division bgTheme={false} className="justify-end">
               <Link
                 href={"/login"}
-                className="rounded py-3 px-4 border border-cyan-500 text-lg font-semibold opacity-70 hover:opacity-100 text-cyan-500 hover:bg-cyan-500 hover:text-white"
+                className="rounded py-3 px-4 ext-lg font-semibold opacity-70 hover:opacity-100 hover:bg-cyan-500 hover:text-white"
               >
                 Fazer login
               </Link>

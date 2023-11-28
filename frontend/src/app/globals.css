@@ -44,11 +44,29 @@ body {
   @apply m-8;
 }
 
-.fc-scrollgrid-sync-table {
-  @apply w-full;
+.fc .fc-scrollgrid-section > * {
+  @apply border-zinc-500 border-opacity-20 !important;
 }
+
+.fc-scrollgrid-sync-table {
+  @apply w-full bg-transparent !important;
+}
+
+.fc table * {
+  @apply border-zinc-500 border-opacity-30 !important;
+}
+
+.fc-timegrid-now-indicator-line {
+  @apply border-cyan-600 !important;
+}
+
+
+.fc-timeGridWeek-view  {
+  background: transparent !important;
+}
+
 .fc-scrollgrid-sync-inner {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 .fc-daygrid-day-frame {
   border: none;
@@ -67,8 +85,9 @@ body {
 } */
 
 .fc-scrollgrid * {
-  @Apply bg-red-200 border-none !important;
+  @Apply border-none !important;
 }
+
 
 .fc-col-header {
   @apply bg-cyan-700 text-white;
@@ -85,9 +104,12 @@ body {
 
 .fc-view-harness {
   background-color: transparent !important;
+  border: none !important;
 }
+
 .fc-view-harness-passive {
   background-color: transparent !important;
+  border: none !important;
 }
 
 .fc-view {
@@ -99,7 +121,7 @@ body {
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-  @apply bg-cyan-100;
+  @apply bg-cyan-500 bg-opacity-30;
 }
 
 .fc .fc-button {

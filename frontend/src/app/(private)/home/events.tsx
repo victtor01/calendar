@@ -42,8 +42,8 @@ function useEvents() {
   });
 
   const porcetage = (() => {
-    const totalEventsToMonth = events?.length || 0;
-    const totalEventsLastMonth = lastMonth?.length || 0;
+    const totalEventsToMonth = events?.length || 1;
+    const totalEventsLastMonth = lastMonth?.length || 1;
 
     return (totalEventsToMonth / totalEventsLastMonth) * 100;
   })();
@@ -75,7 +75,7 @@ export default function Events() {
         <div className={`font-semibold opacity-70 ${fontOpenSans}`}>
           Eventos
         </div>
-        <div className="text-cyan-300">{porcetage}%</div>
+        <div className="text-cyan-300">{porcetage.toFixed(2)}%</div>
       </S.TitleComponent>
       <S.ContentComponent>
         <div className="flex flex-col gap-1 p-2">
@@ -112,9 +112,6 @@ export default function Events() {
               className="stroke-cyan-500 relative"
             ></S.Progress>
           </svg>
-          {/* <span className="p-2 absolute font-semibold opacity-50 text-cyan-600">
-            {porcetage || 0}%
-          </span> */}
         </div>
       </S.ContentComponent>
     </motion.div>

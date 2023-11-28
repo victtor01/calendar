@@ -24,7 +24,6 @@ export const Content = styled(motion.div)`
   flex-direction: column;
   height: auto;
   min-height: auto;
-  position: relative;
   flex: 1;
   min-height: 90vh;
   width: 100%;

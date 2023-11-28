@@ -36,6 +36,10 @@ function useServices() {
       return (await api.get("/services")).data;
     },
   });
+  
+  const {} = useQuery({
+    queryKey: ["services", "services-last-month"]
+  })
 
   const [itemDelete, setItemDelete] = useState<ItemDeleteProps | null>(null);
 

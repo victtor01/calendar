@@ -1,12 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Container = styled(motion.div)`
   background-color: transparent;
   width: 100%;
-  max-width: 90rem;
+  max-width: 95rem;
   height: auto;
   margin: auto;
   display: flex;
@@ -27,6 +27,7 @@ export const TitleComponent = styled.div`
   padding: 0.2rem;
   justify-content: space-between;
   display: flex;
+  font-size: 1rem;
 `;
 
 interface BubbleProps {
@@ -102,11 +103,71 @@ export const ContentComponent = styled.div`
 `;
 
 export const ComponentRegister = styled(motion.div)`
-  border-bottom: 2px solid ${({ theme }) => theme.primary};
   background-color: ${({ theme }) => theme.secundary};
 `;
 
 export const Theme = styled.div`
   background-color: ${({ theme }) => theme.secundary};
   color: ${({ theme }) => theme.text};
+`;
+
+const animation = keyframes`
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+`;
+
+export const BubbleBanner = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 0;
+  overflow: hidden;
+  top: 0;
+
+  &::before {
+    content: "";
+    width: 60%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 2rem;
+    border-radius: 50% 50% 66% 34% / 57% 35% 65% 43%;
+    filter: blur(1rem) contrast(300%) brightness(100%);
+    opacity: 0.1;
+    background: linear-gradient(
+      34deg,
+      transparent,
+      #6157ff,
+      #74febd,
+      transparent
+    );
+    animation: ${animation} 15s infinite linear;
+  }
+
+  &::after {
+    content: "";
+    width: 60%;
+    height: 200%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 2rem;
+    border-radius: 50% 50% 66% 34% / 57% 35% 65% 43%;
+    filter: blur(1rem) contrast(300%) brightness(100%);
+    animation: ${animation} 15s infinite linear;
+    animation-delay: 8s;
+    opacity: 0.1;
+    background: linear-gradient(
+      34deg,
+      transparent,
+      #6157ff,
+      #74febd,
+      transparent
+    );
+  }
 `;

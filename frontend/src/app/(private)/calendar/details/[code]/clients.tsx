@@ -128,7 +128,7 @@ export default function Clients({ event }: { event: Event }) {
                     <div>{client.firstName}</div>
                     <Button
                       type="button"
-                      className={`rounded text-white transition-background ${classSelected}`}
+                      className={`rounded text-white transition-background opacity-40 hover:opacity-90 ${classSelected}`}
                       onClick={() => handleAddNewClient(client.id)}
                     >
                       {selected ? "Remover" : "Selecionar"}

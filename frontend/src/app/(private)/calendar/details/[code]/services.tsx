@@ -30,12 +30,20 @@ function useServices(event: Event) {
   });
 
   async function addService(serviceId: number) {
-    const { data } = await api.put(`/events/connect-services/${event.id}`, {
+    /* Depois fazer uma notificação */
+    await api.put(`/events/connect-services/${event.id}`, {
       serviceId,
     });
 
     queryClient.refetchQueries(["event", event.code]);
   }
+
+  const totalPrice = event?.services?.reduce(
+    (acc: number, service: Service) => {
+      return acc + service.price;
+    },
+    0
+  );
 
   return {
     data: {
@@ -45,6 +53,7 @@ function useServices(event: Event) {
     utils: {
       showAllServices,
       setShowAllServices,
+      totalPrice,
     },
     requests: {
       addService,
@@ -55,7 +64,7 @@ function useServices(event: Event) {
 export default function Services({ event }: { event: Event }) {
   const {
     data: { services: allServices, isLoading },
-    utils: { showAllServices, setShowAllServices },
+    utils: { showAllServices, setShowAllServices, totalPrice },
     requests: { addService },
   } = useServices(event);
 
@@ -92,6 +101,11 @@ export default function Services({ event }: { event: Event }) {
           <AiOutlineSearch size="20" />
         </button>
       </div>
+      <div className="flex">
+        <span className="flex p-2 bg-emerald-400 bg-opacity-80 text-white">
+          {convertToRealMoney.format(totalPrice || 0)}
+        </span>
+      </div>
       <div className={`flex flex-col flex-1 gap-1 ${fontRoboto}`}>
         <AnimatePresence mode="popLayout">
           {services?.map((service: Service, index: number) => {
@@ -116,7 +130,7 @@ export default function Services({ event }: { event: Event }) {
                 </div>
                 <Button
                   onClick={() => addService(service.id)}
-                  className={`rounded text-white
+                  className={`rounded text-white opacity-40 hover:opacity-90
                     ${selected ? "bg-rose-500" : "bg-cyan-500"}
                     `}
                 >

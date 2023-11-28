@@ -4,6 +4,7 @@ import { ClientsRepository } from '../clients-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { DeleteClientsDto } from 'src/clients/dto/delete-clients.dto';
+import { FindClientsByDateDto } from 'src/clients/dto/find-clients-by-date.dto';
 
 @Injectable()
 export class PrismaClientsRepository implements ClientsRepository {
@@ -27,6 +28,22 @@ export class PrismaClientsRepository implements ClientsRepository {
           connect: {
             id: userId,
           },
+        },
+      },
+    });
+  }
+
+  async findByDate({
+    userId,
+    start,
+    end,
+  }: FindClientsByDateDto): Promise<Clients[]> {
+    return await this.prisma.clients.findMany({
+      where: {
+        userId,
+        createdAt: {
+          gte: new Date(start.getFullYear(), start.getMonth(), start.getDate()),
+          lt: new Date(end.getFullYear(), end.getMonth(), end.getDate() + 1),
         },
       },
     });

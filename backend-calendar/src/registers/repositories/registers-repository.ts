@@ -1,4 +1,5 @@
 import { CreateRegisterDto } from '../dto/create-register.dto';
+import { FindRegisterByDateDto } from '../dto/find-register-by-date.dto';
 import { FindSumaryByDateDto } from '../dto/find-register-sumary.dto';
 import { FindRegisterWithPageDto } from '../dto/find-register-with-page.dto';
 import { UpdateRegisterDto } from '../dto/update-register.dto';
@@ -10,6 +11,7 @@ export abstract class RegistersRepository {
   abstract create(data: CreateRegisterDto): Promise<Register>;
   abstract delete(id: number): Promise<any>;
   abstract sumaryByDate(data: FindSumaryByDateDto): Promise<any>;
+  abstract findByDate(data: FindRegisterByDateDto): Promise<Register[]>;
   abstract findAllWithPage({
     userId,
     start,

@@ -23,8 +23,8 @@ import interactionPlugin, {
 } from "@fullcalendar/interaction";
 
 const variants = {
-  pageInitial: { opacity: 0, x: 40, y: 0 },
-  pageAnimate: { opacity: 1, x: 0, y: 0 },
+  pageInitial: { opacity: 0},
+  pageAnimate: { opacity: 1},
 };
 
 const useCalendar = () => {
@@ -155,11 +155,14 @@ export default function Calendar() {
       initial="pageInitial"
       animate="pageAnimate"
       className="p-2 m-auto flex"
-      transition={{ type: "linear" }}
     >
       <S.Content className="flex gap-4 p-4 shadow flex-col justify-center max-w-[95rem] mx-auto rounded-lg">
         <Header />
-        <div className="flex flex-1 gap-2">
+        <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="flex flex-1 gap-2">
           <div className="col-span-8 max-h-auto w-full max-w-[80rem]">
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
@@ -191,13 +194,16 @@ export default function Calendar() {
           </div>
           <div
             id="draggable-el"
-            className="min-w-[12rem] roun/ded-md mt-16 gap-2 flex flex-col"
+            className="min-w-[12rem] roun/ded-md mt-16 gap-2 flex flex-col p-2"
           >
-            <h1 className="font-bold text-lg p-2 rounded text-center text-white bg-cyan-800">
+            <h1 className="font-semibold text-md p-2 rounded text-center text-white bg-cyan-800">
               Modelos de eventos
             </h1>
-            {eventsTemplates?.map((event: EventsTemplates) => (
-              <div
+            {eventsTemplates?.map((event: EventsTemplates, index: number) => (
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index/5 }}
                 id={event.id.toString()}
                 title={event.name}
                 key={event.id}
@@ -205,10 +211,10 @@ export default function Calendar() {
               >
                 <span className="absolute left-0 top-0 h-full w-1" />
                 {event.name}
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </S.Content>
     </motion.main>
   );

@@ -6,14 +6,6 @@ import * as S from "./style";
 import { FiTrash } from "react-icons/fi";
 import useDetails from "./useDatails";
 import { BsArrowLeft } from "react-icons/bs";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button as ButtonModal,
-} from "@nextui-org/react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { IoClose } from "react-icons/io5";
@@ -24,54 +16,9 @@ import ComponentService from "./services";
 import { fontInter, fontValela } from "@/app/fonts";
 import Label from "@/components/label";
 import { Clients } from "@/types/clients";
-import { IoMdCheckmark } from "react-icons/io";
 import { Service } from "@/types/services";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
-
-const variants = {
-  pageInitial: { opacity: 0, x: 40, y: 0 },
-  pageAnimate: { opacity: 1, x: 0, y: 0 },
-};
-
-interface ModalProps {
-  handleShowModal: () => void;
-  eventDelete: () => void;
-  show: boolean;
-}
-
-const ModalDelete = ({ handleShowModal, eventDelete, show }: ModalProps) => {
-  return (
-    <Modal
-      onOpenChange={handleShowModal}
-      isDismissable={false}
-      isOpen={show}
-      className="bg-zinc-900"
-    >
-      <ModalContent className="flex">
-        <ModalHeader className="flex flex-col gap-1">Deletar</ModalHeader>
-        <ModalBody>
-          <p>Deseja realmente excluir esse evento?</p>
-        </ModalBody>
-        <ModalFooter>
-          <ButtonModal
-            color="primary"
-            className="rounded-lg opacity-80 hover:opacity-100"
-            onClick={handleShowModal}
-          >
-            Fechar
-          </ButtonModal>
-          <ButtonModal
-            color="danger"
-            onClick={eventDelete}
-            className="rounded-lg bg-rose-600 opacity-80 hover:opacity-100"
-          >
-            Excluir!
-          </ButtonModal>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
-};
+import { ModalDelete } from '@/components/eventModalDelete';
 
 const status = {
   ACTIVATED: "ATIVADO",
@@ -109,11 +56,9 @@ export default function Details({
 
   return (
     <motion.main
-      variants={variants}
-      initial="pageInitial"
-      animate="pageAnimate"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       className="p-2 m-auto flex w-full"
-      transition={{ type: "linear" }}
     >
       <S.Container className="flex max-w-[120rem] m-10 bg-white w-full m-auto flex-col pb-5 gap-2 shadow-md rounded-md">
         <div className="flex justify-between gap-3 p-2 bg-gray-400 bg-opacity-10 rounded-t-lg">
@@ -157,7 +102,7 @@ export default function Details({
                   key={`modal-finish`}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.4 }}
                   className="fixed top-0 left-0 w-full h-screen bg-zinc-900 bg-opacity-10 overflow-auto p-10 z-[15] backdrop-blur-lg flex"
                 >
                   <S.Modal
@@ -215,6 +160,7 @@ export default function Details({
                         {event?.clients?.map((item: Clients) => {
                           return (
                             <div
+                              key={item.code}
                               className={`flex text-md bg-zinc-400 bg-opacity-10 p-2 justify-between opacity-90 ${fontInter}`}
                             >
                               <div>{item.firstName}</div>
@@ -234,6 +180,7 @@ export default function Details({
                         {event?.services?.map((service: Service) => {
                           return (
                             <div
+                              key={service.id}
                               className={`flex text-md bg-zinc-400 bg-opacity-10 p-2 justify-between opacity-90 ${fontInter}`}
                             >
                               <div>{service.name}</div>
@@ -244,6 +191,17 @@ export default function Details({
                           );
                         })}
                       </section>
+                      <S.Separator />
+                      <footer className="flex items-center gap-2">
+                        <input
+                          className="flex-1 flex p-3 bg-zinc-400 bg-opacity-10 rounded focus:shadow-xl transition-shadow outline-none"
+                          placeholder="Digite o nome do evento para confirmar"
+                          required
+                        />
+                        <Button className="whitespace-nowrap p-3 bg-gradient-45 from-purple-500 to-cyan-500 rounded opacity-80 hover:opacity-100">
+                          terminar evento
+                        </Button>
+                      </footer>
                     </div>
                   </S.Modal>
                 </motion.div>

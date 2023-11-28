@@ -4,6 +4,7 @@ import { Clients } from './entities/clients.entity';
 import { CreateClientsDto } from './dto/create-clients.dto';
 import { parseISO } from 'date-fns';
 import { DeleteClientsDto } from './dto/delete-clients.dto';
+import { FindClientsByDateDto } from './dto/find-clients-by-date.dto';
 
 @Injectable()
 export class ClientsService {
@@ -21,4 +22,8 @@ export class ClientsService {
   async delete({ userId, id }: DeleteClientsDto): Promise<boolean> {
     return await this.clientsRepository.delete({ userId, id });
   }
+
+  async findOneByDate(data: FindClientsByDateDto): Promise<Clients[]> {
+    return await this.clientsRepository.findByDate(data);
+  } 
 }

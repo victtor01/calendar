@@ -38,6 +38,19 @@ export class RegistersController {
     return await this.registerService.findOne(code);
   }
 
+  @Get('/find/date/:start/:end')
+  async findByDate(
+    @Param('start') start: string,
+    @Param('end') end: string,
+    @Request() req: { user: User },
+  ) {
+    return await this.registerService.findByDate({
+      userId: +req.user.id,
+      start: new Date(start),
+      end: new Date(end),
+    });
+  }
+
   @Post('/find/sumary-by-date')
   async sumatyByDate(
     @Request() req: { user: User },

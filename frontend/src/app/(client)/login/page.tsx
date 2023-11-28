@@ -95,18 +95,20 @@ export default function Login() {
 
   return (
     <>
-      <S.Bubble />
+      <S.Bdg className="absolute w-full h-[20rem] overflow-hidden bg-gradient-45 from-purple-600 to-cyan-400 top-0">
+        <S.Bubble />
+      </S.Bdg>
       <Form
         key={pathName}
+        bgTheme
         exit={{ opacity: 0 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        bgTheme={false}
         onSubmit={handleSubmit(onSubmit)}
-        className={`rounded-md m-auto max-w-[27rem] h-auto relative bg-zinc-400 bg-opacity-10 backdrop-blur-3xl  ${fontOpenSans}`}
+        className={`rounded-md mx-auto mt-[9rem] max-w-[27rem] h-auto relative bg-zinc-400 bg-opacity-10 backdrop-blur-3xl  ${fontOpenSans}`}
       >
         <div className="flex flex-col mb-4 gap-1">
-          <div className={`text-[2rem] w-full text-cyan-500 ${fontRoboto}`}>
+          <div className={`text-[2rem] w-full text-cyan-400 ${fontRoboto}`}>
             Login
           </div>
           <div className={`text-[1.2rem] font-semibold opacity-70`}>

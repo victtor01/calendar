@@ -57,7 +57,7 @@ const useRegisters = (page: number) => {
     (await api.get(`/registers/page/${page}`)).data;
 
   const { data, isLoading, isError } = useQuery<ResponseData>({
-    queryKey: ["registers-page"],
+    queryKey: ["registers", "registers-page"],
     queryFn: getRegisters,
   });
 
@@ -148,6 +148,12 @@ export default function Registers({
             transition={{ delay: 0.3 }}
             className="flex items-center gap-3"
           >
+            <AnimatePresence>
+              <motion.button className="p-0 rounded-md items-center p-3 px-4 opacity-70 hover:opacity-100 flex gap-3 bg-cyan-500 text-white">
+                <MdFilterList size="20" />
+                <span>Filtrar</span>
+              </motion.button>
+            </AnimatePresence>
             <Link
               href="/finance/accounts"
               className="bg-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
@@ -164,14 +170,7 @@ export default function Registers({
             </Link>
           </motion.div>
         </div>
-        <div className="flex gap-2 z-10">
-          <AnimatePresence>
-            <motion.button className="p-0 rounded items-center p-3 px-4 opacity-50 hover:opacity-100 flex gap-3 bg-gradient-45 from-cyan-500 to-blue-400 bg-opacity-70 text-white">
-              <MdFilterList size="20" />
-              <span>Filtrar</span>
-            </motion.button>
-          </AnimatePresence>
-        </div>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
