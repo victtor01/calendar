@@ -57,7 +57,7 @@ function useFinance() {
 
   const start = moment().startOf("month").format("MM/DD/YYYY");
   const end = moment().endOf("month").format("MM/DD/YYYY");
-  const daysInMonth = moment().daysInMonth();
+  const daysInMonth = moment().month(start).daysInMonth();
 
   const { data: finance, isLoading } = useQuery<Sumary[]>({
     queryKey: ["registers", "sumary"],
@@ -98,7 +98,7 @@ function useFinance() {
     });
 
     const month = moment().month() + 1;
-    for (let i = 1; i <= daysInMonth; i++) {
+    for (let i = 1; i <= Number(daysInMonth); i++) {
       const exists = data.filter((item: dataSumary) => {
         return (
           moment(item.date, "DD/MM").format("DD/MM") ===
@@ -126,7 +126,7 @@ function useFinance() {
     
       return dayA - dayB;
     });
-    
+
     return data;
   })();
 
