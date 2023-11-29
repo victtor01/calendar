@@ -18,7 +18,7 @@ type OptionFinance = "INCOME" | "EXPENSE";
 const createRegisterFormSchema = z.object({
   name: z.string().nonempty("Preencha o nome!"),
   value: z.string().nonempty("Preencha o valor!"),
-  description: z.string(),
+  description: z.string().nonempty("Preencha a descrição!"),
   date: z.string().refine((value) => new Date(value)),
 });
 
@@ -34,7 +34,9 @@ const useCreate = () => {
 
   const api = useApiPrivate();
 
-  const [optionFinance, setOptionFinance] = useState<OptionFinance>("INCOME");
+  const [optionFinance, setOptionFinance] = useState<OptionFinance | null>(
+    null
+  );
   const [optionAccount, setOptionAccount] = useState<Accounts | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [onSuccessMessage, setOnSuccessMesage] = useState<string | null>(null);
@@ -52,25 +54,42 @@ const useCreate = () => {
     }
   };
 
+  const handleError = (message: string) => {
+    setErrorMessage(message);
+    setTimeout(() => {
+      setErrorMessage('');
+    },2000);
+  } 
+
   const classOptionFinance =
-    optionFinance === "INCOME" ? "bg-emerald-400" : "bg-red-300";
+    optionFinance === "INCOME"
+      ? "bg-emerald-500"
+      : optionFinance === "EXPENSE"
+      ? "bg-rose-600"
+      : "bg-blue-500";
 
   const handleOptionfinance = () =>
     setOptionFinance((prev) => (prev === "INCOME" ? "EXPENSE" : "INCOME"));
 
   async function createRegister(formData: CreateRegisterFormData) {
     setErrorMessage(null);
+
+    if (!optionAccount) {
+      handleError("Selecione uma opção para conta!");
+      return;
+    }
+
+    if (!optionFinance) {
+      handleError("Selecione a opção do registro!");
+      return;
+    }
+
     reset({
       name: "",
       value: "",
       description: "",
       date: "",
     });
-
-    if (!optionAccount) {
-      setErrorMessage("Selecione uma opção para conta!");
-      return;
-    }
 
     const type = optionFinance;
     const { id: accountId } = optionAccount;
@@ -84,8 +103,13 @@ const useCreate = () => {
     try {
       await api.post("/registers/create", data);
       setOnSuccessMesage("enviado com sucesso!");
+
+      setTimeout(() => {
+        setOnSuccessMesage("");
+      }, 1000);
+
     } catch (error) {
-      setErrorMessage("Houve um erro inesperado, tente novamente mais tarde!");
+      handleError("Houve um erro inesperado, tente novamente mais tarde!");
     }
   }
 
@@ -137,12 +161,12 @@ export const Create = () => {
       className="flex flex-col p-2 items-center"
     >
       {onSuccessMessage && (
-        <div className="p-5 w-full bg-emerald-100 border border-green-200 rounded text-lg text-gray-700 font-semibold">
+        <div className="p-4 w-full bg-emerald-500 opacity-70 border border-green-300 rounded text-md text-white font-semibold">
           {onSuccessMessage}
         </div>
       )}
       {errorMessage && (
-        <div className="p-5 w-full bg-red-100 border border-red-200 rounded text-lg text-gray-700 font-semibold">
+        <div className="p-4 w-full bg-red-600 border border-red-400 opacity-50 rounded text-md text-white font-semibold">
           {errorMessage}
         </div>
       )}
@@ -186,16 +210,24 @@ export const Create = () => {
       <Controller
         name={"description"}
         control={control}
+        defaultValue=""
         render={({ field }) => (
-          <textarea
-            {...field}
-            name="description"
-            style={{ resize: "none" }}
-            placeholder="Escreva um breve resumo sobre o registro..."
-            className="bg-transparent focus:border-cyan-500 w-full min-h-[10rem] outline-none rounded p-2 text-xl"
-          />
+          <>
+            <textarea
+              {...field}
+              style={{ resize: "none" }}
+              placeholder="Escreva um breve resumo sobre o registro..."
+              className="bg-transparent focus:border-cyan-500 w-full min-h-[10rem] outline-none rounded p-2 text-xl"
+            />
+          </>
         )}
       />
+      {errors?.description?.message && (
+        <span className="opacity-90 w-full text-red-400 text-normal flex gap-1 items-center">
+          <IoAlertCircleSharp />
+          {errors?.description?.message}
+        </span>
+      )}
       <div className="flex flex-col relative w-full my-3">
         <span className="text-[1rem] font-semibold opacity-60">
           Selecione a conta
@@ -236,7 +268,11 @@ export const Create = () => {
         <div
           className={`text-white transition-colors duration-300 p-3 h-full min-w-[7rem] rounded justify-center flex items-center ${classOptionFinance}`}
         >
-          {optionFinance === "INCOME" ? "Entrada" : "Saída"}
+          {optionFinance === "INCOME"
+            ? "Entrada"
+            : optionFinance === "EXPENSE"
+            ? "Saída"
+            : "Nenhum selecionado"}
         </div>
       </div>
       <motion.button

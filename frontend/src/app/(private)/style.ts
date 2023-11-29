@@ -18,6 +18,7 @@ export const Container = styled.main`
   background-color: ${(props) => props.theme.primary};
 `;
 
+
 export const Content = styled.div`
   background-color: ${({ theme }) => theme.primary};
   display: flex;

@@ -152,7 +152,7 @@ export default function Home() {
           <NewServices />
         </DashboardComponent>
         <DashboardComponent
-          key={"events"}
+          key={"resume-registers"}
           transition={{ delay: 0.2 }}
           className=" w-auto min-h-[10rem]"
         >

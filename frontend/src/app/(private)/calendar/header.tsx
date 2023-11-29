@@ -79,7 +79,7 @@ export default function Header() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.4 }}
-      className=" w-full items-center flex justify-between rounded-md">
+      className=" w-full items-center flex justify-between rounded-md p-2">
         <div className="p-2 opacity-60 text-xl font-semibold">Calendário</div>
         <div className="flex gap-2 items-center">
           <button

@@ -63,8 +63,6 @@ const useEdit = (code: string) => {
   const api = useApiPrivate();
 
   const updateRegister = async (data: CreateRegisterFormData) => {
-    console.log(data);
-
     const response = await api.put(`/registers/update/${code}`, data);
     const { data: updated } = response;
 
@@ -77,7 +75,7 @@ const useEdit = (code: string) => {
     setOnMessageSucess("Registro atualizado com sucesso!");
 
     setTimeout(() => {
-      push("/finance");
+      push("/finance/");
     }, 1000);
   };
 
@@ -122,7 +120,7 @@ export default function Edit({ params: { code } }: EditProps) {
           {onMessageSucess}
         </div>
       )}
-      <Link href={'/finance'} className="flex items-center gap-3 hover:gap-5 transition-[gap] text-2xl opacity-60 hover:opacity-100 w-full">
+      <Link href={'/finance/'} className="flex items-center gap-3 hover:gap-5 transition-[gap] text-2xl opacity-60 hover:opacity-100 w-full">
       <GoArrowLeft size="20"/>
         Registros
       </Link>

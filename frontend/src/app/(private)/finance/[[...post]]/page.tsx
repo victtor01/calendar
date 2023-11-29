@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import RegisterComponent from "@/components/register";
 import Link from "next/link";
 import useApiPrivate from "@/hooks/apiPrivate";
@@ -21,9 +21,9 @@ import moment from "moment-timezone";
 import { IoMdAdd } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
 import { AnimatePresence, motion } from "framer-motion";
-import * as S from "../style";
 import { FaChevronLeft, FaChevronRight, FaCreditCard } from "react-icons/fa";
 import { MdFilterList } from "react-icons/md";
+import * as S from "../style";
 
 export type RegisterType = "INCOME" | "EXPENSE";
 
@@ -47,11 +47,16 @@ interface ResponseData {
   countPage: number;
 }
 
+interface Labels {
+  date: string;
+  registers: Register[];
+}
+
 const useRegisters = (page: number) => {
   const api = useApiPrivate();
   const [itemDelete, setItemDelete] = useState<Register | null>(null);
 
-  const handleItemDelete = (item: Register | null) => setItemDelete(item);
+  const handleItemDelete = (item: Register | null): void => setItemDelete(item);
 
   const getRegisters = async (): Promise<ResponseData> =>
     (await api.get(`/registers/page/${page}`)).data;
@@ -78,6 +83,29 @@ const useRegisters = (page: number) => {
   };
 };
 
+const formatDataForDates = (registers: Register[]): Labels[] => {
+  const data: any = [];
+  registers.forEach((item: Register) => {
+    const findIndex = data.findIndex((obj: any) => {
+      return (
+        moment(item.createdAt, "YYYY-MM-DD").format("DD/MM/YYYY") ===
+        moment(obj.date, "DD/MM/YYYY").format("DD/MM/YYYY")
+      );
+    });
+
+    if (findIndex !== -1) {
+      data[findIndex].registers.push(item);
+    } else {
+      data.push({
+        date: moment(item.createdAt, "YYYY-MM-DD").format("DD/MM/YYYY"),
+        registers: [item],
+      });
+    }
+  });
+
+  return data;
+};
+
 export default function Registers({
   params: { post },
 }: {
@@ -86,7 +114,7 @@ export default function Registers({
   };
 }) {
   const router = useRouter();
-  const currentPage = post ? Number(post[0]) : 1;
+  const currentPage: number = post ? Number(post[0]) : 1;
 
   const {
     handleItemDelete,
@@ -97,7 +125,7 @@ export default function Registers({
     data,
   } = useRegisters(currentPage);
 
-  if (isLoading) {
+  if (isLoading || isError) {
     return (
       <div className="h-full w-full flex items-center justify-center">
         <Loading className="bg-cyan-200" />
@@ -105,16 +133,22 @@ export default function Registers({
     );
   }
 
-  if (isError) return null;
-
+  /* Desistrturar o data */
   const { registers, countPage }: any = data;
 
+  /* Caso não tenha o regsiters ou countPage */
   if (!countPage || !registers) return;
 
+  /* Caso a página atual for maior que o countPage */
   if (currentPage > countPage) router.push(`/finance/${countPage}`);
 
-  const paginationLinks = [];
+  const labels: Labels[] = formatDataForDates(registers);
 
+  const financeToDay = !!labels?.filter((label: Labels) => {
+    return label.date === moment().format("DD/MM/YYYY");
+  }).length;
+
+  const paginationLinks = [];
   for (
     let page = currentPage - 1;
     page <= currentPage + 1 && page <= countPage;
@@ -183,64 +217,107 @@ export default function Registers({
           </button>
         </motion.div>
       </header>
+      <AnimatePresence>
+        {!financeToDay && (
+          <motion.div
+            key={"modal-attention"}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="p-7 py-8 rounded-xl overflow-hidden relative flex gap-1 text-lg text-white shadow-lg w-auto bg-gradient-45 from-purple-600 to-emerald-400 m-2"
+          >
+            <S.BubbleBanner />
+            <div className="flex gap-1 z-10">
+              Você ainda não fez nenhum registro hoje,
+              <S.LinkAddRegister href={"/finance/create/"} className="text-xl font-semibold text-shadow">
+                Faça seu primeiro registro de hoje
+              </S.LinkAddRegister>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <section className=" flex items-center flex-col p-1 h-auto w-full">
         <div className="w-full max-w-[60rem] flex flex-col gap-2">
-          {registers &&
-            registers?.map((register: Register, index: number) => {
-              const classType =
-                register.type === "INCOME"
-                  ? "bg-emerald-500 text-emerald-500"
-                  : "bg-rose-500 text-rose-700";
-              return (
-                <RegisterComponent.Root
-                  className="grid grid-cols-1 gap-4"
-                  key={register.id}
-                  transition={{ delay: index / 10 }}
-                >
-                  <RegisterComponent.Compartiment className="max-w-xs">
-                    <RegisterComponent.Title>Nome</RegisterComponent.Title>
-                    <RegisterComponent.Content>
-                      {register.name}
-                    </RegisterComponent.Content>
-                  </RegisterComponent.Compartiment>
-                  <RegisterComponent.Compartiment className="">
-                    <RegisterComponent.Title>Descrição</RegisterComponent.Title>
-                    <RegisterComponent.Content className="flex-1 overflow-hidde w-[6rem] line-clamp-1">
-                      {register?.description}
-                    </RegisterComponent.Content>
-                  </RegisterComponent.Compartiment>
-                  <RegisterComponent.Compartiment>
-                    <RegisterComponent.Title>Valor</RegisterComponent.Title>
-                    <RegisterComponent.Content>
-                      <div
-                        className={` p-2 w-auto min-w-[5rem] flex justify-center bg-opacity-20 text-xs rounded font-semibold ${classType}`}
-                      >
-                        {register.type === "INCOME" ? "+ " : "- "}
-                        {convertToRealMoney.format(register.value)}
-                      </div>
-                    </RegisterComponent.Content>
-                  </RegisterComponent.Compartiment>
-                  <RegisterComponent.Compartiment>
-                    <RegisterComponent.Title>Data</RegisterComponent.Title>
-                    <RegisterComponent.Content>
-                      {moment(register.createdAt)
-                        .tz("America/Sao_Paulo")
-                        .fromNow()}
-                    </RegisterComponent.Content>
-                  </RegisterComponent.Compartiment>
-                  <RegisterComponent.Compartiment className="flex-row flex-none">
-                    <RegisterComponent.ButtonTrash
-                      onClick={() => handleItemDelete(register)}
-                    />
-                    <RegisterComponent.ButtonEdit
-                      onClick={() =>
-                        router.push(`/finance/edit/${register.code}`)
+          {labels?.map((label: Labels) => {
+            return (
+              <React.Fragment key={label.date}>
+                <div className="flex mt-2 px-2">
+                  <div className="rounded text-sm opacity-80 font-semibold">
+                    {moment(label.date, "DD/MM/YYYY").format(
+                      "ddd, MMM DD, YYYY"
+                    )}
+                  </div>
+                </div>
+                <AnimatePresence>
+                  {label.registers &&
+                    label.registers?.map(
+                      (register: Register, index: number) => {
+                        const classType =
+                          register.type === "INCOME"
+                            ? "bg-emerald-500 text-emerald-500"
+                            : "bg-rose-500 text-rose-700";
+                        return (
+                          <RegisterComponent.Root
+                            layout
+                            className="grid grid-cols-1 gap-4"
+                            key={register.id.toString()}
+                            transition={{ delay: index / 10 }}
+                          >
+                            <RegisterComponent.Compartiment className="max-w-xs">
+                              <RegisterComponent.Title>
+                                Nome
+                              </RegisterComponent.Title>
+                              <RegisterComponent.Content>
+                                {register.name}
+                              </RegisterComponent.Content>
+                            </RegisterComponent.Compartiment>
+                            <RegisterComponent.Compartiment className="">
+                              <RegisterComponent.Title>
+                                Descrição
+                              </RegisterComponent.Title>
+                              <RegisterComponent.Content className="flex-1 overflow-hidde w-[6rem] line-clamp-1">
+                                {register?.description}
+                              </RegisterComponent.Content>
+                            </RegisterComponent.Compartiment>
+                            <RegisterComponent.Compartiment>
+                              <RegisterComponent.Title>
+                                Valor
+                              </RegisterComponent.Title>
+                              <RegisterComponent.Content>
+                                <div
+                                  className={` p-2 w-auto min-w-[5rem] flex justify-center bg-opacity-20 text-xs rounded font-semibold ${classType}`}
+                                >
+                                  {register.type === "INCOME" ? "+ " : "- "}
+                                  {convertToRealMoney.format(register.value)}
+                                </div>
+                              </RegisterComponent.Content>
+                            </RegisterComponent.Compartiment>
+                            <RegisterComponent.Compartiment>
+                              <RegisterComponent.Title>
+                                Data
+                              </RegisterComponent.Title>
+                              <RegisterComponent.Content>
+                                {moment(register.createdAt).format("HH[h]mm")}
+                              </RegisterComponent.Content>
+                            </RegisterComponent.Compartiment>
+                            <RegisterComponent.Compartiment className="flex-row flex-none">
+                              <RegisterComponent.ButtonTrash
+                                onClick={() => handleItemDelete(register)}
+                              />
+                              <RegisterComponent.ButtonEdit
+                                onClick={() =>
+                                  router.push(`/finance/edit/${register.code}`)
+                                }
+                              />
+                            </RegisterComponent.Compartiment>
+                          </RegisterComponent.Root>
+                        );
                       }
-                    />
-                  </RegisterComponent.Compartiment>
-                </RegisterComponent.Root>
-              );
-            })}
+                    )}
+                </AnimatePresence>
+              </React.Fragment>
+            );
+          })}
           {!registers && (
             <div className="flex flex-col gap-2 p-3">
               <p className="text-lg"> Nenhum registro </p>

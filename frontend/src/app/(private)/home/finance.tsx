@@ -119,7 +119,6 @@ function useFinance() {
       const [dayA, monthA] = a.date.split('/').map(Number);
       const [dayB, monthB] = b.date.split('/').map(Number);
     
-      // Comparar primeiro pelo mês e, em seguida, pelo dia
       if (monthA !== monthB) {
         return monthA - monthB;
       }
@@ -148,7 +147,7 @@ export default function Finance() {
         <div
           className={`font-semibold opacity-70 p-2 flex-col ${fontOpenSans}`}
         >
-          <h2>Entrada e saída de capital</h2>
+          <h2>Entrada e saída de capital no mês de {moment().format('MMMM [de] YYYY')}</h2>
           <div className="text-cyan-300 text-xl">22.3%</div>
         </div>
       </S.TitleComponent>

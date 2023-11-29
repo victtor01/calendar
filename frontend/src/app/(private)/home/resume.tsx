@@ -52,7 +52,7 @@ export default function ResumeFinance() {
   const { profit, loadingRegisters } = useResumeFinance();
 
   if (loadingRegisters) return <Loading />;
-  console.log(profit);
+
   return (
     <motion.div className="flex flex-1 p-3 rounded-md flex-col z-40 backdrop-blur-xl">
       <S.TitleComponent>

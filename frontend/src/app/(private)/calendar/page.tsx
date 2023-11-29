@@ -156,13 +156,13 @@ export default function Calendar() {
       animate="pageAnimate"
       className="p-2 m-auto flex"
     >
-      <S.Content className="flex gap-4 p-4 shadow flex-col justify-center max-w-[95rem] mx-auto rounded-lg">
+      <S.Content className="flex gap-4  flex-col justify-center max-w-[95rem] mx-auto rounded-lg">
         <Header />
-        <motion.div 
+        <S.Calendar 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="flex flex-1 gap-2">
+        className="flex flex-1 gap-2 p-5 rounded-xl">
           <div className="col-span-8 max-h-auto w-full max-w-[80rem]">
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
@@ -214,7 +214,7 @@ export default function Calendar() {
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </S.Calendar>
       </S.Content>
     </motion.main>
   );

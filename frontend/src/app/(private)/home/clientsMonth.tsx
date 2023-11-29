@@ -18,8 +18,8 @@ import moment from "moment-timezone";
 import Loading from "@/components/loading";
 
 interface ClientsMonthPayloadprops {
-  createdAt: string,
-  quantity: number,
+  createdAt: string;
+  quantity: number;
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -44,6 +44,7 @@ const useClientsMonth = () => {
 
   const start = moment().startOf("month").format("MM-DD-YYYY");
   const end = moment().endOf("month").format("MM-DD-YYYY");
+  const daysInMonth = moment().month(start).daysInMonth();
 
   const { data: allClients, isLoading: loadingClients } = useQuery({
     queryKey: ["clients"],
@@ -55,11 +56,10 @@ const useClientsMonth = () => {
   const clients = (() => {
     const data: ClientsMonthPayloadprops[] = [];
     allClients?.forEach((item: Clients) => {
-      const day = moment(item.createdAt).format("DD/MM/YYYY");
+      const day = moment(item.createdAt).format("DD/MM");
 
       const existingIndex = data.findIndex(
-        (entry) =>
-          moment(entry.createdAt, "DD/MM/YYYY").format("DD/MM/YYYY") === day
+        (entry) => moment(entry.createdAt, "DD/MM").format("DD/MM") === day
       );
 
       if (existingIndex !== -1) {
@@ -71,6 +71,35 @@ const useClientsMonth = () => {
         };
         data.push(entry);
       }
+    });
+
+    const month = moment().month() + 1;
+    for (let i = 1; i <= Number(daysInMonth); i++) {
+      const exists = data.filter((item: ClientsMonthPayloadprops) => {
+        return (
+          moment(item.createdAt, "DD/MM").format("DD/MM") ===
+          moment(`${i}/${month}`, "DD/MM").format("DD/MM")
+        );
+      });
+
+      if (!exists || !exists.length) {
+        data.push({
+          createdAt: `${i}/${month}`,
+          quantity: 0,
+        });
+      }
+    }
+
+    data.sort((a, b) => {
+      const [dayA, monthA] = a.createdAt.split("/").map(Number);
+      const [dayB, monthB] = b.createdAt.split("/").map(Number);
+
+      // Comparar primeiro pelo mês e, em seguida, pelo dia
+      if (monthA !== monthB) {
+        return monthA - monthB;
+      }
+
+      return dayA - dayB;
     });
 
     return data;
@@ -92,7 +121,7 @@ export default function ClientsMonth() {
         <div
           className={`font-semibold opacity-70 px-4 flex-col py-2 ${fontOpenSans}`}
         >
-          <h2>Entrada e saída de capital</h2>
+          <h2>Quantidade de clientes no mês de {moment().format('MMMM [de] YYYY')}</h2>
           <div className="text-cyan-300 text-xl">22.3%</div>
         </div>
       </S.TitleComponent>
@@ -101,8 +130,10 @@ export default function ClientsMonth() {
           <Line
             type="monotone"
             dataKey="quantity"
-            stroke="#8884d8"
+            stroke="#06b6d4"
             strokeWidth={3}
+            legendType="diamond"
+            dot={false}
           />
           <YAxis
             dataKey="quantity"
@@ -123,7 +154,7 @@ export default function ClientsMonth() {
             tickMargin={10}
             minTickGap={5}
           />
-          <Tooltip content={<CustomTooltip/>} />
+          <Tooltip content={<CustomTooltip />} />
           <CartesianGrid opacity={0.1} vertical={false} />
         </LineChart>
       </ResponsiveContainer>

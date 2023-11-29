@@ -60,6 +60,15 @@ export const Bubble = styled.div<BubbleProps>`
   }
 `;
 
+const animation = keyframes`
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  `;
+
 export const Modal = styled(motion.div)`
   background-color: ${({ theme }) => theme.secundary};
   border: 1px solid ${({ theme }) => theme.border};
@@ -111,15 +120,6 @@ export const Theme = styled.div`
   color: ${({ theme }) => theme.text};
 `;
 
-const animation = keyframes`
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-`;
-
 export const BubbleBanner = styled.div`
   width: 100%;
   height: 100%;
@@ -138,7 +138,7 @@ export const BubbleBanner = styled.div`
     padding: 2rem;
     border-radius: 50% 50% 66% 34% / 57% 35% 65% 43%;
     filter: blur(1rem) contrast(300%) brightness(100%);
-    opacity: 0.1;
+    opacity: 0.2;
     background: linear-gradient(
       34deg,
       transparent,
@@ -155,13 +155,13 @@ export const BubbleBanner = styled.div`
     height: 200%;
     position: absolute;
     bottom: 0;
-    right: 0;
+    left: -100%;
     padding: 2rem;
     border-radius: 50% 50% 66% 34% / 57% 35% 65% 43%;
     filter: blur(1rem) contrast(300%) brightness(100%);
     animation: ${animation} 15s infinite linear;
-    animation-delay: 8s;
-    opacity: 0.1;
+    animation-delay: 7s;
+    opacity: 0.2;
     background: linear-gradient(
       34deg,
       transparent,
