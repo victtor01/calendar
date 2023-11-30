@@ -6,6 +6,7 @@ import "../styles/nprogress.css";
 import "./globals.css";
 import "moment/locale/pt-br";
 import "moment-timezone";
+import { ProviderSessionContext } from "@/contexts/sessionContext";
 
 export default function RootLayout({
   children,
@@ -13,13 +14,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <html lang="pt-br">
-        <body>
-          <NextTopLoader color="#17919f" showSpinner={false} crawl={false} />
-          {children}
-        </body>
-      </html>
-    </QueryClientProvider>
+    <ProviderSessionContext>
+      <QueryClientProvider client={queryClient}>
+        <html lang="pt-br">
+          <body>
+            <NextTopLoader color="#17919f" showSpinner={false} crawl={false} />
+            {children}
+          </body>
+        </html>
+      </QueryClientProvider>
+    </ProviderSessionContext>
   );
 }

@@ -20,7 +20,6 @@ export const Container = styled.header<ContainerProps>`
   z-index: 5;
   left: 0;
   top: 0;
-  grid-area: header;
 `;
 
 export const Division = styled.div<ContainerProps>`

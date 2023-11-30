@@ -4,6 +4,10 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../loading";
+import { useEffect } from "react";
+import {
+  useSessionContext,
+} from "@/contexts/sessionContext";
 
 export interface PrivateRouteProps {
   name: string;
@@ -16,6 +20,18 @@ export default function PrivateRoute({
 }) {
   const { isError, isLoading, data, logout } = usePrivateRoutes();
 
+  const { setUserInfo } = useSessionContext();
+
+  useEffect(() => {
+    if (data) {
+      setUserInfo({
+        id: Number(data.id),
+        firstName: data.firstName,
+        lastName: data.lastName,
+      });
+    }
+  }, [data]);
+
   if (isLoading) {
     return (
       <div className="w-full h-screen items-center justify-center flex">
@@ -27,7 +43,12 @@ export default function PrivateRoute({
   if (isError || !data) {
     return (
       <div className="w-full h-screen items-center justify-center flex">
-        <button onClick={logout} className="bg-cyan-500 p-3 rounded opacity-70 hover:opacity-100">Faça o login</button>
+        <button
+          onClick={logout}
+          className="bg-cyan-500 p-3 rounded opacity-70 hover:opacity-100"
+        >
+          Faça o login
+        </button>
       </div>
     );
   }
@@ -53,7 +74,6 @@ function usePrivateRoutes() {
   const { data, isError, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: getUserInfo,
-    
   });
 
   return {

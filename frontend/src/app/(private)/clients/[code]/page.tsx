@@ -9,6 +9,9 @@ import Form from "@/components/form";
 import Button from "@/components/button";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
+import Link from "next/link";
+import { FaChevronLeft } from "react-icons/fa";
+import { fontOpenSans } from "@/app/fonts";
 
 interface LabelFormData {
   name: string;
@@ -54,7 +57,7 @@ const useCreate = () => {
   const api = useApiPrivate();
 
   const submit = async (data: CreateClientFormData) => {
-    const response = await api.post("/clients/create", data);
+    const response = await api.put("/clients/create", data);
     if (response.data) {
       queryClient.invalidateQueries(["clients"]);
     }
@@ -76,10 +79,24 @@ export default function Create() {
 
   return (
     <Form
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       bgTheme
-      className="max-w-[30rem] m-auto"
+      className="max-w-[30rem] m-auto rounded-md"
       onSubmit={handleSubmit(submit)}
     >
+      <header className="flex w-full opacity-80 hover:opacity-100 transition-all">
+        <Link href="/clients" className={`gap-2 flex items-center ${fontOpenSans} font-semibold opacity-80`}>
+          <FaChevronLeft />
+          Clientes
+        </Link>
+      </header>
+      <div className="flex w-full flex-col opacity-60 font-semibold gap-2">
+        <h2>Foto do cliente</h2>
+        <div className="bg-zinc-300 w-[10rem] h-[10rem] rounded-xl">
+          
+        </div>
+      </div>
       {labelFormData.map((form: LabelFormData, index: number) => (
         <Label.Root
           key={`${form.name}-${index}`}

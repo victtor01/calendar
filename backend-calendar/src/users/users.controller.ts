@@ -45,7 +45,6 @@ export class UsersController {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
-          console.log(file);
           const uniqueFilename =
             new Date().getTime() + file.originalname.replace(/\s/g, '_');
           cb(null, `${uniqueFilename}`);

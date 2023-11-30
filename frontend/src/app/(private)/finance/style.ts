@@ -88,12 +88,6 @@ export const BubbleBanner = styled.div`
 export const LinkAddRegister = styled(Link)`
   position: relative;
   transition: 2s;
-  
-  &:hover {
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background: linear-gradient(34deg, #6157ff, #74febd);
-  }
 `;
 
 export const Bubble = styled.div`

@@ -144,9 +144,7 @@ export default function Registers({
 
   const labels: Labels[] = formatDataForDates(registers);
 
-  const financeToDay = !!labels?.filter((label: Labels) => {
-    return label.date === moment().format("DD/MM/YYYY");
-  }).length;
+  const financeToDay = moment().diff(labels[0]?.registers[0]?.createdAt, 'days') || 0;
 
   const paginationLinks = [];
   for (
@@ -204,7 +202,6 @@ export default function Registers({
             </Link>
           </motion.div>
         </div>
-
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -218,7 +215,7 @@ export default function Registers({
         </motion.div>
       </header>
       <AnimatePresence>
-        {!financeToDay && (
+        {financeToDay && (
           <motion.div
             key={"modal-attention"}
             initial={{ opacity: 0 }}
@@ -227,10 +224,10 @@ export default function Registers({
             className="p-7 py-8 rounded-xl overflow-hidden relative flex gap-1 text-lg text-white shadow-lg w-auto bg-gradient-45 from-purple-600 to-emerald-400 m-2"
           >
             <S.BubbleBanner />
-            <div className="flex gap-1 z-10">
-              Você ainda não fez nenhum registro hoje,
+            <div className="flex gap-1 z-10 flex-wrap">
+              Há {financeToDay} dias que não há registros,
               <S.LinkAddRegister href={"/finance/create/"} className="text-xl font-semibold text-shadow">
-                Faça seu primeiro registro de hoje
+                mantenha sua vida financeira atualizada!
               </S.LinkAddRegister>
             </div>
           </motion.div>

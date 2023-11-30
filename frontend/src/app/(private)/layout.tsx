@@ -10,7 +10,7 @@ import { BsCalendarRange, BsFillGearFill, BsHouse } from "react-icons/bs";
 import { FiTrendingUp } from "react-icons/fi";
 import Link from "next/link";
 import { fontOpenSans, fontRoboto, fontValela } from "../fonts";
-import { Suspense, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BiSolidGroup } from "react-icons/bi";
 import Button from "@/components/button";
@@ -22,6 +22,7 @@ import Loading from "@/components/loading";
 import Header from "@/components/header";
 import UserComponents from "@/components/userComponents";
 import Image from "next/image";
+import { SessionContext, useSessionContext } from "@/contexts/sessionContext";
 
 /* #1f1d2b */
 
@@ -122,6 +123,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     IconTheme,
     theme,
   } = useLayout();
+
+  const { userInfo } = useSessionContext();
 
   return (
     <PrivateRoute>
@@ -242,21 +245,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </Sidebar>
           <Header.Root
-            className="justify-between m-1 relative overflow-hidden rounded-md w-auto "
+            className="justify-between m-1 relative p-0 relative rounded-md w-auto "
             style={{
               width: "100%",
               border: "none",
             }}
           >
-            <span className="absolute p-3 bg-gradient-45 from-[#6157FF] via-[#74FEBD] from-10% to-80% blur-2xl opacity-20 shadow-purple-500 to-transparent bg-opacity-50 h-full w-[50%] z-[-1] transform -skew-x-[-26deg] left-[-20px]" />
             <Header.Division
               bgTheme={false}
               className={
-                "flex-none p-2 mx-2 rounded-md font-bold text-lg" +
+                "flex p-2 justify-start relative h-[100%] font-bold text-lg overflow-hidden" +
                 ` ${fontValela}`
               }
             >
-              Olá, Victor!
+              <span className="absolute p-3 bg-gradient-45 from-[#6157FF] via-[#74FEBD] from-10% to-80% blur-2xl opacity-20 shadow-purple-500 to-transparent bg-opacity-50 h-full w-[50%] z-[-1] transform -skew-x-[-26deg] left-[-20px]" />
+              Olá, {userInfo?.firstName}!
             </Header.Division>
             <Header.Division className="flex-none rounded-full">
               <UserComponents />

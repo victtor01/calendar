@@ -22,10 +22,11 @@ import {
 import { IoMdAdd } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
 import { FaAngleRight, FaPhoneSquareAlt } from "react-icons/fa";
-import { MdAccessTime, MdEmail } from "react-icons/md";
+import { MdAccessTime, MdEmail, MdFilterList } from "react-icons/md";
 import moment from "moment-timezone";
 import * as S from "./style";
 import { fontValela } from "@/app/fonts";
+import Image from "next/image";
 
 moment.locale("pt-br");
 
@@ -40,12 +41,23 @@ const ClientComponent = ({ item, index }: { item: Client; index: number }) => {
       initial={{ opacity: 0, y: 9 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index / 4, type: "spring" }}
-      className="flex w-[20rem] h-auto flex-col gap-2"
+      className="flex w-[15rem] h-auto flex-col gap-2"
     >
-      <S.ClientPhoto
-        $src="cliente.png"
-        className="w-full h-[10rem] bg-zinc-500 bg-opacity-10 overflow-hidden"
-      />
+      <Link
+        href={`/clients/${item.code}`}
+        className="w-full h-[10rem] bg-zinc-500 relative bg-opacity-10 overflow-hidden opacity-90 hover:opacity-100"
+      >
+        <Image
+          className="hover:scale-[1.1] transition-all"
+          src="/cliente.png"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority
+          fill
+          quality={50}
+          style={{ objectFit: "cover" }}
+          alt="Foto do cliente"
+        />
+      </Link>
       <div className="relative max-h-[4.4rem] min-h-[4.4rem]">
         <S.ClientContent
           initial={{ maxHeight: "4.4rem" }}
@@ -59,7 +71,10 @@ const ClientComponent = ({ item, index }: { item: Client; index: number }) => {
           style={{
             zIndex: showDetails ? 10 : 1,
           }}
-          className={"bg-zinc-600 bg-opacity-30 absolute relative p-3 flex flex-col gap-1 overflow-hidden transition-shadow" + ` ${showDetails ? 'shadow-2xl' : 'shadow-none'}`}
+          className={
+            "bg-zinc-600 bg-opacity-30 absolute relative p-3 flex flex-col gap-1 overflow-hidden transition-shadow" +
+            ` ${showDetails ? "shadow-2xl" : "shadow-none"}`
+          }
         >
           <h2 className={`text-lg font-semibold ${fontValela}`}>
             {item.firstName}
@@ -151,7 +166,7 @@ export default function Clients() {
   const { clients } = useClientsHook().getClients();
 
   return (
-    <div className="flex flex-col p-4 w-full  gap-4">
+    <div className="flex flex-col p-4 max-w-[65rem] mx-auto gap-4">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -162,10 +177,17 @@ export default function Clients() {
           <div className="flex items-center gap-3">
             <Link
               href="/clients/create"
-              className="bg-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
+              className="bg-gradient-45 from-purple-500 to-cyan-400 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
             >
               <IoMdAdd />
               Criar
+            </Link>
+            <Link
+              href="/clients/create"
+              className="bg-gradient-45 from-cyan-500 to-blue-400 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
+            >
+              <MdFilterList />
+              Filtrar
             </Link>
           </div>
         </div>
@@ -177,7 +199,7 @@ export default function Clients() {
         </div>
       </motion.div>
 
-      <div className="w-full flex flex gap-2 flex-wrap">
+      <div className="w-full flex gap-2 flex-wrap justify-center ">
         {clients?.map((item: Client, index: number) => (
           <ClientComponent item={item} key={index} index={index} />
         ))}
@@ -187,7 +209,7 @@ export default function Clients() {
               <div>Ainda não tem nenhum Cliente Cadastrado</div>
               <div>
                 <Link
-                  href={"clients/create"}
+                  href="/clients/create"
                   className="text-cyan-400 opacity-80 hover:opacity-100"
                 >
                   Cadastre seu primeiro cliente!

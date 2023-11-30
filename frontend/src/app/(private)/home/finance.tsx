@@ -33,6 +33,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         <p className="text-rose-500">
           Saída: {`${convertToRealMoney.format(payload[1].value)}`}
         </p>
+        <p className="text-purple-600 font-semibold">
+          Total: {`${convertToRealMoney.format(payload[0].value - payload[1].value)}`}
+        </p>
       </S.Theme>
     );
   }

@@ -8,13 +8,14 @@ import NewClients from "./clients";
 import NewServices from "./services";
 import Finance from "./finance";
 import Registers from "./registers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import ClientsMonth from "./clientsMonth";
 import ResumeRegisters from "./resume";
 import moment from "moment-timezone";
 import { FaFilter } from "react-icons/fa";
 import * as S from "./style";
+import { useSessionContext } from "@/contexts/sessionContext";
 
 function getRandomInt(min: number, max: number) {
   min = Math.ceil(min);
@@ -41,6 +42,7 @@ function useHome() {
 
 export default function Home() {
   const { showModalFilter, setShowModalFilter } = useHome();
+  const { userInfo } = useSessionContext();
 
   return (
     <S.Container className={fontOpenSans}>
@@ -102,7 +104,7 @@ export default function Home() {
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ type: "spring", duration: 1.5, delay: 0.1}}
+        transition={{ type: "spring", duration: 1.5, delay: 0.1 }}
         className="w-full relative gap-10 p-8 h-[11rem] flex justify-center bg-gradient-45 from-purple-600 to-emerald-300 rounded-2xl shadow-xl"
       >
         <S.BubbleBanner />
@@ -114,7 +116,7 @@ export default function Home() {
             className={`text-[1.7rem] flex gap-2 ${fontOpenSans}`}
           >
             Bem vindo de volta,
-            <p className={`${fontInter} font-semibold`}>José Victor.</p>
+            <p className={`${fontInter} font-semibold`}>{userInfo?.firstName}</p>
           </motion.h1>
           <motion.h2
             initial={{ opacity: 0, x: -10 }}
