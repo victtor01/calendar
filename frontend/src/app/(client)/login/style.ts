@@ -63,5 +63,5 @@ export const Bubble = styled.div`
 `;
 
 export const Bdg = styled.div`
-  border-radius: 0% 0% 100% 100% / 10% 10% 5% 5%;
+ /*  border-radius: 0% 0% 100% 100% / 10% 10% 5% 5%; */
 `;

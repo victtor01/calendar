@@ -45,7 +45,11 @@ function useEvents() {
     const totalEventsToMonth = events?.length || 1;
     const totalEventsLastMonth = lastMonth?.length || 1;
 
-    return (totalEventsToMonth / totalEventsLastMonth) * 100;
+    return (
+      ((totalEventsToMonth - totalEventsLastMonth) /
+        Math.abs(totalEventsLastMonth)) *
+      100
+    );
   })();
 
   return {
@@ -75,7 +79,9 @@ export default function Events() {
         <div className={`font-semibold opacity-70 ${fontOpenSans}`}>
           Eventos
         </div>
-        <div className="text-cyan-300">{porcetage.toFixed(2)}%</div>
+        <div className={porcetage > 0 ? "text-cyan-300" : "text-rose-500"}>
+          {porcetage.toFixed(2)}%
+        </div>
       </S.TitleComponent>
       <S.ContentComponent>
         <div className="flex flex-col gap-1 p-2">
@@ -95,11 +101,16 @@ export default function Events() {
               cy="60"
               r="30"
               pathLength="1"
-              className="stroke-cyan-400"
+              className={
+                Number(porcetage) > 0 ? "stroke-cyan-300" : "stroke-rose-300"
+              }
             />
             <S.Progress
               initial={{ pathLength: 0 }}
-              animate={{ pathLength: porcetage > 100 ? 1 : porcetage / 100 }}
+              animate={{
+                pathLength:
+                  porcetage > 0 ? porcetage / 100 : (Math.abs(porcetage) / 100),
+              }}
               transition={{
                 duration: 2,
                 delay: 0.2,
@@ -109,7 +120,10 @@ export default function Events() {
               cy="60"
               r="30"
               pathLength="1"
-              className="stroke-cyan-500 relative"
+              className={
+                "relative " +
+                (Number(porcetage) > 0 ? "stroke-cyan-500" : "stroke-rose-500")
+              }
             ></S.Progress>
           </svg>
         </div>

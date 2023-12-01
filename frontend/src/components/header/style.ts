@@ -9,8 +9,7 @@ export const Container = styled.header<ContainerProps>`
   ${(props) =>
     props.$bgTheme === true &&
     `
-      background-color: ${props.theme.secundary};
-      border-bottom: 1px solid ${props.theme.border};
+      background: ${props.theme.secundary};
   `}
   display: flex;
   align-items: center;

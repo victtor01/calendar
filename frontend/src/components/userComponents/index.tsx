@@ -6,6 +6,7 @@ import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 import * as S from "./style";
 import { useSessionContext } from "@/contexts/sessionContext";
+import { motion } from "framer-motion";
 
 type Select = "NOTIFICATION" | "EXIT" | "USER" | null;
 
@@ -51,7 +52,7 @@ export default function UserComponents() {
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             transition={{ type: "spring", duration: 0.2 }}
-            className="absolute p-3 top-[101%] right-0 m-3 w-[20rem] h-[24rem] rounded shadow"
+            className="absolute p-3 top-[101%] right-0 m-3 w-[20rem] h-[24rem] rounded shadow z-[20]"
           >
             Type
           </S.Modal>
@@ -63,11 +64,15 @@ export default function UserComponents() {
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             transition={{ type: "spring", duration: 0.2 }}
-            className="absolute p-3 top-[101%] right-0 m-3 w-[15rem] h-auto flex-col gap-1 flex rounded shadow"
+            className="absolute p-3 top-[101%] right-0 m-3 w-[15rem] h-auto flex-col gap-1 flex rounded shadow z-[20]"
           >
-            <h2 className={`text-md opacity-90 ${fontInter}`}>
+            <motion.div
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className={`text-md opacity-90 ${fontInter}`}
+            >
               Deseja realmente sair da sessão?
-            </h2>
+            </motion.div>
             <button
               onClick={logout}
               className="bg-gradient-45 from-rose-700 to-red-500 p-2 rounded-md opacity-60 text-white hover:opacity-100"

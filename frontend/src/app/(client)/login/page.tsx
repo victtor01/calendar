@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ImLock } from "react-icons/im";
 import Cookie from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import * as S from "./style";
 
 type LoginUserFormData = z.infer<typeof createUserFormSchema>;
@@ -95,7 +96,7 @@ export default function Login() {
 
   return (
     <>
-      <S.Bdg className="absolute w-full h-[20rem] overflow-hidden bg-gradient-45 from-purple-600 to-cyan-400 top-0">
+      <S.Bdg className="absolute w-full h-[30rem] overflow-hidden bg-gradient-45 from-purple-600 to-cyan-400 top-0">
         <S.Bubble />
       </S.Bdg>
       <Form
@@ -105,7 +106,7 @@ export default function Login() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         onSubmit={handleSubmit(onSubmit)}
-        className={`rounded-md mx-auto mt-[9rem] max-w-[27rem] h-auto relative bg-zinc-400 bg-opacity-10 backdrop-blur-3xl  ${fontOpenSans}`}
+        className={`rounded-md mx-auto mt-[15rem] shadow-xl max-w-[27rem] bg-opacity-20 h-auto relative backdrop-blur-3xl  ${fontOpenSans}`}
       >
         <div className="flex flex-col mb-4 gap-1">
           <div className={`text-[2rem] w-full text-cyan-400 ${fontRoboto}`}>

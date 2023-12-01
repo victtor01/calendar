@@ -16,6 +16,7 @@ import moment from "moment-timezone";
 import { FaFilter } from "react-icons/fa";
 import * as S from "./style";
 import { useSessionContext } from "@/contexts/sessionContext";
+import TopClients from "./topClients";
 
 function getRandomInt(min: number, max: number) {
   min = Math.ceil(min);
@@ -65,7 +66,7 @@ export default function Home() {
               onClick={() => setShowModalFilter(true)}
               layoutId={"filter"}
               whileTap={{ scale: 0.9, transition: { type: "spring" } }}
-              className="bg-gradient-45 z-[5] flex gap-2 items-center text-white from-blue-500 to-emerald-500 rounded p-3 px-4"
+              className="bg-gradient-45 z-[3] flex gap-2 items-center text-white from-blue-500 to-emerald-500 rounded p-3 px-4"
             >
               <FaFilter />
               Filtrar
@@ -116,7 +117,9 @@ export default function Home() {
             className={`text-[1.7rem] flex gap-2 ${fontOpenSans}`}
           >
             Bem vindo de volta,
-            <p className={`${fontInter} font-semibold`}>{userInfo?.firstName}</p>
+            <p className={`${fontInter} font-semibold`}>
+              {userInfo?.firstName}
+            </p>
           </motion.h1>
           <motion.h2
             initial={{ opacity: 0, x: -10 }}
@@ -202,15 +205,18 @@ export default function Home() {
         <DashboardComponent
           key={"component2"}
           transition={{ delay: 0.6 }}
-          className=" w-auto min-h-[12rem] "
+          className=" w-auto min-h-[20rem] "
         >
           <S.Bubble $top="60%" />
-          <div className="flex flex-1 p-3 rounded-md flex-col z-40 backdrop-blur-xl">
-            <S.TitleComponent>
-              <div>Teste</div>
-              <div>25.3%</div>
-            </S.TitleComponent>
-          </div>
+          <TopClients />
+        </DashboardComponent>
+        <DashboardComponent
+          key={"component3"}
+          transition={{ delay: 0.8 }}
+          className="w-auto min-h-[20rem] "
+        >
+          <S.Bubble $top="60%" />
+          <TopClients />
         </DashboardComponent>
       </S.Component>
     </S.Container>

@@ -10,6 +10,6 @@ export const Form = styled(motion.form)<formProps>`
     display: flex;
     flex-direction: column;
     ${props => props.$bgTheme && `
-        background: ${props.theme.secundary}
+        background-color: ${props.theme.secundary}
     `}
 `

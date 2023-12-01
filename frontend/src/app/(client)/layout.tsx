@@ -51,9 +51,9 @@ export default function Layout({ children }: layoutProps) {
     <>
       <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
         <S.Container>
-          <Header.Root 
-          className="p-3 text-xl text-white z-20 top-0 w-full bg-gradient-45 from-purple-600 to-cyan-500" 
-          bgTheme={false}
+          <Header.Root
+            className="p-2 text-xl z-[100] top-0 w-full bg-gradient-45 from-purple-600 to-cyan-500 sticky top-0"
+         
           >
             <Header.Division className="justify-start" bgTheme={false}>
               <Button
@@ -63,19 +63,40 @@ export default function Layout({ children }: layoutProps) {
                 <TextTheme />
               </Button>
             </Header.Division>
-            <Header.Division bgTheme={false}>Logo</Header.Division>
+            <Header.Division 
+            className="gap-0"
+            bgTheme={false}>
+              <Link
+                href={"/login"}
+                className="rounded py-3 px-2 text-lg font-semibold opacity-70 hover:opacity-100 hover:opacity-100"
+              >
+                Serviços
+              </Link>
+              <Link
+                href={"/login"}
+                className="rounded py-3 px-2 text-lg font-semibold opacity-70 hover:opacity-100 hover:opacity-100"
+              >
+                Home
+              </Link>
+              <Link
+                href={"/login"}
+                className="rounded py-3 px-2 text-lg font-semibold opacity-70 hover:opacity-100 hover:opacity-100"
+              >
+                Contacte-nos
+              </Link>
+            </Header.Division>
             <Header.Division bgTheme={false} className="justify-end">
               <Link
                 href={"/login"}
-                className="rounded py-3 px-4 ext-lg font-semibold opacity-70 hover:opacity-100 hover:bg-cyan-500 hover:text-white"
+                className="rounded py-3 px-4 text-lg font-semibold opacity-70 hover:opacity-100 hover:opacity-100"
               >
-                Fazer login
+                Login
               </Link>
               <Link
                 href={"/register"}
-                className="py-3 px-4 text-xl text-[#fff] bg-gradient-45 from-purple-500 to-cyan-500 opacity-90 hover:opacity-100 font-semibold transition-opacity duration-200 hover:scale-102 rounded"
+                className="py-3 px-4 text-lg text-[#fff] bg-gradient-45 from-purple-500 to-blue-600 opacity-90 hover:opacity-100 font-semibold transition-opacity duration-200 hover:scale-102 rounded"
               >
-                Assinar
+                Sing up
               </Link>
             </Header.Division>
           </Header.Root>

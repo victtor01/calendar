@@ -34,7 +34,7 @@ const createUserFormSchema = z
     repeatPassword: z.string(),
     phone: z.string().refine(
       (phone) => {
-        return /^\d+$/.test(phone); // Verifica se o valor é uma string contendo apenas dígitos
+        return /^\d+$/.test(phone);
       },
       {
         message: "Digite apenas números",
@@ -91,17 +91,21 @@ export default function RegisterPage() {
       exit={{ opacity: 0 }}
     >
       <div
-        className={`w-full h-[40rem] bg-cyan-100 relative overflow-hidden mx-auto  ${fontRoboto}`}
+        className={`w-full h-[40rem] overflow-hidden relative bg-cyan-100 overflow-hidden mx-auto bg-gradient-45 from-purple-400 to-cyan-500 ${fontRoboto}`}
       >
-        <div className="absolute  shadow-[inset_0_-2rem_10rem] shadow-gray-400  inset-0 flex items-center justify-center z-10 backdrop-blur-sm backdrop-brightness-[90%] flex-col bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-900">
-          <div className="flex flex-col">
-            <h1 className=" rounded text-7xl font-bold flex">Calendar</h1>
+        <S.Bubble />
+        <div className="inset-0 flex h-[40rem] items-center justify-center z-10 flex-col bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.1)]">
+          <div className="flex flex-col text-white">
+            <div className="text-7xl flex w-auto font-bold">
+              <h1 className="">
+                Calendar
+              </h1>
+            </div>
             <h2 className={`flex text-3xl `}>
               Sua organização é nossa prioridade!
             </h2>
           </div>
         </div>
-        <S.ImageBackground />
       </div>
       <Form
         className="max-w-[30rem] min-h-[40rem]"
