@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import styled, { keyframes } from "styled-components";
 
 const animation = keyframes`
@@ -62,6 +63,10 @@ export const Bubble = styled.div`
   }
 `;
 
-export const Bdg = styled.div`
- /*  border-radius: 0% 0% 100% 100% / 10% 10% 5% 5%; */
-`;
+export const Form = styled(motion.form)`
+  background-color: ${({theme}) => theme.secundary};
+`
+
+export const Poster = styled.div`
+
+`

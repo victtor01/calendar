@@ -52,8 +52,8 @@ export default function Layout({ children }: layoutProps) {
       <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
         <S.Container>
           <Header.Root
-            className="p-2 text-xl z-[100] top-0 w-full bg-gradient-45 from-purple-600 to-cyan-500 sticky top-0"
-         
+            className="p-2 text-xl z-[100] top-0 w-full sticky top-0"
+            bgTheme={true}
           >
             <Header.Division className="justify-start" bgTheme={false}>
               <Button
@@ -63,9 +63,7 @@ export default function Layout({ children }: layoutProps) {
                 <TextTheme />
               </Button>
             </Header.Division>
-            <Header.Division 
-            className="gap-0"
-            bgTheme={false}>
+            <Header.Division className="gap-0" bgTheme={false}>
               <Link
                 href={"/login"}
                 className="rounded py-3 px-2 text-lg font-semibold opacity-70 hover:opacity-100 hover:opacity-100"
