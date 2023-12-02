@@ -4,7 +4,7 @@ import Form from "@/components/form";
 import Input from "@/components/input/input";
 import { fontRoboto, fontOpenSans } from "@/app/fonts";
 import { MdMail } from "react-icons/md";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { UsersService } from "@/hooks/users";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -13,6 +13,9 @@ import { ImLock } from "react-icons/im";
 import Cookie from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import * as S from "./style";
+import { motion } from "framer-motion";
+import { ThemeContext } from "../layout";
+import { RiMoonLine, RiSunLine } from "react-icons/ri";
 
 type LoginUserFormData = z.infer<typeof createUserFormSchema>;
 
@@ -91,12 +94,20 @@ const useLogin = () => {
 
 export default function Login() {
   const { onSubmit, handleSubmit, register, errors, error } = useLogin();
-  const pathName = usePathname();
+  const { theme, handleTheme } = useContext(ThemeContext);
+
+  const IconTheme = theme === "DARK" ? RiMoonLine : RiSunLine;
 
   return (
-    <>
-      <S.Poster className="absolute w-full h-[30rem] overflow-hidden bg-gradient-45 from-purple-600 opacity-90 to-cyan-400 top-0">
+    <motion.div className="flex w-full h-[100vh]">
+      <S.Poster className="flex flex-col relative w-full h-[100vh] overflow-hidden bg-gradient-45 from-purple-800 to-cyan-500 top-0">
         <S.Bubble />
+        <header className="z-[20] p-4 text-lg flex justify-between text-white">
+          <button onClick={handleTheme}>
+            <IconTheme />
+          </button>
+        </header>
+        <section className="flex flex-col p-4 ">teste</section>
       </S.Poster>
       <Form
         bgTheme
@@ -104,13 +115,17 @@ export default function Login() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         onSubmit={handleSubmit(onSubmit)}
-        className={`rounded-md mx-auto mt-[15rem] shadow-xl max-w-[27rem] bg-opacity-20 h-auto relative backdrop-blur-3xl`}
+        className={`shadow-xl max-w-[27rem] bg-opacity-20 h-auto relative backdrop-blur-3xl p-10 justify-center`}
       >
-        <div className="flex flex-col mb-4 gap-1">
-          <div className={`text-[2rem] w-full text-cyan-400 ${fontRoboto}`}>
-            Login
+        <div className="flex flex-col mb-10 gap-1">
+          <div
+            className={`text-[2rem] w-full flex justify-center text-cyan-400 ${fontRoboto}`}
+          >
+            Faça o login
           </div>
-          <div className={`text-[1.2rem] font-semibold opacity-70`}>
+          <div
+            className={`text-[1rem] flex w-full text-center justify-center font-semibold opacity-70`}
+          >
             Bem vindo de volta! Faça o login digitando seu email logo abaixo.
           </div>
         </div>
@@ -137,10 +152,10 @@ export default function Login() {
           </div>
           <span>Password</span>
         </Input>
-        <Button className="bg-gradient-to-r from-cyan-300 to-cyan-400 w-full py-4 text-gray-700 font-normal text-lg rounded font-semibold">
+        <Button className="bg-gradient-45 from-purple-600 to-cyan-400 w-full py-4 text-white font-normal text-lg rounded font-semibold">
           Entrar
         </Button>
       </Form>
-    </>
+    </motion.div>
   );
 }

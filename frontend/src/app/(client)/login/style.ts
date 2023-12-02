@@ -22,7 +22,7 @@ export const Bubble = styled.div`
   &::before {
     content: "";
     width: 60%;
-    height: 200%;
+    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
