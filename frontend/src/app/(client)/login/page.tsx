@@ -95,9 +95,6 @@ export default function Login() {
 
   return (
     <>
-      <S.Poster className="absolute w-full h-[30rem] overflow-hidden bg-gradient-45 from-purple-600 opacity-90 to-cyan-400 top-0">
-        <S.Bubble />
-      </S.Poster>
       <Form
         bgTheme
         exit={{ opacity: 0 }}
