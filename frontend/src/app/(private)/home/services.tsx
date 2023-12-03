@@ -39,7 +39,7 @@ export default function NewServices() {
       <S.ContentComponent>
         <div className="flex flex-col gap-1 p-2">
           <FaBriefcase size="22" className="text-cyan-500" />
-          <span className="text-lg font-semibold">{services?.length} Serviços</span>
+          <span className="text-lg font-semibold">{services?.length}</span>
           <p className="text-sm text-cyan-500">Serviços esse mês</p>
         </div>
         <div className="relative items-center justify-center flex">

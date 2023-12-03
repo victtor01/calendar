@@ -11,6 +11,7 @@ import { useRef, useState } from "react";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { Accounts, useAccounts } from "@/hooks/useAccounts";
 import { motion } from "framer-motion";
+import InputMask from "react-input-mask";
 
 type CreateRegisterFormData = z.infer<typeof createRegisterFormSchema>;
 type OptionFinance = "INCOME" | "EXPENSE";
@@ -57,9 +58,9 @@ const useCreate = () => {
   const handleError = (message: string) => {
     setErrorMessage(message);
     setTimeout(() => {
-      setErrorMessage('');
-    },2000);
-  } 
+      setErrorMessage("");
+    }, 2000);
+  };
 
   const classOptionFinance =
     optionFinance === "INCOME"
@@ -107,7 +108,6 @@ const useCreate = () => {
       setTimeout(() => {
         setOnSuccessMesage("");
       }, 1000);
-
     } catch (error) {
       handleError("Houve um erro inesperado, tente novamente mais tarde!");
     }
@@ -171,7 +171,7 @@ export const Create = () => {
         </div>
       )}
       {formDataLabel.map(
-        ({ name, span, ex, type, input }: FormDataLabel, index: number) => {
+        ({ name, span, ex, type, max, mask }: FormDataLabel, index: number) => {
           const classError = errors[name as keyof CreateRegisterFormData]
             ? "shadow-[0_0_0_1px] shadow-red-400 focus:border-none"
             : "shadow-none";
@@ -186,8 +186,9 @@ export const Create = () => {
                 defaultValue=""
                 render={({ field }) => (
                   <input
-                    type={type}
                     {...field}
+                    max={max || 100}
+                    type={type}
                     className={`${classError} outline-none placeholder:opacity-40 rounded appearance-none focus:shadow rounded-md transition-shadow p-4 outline-none bg-zinc-400 bg-opacity-5`}
                     autoComplete="off"
                     placeholder={`exp: ${ex}`}

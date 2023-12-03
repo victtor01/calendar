@@ -67,6 +67,9 @@ export const Form = styled(motion.form)`
   background-color: ${({theme}) => theme.secundary};
 `
 
-export const Poster = styled.div`
+export const Poster = styled.div``
 
-`
+export const ButtonTheme = styled.button`
+  background-color: ${({ theme }) => theme.secundary};
+  color: ${({ theme }) => theme.text};
+`;

@@ -1,4 +1,4 @@
-'use client'
+
 import { Roboto, Open_Sans, Inter, Varela_Round } from "next/font/google";
 
 const roboto = Roboto({

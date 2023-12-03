@@ -1,8 +1,9 @@
-import { fontOpenSans, fontRoboto } from "@/app/fonts";
+import { fontOpenSans } from "@/app/fonts";
 import Link from "next/link";
 import { Create } from "./create";
 import * as S from "../style";
 import { BsArrowLeft } from "react-icons/bs";
+import InputMask from 'react-input-mask';
 
 export default function CreateRegister() {
   return (
@@ -29,6 +30,7 @@ export default function CreateRegister() {
             "justify-end flex gap-2 font-semibold opacity-100 px-2" + `  `
           }
         >
+
           <div className="text-xl opacity-70 p-3">
             <h1>Criar Registro</h1>
           </div>

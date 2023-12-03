@@ -158,24 +158,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <button
               onClick={onClickSidebarShow}
-              className="relative w-[3rem] lg:hidden opacity-70 hover:opacity-100 rounded min-h-[3rem] flex items-center bg-cyan-600 justify-center p-3 "
+              className="relative w-[3rem] lg:hidden opacity-70 hover:opacity-100 rounded min-h-[3rem] flex items-center bg-zinc-500 bg-opacity-10 justify-center p-3 "
             >
               <FaChevronRight />
             </button>
-            <div className="flex flex-col px-4 mt-5 gap-5 flex-1 flex-nowrap">
-              {pages.map(({ name, icon: Icon, href }: Page) => {
+            <div className="flex flex-col px-4 mt-5 gap-5 flex-1 flex-nowrap w-full">
+              {pages.map(({ name, icon: Icon, href }: Page, index: number) => {
                 const selected = currentPath === href.substring(1);
                 return (
-                  <Link
+                  <S.LinkRoute
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index / 15 }}
                     key={name}
                     href={href}
-                    className={`flex-nowrap flex items-center gap-2 text-md opacity-80 hover:opacity-100 p-1 rounded transition-all ${
-                      selected ? "text-cyan-500 gap-5" : ""
+                    className={`transition-all flex-nowrap w-full flex py-0 items-center gap-2 text-md opacity-80 hover:opacity-100 p-1 rounded ${
+                      selected
+                        ? "text-white py-3 bg-gradient-45 from-purple-600 to-cyan-500 "
+                        : ""
                     }`}
                   >
                     <Icon size={"18"} className="min-w-[3rem]" />
                     <span className="hidden lg:flex">{name}</span>
-                  </Link>
+                  </S.LinkRoute>
                 );
               })}
             </div>
@@ -206,7 +211,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <div>
                   <Button
                     onClick={onClickSidebarShow}
-                    className="relative w-[3rem] opacity-70 hover:opacity-100 rounded h-[3rem] flex items-center bg-cyan-600 justify-center p-3 "
+                    className="relative w-[3rem] opacity-70 hover:opacity-100 rounded h-[3rem] flex items-center bg-zinc-900 justify-center p-3 "
                   >
                     <FaChevronLeft />
                   </Button>

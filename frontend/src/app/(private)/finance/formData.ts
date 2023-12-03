@@ -1,6 +1,6 @@
-export const formDataLabel = [
-  { name: "name", span: "Nome", ex: "João Pereira" },
-  { name: "value", span: "Valor", ex: "123,43"},
+export const formDataLabel: FormDataLabel[] = [
+  { name: "name", span: "Nome", ex: "João Pereira", max: 55},
+  { name: "value", span: "Valor", ex: "123,43", mask: '99.999,99'},
   { name: "date", span: "Data", type: "date" },
 ];
 
@@ -9,5 +9,7 @@ export interface FormDataLabel {
   span: string;
   ex?: string;
   type?: string;
-  input?: React.ReactNode
+  input?: React.ReactNode,
+  max?: number,
+  mask?: string
 }

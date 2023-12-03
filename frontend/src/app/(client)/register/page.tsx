@@ -1,7 +1,7 @@
 "use client";
 import Form from "@/components/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fontOpenSans, fontRoboto } from "@/app/fonts";
+import { fontOpenSans, fontRoboto, fontValela } from "@/app/fonts";
 import { IoAlertCircleSharp } from "react-icons/io5";
 import { MdInsertPhoto } from "react-icons/md";
 import { ListProps, FormDataProps } from "./interfaces";
@@ -15,6 +15,10 @@ import { z } from "zod";
 import { UsersService } from "@/hooks/users";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useContext } from "react";
+import { ThemeContext } from "../layout";
+import Link from "next/link";
+import { RiMoonLine, RiSunLine } from "react-icons/ri";
 
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
@@ -81,7 +85,9 @@ const useRegister = () => {
 
 export default function RegisterPage() {
   const { register, handleSubmit, createUser, errors } = useRegister();
+  const { theme, handleTheme } = useContext(ThemeContext);
   const pathName = usePathname();
+  const IconTheme = theme === "DARK" ? RiMoonLine : RiSunLine;
 
   return (
     <motion.div
@@ -89,30 +95,68 @@ export default function RegisterPage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      className="flex flex-col"
     >
+      <header className="flex absolute top-0 p-3 justify-between w-full z-[20]">
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-5"
+        >
+          <Link
+            href="/login"
+            className={`${fontValela} text-lg bg-transparent border border-white hover:bg-white hover:text-black backdrop-blur-md text-white p-2 rounded px-4`}
+          >
+            já tem uma conta?
+          </Link>
+        </motion.div>
+        <motion.div
+          initial={{ x: 30, opacity: 0 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-cneter gap-3"
+        >
+          <Button
+            onClick={handleTheme}
+            className="bg-zinc-900 backdrop-blur-xl bg-opacity-20 text-white rounded p-3"
+          >
+            <IconTheme />
+          </Button>
+        </motion.div>
+      </header>
       <div
-        className={`w-full h-[40rem] overflow-hidden relative bg-cyan-100 overflow-hidden mx-auto bg-gradient-45 from-purple-400 to-cyan-500 ${fontRoboto}`}
+        className={`w-full h-[40rem] overflow-hidden relative bg-cyan-100 overflow-hidden mx-auto bg-gradient-45 from-purple-600 to-cyan-400 ${fontRoboto}`}
       >
         <S.Bubble />
         <div className="inset-0 flex h-[40rem] items-center justify-center z-10 flex-col bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.1)]">
           <div className="flex flex-col text-white">
             <div className="text-7xl flex w-auto font-bold">
-              <h1 className="">
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
                 Calendar
-              </h1>
+              </motion.h1>
             </div>
-            <h2 className={`flex text-3xl `}>
+            <motion.h2
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className={`flex text-3xl `}
+            >
               Sua organização é nossa prioridade!
-            </h2>
+            </motion.h2>
           </div>
         </div>
       </div>
-      <Form
-        className="max-w-[30rem] min-h-[40rem]"
+      <S.Form
+        className="max-w-[35rem] mx-auto flex flex-col min-h-[40rem] mb-20  p-10 rounded-xl z-10 mt-[-15rem] shadow-xl"
         onSubmit={handleSubmit(createUser)}
       >
         <div className="flex flex-col gap-1 mb-10">
-          <div className={`text-[2rem] w-full text-cyan-500  ${fontRoboto}`}>
+          <div
+            className={`text-[2rem] w-full text-cyan-500  opacity-100 ${fontRoboto}`}
+          >
             Registrar-se
           </div>
           <div className="text-[1.2rem] font-semibold opacity-70">
@@ -128,7 +172,7 @@ export default function RegisterPage() {
           </div>
         )}
         {formData.map(
-          ({ name, icon: Icon, items }: ListProps, index: number) => (
+          ({ name, items, icon: Icon }: ListProps, index: number) => (
             <Label.Root key={index} className="mt-5">
               <Label.Title>
                 <Icon size="20" />
@@ -179,11 +223,11 @@ export default function RegisterPage() {
         )}
         <Button
           type="submit"
-          className={`bg-gradient-to-r from-cyan-300 to-cyan-400 text-gray-700 font-semibold w-full py-4 rounded text-lg mt-3 `}
+          className={`bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-semibold w-full py-4 rounded text-lg mt-3 `}
         >
           Enviar
         </Button>
-      </Form>
+      </S.Form>
     </motion.div>
   );
 }

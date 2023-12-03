@@ -1,13 +1,10 @@
 "use client";
-import { Suspense, useState, createContext, useContext } from "react";
-import Header from "@/components/header";
+import { Suspense, useState, createContext } from "react";
 import { ThemeProvider } from "styled-components";
 import * as S from "./style";
-import Button from "@/components/button";
-import Link from "next/link";
 import Footer from "@/components/footer";
-import { RiSunLine, RiMoonLine } from "react-icons/ri";
 import Loading from "@/components/loading";
+//import Loading from "@/components/loading";
 import { AnimatePresence } from "framer-motion";
 
 type ThemeType = "DARK" | "LIGHT";
@@ -64,53 +61,6 @@ export default function Layout({ children }: layoutProps) {
       <ThemeContext.Provider value={{ handleTheme, theme }}>
         <ThemeProvider theme={theme === "DARK" ? darkTheme : lightTheme}>
           <S.Container>
-            {/*  <Header.Root
-            className="p-2 text-xl z-[100] top-0 w-full sticky top-0"
-            bgTheme={true}
-            >
-            <Header.Division className="justify-start" bgTheme={false}>
-            <Button
-            onClick={handleTheme}
-            className="flex items-center justify-center"
-            >
-            <TextTheme />
-            </Button>
-            </Header.Division>
-            <Header.Division className="gap-0" bgTheme={false}>
-            <Link
-            href={"/login"}
-            className="rounded py-3 px-2 text-lg font-semibold opacity-70 hover:opacity-100 hover:opacity-100"
-            >
-            Serviços
-              </Link>
-              <Link
-              href={"/login"}
-              className="rounded py-3 px-2 text-lg font-semibold opacity-70 hover:opacity-100 hover:opacity-100"
-              >
-              Home
-              </Link>
-              <Link
-              href={"/login"}
-              className="rounded py-3 px-2 text-lg font-semibold opacity-70 hover:opacity-100 hover:opacity-100"
-              >
-              Contacte-nos
-              </Link>
-              </Header.Division>
-              <Header.Division bgTheme={false} className="justify-end">
-              <Link
-              href={"/login"}
-              className="rounded py-3 px-4 text-lg font-semibold opacity-70 hover:opacity-100 hover:opacity-100"
-              >
-              Login
-              </Link>
-              <Link
-              href={"/register"}
-              className="py-3 px-4 text-lg text-[#fff] bg-gradient-45 from-purple-500 to-blue-600 opacity-90 hover:opacity-100 font-semibold transition-opacity duration-200 hover:scale-102 rounded"
-              >
-              Sing up
-              </Link>
-            </Header.Division>
-          </Header.Root> */}
             <Suspense fallback={<Loading />}>
               <S.Content>
                 <AnimatePresence>{children}</AnimatePresence>

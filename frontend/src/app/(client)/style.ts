@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import styled, { keyframes } from "styled-components";
 
 export const Container = styled.main`
- /*  display: grid;
+  /*  display: grid;
   grid-template-areas:
     "header header header header"
     "content content content content"
@@ -14,7 +14,7 @@ export const Container = styled.main`
   /* grid-gap: 0rem; */
   display: flex;
   flex-direction: column;
-  color: ${props => props.theme.text};
+  color: ${(props) => props.theme.text};
 `;
 
 export const Content = styled(motion.div)`
@@ -27,5 +27,8 @@ export const Content = styled(motion.div)`
   flex: 1;
   min-height: 90vh;
   width: 100%;
+`;
 
+export const ButtonTheme = styled.button`
+  background-color: ${({ theme }) => theme.secundary};
 `;

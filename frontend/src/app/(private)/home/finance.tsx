@@ -34,7 +34,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
           Saída: {`${convertToRealMoney.format(payload[1].value)}`}
         </p>
         <p className="text-purple-600 font-semibold">
-          Total: {`${convertToRealMoney.format(payload[0].value - payload[1].value)}`}
+          Total:{" "}
+          {`${convertToRealMoney.format(payload[0].value - payload[1].value)}`}
         </p>
       </S.Theme>
     );
@@ -58,13 +59,14 @@ interface dataSumary {
 function useFinance() {
   const api = useApiPrivate();
 
-  const start = moment().startOf("month").format("MM/DD/YYYY");
-  const end = moment().endOf("month").format("MM/DD/YYYY");
-  const daysInMonth = moment().month(start).daysInMonth();
+  const start: string = moment().startOf("month").format("MM/DD/YYYY");
+  const end: string = moment().endOf("month").format("MM/DD/YYYY");
+  const daysInMonth: number = moment().month(start).daysInMonth();
+  const today: number = Number(moment().format("DD"));
 
   const { data: finance, isLoading } = useQuery<Sumary[]>({
     queryKey: ["registers", "sumary"],
-    queryFn: async () => {
+    queryFn: async (): Promise<Sumary[]> => {
       return (
         await api.post("/registers/find/sumary-by-date", {
           start,
@@ -101,11 +103,11 @@ function useFinance() {
     });
 
     const month = moment().month() + 1;
-    for (let i = 1; i <= Number(daysInMonth); i++) {
+    for (let i = 1; i <= Number(today); i++) {
       const exists = data.filter((item: dataSumary) => {
         return (
           moment(item.date, "DD/MM").format("DD/MM") ===
-          moment(`${i}/${month}`, 'DD/MM').format("DD/MM")
+          moment(`${i}/${month}`, "DD/MM").format("DD/MM")
         );
       });
 
@@ -119,13 +121,13 @@ function useFinance() {
     }
 
     data.sort((a, b) => {
-      const [dayA, monthA] = a.date.split('/').map(Number);
-      const [dayB, monthB] = b.date.split('/').map(Number);
-    
+      const [dayA, monthA] = a.date.split("/").map(Number);
+      const [dayB, monthB] = b.date.split("/").map(Number);
+
       if (monthA !== monthB) {
         return monthA - monthB;
       }
-    
+
       return dayA - dayB;
     });
 
@@ -150,7 +152,10 @@ export default function Finance() {
         <div
           className={`font-semibold opacity-70 p-2 flex-col ${fontOpenSans}`}
         >
-          <h2>Entrada e saída de capital no mês de {moment().format('MMMM [de] YYYY')}</h2>
+          <h2>
+            Entrada e saída de capital no mês de{" "}
+            {moment().format("MMMM [de] YYYY")}
+          </h2>
           <div className="text-cyan-300 text-xl">22.3%</div>
         </div>
       </S.TitleComponent>

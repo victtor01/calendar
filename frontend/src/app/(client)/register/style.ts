@@ -70,3 +70,21 @@ export const Bubble = styled.div`
     );
   }
 `;
+
+export const Form = styled.form`
+  background-color: ${({theme}) => theme.secundary};
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0%;
+    margin-top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 96%;
+    height: 5px;
+    border-radius: 10px 10px 0 0;
+    background: linear-gradient(45deg, #6157ff, #74febd);
+  }
+`

@@ -1,4 +1,6 @@
 "use client";
+import { motion } from "framer-motion";
+import Link from "next/link";
 import styled, { css } from "styled-components";
 
 export const Container = styled.main`
@@ -92,3 +94,7 @@ export const Bubble = styled.div`
     background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
   }
 `;
+
+export const LinkRoute = styled(motion(Link))`
+
+`
