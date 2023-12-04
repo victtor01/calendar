@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react";
 import Form from "@/components/form";
 import Input from "@/components/input/input";
 import { fontRoboto, fontOpenSans } from "@/app/fonts";
-import { MdMail } from "react-icons/md";
+import { MdMail, MdOutlineError } from "react-icons/md";
 import { useContext, useState } from "react";
 import { UsersService } from "@/hooks/users";
 import { useForm } from "react-hook-form";
@@ -11,13 +11,16 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImLock } from "react-icons/im";
 import Cookie from "js-cookie";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import * as S from "./style";
 import { ThemeContext } from "../layout";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import { motion } from "framer-motion";
 import moment from "moment";
 import Link from "next/link";
+import Spinner from "@/components/spinner";
+import Poster from "./poster";
+import { Theme, ToastContainer, toast } from "react-toastify";
 
 type LoginUserFormData = z.infer<typeof createUserFormSchema>;
 
@@ -33,7 +36,7 @@ const useLogin = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginUserFormData>({
     resolver: zodResolver(createUserFormSchema),
   });
@@ -56,8 +59,8 @@ const useLogin = () => {
 
       const { access_token, refresh_token, user } = res;
 
-      console.log(res);
       if (!access_token || !refresh_token) {
+        toast.error("Houve um erro, tente novamente mais tarde!");
         return new Error("Houve um erro na passagem dos dados!");
       }
 
@@ -80,37 +83,24 @@ const useLogin = () => {
 
       router.push("/home");
     } catch (error) {
-      console.log(error);
-      setError("");
+      toast.error("Email ou senha incorretos");
     }
   }
 
   return {
     onSubmit,
     handleSubmit,
+    isSubmitting,
     register,
     errors,
     error,
   };
 };
 
-const titleAnimation = {
-  initial: {
-    opacity: 0,
-    x: -30,
-  },
-  animate: {
-    opacity: 1,
-    x: 0,
-  },
-};
-
 export default function Login() {
-  const { onSubmit, handleSubmit, register, errors, error } = useLogin();
-  const { theme, handleTheme } = useContext(ThemeContext);
-
-  const router = useRouter();
-  const IconTheme = theme === "DARK" ? RiMoonLine : RiSunLine;
+  const { onSubmit, handleSubmit, register, errors, isSubmitting, error } =
+    useLogin();
+  const { theme } = useContext(ThemeContext);
 
   return (
     <motion.div
@@ -118,59 +108,19 @@ export default function Login() {
       animate={{ opacity: 1 }}
       className="flex w-full h-[100vh]"
     >
-      <S.Poster className="flex flex-col relative w-full h-[100vh] overflow-hidden bg-gradient-45 from-purple-800 to-cyan-500 top-0">
-        <S.Bubble />
-        <header className="z-[20] p-2 text-lg flex justify-between text-white">
-          <S.ButtonTheme
-            className="bg-zinc-900 text-white p-3 rounded"
-            onClick={handleTheme}
-          >
-            <IconTheme />
-          </S.ButtonTheme>
-        </header>
-        <motion.section className="flex flex-col p-4 px-[5rem] gap-8 justify-center flex-1">
-          <div className="flex gap-2 flex-col w-full max-w-[40rem]">
-            <motion.h1
-              initial="initial"
-              animate="animate"
-              variants={titleAnimation}
-              transition={{ delay: 0.4 }}
-              className={`text-5xl text-white font-sm ${fontOpenSans}`}
-            >
-              Organize seu Tempo, Finanças e Mais com Facilidade!
-            </motion.h1>
-            <motion.h2
-              initial="initial"
-              animate="animate"
-              variants={titleAnimation}
-              transition={{ delay: 0.6 }}
-              className="flex text-white font-sm max-w-[30rem]"
-            >
-              Sua solução completa para organização pessoal e controle
-              financeiro fácil. Simplifique sua vida agora!
-            </motion.h2>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className={`flex gap-2 ${fontOpenSans}`}
-          >
-            <Button
-              onClick={() => router.push("/")}
-              className="bg-white text-zinc-900 p-6 px-10 rounded text-md font-semibold"
-            >
-              Saiba mais!
-            </Button>
-            <Button
-              onClick={() => router.push("/register")}
-              className="bg-transparent border border-white text-white p-6 px-10 rounded text-md font-semibold"
-            >
-              Começe aqui.
-            </Button>
-          </motion.div>
-        </motion.section>
-      </S.Poster>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme.toLowerCase() as Theme}
+      />
+      <Poster />
       <Form
         bgTheme
         exit={{ opacity: 0 }}
@@ -179,6 +129,7 @@ export default function Login() {
         onSubmit={handleSubmit(onSubmit)}
         className={`shadow-2xl max-w-[32rem] bg-opacity-20 h-auto relative backdrop-blur-3xl p-14 px-16 justify-center`}
       >
+        {error && <div>{error}</div>}
         <div className="flex flex-col mb-10 gap-1">
           <h1
             className={`text-[2rem] text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 w-full flex justify-center text-cyan-400 ${fontRoboto}`}
@@ -194,6 +145,8 @@ export default function Login() {
         </div>
         <Input
           required
+          type="text"
+          autoComplete="off"
           register={register("email")}
           className={`border focus:border-cyan-500 rounded `}
         >
@@ -202,11 +155,17 @@ export default function Login() {
           </div>
           <span>Email</span>
         </Input>
-        {errors.email && <>{errors.email.message}</>}
+        {errors.email && (
+          <div className="w-full text-red-500 flex gap-2 items-center">
+            <MdOutlineError />
+            {errors.email.message}
+          </div>
+        )}
         <Input
           register={register("password")}
           required
           type="password"
+          autoComplete="off"
           className={`border focus:border-cyan-500 rounded `}
         >
           <div className="absolute z-10 right-4 pointer-events-none ">
@@ -214,6 +173,12 @@ export default function Login() {
           </div>
           <span>Password</span>
         </Input>
+        {errors.password && (
+          <div className="w-full text-red-500 flex gap-2 items-center">
+            <MdOutlineError />
+            {errors.password.message}
+          </div>
+        )}
         <div className="flex w-full items-center gap-2">
           <button
             type="button"
@@ -221,11 +186,16 @@ export default function Login() {
           />
           <span>Mantenha-me contectado</span>
         </div>
-        <motion.button 
-        whileHover={{ scale: 1.04  }}
-        transition={{ type: 'spring', duration: 0.2}}
-        className="py-3 mt-5 bg-gradient-45 from-purple-600 to-cyan-400 w-full text-white font-normal text-lg rounded font-semibold">
-          Entrar
+        <motion.button
+          whileHover={{ scale: 1.04 }}
+          transition={{ type: "spring", duration: 0.2 }}
+          className="py-3 mt-5 bg-gradient-45 from-purple-600 to-blue-500 w-full text-white font-normal text-lg rounded font-semibold"
+        >
+          {isSubmitting ? (
+            <Spinner className="w-[1.3rem] h-[1.3rem]" />
+          ) : (
+            "Entrar"
+          )}
         </motion.button>
         <p className="flex gap-1">
           Ainda não tem uma conta?{" "}

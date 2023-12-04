@@ -109,7 +109,7 @@ export default function Week() {
       <div className="w-full flex max-w-[90rem] min-h-[3rem] rounded justify-between items-center">
         <Link
           href={"/calendar"}
-          className="flex items-center p-3 gap-3 opacity-50 hover:opacity-90 bg-cyan-300 bg-opacity-40"
+          className="flex items-center gap-3 opacity-50 hover:opacity-90"
         >
           <BsArrowLeft />
           <h1 className={`text-lg ${fontInter}`}>Calendário</h1>

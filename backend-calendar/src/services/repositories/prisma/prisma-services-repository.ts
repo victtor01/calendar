@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { DeleteServiceDto } from 'src/services/dto/delete-service.dto';
 import { findServiceDto } from 'src/services/dto/find-service.dto';
+import { FindServiceByCodeDto } from 'src/services/dto/find-service-by-code.dto';
 
 @Injectable()
 export class PrismaServicesRepository implements ServicesRepository {
@@ -31,6 +32,18 @@ export class PrismaServicesRepository implements ServicesRepository {
       },
       orderBy: {
         createdAt: 'desc',
+      },
+    });
+  }
+
+  async findOneByCode({
+    userId,
+    code,
+  }: FindServiceByCodeDto): Promise<Service> {
+    return await this.prisma.services.findFirst({
+      where: {
+        userId,
+        code,
       },
     });
   }

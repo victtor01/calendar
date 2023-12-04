@@ -21,6 +21,8 @@ import * as S from "./styles";
 import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion";
+import { convertToRealMoney } from "@/helpers/convertToRealMoney";
+import { useRouter } from "next/navigation";
 
 interface ItemDeleteProps {
   id: number;
@@ -36,10 +38,10 @@ function useServices() {
       return (await api.get("/services")).data;
     },
   });
-  
+
   const {} = useQuery({
-    queryKey: ["services", "services-last-month"]
-  })
+    queryKey: ["services", "services-last-month"],
+  });
 
   const [itemDelete, setItemDelete] = useState<ItemDeleteProps | null>(null);
 
@@ -81,6 +83,8 @@ export default function Services() {
     delete: { itemDelete, deleteItem, handleItemDelete },
   } = useServices();
 
+  const { push } = useRouter();
+
   if (isLoading) return <Loading />;
 
   return (
@@ -97,7 +101,7 @@ export default function Services() {
             <div className="flex items-center gap-3">
               <Link
                 href="/services/create"
-                className="bg-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
+                className="bg-gradient-45 from-purple-500 to-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
               >
                 <IoMdAdd />
                 Criar
@@ -114,7 +118,11 @@ export default function Services() {
         <AnimatePresence mode="sync">
           {services?.map((item: Service, index: number) => {
             return (
-              <Register.Root layout key={index} transition={{ delay: index / 10, type: 'spring'}}>
+              <Register.Root
+                layout
+                key={index}
+                transition={{ delay: index / 10, type: "spring" }}
+              >
                 <Register.Compartiment>
                   <Register.Title>Nome</Register.Title>
                   <Register.Content>{item.name}</Register.Content>
@@ -127,12 +135,16 @@ export default function Services() {
                 </Register.Compartiment>
                 <Register.Compartiment>
                   <Register.Title>preço</Register.Title>
-                  <Register.Content>{item?.price}</Register.Content>
+                  <Register.Content>
+                    <div className="p-2 w-auto min-w-[5rem] flex justify-center bg-opacity-20 text-xs rounded font-semibold bg-emerald-500 text-emerald-500">
+                      {convertToRealMoney.format(item?.price)}
+                    </div>
+                  </Register.Content>
                 </Register.Compartiment>
                 <Register.Compartiment>
                   <Register.Title>Criado em</Register.Title>
                   <Register.Content>
-                    {moment(item.createdAt).format("YYYY / MM / DD")}{" "}
+                    {moment(item.createdAt).format("ddd, DD MMM YYYY")}{" "}
                   </Register.Content>
                 </Register.Compartiment>
                 <Register.ButtonTrash
@@ -143,7 +155,9 @@ export default function Services() {
                     })
                   }
                 />
-                <Register.ButtonEdit />
+                <Register.ButtonEdit
+                  onClick={() => push(`/services/edit/${item.code}`)}
+                />
               </Register.Root>
             );
           })}

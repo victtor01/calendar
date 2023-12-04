@@ -38,6 +38,14 @@ export class ServicesController {
     return this.servicesService.findOne(+id);
   }
 
+  @Get('/find-by-code/:code')
+  findByCode(@Param('code') code: string, @Request() req: { user: User }) {
+    return this.servicesService.findOneByCode({
+      userId: +req.user.id,
+      code,
+    });
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
     return this.servicesService.update(+id, updateServiceDto);

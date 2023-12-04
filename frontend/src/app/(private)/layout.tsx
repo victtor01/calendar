@@ -162,7 +162,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <FaChevronRight />
             </button>
-            <div className="flex flex-col px-4 mt-5 gap-5 flex-1 flex-nowrap w-full">
+            <div className="flex flex-col lg:px-4 mt-5 gap-5 flex-1 flex-nowrap w-full">
               {pages.map(({ name, icon: Icon, href }: Page, index: number) => {
                 const selected = currentPath === href.substring(1);
                 return (
@@ -172,7 +172,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     transition={{ delay: index / 15 }}
                     key={name}
                     href={href}
-                    className={`transition-all flex-nowrap w-full flex py-0 items-center gap-2 text-md opacity-80 hover:opacity-100 p-1 rounded ${
+                    className={`transition-all flex-nowrap w-full justify-center lg:justify-start flex py-0 items-center gap-2 text-md opacity-80 hover:opacity-100 p-1 lg:rounded ${
                       selected
                         ? "text-white py-3 bg-gradient-45 from-purple-600 to-cyan-500 "
                         : ""

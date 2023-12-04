@@ -1,6 +1,6 @@
 "use client";
 import { z } from "zod";
-import * as S from "./style";
+import * as S from "../styles";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Label from "@/components/label";
@@ -33,10 +33,7 @@ function useCreate() {
   const api = useApiPrivate();
 
   async function addService(data: CreateServicesFormSchema) {
-    console.log("Teste");
-    console.log(data);
     const res = await api.post("/services", data);
-    console.log(res);
   }
 
   return {

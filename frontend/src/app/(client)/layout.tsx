@@ -4,7 +4,6 @@ import { ThemeProvider } from "styled-components";
 import * as S from "./style";
 import Footer from "@/components/footer";
 import Loading from "@/components/loading";
-//import Loading from "@/components/loading";
 import { AnimatePresence } from "framer-motion";
 
 type ThemeType = "DARK" | "LIGHT";
@@ -61,7 +60,7 @@ export default function Layout({ children }: layoutProps) {
       <ThemeContext.Provider value={{ handleTheme, theme }}>
         <ThemeProvider theme={theme === "DARK" ? darkTheme : lightTheme}>
           <S.Container>
-            <Suspense fallback={<Loading />}>
+            <Suspense fallback={<Loading className="bg-cyan-500"/>}>
               <S.Content>
                 <AnimatePresence>{children}</AnimatePresence>
               </S.Content>

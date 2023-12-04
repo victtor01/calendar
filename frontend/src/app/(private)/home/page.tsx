@@ -8,7 +8,7 @@ import NewClients from "./clients";
 import NewServices from "./services";
 import Finance from "./finance";
 import Registers from "./registers";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import ClientsMonth from "./clientsMonth";
 import ResumeRegisters from "./resume";

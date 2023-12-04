@@ -7,6 +7,7 @@ import "./globals.css";
 import "moment/locale/pt-br";
 import "moment-timezone";
 import { ProviderSessionContext } from "@/contexts/sessionContext";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function RootLayout({
   children,

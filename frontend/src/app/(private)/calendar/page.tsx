@@ -3,7 +3,7 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment-timezone";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
 import useApiPrivate from "@/hooks/apiPrivate";
@@ -21,16 +21,18 @@ import interactionPlugin, {
   Draggable,
   DropArg,
 } from "@fullcalendar/interaction";
+import Loading from "@/components/loading";
 
 const variants = {
-  pageInitial: { opacity: 0},
-  pageAnimate: { opacity: 1},
+  pageInitial: { opacity: 0 },
+  pageAnimate: { opacity: 1 },
 };
 
 const useCalendar = () => {
   const api = useApiPrivate();
   const { push } = useRouter();
   const { data: eventsTemplates } = useEventsTemplates().getAll();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { data: allEvents } = useQuery({
     queryKey: ["events"],
@@ -85,7 +87,8 @@ const useCalendar = () => {
     });
   }
 
-  function eventDetails(arg: any) {
+  function eventDetails(arg: { event: Event}) {
+    setLoading(true);
     const { id } = arg.event;
     const { code } = allEvents.filter(
       (even: Event) => even.id.toString() === id.toString()
@@ -137,6 +140,7 @@ const useCalendar = () => {
     addEvent,
     handleEventReceive,
     eventDetails,
+    loading,
   };
 };
 
@@ -144,10 +148,19 @@ export default function Calendar() {
   const {
     eventsTemplates,
     allEvents,
+    loading,
     handleEventReceive,
     addEvent,
     eventDetails,
   } = useCalendar();
+
+  if (loading) {
+    return (
+      <div className="p-3 w-full h-full relative justify-center flex items-center">
+        <Loading className="bg-cyan-500" />
+      </div>
+    );
+  }
 
   return (
     <motion.main
@@ -158,11 +171,12 @@ export default function Calendar() {
     >
       <S.Content className="flex gap-4  flex-col justify-center max-w-[95rem] mx-auto rounded-lg">
         <Header />
-        <S.Calendar 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="flex flex-1 gap-2 p-5 rounded-xl">
+        <S.Calendar
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="flex flex-1 gap-2 p-5 rounded-xl"
+        >
           <div className="col-span-8 max-h-auto w-full max-w-[80rem]">
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
@@ -196,14 +210,14 @@ export default function Calendar() {
             id="draggable-el"
             className="min-w-[12rem] roun/ded-md mt-16 gap-2 flex flex-col p-2"
           >
-            <h1 className="font-semibold text-md p-2 rounded text-center text-white bg-cyan-800">
+            <h1 className="font-semibold text-md p-2 text-center text-white bg-gradient-45 from-cyan-500 to-cyan-700">
               Modelos de eventos
             </h1>
             {eventsTemplates?.map((event: EventsTemplates, index: number) => (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index/5 }}
+                transition={{ delay: index / 5 }}
                 id={event.id.toString()}
                 title={event.name}
                 key={event.id}

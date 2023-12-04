@@ -1,5 +1,6 @@
 "use client";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 export const Container = styled.main`
   background-color: ${({ theme }) => theme.primary};
@@ -31,3 +32,9 @@ export const Bubble = styled.div`
     background: linear-gradient(34deg, #6157ff, #74febd);
   }
 `;
+
+
+export const Form = styled(motion.form)`
+  background-color: ${({ theme }) => theme.secundary};
+`;
+

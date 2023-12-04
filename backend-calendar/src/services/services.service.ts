@@ -7,6 +7,8 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { ServicesRepository } from './repositories/services-repository';
 import { DeleteServiceDto } from './dto/delete-service.dto';
+import { FindServiceByCodeDto } from './dto/find-service-by-code.dto';
+import { Service } from './entities/service.entity';
 
 @Injectable()
 export class ServicesService {
@@ -33,6 +35,16 @@ export class ServicesService {
 
   async findAll(userId: number) {
     return await this.serviceRepository.findAll(Number(userId));
+  }
+
+  async findOneByCode({
+    userId,
+    code,
+  }: FindServiceByCodeDto): Promise<Service> {
+    return await this.serviceRepository.findOneByCode({
+      userId,
+      code,
+    });
   }
 
   findOne(id: number) {

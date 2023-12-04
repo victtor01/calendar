@@ -52,9 +52,9 @@ export default function UserComponents() {
             animate={{ scale: 1 }}
             exit={{ scale: 0 }}
             transition={{ type: "spring", duration: 0.2 }}
-            className="absolute p-3 top-[101%] right-0 m-3 w-[20rem] h-[24rem] rounded shadow z-[20]"
+            className="absolute p-3 top-[101%] right-0 flex flex-col m-3 w-[20rem] h-[24rem] rounded shadow z-[20]"
           >
-            Type
+            <div className="flex m-auto">Nenhuma notificação</div>
           </S.Modal>
         )}
         {selected === "EXIT" && (
