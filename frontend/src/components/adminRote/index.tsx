@@ -1,54 +1,51 @@
 "use client";
 import useApiPrivate from "@/hooks/apiPrivate";
+import { User } from "@/types/user";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import Empty from "../empty";
+import Loading from "../loading";
+import { SessionContext } from "@/contexts/sessionContext";
 
 interface AdminRouteProps {
   children: React.ReactNode;
 }
 
 export function useAdminRouter() {
-  const [loading, setLoading] = useState(true);
-  const [role, setRole] = useState<string | null>("");
   const api = useApiPrivate();
   const { push } = useRouter();
 
-  const valide = useCallback(async () => {
-    try {
-      const { data } = await api.get("/users/find");
-      const { role } = data;
-
-      if(role === 'USER') {
-        push('/home')
-      }
-
-      setRole(role);
-    } catch (error) {
-      setRole(null);
-      push('/login')
-    } finally {
-      setLoading(false);
-    }
-  }, [api, push, setRole, setLoading]);
-
-  useEffect(() => {
-    valide();
-  }, [valide]);
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: async (): Promise<User> => {
+      return (await api.get("/users/find")).data;
+    },
+  });
 
   return {
-    role,
-    loading,
+    user,
+    isLoading,
   };
 }
 
 export default function AdminRoute({ children }: AdminRouteProps) {
-  const { role, loading } = useAdminRouter();
+  const { user, isLoading } = useAdminRouter();
 
-  if (loading) return;
+  const { setUserInfo } = useContext(SessionContext);
+  useEffect(() => {
+    if (user) {
+      setUserInfo({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      });
+    }
+  }, [user]);
 
-  if (role === "USER" || !role) {
-    return <>SEM PERMISSÃO</>;
-  }
+  if (isLoading) return <Loading className="bg-cyan-400" />;
+  if (!user) return <Empty />;
+  if (user.role === "USER") return <Empty />;
 
   return children;
 }

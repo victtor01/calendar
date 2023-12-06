@@ -9,12 +9,14 @@ import "moment-timezone";
 import { ProviderSessionContext } from "@/contexts/sessionContext";
 import 'react-toastify/dist/ReactToastify.css';
 
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
+    
     <ProviderSessionContext>
       <QueryClientProvider client={queryClient}>
         <html lang="pt-br">

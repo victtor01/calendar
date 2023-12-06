@@ -11,7 +11,10 @@ import { useRef, useState } from "react";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { Accounts, useAccounts } from "@/hooks/useAccounts";
 import { motion } from "framer-motion";
-import InputMask from "react-input-mask";
+import { NumericFormat } from "react-number-format";
+import Spinner from "@/components/spinner";
+import { convertRealMoneyToFloat } from "@/helpers/convertRealMoneyToFloat";
+import { ToastContainer, toast } from "react-toastify";
 
 type CreateRegisterFormData = z.infer<typeof createRegisterFormSchema>;
 type OptionFinance = "INCOME" | "EXPENSE";
@@ -28,7 +31,7 @@ const useCreate = () => {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<CreateRegisterFormData>({
     resolver: zodResolver(createRegisterFormSchema),
   });
@@ -85,6 +88,8 @@ const useCreate = () => {
       return;
     }
 
+    formData.value = convertRealMoneyToFloat(formData.value).toString();
+
     reset({
       name: "",
       value: "",
@@ -103,11 +108,7 @@ const useCreate = () => {
 
     try {
       await api.post("/registers/create", data);
-      setOnSuccessMesage("enviado com sucesso!");
-
-      setTimeout(() => {
-        setOnSuccessMesage("");
-      }, 1000);
+      toast.success('Enviando com sucesso')
     } catch (error) {
       handleError("Houve um erro inesperado, tente novamente mais tarde!");
     }
@@ -119,6 +120,7 @@ const useCreate = () => {
       handleSubmit,
       createRegister,
       handleOptionfinance,
+      isSubmitting,
     },
     utils: {
       handleOptionAccount,
@@ -144,7 +146,13 @@ const useCreate = () => {
 
 export const Create = () => {
   const {
-    form: { control, handleSubmit, createRegister, handleOptionfinance },
+    form: {
+      control,
+      handleSubmit,
+      isSubmitting,
+      createRegister,
+      handleOptionfinance,
+    },
     utils: { handleOptionAccount, onChangeOptionAccount, refOptionAccount },
     events: { onSuccessMessage, errorMessage, errors },
     data: { optionFinance, optionAccount },
@@ -160,6 +168,18 @@ export const Create = () => {
       onSubmit={handleSubmit(createRegister)}
       className="flex flex-col p-2 items-center"
     >
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme={"dark"}
+      />
       {onSuccessMessage && (
         <div className="p-4 w-full bg-emerald-500 opacity-70 border border-green-300 rounded text-md text-white font-semibold">
           {onSuccessMessage}
@@ -171,7 +191,7 @@ export const Create = () => {
         </div>
       )}
       {formDataLabel.map(
-        ({ name, span, ex, type, max, mask }: FormDataLabel, index: number) => {
+        ({ name, span, ex, type, max }: FormDataLabel, index: number) => {
           const classError = errors[name as keyof CreateRegisterFormData]
             ? "shadow-[0_0_0_1px] shadow-red-400 focus:border-none"
             : "shadow-none";
@@ -205,6 +225,34 @@ export const Create = () => {
           );
         }
       )}
+      <Label.Content className="mb-4">
+        <span className="text-[1rem] font-semibold opacity-60">Preço</span>
+        <Controller
+          name={"value"}
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <NumericFormat
+              thousandSeparator="."
+              decimalSeparator=","
+              fixedDecimalScale
+              prefix="R$ "
+              allowNegative={false}
+              decimalScale={2}
+              className="focus:shadow rounded-md transition-shadow p-4 outline-none bg-zinc-400 bg-opacity-5"
+              placeholder="Digite o nome do serviço..."
+              autoComplete="off"
+              {...field}
+            />
+          )}
+        />
+        {errors?.value && (
+          <span className="opacity-90 text-red-400 text-normal flex gap-1 items-center">
+            <IoAlertCircleSharp />
+            {errors?.value?.message}
+          </span>
+        )}
+      </Label.Content>
       <span className="text-[1rem] font-semibold opacity-60 w-full">
         Descrição
       </span>
@@ -281,7 +329,7 @@ export const Create = () => {
         type="submit"
         className="z-2 text-white font-semibold text-lg bg-gradient-45 from-purple-500 to-blue-500 w-full mt-4 py-4 rounded"
       >
-        Enviar
+        {isSubmitting ? <Spinner /> : "Enviar"}
       </motion.button>
     </form>
   );

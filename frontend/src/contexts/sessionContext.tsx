@@ -11,12 +11,13 @@ import { useRouter } from "next/navigation";
 
 interface ContextProps {
   setUserInfo: Dispatch<SetStateAction<DataType | {}>>;
-  userInfo: Partial<User> | null;
+  userInfo: Partial<User>;
   logout: () => null;
 }
 
 interface DataType {
   id: number;
+  email: string;
   firstName: string;
   lastName: string;
 }

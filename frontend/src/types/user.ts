@@ -7,7 +7,10 @@ export interface User {
   status: string;
   photo: string;
   password: string;
+  role: UserRole;
   repeatPassword: string;
   phone: string;
   birth: Date;
 }
+
+type UserRole = "ADMIN" | "USER";

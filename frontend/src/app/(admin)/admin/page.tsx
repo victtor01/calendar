@@ -1,9 +1,11 @@
 "use client";
+import Loading from "@/components/loading";
 import useApiPrivate from "@/hooks/apiPrivate";
-import { User } from "@/hooks/users";
+import { User } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import * as S from './style';
 
 const useAdmin = () => {
   const api = useApiPrivate();
@@ -27,24 +29,17 @@ const useAdmin = () => {
 };
 
 export default function Admin() {
-  const { users, isLoading, logout} = useAdmin();
+  const { users, isLoading, logout } = useAdmin();
 
-  if(isLoading) {
-    return 'loading'
-  }
-
-  console.log(users)
+  if (isLoading) return <Loading />;
 
   return (
     <div className="w-full h-auto flex flex-wrap p-3">
       {users?.map((user: User) => (
-      <div className="flex flex-col bg-green-200 p-2" key={user.id}>
-        <div className="w-[12rem] h-[12rem] flex bg-red-200">
+        <div className="flex flex-col bg-green-200 p-2" key={user.id}>
+          <div className="w-[12rem] h-[12rem] flex bg-red-200"></div>
+          <div className="flex">{user.firstName}</div>
         </div>
-        <div className="flex">
-          {user.firstName}
-        </div>
-      </div>
       ))}
     </div>
   );

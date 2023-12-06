@@ -9,6 +9,7 @@ import { BsArrowLeft, BsFillPenFill } from "react-icons/bs";
 import * as S from "./style";
 import { IoMdAdd } from "react-icons/io";
 import { FaCreditCard } from "react-icons/fa";
+import { Account } from "@/types/accounts";
 
 const useAccounts = () => {
   const api = useApiPrivate();
@@ -28,15 +29,11 @@ const useAccounts = () => {
   };
 };
 
-interface AccountProps {
-  name: string;
-  description: string;
-}
-
-const Account = ({ item }: { item: AccountProps }) => {
+const Account = ({ item }: { item: Account }) => {
   return (
     <div className="p-2 flex justify-between items-center bg-zinc-400 bg-opacity-5 rounded hover:opacity-100 hover:shadow-lg">
       <div>{item.name}</div>
+      <div>{item?.registers?.length || 0}</div>
       <div>
         <button className="p-3 hover:text-blue-400">
           <BsFillPenFill />
@@ -84,9 +81,9 @@ export default function Accounts() {
           {data && data?.length} / 10
         </div>
       </div>
-      <div className="opacity-70 text-lg flex flex-col gap-2">
+      <div className="opacity-70 text-lg  flex flex-col gap-2">
         {data?.length > 0
-          ? data?.map((item: AccountProps, index: number) => (
+          ? data?.map((item: Account, index: number) => (
               <Account key={index} item={item} />
             ))
           : "Nenhum item"}
