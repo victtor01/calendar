@@ -1,14 +1,138 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// postgresql
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model users {
+  id              Int                 @id @default(autoincrement())
+  key             String              @unique @default(uuid())
+  firstName       String
+  lastName        String
+  email           String              @unique
+  password        String
+  birth           DateTime
+  cpf             String
+  photo           String?
+  phone           String?             @unique
+  createdAt       DateTime            @default(now())
+  role            UserRole            @default(USER)
+  status          UserStatus          @default(CREATED)
+  updatedAt       DateTime            @default(now())
+  account         accounts[]
+  clients         clients[]
+  code            codes_confirmation?
+  events          events[]
+  eventsTemplates eventsTemplates[]
+  registers       registers[]
+  services        services[]
+}
+
+model codes_confirmation {
+  id     Int    @id @default(autoincrement())
+  code   String @unique
+  userId Int    @unique
+  user   users  @relation(fields: [userId], references: [id])
+}
+
+model accounts {
+  id          Int         @id @default(autoincrement())
+  code        String      @unique @default(uuid())
+  name        String
+  description String?
+  userId      Int
+  user        users       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  registers   registers[]
+}
+
+model registers {
+  id          Int          @id @default(autoincrement())
+  code        String       @unique @default(uuid())
+  name        String
+  description String
+  value       Float
+  type        RegisterType @default(INCOME)
+  accountId   Int
+  userId      Int
+  date        DateTime     @default(now())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+  account     accounts     @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  user        users        @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model clients {
+  id        Int       @id @default(autoincrement())
+  code      String    @unique @default(uuid())
+  firstName String
+  lastName  String
+  email     String
+  cpf       String?
+  cep       String?
+  phone     String?
+  street    String?
+  userId    Int
+  birth     DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  user      users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events    events[]  @relation("clientsToevents")
+}
+
+model services {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique @default(uuid())
+  name        String   @unique
+  price       Float
+  description String?
+  userId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  user        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events      events[] @relation("eventsToservices")
+}
+
+model eventsTemplates {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique @default(uuid())
+  name        String
+  description String
+  color       String?
+  userId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  user        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model events {
+  id          Int              @id @default(autoincrement())
+  description String?
+  userId      Int
+  color       String?
+  end         DateTime
+  start       DateTime         @default(now())
+  name        String
+  allDay      Boolean          @default(true)
+  code        String           @unique @default(uuid())
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @default(now())
+  status      EventsStatus     @default(ACTIVATED)
+  user        users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments    eventsComments[]
+  clients     clients[]        @relation("clientsToevents")
+  services    services[]       @relation("eventsToservices")
+}
+
+model eventsComments {
+  id        Int      @id @default(autoincrement())
+  content   String
+  eventId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  event     events   @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
 
 enum UserRole {
@@ -31,136 +155,4 @@ enum EventsStatus {
   ACTIVATED
   CONCLUDED
   FILED
-}
-
-model users {
-  id        Int      @id @default(autoincrement())
-  key       String   @unique @default(uuid())
-  firstName String
-  lastName  String
-  email     String   @unique
-  password  String
-  birth     DateTime
-  cpf       String
-  photo     String?
-  phone     String?  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-
-  status UserStatus @default(CREATED)
-  role   UserRole   @default(USER)
-
-  code            codes_confirmation[]
-  account         accounts[]
-  registers       registers[]
-  clients         clients[]
-  services        services[]
-  eventsTemplates eventsTemplates[]
-  events          events[]
-}
-
-model codes_confirmation {
-  id     Int    @id @default(autoincrement())
-  code   String @unique
-  user   users  @relation(fields: [userId], references: [id])
-  userId Int    @unique
-}
-
-model accounts {
-  id          Int         @id @default(autoincrement())
-  code        String      @unique @default(uuid())
-  name        String
-  description String?
-  userId      Int
-  user        users       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  registers   registers[]
-}
-
-model registers {
-  id          Int          @id @default(autoincrement())
-  code        String       @unique @default(uuid())
-  name        String
-  description String
-  value       Float
-  type        RegisterType @default(INCOME)
-  date        DateTime     @default(now())
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now())
-  accountId   Int
-  userId      Int
-  user        users        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  account     accounts     @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-model clients {
-  id        Int       @id @default(autoincrement())
-  code      String    @unique @default(uuid())
-  firstName String
-  lastName  String
-  email     String
-  cpf       String?
-  cep       String?
-  phone     String?
-  street    String?
-  birth     DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  userId    Int
-
-  events events[]
-  user   users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-model services {
-  id          Int      @id @default(autoincrement())
-  code        String   @unique @default(uuid())
-  name        String   @unique
-  price       Float
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  userId      Int
-
-  events events[]
-  user   users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-model eventsTemplates {
-  id          Int      @id @default(autoincrement())
-  code        String   @unique @default(uuid())
-  name        String
-  description String
-  color       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  userId      Int
-  user        users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-model events {
-  id          Int              @id @default(autoincrement())
-  code        String           @unique @default(uuid())
-  name        String
-  description String?
-  color       String?
-  start       DateTime         @default(now())
-  end         DateTime
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @default(now())
-  allDay      Boolean          @default(true)
-  userId      Int
-  status      EventsStatus     @default(ACTIVATED)
-  clients     clients[]
-  comments    eventsComments[]
-  services    services[]
-  user        users            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-model eventsComments {
-  id        Int      @id @default(autoincrement())
-  content   String
-  eventId   Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  event     events   @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

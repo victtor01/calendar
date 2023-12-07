@@ -13,12 +13,13 @@ export class PrismaAccountsRepository implements AccountsRepository {
       where: {
         userId,
       },
+      include: {
+        registers: true,
+      },
     });
   }
 
   async create(data: CreateAccountsDto): Promise<Accounts> {
-    console.log('passou aqui!');
-    console.log(data);
     const { userId, ...rest } = data;
     return await this.prismaService.accounts.create({
       data: {
