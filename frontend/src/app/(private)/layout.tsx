@@ -23,6 +23,7 @@ import Header from "@/components/header";
 import UserComponents from "@/components/userComponents";
 import Image from "next/image";
 import { SessionContext, useSessionContext } from "@/contexts/sessionContext";
+import { Theme, ToastContainer } from "react-toastify";
 
 /* #1f1d2b */
 
@@ -271,7 +272,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Header.Division>
           </Header.Root>
           <Suspense fallback={<Loading />}>
-            <S.Content>{children}</S.Content>
+            <S.Content>
+              <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover
+                theme={theme.toLowerCase() as Theme}
+              />
+              {children}
+            </S.Content>
           </Suspense>
         </S.Container>
       </ThemeProvider>

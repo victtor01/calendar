@@ -4,10 +4,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../loading";
-import { useEffect } from "react";
-import {
-  useSessionContext,
-} from "@/contexts/sessionContext";
+import { useEffect, useState } from "react";
+import { useSessionContext } from "@/contexts/sessionContext";
 
 export interface PrivateRouteProps {
   name: string;
@@ -19,7 +17,7 @@ export default function PrivateRoute({
   children: React.ReactNode;
 }) {
   const { isError, isLoading, data, logout } = usePrivateRoutes();
-
+  const [loading, setLoading] = useState<boolean>(true);
   const { setUserInfo } = useSessionContext();
 
   useEffect(() => {
@@ -28,14 +26,17 @@ export default function PrivateRoute({
         id: Number(data.id),
         firstName: data.firstName,
         lastName: data.lastName,
+        photo: data.photo,
       });
     }
-  }, [data]);
+    setLoading(false);
+  }, [data, loading]);
 
+  
   if (isLoading) {
     return (
-      <div className="w-full h-screen items-center justify-center flex">
-        <Loading className="bg-cyan-500" />
+      <div className="w-full h-screen items-center bg-zinc-900 justify-center flex">
+        <Loading className="bg-cyan-600" />
       </div>
     );
   }

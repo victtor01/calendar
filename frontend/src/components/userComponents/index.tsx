@@ -1,22 +1,27 @@
 import { IoMdExit, IoMdNotificationsOutline } from "react-icons/io";
 import Button from "../button";
 import { fontInter, fontRoboto } from "@/app/fonts";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 import * as S from "./style";
-import { useSessionContext } from "@/contexts/sessionContext";
+import { SessionContext, useSessionContext } from "@/contexts/sessionContext";
 import { motion } from "framer-motion";
 
 type Select = "NOTIFICATION" | "EXIT" | "USER" | null;
 
 export default function UserComponents() {
   const [selected, setSelected] = useState<Select>(null);
+
   const handleSelected = (value: Select) =>
     setSelected((prev: Select) => {
       return prev === value ? null : value;
     });
-  const { logout } = useSessionContext();
+
+  const {
+    logout,
+    userInfo,
+  } = useContext(SessionContext);
 
   return (
     <div className={`flex gap-2 p-2 items-center gap-3 relative ${fontRoboto}`}>
@@ -37,11 +42,15 @@ export default function UserComponents() {
         <IoMdExit size="20" />
       </Button>
       <Button className="flex bg-cyan-500 relative h-10 w-10 items-center overflow-hidden rounded-full">
-        <Image
-          src={"/persson2.jpg"}
+      <Image
+          className="hover:scale-[1.1] transition-all"
+          src={`http://localhost:8000/uploads/${userInfo.photo}`}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority
           fill
-          objectFit={"cover"}
-          alt="imagen-perfil"
+          quality={25}
+          style={{ objectFit: "cover" }}
+          alt="Foto do usuario"
         />
       </Button>
       <AnimatePresence>

@@ -3,7 +3,6 @@
 import Button from "@/components/button";
 import { FormDataLabel, formDataLabel } from "./data-label";
 import Label from "@/components/label";
-import Input from "@/components/input/input";
 import { IoAlertCircleSharp } from "react-icons/io5";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +13,9 @@ import useApiPrivate from "@/hooks/apiPrivate";
 import * as S from "./style";
 import { BsArrowLeft } from "react-icons/bs";
 import { FaCreditCard } from "react-icons/fa";
+import { queryClient } from "@/hooks/queryClient";
+import Spinner from "@/components/spinner";
+import { ToastContainer, toast } from "react-toastify";
 
 type CreateAccountFormData = z.infer<typeof createAccountFormSchema>;
 
@@ -26,7 +28,8 @@ const useCreate = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm<CreateAccountFormData>({
     resolver: zodResolver(createAccountFormSchema),
   });
@@ -35,18 +38,23 @@ const useCreate = () => {
 
   const createAccounts = async (data: CreateAccountFormData) => {
     await api.post("/accounts/create", data);
+    toast.success("Nova conta criada com sucesso!");
+    queryClient.refetchQueries(["accounts"]);
+    reset();
   };
 
   return {
     errors,
     register,
     handleSubmit,
+    isSubmitting,
     createAccounts,
   };
 };
 
 const Create = () => {
-  const { errors, register, handleSubmit, createAccounts } = useCreate();
+  const { errors, register, handleSubmit, isSubmitting, createAccounts } =
+    useCreate();
 
   return (
     <S.Container
@@ -102,7 +110,7 @@ const Create = () => {
           type="submit"
           className="text-white font-semibold text-lg bg-gradient-45 from-purple-500 to-cyan-500 w-full mt-4 py-3 rounded"
         >
-          Enviar
+          {isSubmitting ? <Spinner /> : "Enviar"}
         </Button>
       </form>
     </S.Container>

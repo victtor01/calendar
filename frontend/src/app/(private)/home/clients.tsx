@@ -48,8 +48,8 @@ function useNewClients() {
     });
 
   const porcetage = (() => {
-    const totalClientsToMonth = clients?.length || 0;
-    const totalClientsLastMonth = clientsLastMonth?.length || 0;
+    const totalClientsToMonth = clients?.length || 1;
+    const totalClientsLastMonth = clientsLastMonth?.length || 1;
 
     if (totalClientsLastMonth === 0) {
       return 100;
@@ -93,7 +93,7 @@ export default function NewClients() {
         <div className={`font-semibold opacity-70 ${fontOpenSans}`}>
           Clientes
         </div>
-        <div className={porcetage > 0 ? "text-cyan-300" : "text-rose-600"}>{porcetage.toFixed(2)}%</div>
+        <div className={porcetage >= 0 ? "text-cyan-300" : "text-rose-600"}>{porcetage.toFixed(2)}%</div>
       </S.TitleComponent>
       <S.ContentComponent>
         <div className="flex flex-col gap-1 p-2">
@@ -113,11 +113,11 @@ export default function NewClients() {
               cy="60"
               r="30"
               pathLength="1"
-              className={porcetage > 0 ? "stroke-cyan-400" : "stroke-red-400"}
+              className={porcetage >= 0 ? "stroke-cyan-400" : "stroke-red-400"}
             />
             <S.Progress
               initial={{ pathLength: 0 }}
-              animate={{ pathLength: porcetage > 0 ? porcetage / 100 : (Math.abs(porcetage) / 100), }}
+              animate={{ pathLength: porcetage >= 0 ? porcetage / 100 : (Math.abs(porcetage) / 100), }}
               transition={{
                 duration: 2,
                 delay: 0.2,
@@ -127,7 +127,7 @@ export default function NewClients() {
               cy="60"
               r="30"
               pathLength="1"
-              className={"relative " + (porcetage > 0 ? "stroke-cyan-500" : "stroke-rose-600")}
+              className={"relative " + (porcetage >= 0 ? "stroke-cyan-500" : "stroke-rose-600")}
             ></S.Progress>
           </svg>
         </div>

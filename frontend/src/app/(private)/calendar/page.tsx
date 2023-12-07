@@ -22,6 +22,7 @@ import interactionPlugin, {
   DropArg,
 } from "@fullcalendar/interaction";
 import Loading from "@/components/loading";
+import { ToastContainer, toast } from "react-toastify";
 
 const variants = {
   pageInitial: { opacity: 0 },
@@ -65,9 +66,15 @@ const useCalendar = () => {
       end: dateEnd.format("YYYY-MM-DDTHH:mm:ss.SSS"),
     };
 
-    await api
+    const res = api
       .put(`/events/update/${updatedEvent.id}`, updatedData)
       .catch((err) => console.log(err));
+
+    toast.promise(res, {
+      pending: "Salvando alterações",
+      success: "Salvo com sucesso! 👌",
+      error: "Houve um erro! Tente novamente mais tarde! ",
+    });
 
     const { code } = updatedData;
     queryClient.setQueryData(["event", code], (prevData: any) => {
@@ -87,8 +94,7 @@ const useCalendar = () => {
     });
   }
 
-  function eventDetails(arg: { event: Event}) {
-    setLoading(true);
+  function eventDetails(arg: { event: Event }) {
     const { id } = arg.event;
     const { code } = allEvents.filter(
       (even: Event) => even.id.toString() === id.toString()
@@ -106,12 +112,18 @@ const useCalendar = () => {
       return;
     }
 
-    await api.post("/events/create", {
+    const res = api.post("/events/create", {
       name: data.draggedEl.innerText,
       description: "",
       allDay: data.allDay,
       start: data.date.toISOString(),
       end: data.date.toISOString(),
+    });
+
+    toast.promise(res, {
+      pending: "Salvando alterações",
+      success: "Salvo com sucesso! 👌",
+      error: "Houve um erro! Tente novamente mais tarde! ",
     });
 
     queryClient.invalidateQueries(["events"]);
@@ -154,14 +166,6 @@ export default function Calendar() {
     eventDetails,
   } = useCalendar();
 
-  if (loading) {
-    return (
-      <div className="p-3 w-full h-full relative justify-center flex items-center">
-        <Loading className="bg-cyan-500" />
-      </div>
-    );
-  }
-
   return (
     <motion.main
       variants={variants}
@@ -169,6 +173,12 @@ export default function Calendar() {
       animate="pageAnimate"
       className="p-2 m-auto flex"
     >
+      {loading && (
+        <div className="top-0 left-0 w-screen flex justify-center items-center h-screen bg-zinc-900 fixed bg-opacity-5 z-[20]">
+          <Loading className="bg-cyan-600" />
+        </div>
+      )}
+
       <S.Content className="flex gap-4  flex-col justify-center max-w-[95rem] mx-auto rounded-lg">
         <Header />
         <S.Calendar

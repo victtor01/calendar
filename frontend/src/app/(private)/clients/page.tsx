@@ -166,7 +166,7 @@ export default function Clients() {
   const { clients } = useClientsHook().getClients();
 
   return (
-    <div className="flex flex-col p-4 max-w-[65rem] mx-auto gap-4">
+    <div className="flex flex-col p-4 w-full max-w-[65rem] mx-auto gap-4">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -205,12 +205,12 @@ export default function Clients() {
         ))}
         {!clients ||
           (clients?.length < 1 && (
-            <div className="flex flex-col text-lg bg-zinc-700 text-white p-3 rounded">
-              <div>Ainda não tem nenhum Cliente Cadastrado</div>
+            <div className="flex w-full flex-col text-lg bg-gradient-45 from-purple-600 to-blue-600 text-white p-5 rounded-xl shadow-xl">
+              <div className="text-lg">Ainda não tem nenhum Cliente Cadastrado</div>
               <div>
                 <Link
                   href="/clients/create"
-                  className="text-cyan-400 opacity-80 hover:opacity-100"
+                  className="text-xl font-bold opacity-80 hover:opacity-100"
                 >
                   Cadastre seu primeiro cliente!
                 </Link>

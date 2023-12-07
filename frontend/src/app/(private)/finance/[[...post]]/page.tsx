@@ -12,6 +12,7 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Skeleton,
 } from "@nextui-org/react";
 import { useState } from "react";
 import { queryClient } from "@/hooks/queryClient";
@@ -24,6 +25,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FaChevronLeft, FaChevronRight, FaCreditCard } from "react-icons/fa";
 import { MdFilterList } from "react-icons/md";
 import * as S from "../style";
+import SkeletonRegister from "@/components/registerSkeleton";
 
 export type RegisterType = "INCOME" | "EXPENSE";
 
@@ -125,26 +127,17 @@ export default function Registers({
     data,
   } = useRegisters(currentPage);
 
-  if (isLoading || isError) {
-    return (
-      <div className="h-full w-full flex items-center justify-center">
-        <Loading className="bg-cyan-200" />
-      </div>
-    );
-  }
-
   /* Desistrturar o data */
-  const { registers, countPage }: any = data;
+  const registers: Register[] = data?.registers || [];
+  const countPage: number = data?.countPage || 0;
 
-  /* Caso não tenha o regsiters ou countPage */
-  if (!countPage || !registers) return;
-
-  /* Caso a página atual for maior que o countPage */
-  if (currentPage > countPage) router.push(`/finance/${countPage}`);
+  if (currentPage > countPage && currentPage && countPage)
+    router.push(`/finance/${countPage}`);
 
   const labels: Labels[] = formatDataForDates(registers);
 
-  const financeToDay = moment().diff(labels[0]?.registers[0]?.createdAt, 'days') || 0;
+  const financeToDay =
+    moment().diff(labels[0]?.registers[0]?.createdAt, "days") || 0;
 
   const paginationLinks = [];
   for (
@@ -226,15 +219,37 @@ export default function Registers({
             <S.BubbleBanner />
             <div className="flex gap-1 z-10 flex-wrap">
               Há {financeToDay} dias que não há registros,
-              <S.LinkAddRegister href={"/finance/create/"} className="text-xl font-semibold text-shadow">
+              <S.LinkAddRegister
+                href={"/finance/create/"}
+                className="text-xl font-semibold text-shadow"
+              >
                 mantenha sua vida financeira atualizada!
               </S.LinkAddRegister>
             </div>
           </motion.div>
         )}
+        {!labels?.length && (
+          <div className="w-auto rounded-xl shadow-xl m-2 p-6 flex bg-gradient-45 from-purple-600 to-blue-600">
+            <div className="text-white flex gap-1">
+              <span className="text-lg font-semibold">
+                Você ainda não tem nenhum registros,
+              </span>
+              <Link href="/finance/create/" className="text-xl font-bold">
+                Crie seu primeiro registro!
+              </Link>
+            </div>
+          </div>
+        )}
       </AnimatePresence>
       <section className=" flex items-center flex-col p-1 h-auto w-full">
         <div className="w-full max-w-[60rem] flex flex-col gap-2">
+          {isLoading && (
+            <div className="w-auto flex flex-col gap-2">
+              <SkeletonRegister />
+              <SkeletonRegister />
+              <SkeletonRegister />
+            </div>
+          )}
           {labels?.map((label: Labels) => {
             return (
               <React.Fragment key={label.date}>

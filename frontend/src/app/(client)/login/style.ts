@@ -64,12 +64,26 @@ export const Bubble = styled.div`
 `;
 
 export const Form = styled(motion.form)`
-  background-color: ${({theme}) => theme.secundary};
-`
+  background-color: ${({ theme }) => theme.secundary};
+`;
 
-export const Poster = styled.div``
+export const Poster = styled.div``;
 
-export const ButtonTheme = styled.button`
+export const ButtonTheme = styled(motion.button)`
   background-color: ${({ theme }) => theme.secundary};
   color: ${({ theme }) => theme.text};
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    transform-style: preserve-3d;
+    transform: rotateX(70deg);
+    filter: blur(20px);
+    background-color: rgba(0,0,0,0.4);
+    top: 102%;
+    left: 0;
+  }
 `;

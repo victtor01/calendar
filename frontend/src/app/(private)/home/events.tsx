@@ -79,7 +79,7 @@ export default function Events() {
         <div className={`font-semibold opacity-70 ${fontOpenSans}`}>
           Eventos
         </div>
-        <div className={porcetage > 0 ? "text-cyan-300" : "text-rose-500"}>
+        <div className={porcetage >= 0 ? "text-cyan-300" : "text-rose-500"}>
           {porcetage.toFixed(2)}%
         </div>
       </S.TitleComponent>
@@ -102,14 +102,14 @@ export default function Events() {
               r="30"
               pathLength="1"
               className={
-                Number(porcetage) > 0 ? "stroke-cyan-300" : "stroke-rose-300"
+                Number(porcetage) >= 0 ? "stroke-cyan-300" : "stroke-rose-300"
               }
             />
             <S.Progress
               initial={{ pathLength: 0 }}
               animate={{
                 pathLength:
-                  porcetage > 0 ? porcetage / 100 : (Math.abs(porcetage) / 100),
+                  porcetage >= 0 ? porcetage / 100 : Math.abs(porcetage) / 100,
               }}
               transition={{
                 duration: 2,
@@ -122,7 +122,7 @@ export default function Events() {
               pathLength="1"
               className={
                 "relative " +
-                (Number(porcetage) > 0 ? "stroke-cyan-500" : "stroke-rose-500")
+                (Number(porcetage) >= 0 ? "stroke-cyan-500" : "stroke-rose-500")
               }
             ></S.Progress>
           </svg>

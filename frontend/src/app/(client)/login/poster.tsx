@@ -30,6 +30,7 @@ export default function Poster() {
       <S.Bubble />
       <header className="z-[20] p-2 text-lg flex justify-between text-white">
         <S.ButtonTheme
+          whileTap={{ scale: 0.8 }}
           className="bg-zinc-900 text-white p-3 rounded"
           onClick={handleTheme}
         >

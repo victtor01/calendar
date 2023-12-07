@@ -3,10 +3,11 @@
 import Register from "@/components/register";
 import moment from "moment";
 import { GoSearch } from "react-icons/go";
-import { Service } from "../../../types/services";
 import { useQuery } from "@tanstack/react-query";
 import useApiPrivate from "@/hooks/apiPrivate";
 import Loading from "@/components/loading";
+import { Service } from "@/types/services";
+
 import {
   Button,
   Modal,
@@ -14,6 +15,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Skeleton,
 } from "@nextui-org/react";
 import { useState } from "react";
 import { queryClient } from "@/hooks/queryClient";
@@ -23,6 +25,7 @@ import { IoMdAdd } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
 import { useRouter } from "next/navigation";
+import SkeletonRegister from "@/components/registerSkeleton";
 
 interface ItemDeleteProps {
   id: number;
@@ -34,13 +37,9 @@ function useServices() {
 
   const { data: services, isLoading } = useQuery({
     queryKey: ["services"],
-    queryFn: async () => {
+    queryFn: async (): Promise<Service[]> => {
       return (await api.get("/services")).data;
     },
-  });
-
-  const {} = useQuery({
-    queryKey: ["services", "services-last-month"],
   });
 
   const [itemDelete, setItemDelete] = useState<ItemDeleteProps | null>(null);
@@ -85,8 +84,6 @@ export default function Services() {
 
   const { push } = useRouter();
 
-  if (isLoading) return <Loading />;
-
   return (
     <>
       <div className="flex flex-col m-auto max-w-[50rem] w-full p-2 gap-3 relative overflow-visible">
@@ -115,7 +112,27 @@ export default function Services() {
             </button>
           </div>
         </motion.div>
+        {services?.length === 0 && (
+          <div className="w-full flex gap-2 items-center rounded-xl shadow-xl z-20 py-6 p-5 bg-gradient-45 from-purple-600 to-blue-500">
+            <div className="text-gray-200 text-lg">
+              Você ainda não tem serviços cadastrados,
+            </div>
+            <Link
+              href="/services/create/"
+              className="text-white text-xl font-semibold"
+            >
+              Cadastre seu primeiro serviço!
+            </Link>
+          </div>
+        )}
         <AnimatePresence mode="sync">
+          {isLoading && (
+            <div className="w-auto flex flex-col gap-2">
+              <SkeletonRegister />
+              <SkeletonRegister />
+              <SkeletonRegister />
+            </div>
+          )}
           {services?.map((item: Service, index: number) => {
             return (
               <Register.Root
