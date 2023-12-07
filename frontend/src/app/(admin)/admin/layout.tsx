@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import * as S from "./style";
 
 import Empty from "@/components/empty";
+import { useRouter } from "next/navigation";
 
 const animateActions = {
   initial: {
@@ -58,6 +59,7 @@ const useLayout = () => {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { handleTheme, theme } = useLayout();
+  const router = useRouter();
   const { userInfo, logout } = useSessionContext();
   if (!userInfo) return <Empty />;
   const { firstName } = userInfo;
@@ -97,6 +99,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </section>
         <S.SectionActions className=" flex gap-3 scroll-smooth mx-auto p-2 mt-[3rem] max-w-[100%] overflow-x-auto min-h-[15rem] snap-x ">
           <S.ActionsComponents
+            onClick={() => router.push("/admin/tes")}
             initial="initial"
             animate="animate"
             variants={animateActions}
@@ -109,6 +112,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </header>
           </S.ActionsComponents>
           <S.ActionsComponents
+            onClick={() => router.push("/admin/")}
             initial="initial"
             animate="animate"
             variants={animateActions}
@@ -121,6 +125,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </header>
           </S.ActionsComponents>
           <S.ActionsComponents
+            onClick={() => router.push("/admin/")}
             initial="initial"
             animate="animate"
             variants={animateActions}

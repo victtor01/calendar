@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import styled, { css } from "styled-components";
 
 export const Container = styled.main`
@@ -142,6 +143,6 @@ export const Bubble = styled.div`
   }
 `;
 
-export const ActionsComponents = styled(motion.div)`
+export const ActionsComponents = styled(motion.button)`
   background-color: ${({ theme }) => theme.secundary};
 `;
