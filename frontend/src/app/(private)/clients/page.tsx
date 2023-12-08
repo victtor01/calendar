@@ -61,16 +61,9 @@ const ClientComponent = ({ item, index }: { item: Client; index: number }) => {
       <div className="relative max-h-[4.4rem] min-h-[4.4rem]">
         <S.ClientContent
           initial={{ maxHeight: "4.4rem" }}
-          animate={{
-            maxHeight: showDetails ? "8.4rem" : "4.6rem",
-          }}
-          transition={{
-            duration: 1,
-            type: "spring",
-          }}
-          style={{
-            zIndex: showDetails ? 10 : 1,
-          }}
+          animate={{ maxHeight: showDetails ? "8.4rem" : "4.6rem" }}
+          transition={{ duration: 1, type: "spring" }}
+          style={{ zIndex: showDetails ? 10 : 1 }}
           className={
             "bg-zinc-600 bg-opacity-30 absolute relative p-3 flex flex-col gap-1 overflow-hidden transition-shadow" +
             ` ${showDetails ? "shadow-2xl" : "shadow-none"}`
@@ -206,7 +199,9 @@ export default function Clients() {
         {!clients ||
           (clients?.length < 1 && (
             <div className="flex w-full flex-col text-lg bg-gradient-45 from-purple-600 to-blue-600 text-white p-5 rounded-xl shadow-xl">
-              <div className="text-lg">Ainda não tem nenhum Cliente Cadastrado</div>
+              <div className="text-lg">
+                Ainda não tem nenhum Cliente Cadastrado
+              </div>
               <div>
                 <Link
                   href="/clients/create"

@@ -1,4 +1,5 @@
 "use client";
+
 import useApiPrivate from "@/hooks/apiPrivate";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -6,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../loading";
 import { useEffect, useState } from "react";
 import { useSessionContext } from "@/contexts/sessionContext";
+import { motion } from "framer-motion";
 
 export interface PrivateRouteProps {
   name: string;
@@ -32,7 +34,6 @@ export default function PrivateRoute({
     setLoading(false);
   }, [data, loading]);
 
-  
   if (isLoading) {
     return (
       <div className="w-full h-screen items-center bg-zinc-900 justify-center flex">
@@ -43,13 +44,20 @@ export default function PrivateRoute({
 
   if (isError || !data) {
     return (
-      <div className="w-full h-screen items-center justify-center flex">
-        <button
-          onClick={logout}
-          className="bg-cyan-500 p-3 rounded opacity-70 hover:opacity-100"
-        >
-          Faça o login
-        </button>
+      <div className="w-full h-screen items-center justify-center flex bg-zinc-900">
+        <div className="flex flex-col gap-2 w-full max-w-[20rem] justify-center items-center">
+          <div className="flex flex-col">
+            <h1 className="text-4xl font-semibold">Sessão expirada</h1>
+            <h2 className="text-lg">Faça o login novamente para continuar usando o sistema</h2>
+          </div>
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={logout}
+            className="bg-gradient-45 font-semibold from-purple-600 to-blue-500 p-2 text-lg w-full rounded opacity-70 hover:opacity-100"
+          >
+            Faça o login
+          </motion.button>
+        </div>
       </div>
     );
   }

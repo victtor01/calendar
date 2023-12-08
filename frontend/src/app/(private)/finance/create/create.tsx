@@ -15,6 +15,7 @@ import { NumericFormat } from "react-number-format";
 import Spinner from "@/components/spinner";
 import { convertRealMoneyToFloat } from "@/helpers/convertRealMoneyToFloat";
 import { ToastContainer, toast } from "react-toastify";
+import { queryClient } from "@/hooks/queryClient";
 
 type CreateRegisterFormData = z.infer<typeof createRegisterFormSchema>;
 type OptionFinance = "INCOME" | "EXPENSE";
@@ -106,12 +107,13 @@ const useCreate = () => {
       type,
     };
 
-    try {
-      await api.post("/registers/create", data);
-      toast.success('Enviando com sucesso')
-    } catch (error) {
-      handleError("Houve um erro inesperado, tente novamente mais tarde!");
-    }
+    const create = api.post("/registers/create", data);
+    await toast.promise(create, {
+      pending: "Espere um momento...",
+      success: "Criado com sucesso!",
+      error: "Houve um erro, tente novamente mais tarde!",
+    });
+    queryClient.invalidateQueries(["registers"]);
   }
 
   return {

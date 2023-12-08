@@ -10,7 +10,6 @@ import {
 import { Clients } from './entities/clients.entity';
 import { ClientsService } from './clients.service';
 import { CreateClientsDto } from './dto/create-clients.dto';
-import { DeleteClientsDto } from './dto/delete-clients.dto';
 import { User } from 'src/users/entities/user.entity';
 
 @Controller('clients')
@@ -32,6 +31,17 @@ export class ClientsController {
       userId: +req.user.id,
       start: new Date(start),
       end: new Date(end),
+    });
+  }
+
+  @Get('/find-by-code/:code')
+  async findByCode(
+    @Param('code') code: string,
+    @Request() req: { user: User },
+  ) {
+    return await this.clientsService.findOneByCode({
+      userId: +req.user.id,
+      code,
     });
   }
 

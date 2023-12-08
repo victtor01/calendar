@@ -7,6 +7,7 @@ import Label from "@/components/label";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import Link from "next/link";
 import useApiPrivate from "@/hooks/apiPrivate";
+import { toast } from "react-toastify";
 
 const createServicesFormSchema = z.object({
   name: z.string(),
@@ -26,6 +27,7 @@ function useCreate() {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CreateServicesFormSchema>({
     resolver: zodResolver(createServicesFormSchema),
   });
@@ -33,7 +35,13 @@ function useCreate() {
   const api = useApiPrivate();
 
   async function addService(data: CreateServicesFormSchema) {
-    const res = await api.post("/services", data);
+    const res = api.post("/services", data);
+    toast.promise(res, {
+      pending: "Salvando alterações",
+      success: "Salvo com sucesso! 👌",
+      error: "Houve um erro! Tente novamente mais tarde! ",
+    });
+    reset();
   }
 
   return {

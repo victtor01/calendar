@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/hooks/queryClient";
 import { ChangeEvent, useState } from "react";
 import { Event } from "@/types/events";
+import { toast } from "react-toastify";
 
 const useDetails = (code: string) => {
   const api = useApiPrivate();
@@ -26,12 +27,10 @@ const useDetails = (code: string) => {
     if (!(res.statusText === "OK")) {
       return new Error("Houve um erro ao tentar excluir o item");
     }
-
+    
     queryClient.setQueryData(["event", event.code], {});
     queryClient.removeQueries(["event", event.code]);
   }
-
-  
 
   return {
 

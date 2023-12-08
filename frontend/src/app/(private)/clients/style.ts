@@ -34,5 +34,29 @@ export const ClientPhoto = styled(motion.section)<ClientPhotoProps>`
 `;
 
 export const ClientContent = styled(motion.div)`
-    background-color: ${({theme}) => theme.secundary};
+  background-color: ${({ theme }) => theme.secundary};
+`;
+
+export const Component = styled(motion.div)`
+  background-color: ${({ theme }) => theme.secundary};
+`;
+
+export const ClientEvent = styled(motion.div)`
+  background-color: ${({ theme }) => theme.secundary};
+  position: relative;
+`;
+
+export const ClientEventComponent = styled(motion.section)`
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: 4px;
+    height: 100%;
+    border-radius: 2px 0 0 2px;
+    background: linear-gradient(to top, var(--purple), var(--green));
+  }
 `;

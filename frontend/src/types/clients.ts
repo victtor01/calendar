@@ -1,3 +1,5 @@
+import { Event } from "./events";
+
 export interface Clients {
     id: number;
     code: string;
@@ -13,5 +15,6 @@ export interface Clients {
     createdAt: Date;
     updatedAt: Date;
     userId: number;
+    events?: Event[]
   }
   

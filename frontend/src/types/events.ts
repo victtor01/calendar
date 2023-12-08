@@ -7,13 +7,14 @@ export interface Event {
   code: string;
   end: Date | string;
   start: Date | string;
-  status: Status;
+  status: StatusEvent;
   description?: string;
   allDay?: boolean;
   color?: string;
   comments?: CommentsEvents[];
   clients?: Clients[];
   services?: Service[];
+  createdAt: Date;
 }
 
 interface CommentsEvents {
@@ -22,4 +23,4 @@ interface CommentsEvents {
   eventId: number;
 }
 
-type Status = "ACTIVATED" | "CONCLUDED" | "FILED";
+export type StatusEvent = "ACTIVATED" | "CONCLUDED" | "FILED";

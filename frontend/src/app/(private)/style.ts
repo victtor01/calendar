@@ -22,7 +22,6 @@ export const Container = styled.main`
 
 
 export const Content = styled.div`
-  background-color: ${({ theme }) => theme.primary};
   display: flex;
   grid-area: content;
   flex-direction: column;

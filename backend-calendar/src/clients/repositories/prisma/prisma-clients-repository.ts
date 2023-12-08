@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { DeleteClientsDto } from 'src/clients/dto/delete-clients.dto';
 import { FindClientsByDateDto } from 'src/clients/dto/find-clients-by-date.dto';
+import { FindClientByCode } from 'src/clients/dto/find-client-by-code.dto';
 
 @Injectable()
 export class PrismaClientsRepository implements ClientsRepository {
@@ -29,6 +30,18 @@ export class PrismaClientsRepository implements ClientsRepository {
             id: userId,
           },
         },
+      },
+    });
+  }
+
+  async findByCode({ userId, code }: FindClientByCode): Promise<Clients> {
+    return await this.prisma.clients.findUnique({
+      where: {
+        userId,
+        code,
+      },
+      include: {
+        events: true,
       },
     });
   }

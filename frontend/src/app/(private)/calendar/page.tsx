@@ -77,10 +77,9 @@ const useCalendar = () => {
     });
 
     const { code } = updatedData;
+
     queryClient.setQueryData(["event", code], (prevData: any) => {
-      if (prevData) {
-        return updatedData;
-      }
+      if (prevData) return updatedData;
     });
 
     queryClient.setQueryData(["events"], (prevData: any) => {
@@ -95,6 +94,7 @@ const useCalendar = () => {
   }
 
   function eventDetails(arg: { event: Event }) {
+    setLoading(true);
     const { id } = arg.event;
     const { code } = allEvents.filter(
       (even: Event) => even.id.toString() === id.toString()
@@ -120,9 +120,9 @@ const useCalendar = () => {
       end: data.date.toISOString(),
     });
 
-    toast.promise(res, {
+    await toast.promise(res, {
       pending: "Salvando alterações",
-      success: "Salvo com sucesso! 👌",
+      success: "Salvo com sucesso!",
       error: "Houve um erro! Tente novamente mais tarde! ",
     });
 
@@ -171,7 +171,7 @@ export default function Calendar() {
       variants={variants}
       initial="pageInitial"
       animate="pageAnimate"
-      className="p-2 m-auto flex"
+      className="p-2 flex"
     >
       {loading && (
         <div className="top-0 left-0 w-screen flex justify-center items-center h-screen bg-zinc-900 fixed bg-opacity-5 z-[20]">
@@ -179,7 +179,7 @@ export default function Calendar() {
         </div>
       )}
 
-      <S.Content className="flex gap-4  flex-col justify-center max-w-[95rem] mx-auto rounded-lg">
+      <S.Content className="flex gap-4 flex-col justify-center mx-auto rounded-lg">
         <Header />
         <S.Calendar
           initial={{ opacity: 0 }}
@@ -187,7 +187,7 @@ export default function Calendar() {
           transition={{ delay: 0.2 }}
           className="flex flex-1 gap-2 p-5 rounded-xl"
         >
-          <div className="col-span-8 max-h-auto w-full max-w-[80rem]">
+          <div className="col-span-8 max-h-auto w-full">
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
               headerToolbar={{

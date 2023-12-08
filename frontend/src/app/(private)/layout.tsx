@@ -21,14 +21,15 @@ import { PiSuitcaseSimple } from "react-icons/pi";
 import Loading from "@/components/loading";
 import Header from "@/components/header";
 import UserComponents from "@/components/userComponents";
-import Image from "next/image";
-import { SessionContext, useSessionContext } from "@/contexts/sessionContext";
+import { useSessionContext } from "@/contexts/sessionContext";
 import { Theme, ToastContainer } from "react-toastify";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 /* #1f1d2b */
 
 const darkTheme = {
-  primary: "#101010",
+  primary: "rgb(24, 24, 27, 1)",
   secundary: "#1f1d2b",
   text: "#ebe8e8",
   shadow: "#202020",
@@ -59,11 +60,11 @@ interface Page {
 
 const pages: Page[] = [
   { name: "Home", icon: BsHouse, href: "/home" },
-  { name: "Calendar", icon: BsCalendarRange, href: "/calendar" },
-  { name: "Finance", icon: FiTrendingUp, href: "/finance" },
+  { name: "Calendário", icon: BsCalendarRange, href: "/calendar" },
+  { name: "Financeiro", icon: FiTrendingUp, href: "/finance" },
   { name: "Clientes", icon: BiSolidGroup, href: "/clients" },
   { name: "Serviços", icon: PiSuitcaseSimple, href: "/services" },
-  { name: "Configure", icon: BsFillGearFill, href: "/configurations" },
+  { name: "Configurar", icon: BsFillGearFill, href: "/configurations" },
 ];
 
 const useLayout = () => {
@@ -103,13 +104,9 @@ const useLayout = () => {
 
 const variants = {
   open: {
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
     left: "0%",
   },
   hidden: {
-    borderTopRightRadius: "50%",
-    borderBottomRightRadius: "50%",
     left: "-100%",
   },
 };
@@ -134,10 +131,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Sidebar
             bgTheme
             style={{ gridArea: "sidebar" }}
-            className={`w-[4rem] lg:w-[13rem] m-1 rounded-md relative overflow-x-hidden overflow-y-auto items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
+            className={`w-[4rem] lg:w-[13rem] m-1 shadow-xl rounded-md relative overflow-x-hidden overflow-y-auto items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
           >
             <S.Bubble />
-            <div className="w-full h-[4rem] flex justify-center items-center rounded ">
+            <header className="w-full h-[3.2rem] flex justify-center items-center">
               <Header.Division
                 bgTheme={false}
                 className={
@@ -145,18 +142,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   ` ${fontRoboto}`
                 }
               >
-                <div>
-                  <Image
-                    src="/logo3.png"
-                    className="rounded-full"
-                    width={40}
-                    height={40}
-                    alt="image-logo"
-                  />
-                </div>
-                <span className="hidden lg:flex">CalendarUD</span>
+                <span className="hidden lg:flex z-20">CalendarUD</span>
               </Header.Division>
-            </div>
+            </header>
+            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
             <button
               onClick={onClickSidebarShow}
               className="relative w-[3rem] lg:hidden opacity-70 hover:opacity-100 rounded min-h-[3rem] flex items-center bg-zinc-500 bg-opacity-10 justify-center p-3 "
@@ -167,21 +156,32 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {pages.map(({ name, icon: Icon, href }: Page, index: number) => {
                 const selected = currentPath === href.substring(1);
                 return (
-                  <S.LinkRoute
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: index / 15 }}
+                  <motion.div
                     key={name}
-                    href={href}
-                    className={`transition-all flex-nowrap w-full justify-center lg:justify-start flex py-0 items-center gap-2 text-md opacity-80 hover:opacity-100 p-1 lg:rounded ${
-                      selected
-                        ? "text-white py-3 bg-gradient-45 from-purple-600 to-cyan-500 "
-                        : ""
-                    }`}
+                    initial={{ opacity: 0, x: -40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index / 10, type: "spring" }}
                   >
-                    <Icon size={"18"} className="min-w-[3rem]" />
-                    <span className="hidden lg:flex">{name}</span>
-                  </S.LinkRoute>
+                    <S.LinkRoute
+                      href={href}
+                      className={`transition-all flex-nowrap w-full justify-center relative lg:justify-start flex py-0 items-center gap-2 text-md opacity-80 hover:opacity-100 p-1 lg:rounded `}
+                    >
+                      <AnimatePresence>
+                        {selected && (
+                          <motion.span
+                            initial={{ opacity: 0, x: -25 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -25 }}
+                            transition={{ type: "tween" }}
+                            key={`mark-${name}`}
+                            className="w-[0.5rem] h-[0.5rem] rounded-full left-[-0.4rem] absolute bg-cyan-500 shadow-xl shadow-red-200"
+                          />
+                        )}
+                      </AnimatePresence>
+                      <Icon size={"18"} className="min-w-[3rem]" />
+                      <span className="hidden lg:flex">{name}</span>
+                    </S.LinkRoute>
+                  </motion.div>
                 );
               })}
             </div>
@@ -204,7 +204,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             animate={sidebarShow ? "open" : "hidden"}
             variants={variants}
             transition={{ duration: 0.4 }}
-            className={`w-[100%] text-white max-h-[100%] overflow-y-scroll absolute h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
+            className={`w-[100%] text-white max-h-[100%] overflow-y-scroll fixed h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
           >
             <div className="flex flex-col flex-1">
               <header className="p-3 gap-1 text-xl font-semibold flex-nowrap flex justify-between items-center">

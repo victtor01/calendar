@@ -18,7 +18,10 @@ import Label from "@/components/label";
 import { Clients } from "@/types/clients";
 import { Service } from "@/types/services";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
-import { ModalDelete } from '@/components/eventModalDelete';
+import { ModalDelete } from "@/components/eventModalDelete";
+import React, { Suspense } from "react";
+import Skeleton from "./skeleton";
+import { useRouter } from "next/navigation";
 
 const status = {
   ACTIVATED: "ATIVADO",
@@ -39,6 +42,8 @@ export default function Details({
     code: string;
   };
 }) {
+  const router = useRouter();
+
   const {
     query: { event, isLoading },
     modalDelete: { handleShowModalDelete, showModalDelete },
@@ -51,16 +56,17 @@ export default function Details({
   }
 
   if (!event) {
-    window.location.href = "/calendar";
-  }
+    router.push('/calendar/')
+    return;
+  };
 
   return (
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="p-2 m-auto flex w-full"
+      className="p-2 flex w-full"
     >
-      <S.Container className="flex max-w-[120rem] m-10 bg-white w-full m-auto flex-col pb-5 gap-2 shadow-md rounded-md">
+      <S.Container className="flex  bg-white w-full mx-auto mt-0 flex-col pb-5 gap-2 shadow-md rounded-md">
         <div className="flex justify-between gap-3 p-2 bg-gray-400 bg-opacity-10 rounded-t-lg">
           <div className="flex flex-1">
             <Link
@@ -72,13 +78,13 @@ export default function Details({
             </Link>
           </div>
           <div className="flex items-center flex-1">
-            <div
+            {/* <div
               className={`${fontValela} ${
                 statusClassName[event?.status || "ACTIVATED"]
               } p-3 text-white text-sm rounded opacity-50 items-center flex justify-center`}
             >
               {status[event?.status || "ACTIVATED"]}
-            </div>
+            </div> */}
           </div>
           <div className="flex gap-3 items-center justify-end">
             <Button
@@ -209,16 +215,22 @@ export default function Details({
             </AnimatePresence>
           </div>
         </div>
-        <div className="w-full h-full pt-4 flex relative justify-between rounded-xl">
+        <div className="w-full h-full pt-4 px-1 flex relative justify-between rounded-xl">
           <div className="flex flex-row flex-wrap gap-2 w-full">
-            {event && (
-              <>
+            <React.Fragment>
+              <Suspense fallback={<Skeleton />}>
                 <Edit event={event} />
+              </Suspense>
+              <Suspense fallback={<Skeleton />}>
                 <Comments event={event} />
+              </Suspense>
+              <Suspense fallback={<Skeleton />}>
                 <ComponentClient event={event} />
+              </Suspense>
+              <Suspense fallback={<Skeleton />}>
                 <ComponentService event={event} />
-              </>
-            )}
+              </Suspense>
+            </React.Fragment>
           </div>
         </div>
         <ModalDelete

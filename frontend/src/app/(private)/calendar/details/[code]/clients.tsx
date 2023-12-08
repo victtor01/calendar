@@ -13,6 +13,8 @@ import { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { AxiosResponse } from "axios";
 
 function useClients(event: Event) {
   const api = useApiPrivate();
@@ -43,15 +45,19 @@ function useClients(event: Event) {
       return;
     }
 
-    if (clientsSelecteds.includes(id)) {
-      await api.put(`/events/update/connections/${event.id}`, {
-        disconnections: [id],
-      });
-    } else {
-      await api.put(`/events/update/connections/${event.id}`, {
-        connections: [id],
-      });
-    }
+    const disconnections = clientsSelecteds.includes(id) ? [id] : [];
+    const connections = disconnections.length > 0 ? [] : [id];
+
+    const res = api.put(`/events/update/connections/${event.id}`, {
+      connections,
+      disconnections,
+    });
+
+    await toast.promise(res, {
+      pending: "Salvando alterações",
+      success: "Salvo com sucesso!",
+      error: "Houve um erro! Tente novamente mais tarde! ",
+    });
 
     queryClient.invalidateQueries(["event", event.code]);
   }

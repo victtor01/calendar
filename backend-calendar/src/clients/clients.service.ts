@@ -5,6 +5,7 @@ import { CreateClientsDto } from './dto/create-clients.dto';
 import { parseISO } from 'date-fns';
 import { DeleteClientsDto } from './dto/delete-clients.dto';
 import { FindClientsByDateDto } from './dto/find-clients-by-date.dto';
+import { FindClientByCode } from './dto/find-client-by-code.dto';
 
 @Injectable()
 export class ClientsService {
@@ -12,6 +13,10 @@ export class ClientsService {
 
   async findAll(userId: number): Promise<Clients[]> {
     return await this.clientsRepository.findAll(Number(userId));
+  }
+
+  async findOneByCode(data: FindClientByCode): Promise<Clients> {
+    return await this.clientsRepository.findByCode(data);
   }
 
   async create(data: CreateClientsDto): Promise<Clients> {

@@ -16,6 +16,7 @@ import { queryClient } from "@/hooks/queryClient";
 import Input from "@/components/input/input";
 import { AiOutlineSearch } from "react-icons/ai";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
+import { toast } from "react-toastify";
 
 function useServices(event: Event) {
   const [showAllServices, setShowAllServices] = useState<boolean>(true);
@@ -31,8 +32,14 @@ function useServices(event: Event) {
 
   async function addService(serviceId: number) {
     /* Depois fazer uma notificação */
-    await api.put(`/events/connect-services/${event.id}`, {
+    const res = api.put(`/events/connect-services/${event.id}`, {
       serviceId,
+    });
+
+    await toast.promise(res, {
+      pending: "Salvando alterações",
+      success: "Salvo com sucesso! 👌",
+      error: "Houve um erro! Tente novamente mais tarde! ",
     });
 
     queryClient.refetchQueries(["event", event.code]);

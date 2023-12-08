@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 export const Container = styled.main`
   background-color: ${({ theme }) => theme.secundary};
-  border: 1px solid ${({ theme }) => theme.border};
 `;
 
 export const Bubble = styled.div`

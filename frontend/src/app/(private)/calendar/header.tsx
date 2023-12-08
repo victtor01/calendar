@@ -84,21 +84,21 @@ export default function Header() {
         <div className="flex gap-2 items-center">
           <button
             onClick={handleShowModalAddEvent}
-            className="opacity-90 flex gap-3 items-center hover:opacity-100 text-white p-3 bg-cyan-600 rounded-md "
+            className="opacity-90 flex gap-3 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded-md "
           >
             <MdBackupTable />
             Novo modelo
           </button>
           <Link
             href={"/calendar/week"}
-            className="opacity-90 flex gap-2 items-center hover:opacity-100 text-white p-3 bg-cyan-600 rounded-md "
+            className="opacity-90 flex gap-2 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded-md "
           >
             <BsCalendar2Week />
             Minha semana
           </Link>
           <Link
             href={"/calendar"}
-            className="opacity-90 flex items-center gap-2 hover:opacity-100 p-3 text-white rounded-md bg-gradient-to-r from-rose-500 to-fuchsia-600"
+            className="opacity-90 flex items-center gap-2 hover:opacity-100 p-3 text-white rounded-md bg-gradient-45 from-purple-600 to-cyan-500"
           >
             <IoAddSharp size="20" />
             Criar
