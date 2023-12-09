@@ -47,7 +47,7 @@ export default function Details({
   const {
     query: { event, isLoading },
     modalDelete: { handleShowModalDelete, showModalDelete },
-    modalFinish: { showModalFinish, handleShowModalFinish, setShowModalFinish },
+    modalFinish: { showModalFinish, handleShowModalFinish, UpdateStatusEvent },
     events: { deleteEvent },
   } = useDetails(code);
 
@@ -56,9 +56,9 @@ export default function Details({
   }
 
   if (!event) {
-    router.push('/calendar/')
+    router.push("/calendar/");
     return;
-  };
+  }
 
   return (
     <motion.main
@@ -78,13 +78,13 @@ export default function Details({
             </Link>
           </div>
           <div className="flex items-center flex-1">
-            {/* <div
+            <div
               className={`${fontValela} ${
                 statusClassName[event?.status || "ACTIVATED"]
               } p-3 text-white text-sm rounded opacity-50 items-center flex justify-center`}
             >
               {status[event?.status || "ACTIVATED"]}
-            </div> */}
+            </div>
           </div>
           <div className="flex gap-3 items-center justify-end">
             <Button
@@ -204,7 +204,10 @@ export default function Details({
                           placeholder="Digite o nome do evento para confirmar"
                           required
                         />
-                        <Button className="whitespace-nowrap p-3 bg-gradient-45 from-purple-500 to-cyan-500 rounded opacity-80 hover:opacity-100">
+                        <Button
+                          onClick={UpdateStatusEvent}
+                          className="whitespace-nowrap p-3 bg-gradient-45 from-purple-500 to-cyan-500 rounded opacity-80 hover:opacity-100"
+                        >
                           terminar evento
                         </Button>
                       </footer>

@@ -173,6 +173,7 @@ export default function Calendar() {
       animate="pageAnimate"
       className="p-2 flex"
     >
+      <div className="fixed h-[30rem] w-full bg-gradient-45 from-blue-400 to-cyan-400 opacity-10 blur-xl top-0 left-0 z-[0] pointer-events-none" />
       {loading && (
         <div className="top-0 left-0 w-screen flex justify-center items-center h-screen bg-zinc-900 fixed bg-opacity-5 z-[20]">
           <Loading className="bg-cyan-600" />
@@ -185,7 +186,7 @@ export default function Calendar() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="flex flex-1 gap-2 p-5 rounded-xl"
+          className="flex flex-1 gap-2 p-2 z-[2]"
         >
           <div className="col-span-8 max-h-auto w-full">
             <FullCalendar

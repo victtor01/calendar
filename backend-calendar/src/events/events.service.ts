@@ -9,6 +9,7 @@ import { DeleteEventsDto } from './dto/delete-events.dto';
 import { DeleteManyEventsDto } from './dto/delete-many-events.dto';
 import { UpdateConnectService } from './dto/update-connect-service';
 import { findEventsByDateDto } from './dto/find-events-by-date.dto';
+import { UpdateStatusEventsDto } from './dto/update-status-events.dto';
 
 @Injectable()
 export class EventsService {
@@ -28,6 +29,10 @@ export class EventsService {
     data.start = parseISO(data.start.toString());
     data.end = parseISO(data.end.toString());
     return await this.eventsRepository.update(data);
+  }
+
+  async updateStatus(data: UpdateStatusEventsDto): Promise<Events> {
+    return await this.eventsRepository.updateStatus(data);
   }
 
   async findByWeek(userId: number): Promise<Events[]> {

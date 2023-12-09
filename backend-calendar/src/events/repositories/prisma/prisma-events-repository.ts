@@ -9,6 +9,7 @@ import { findEventsByDateDto } from 'src/events/dto/find-events-by-date.dto';
 import { DeleteManyEventsDto } from 'src/events/dto/delete-many-events.dto';
 import { UpdateConnectManyDto } from 'src/events/dto/update-connect-many.dto';
 import { UpdateConnectService } from 'src/events/dto/update-connect-service';
+import { UpdateStatusEventsDto } from 'src/events/dto/update-status-events.dto';
 
 @Injectable()
 export class PrismaEventsRepository implements EventsRepository {
@@ -25,6 +26,23 @@ export class PrismaEventsRepository implements EventsRepository {
     return await this.prismaService.events.update({
       where: { id },
       data: rest,
+    });
+  }
+
+  async updateStatus({
+    id,
+    userId,
+    status,
+  }: UpdateStatusEventsDto): Promise<Events> {
+
+    return await this.prismaService.events.update({
+      where: {
+        id,
+        userId,
+      },
+      data: {
+        status,
+      },
     });
   }
 

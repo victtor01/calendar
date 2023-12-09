@@ -11,7 +11,7 @@ export class Events {
   start: Date;
   allDay: boolean;
   end: Date;
-  status: Status;
+  status: StatusEvent;
   createdAt: Date;
   updatedAt: Date;
   userId: number;
@@ -20,4 +20,4 @@ export class Events {
   services?: Service[];
 }
 
-type Status = 'ACTIVATED' | 'CONCLUDED' | 'FILED';
+export type StatusEvent = 'ACTIVATED' | 'CONCLUDED' | 'FILED';

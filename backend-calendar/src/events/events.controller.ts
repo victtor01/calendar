@@ -9,12 +9,14 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Patch,
 } from '@nestjs/common';
 import { CreateEventsDto } from './dto/create-events.dto';
 import { User } from 'src/users/entities/user.entity';
 import { EventsService } from './events.service';
 import { UpdateEventsDto } from './dto/update-events.dto';
 import { UpdateConnectManyDto } from './dto/update-connect-many.dto';
+import { StatusEvent } from './entities/events.entity';
 
 /* 
  / => Pegar todos
@@ -76,6 +78,19 @@ export class EventsController {
   ) {
     body.id = Number(id);
     return await this.eventsService.update(body);
+  }
+
+  @Patch('/update-status/:id')
+  async updateStatus(
+    @Param('id') id: string,
+    @Body() body: { status: StatusEvent },
+    @Request() req: { user: User },
+  ) {
+    return await this.eventsService.updateStatus({
+      userId: +req.user.id,
+      status: body.status,
+      id: +id,
+    });
   }
 
   @Put('update/connections/:id')

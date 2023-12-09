@@ -5,6 +5,7 @@ import { findEventsDto } from '../dto/find-events.dto';
 import { UpdateConnectManyDto } from '../dto/update-connect-many.dto';
 import { UpdateConnectService } from '../dto/update-connect-service';
 import { UpdateEventsDto } from '../dto/update-events.dto';
+import { UpdateStatusEventsDto } from '../dto/update-status-events.dto';
 import { Events } from '../entities/events.entity';
 
 export abstract class EventsRepository {
@@ -19,4 +20,5 @@ export abstract class EventsRepository {
   abstract connectMany({ eventId, connects, disconnects }: UpdateConnectManyDto): Promise<any[]>
   abstract connectService({ eventId, serviceId, userId }: UpdateConnectService): Promise<Events>
   abstract discconectService(data: UpdateConnectService): Promise<Events>
+  abstract updateStatus(data: UpdateStatusEventsDto): Promise<Events>;
 }

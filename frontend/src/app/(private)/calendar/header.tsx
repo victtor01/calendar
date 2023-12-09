@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import {
   Modal,
@@ -18,6 +19,8 @@ import * as S from "./style";
 import { MdBackupTable } from "react-icons/md";
 import { BsCalendar2Week } from "react-icons/bs";
 import { IoAddSharp } from "react-icons/io5";
+import { motion } from "framer-motion";
+import { FaCalendar } from "react-icons/fa";
 
 type CreateModelEventFormData = z.infer<typeof createModelEventFormSchema>;
 
@@ -74,37 +77,48 @@ export default function Header() {
   } = useHeader();
 
   return (
-    <div className="flex flex-col w-full h-full min-h-auto ">
-      <S.Header 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.4 }}
-      className=" w-full items-center flex justify-between rounded-md p-2">
-        <div className="p-2 opacity-60 text-xl font-semibold">Calendário</div>
-        <div className="flex gap-2 items-center">
+    <div className="flex flex-col w-full h-full min-h-auto z-[2]">
+      <motion.header
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className=" w-full items-center flex justify-between rounded-md"
+      >
+        <div className="p-2 text-xl font-semibold flex items-center gap-2">
+          <FaCalendar />
+          Calendário
+        </div>
+        <motion.div className="flex gap-2 items-center relative ">
           <button
             onClick={handleShowModalAddEvent}
-            className="opacity-90 flex gap-3 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded-md "
+            className="opacity-90 flex gap-3 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded px-6"
+          >
+            <MdBackupTable />
+            Eventos Finalizados
+          </button>
+          <button
+            onClick={handleShowModalAddEvent}
+            className="opacity-90 flex gap-3 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded px-6"
           >
             <MdBackupTable />
             Novo modelo
           </button>
           <Link
             href={"/calendar/week"}
-            className="opacity-90 flex gap-2 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded-md "
+            className="opacity-90 flex gap-2 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded px-6"
           >
             <BsCalendar2Week />
             Minha semana
           </Link>
           <Link
             href={"/calendar"}
-            className="opacity-90 flex items-center gap-2 hover:opacity-100 p-3 text-white rounded-md bg-gradient-45 from-purple-600 to-cyan-500"
+            className="opacity-90 flex items-center gap-2 hover:opacity-100 p-3 px-6 text-white rounded bg-gradient-45 from-purple-600 to-cyan-500"
           >
             <IoAddSharp size="20" />
             Criar
           </Link>
-        </div>
-      </S.Header>
+        </motion.div>
+      </motion.header>
       <Modal
         onOpenChange={handleShowModalAddEvent}
         isDismissable={false}
