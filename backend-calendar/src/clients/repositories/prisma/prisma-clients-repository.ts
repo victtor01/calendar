@@ -6,6 +6,8 @@ import { PrismaService } from 'src/database/prisma.service';
 import { DeleteClientsDto } from 'src/clients/dto/delete-clients.dto';
 import { FindClientsByDateDto } from 'src/clients/dto/find-clients-by-date.dto';
 import { FindClientByCode } from 'src/clients/dto/find-client-by-code.dto';
+import { UpdateClientPhotoDto } from 'src/clients/dto/update-client-photo.dto';
+import { FindClientById } from 'src/clients/dto/find-client-by-id.dto';
 
 @Injectable()
 export class PrismaClientsRepository implements ClientsRepository {
@@ -16,6 +18,31 @@ export class PrismaClientsRepository implements ClientsRepository {
       where: { userId },
       orderBy: {
         createdAt: 'desc',
+      },
+    });
+  }
+
+  async updatePhoto({
+    photo,
+    id,
+    userId,
+  }: UpdateClientPhotoDto): Promise<Clients> {
+    return await this.prisma.clients.update({
+      where: {
+        id,
+        userId,
+      },
+      data: {
+        photo,
+      },
+    });
+  }
+
+  async findById({ userId, id }: FindClientById): Promise<Clients> {
+    return await this.prisma.clients.findUnique({
+      where: {
+        userId,
+        id,
       },
     });
   }

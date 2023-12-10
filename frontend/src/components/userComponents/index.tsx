@@ -23,6 +23,8 @@ export default function UserComponents() {
     userInfo,
   } = useContext(SessionContext);
 
+  if(!userInfo.photo) return;
+
   return (
     <div className={`flex gap-2 p-2 items-center gap-3 relative ${fontRoboto}`}>
       <Button
@@ -46,7 +48,7 @@ export default function UserComponents() {
           className="hover:scale-[1.1] transition-all"
           src={`http://localhost:8000/uploads/${userInfo.photo}`}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority
+          /* priority */
           fill
           quality={25}
           style={{ objectFit: "cover" }}

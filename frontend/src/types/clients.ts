@@ -10,8 +10,9 @@ export interface Clients {
     cep?: string;
     color?: string;
     phone?: string;
+    photo?: string;
     street?: string;
-    birth?: Date;
+    birth?: string;
     createdAt: Date;
     updatedAt: Date;
     userId: number;

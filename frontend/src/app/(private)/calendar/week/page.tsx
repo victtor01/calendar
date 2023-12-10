@@ -7,8 +7,8 @@ import { Event } from "../../../../types/events";
 import { BsArrowLeft, BsArrowRightShort, BsCheck } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
 import { useState } from "react";
-import * as S from "./style";
 import Link from "next/link";
+import * as S from "./style";
 import {
   Modal,
   ModalContent,
@@ -18,16 +18,10 @@ import {
   Button,
 } from "@nextui-org/react";
 
-interface EventsProps {
-  eventsToday: Event[];
-  eventsYesterday: Event[];
-  eventsTomorrow: Event[];
-}
-
 function useWeek() {
   const api = useApiPrivate();
-  const { data: weekEvents, isLoading } = useQuery({
-    queryKey: ["events-week"],
+  const { data: events, isLoading } = useQuery({
+    queryKey: ["events", "events-week"],
     queryFn: async () => {
       return (await api.get("/events/find/week")).data;
     },
@@ -35,31 +29,6 @@ function useWeek() {
   const [itemsForDelete, setItemsForDelete] = useState<number[] | null>(null);
   const [showModalDeleteItems, setShowModalDeleteItems] =
     useState<boolean>(false);
-
-  const today = moment();
-  const yesterday = moment().subtract(1, "days");
-  const tomorrow = moment().add(1, "days");
-
-
-  const events: EventsProps = {
-    eventsYesterday: [],
-    eventsToday: [],
-    eventsTomorrow: [],
-  };
-
-  if (weekEvents?.length > 0) {
-    weekEvents.forEach((event: Event) => {
-      const eventDate = moment(event.start);
-
-      if (eventDate.isSame(today, "day")) {
-        events.eventsToday.push(event);
-      } else if (eventDate.isSame(yesterday, "day")) {
-        events.eventsYesterday.push(event);
-      } else if (eventDate.isSame(tomorrow, "day")) {
-        events.eventsTomorrow.push(event);
-      }
-    });
-  }
 
   function addItemForDelete(id: number) {
     setItemsForDelete((prev: number[] | null) => {
@@ -100,13 +69,39 @@ export default function Week() {
     modal: { handleShowModalDeleteItems, deleteItems, showModalDeleteItems },
   } = useWeek();
 
-  if (isLoading) {
-    return;
-  }
+  if (isLoading) return;
+
+  const eventsGroups = (() => {
+    if(!events) return null;
+    const data: Record<string, Event[]> = {};
+
+    const minDate = moment.min(
+      events.map((event: Event) => moment(event.start))
+    );
+    const maxDate = moment.max(events.map((event: Event) => moment(event.end)));
+    const dateFormat = "DD/MM/YYYY";
+
+    for (
+      let date = moment(minDate);
+      date.isSameOrBefore(maxDate);
+      date.add(1, "day")
+    ) {
+      const key = date.format(dateFormat);
+      data[key] = [];
+    }
+
+    events.forEach((event: Event) => {
+      const key = moment(event.start, "YYYY-MM-DD").format("DD/MM/YYYY");
+
+      data[key].push(event);
+    });
+
+    return data;
+  })();
 
   return (
     <div className="flex flex-col w-full p-2 items-center gap-3 mt-10">
-      <div className="w-full flex max-w-[90rem] min-h-[3rem] rounded justify-between items-center">
+      <header className="w-full flex max-w-[90rem] min-h-[3rem] rounded justify-between items-center">
         <Link
           href={"/calendar"}
           className="flex items-center gap-3 opacity-50 hover:opacity-90"
@@ -124,9 +119,25 @@ export default function Week() {
             </button>
           )}
         </div>
-      </div>
-      <div className="flex flex-wrap min-h-[40rem] h-auto gap-5 w-full max-w-[90rem]">
-        {events &&
+      </header>
+      <div className="flex flex-wrap min-h-[40rem] h-auto gap-5 w-full max-w-[130rem]">
+        {eventsGroups &&
+          Object.entries(eventsGroups)?.map(([date, value], index: number) => (
+            <S.ThemeComponent
+              key={index}
+              className="bg-zinc-400 bg-opacity-10 flex-1 p-3 rounded-xl"
+            >
+              <header>
+                {moment(date, "DD/MM/YYYY").format("ddd, DD, MM [de] YYYY")}
+              </header>
+              <section>
+                {value?.map((event: Event, index: number) => {
+                  return <div>{event.name}</div>;
+                })}
+              </section>
+            </S.ThemeComponent>
+          ))}
+        {/*   {events &&
           Object.entries(events)?.map(([name, value], index) => (
             <div
               key={index}
@@ -198,7 +209,7 @@ export default function Week() {
                 );
               })}
             </div>
-          ))}
+          ))} */}
       </div>
       <Modal
         onOpenChange={handleShowModalDeleteItems}

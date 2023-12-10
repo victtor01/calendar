@@ -8,6 +8,7 @@ export class Clients {
   cep?: string;
   phone?: string;
   street?: string;
+  photo?: string;
   birth?: Date;
   createdAt: Date;
   updatedAt: Date;

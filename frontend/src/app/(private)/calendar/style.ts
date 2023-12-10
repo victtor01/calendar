@@ -37,7 +37,7 @@ export const Bubble = styled.div`
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
     filter: blur(2em);
-    opacity: 0.6;
+    opacity: 0.1;
     background: linear-gradient(
       34deg,
       transparent,
@@ -57,7 +57,7 @@ export const Bubble = styled.div`
     padding: 2rem;
     border-radius: 77% 23% 17% 83% / 35% 61% 39% 65%;
     filter: blur(2em);
-    opacity: 0.4;
+    opacity: 0.1;
     background: linear-gradient(
       34deg,
       transparent,
@@ -65,5 +65,42 @@ export const Bubble = styled.div`
       #74febd,
       transparent
     );
+  }
+`;
+
+export const Modal = styled(motion.div)`
+  background-color: ${({ theme }) => theme.secundary};
+  border: 1px solid ${({ theme }) => theme.border};
+  position: relative;
+
+  &::before {
+    content: "";
+    width: 99%;
+    position: absolute;
+    background-color: red;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    height: 0.4rem;
+    border-radius: 0.3rem 0.3rem 0 0;
+    background: linear-gradient(45deg, #6157ff, #74febd);
+  }
+`;
+
+export const Annotations = styled(motion.div)`
+  background-color: ${({ theme }) => theme.secundary};
+  position: relative;
+
+  &::before {
+    content: "";
+    width: 98%;
+    position: absolute;
+    background-color: red;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    height: 0.3rem;
+    border-radius: 0.3rem 0.3rem 0 0;
+    background: linear-gradient(45deg, #6157ff, #74febd);
   }
 `;

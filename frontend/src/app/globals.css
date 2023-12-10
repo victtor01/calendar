@@ -42,6 +42,10 @@ body {
   @apply space-x-8;
 }
 
+.fc {
+  z-index: 1;
+}
+
 .fc-day {
   @apply m-8;
 }

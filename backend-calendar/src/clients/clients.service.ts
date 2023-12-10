@@ -6,6 +6,10 @@ import { parseISO } from 'date-fns';
 import { DeleteClientsDto } from './dto/delete-clients.dto';
 import { FindClientsByDateDto } from './dto/find-clients-by-date.dto';
 import { FindClientByCode } from './dto/find-client-by-code.dto';
+import { UpdateClientPhotoDto } from './dto/update-client-photo.dto';
+
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class ClientsService {
@@ -19,6 +23,31 @@ export class ClientsService {
     return await this.clientsRepository.findByCode(data);
   }
 
+  async updatePhoto(data: UpdateClientPhotoDto): Promise<any> {
+    const { userId, id, photo } = data;
+    const { photo: currentPhoto, ...infoRest } =
+      await this.clientsRepository.findById({
+        userId,
+        id,
+      });
+
+    if (currentPhoto) {
+      const directoryPath = path.join(__dirname, '..', '..', 'uploads', 'clients');
+      const filePath = path.join(directoryPath, currentPhoto);
+
+      console.log(filePath);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    return await this.clientsRepository.updatePhoto({
+      userId,
+      photo,
+      id,
+    });
+  }
+
   async create(data: CreateClientsDto): Promise<Clients> {
     data.birth = parseISO(data.birth.toString());
     return await this.clientsRepository.create(data);
@@ -30,5 +59,5 @@ export class ClientsService {
 
   async findOneByDate(data: FindClientsByDateDto): Promise<Clients[]> {
     return await this.clientsRepository.findByDate(data);
-  } 
+  }
 }

@@ -6,11 +6,16 @@ import {
   Request,
   Delete,
   Param,
+  UploadedFile,
+  Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Clients } from './entities/clients.entity';
 import { ClientsService } from './clients.service';
 import { CreateClientsDto } from './dto/create-clients.dto';
 import { User } from 'src/users/entities/user.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('clients')
 export class ClientsController {
@@ -42,6 +47,37 @@ export class ClientsController {
     return await this.clientsService.findOneByCode({
       userId: +req.user.id,
       code,
+    });
+  }
+
+  @Put('update/:id')
+  update(@UploadedFile() photo: Express.Multer.File, @Body() body: any) {
+    console.log(photo);
+    console.log(body);
+  }
+
+  @UseInterceptors(
+    FileInterceptor('photo', {
+      storage: diskStorage({
+        destination: './uploads/clients',
+        filename: (req, file, cb) => {
+          const uniqueFilename =
+            new Date().getTime() + file.originalname.replace(/\s/g, '_');
+          cb(null, `${uniqueFilename}`);
+        },
+      }),
+    }),
+  )
+  @Put('update/photo/:id')
+  async updatePhoto(
+    @UploadedFile() photo: Express.Multer.File,
+    @Param('id') id: string,
+    @Request() req: { user: User },
+  ) {
+    return await this.clientsService.updatePhoto({
+      userId: +req.user.id,
+      photo: photo.filename,
+      id: +id,
     });
   }
 

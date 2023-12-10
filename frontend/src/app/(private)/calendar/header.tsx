@@ -77,7 +77,7 @@ export default function Header() {
   } = useHeader();
 
   return (
-    <div className="flex flex-col w-full h-full min-h-auto z-[2]">
+    <div className="flex flex-col w-full min-h-auto z-[2]">
       <motion.header
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

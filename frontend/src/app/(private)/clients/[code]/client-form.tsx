@@ -3,17 +3,17 @@
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "@/components/input/input";
 import Label from "@/components/label";
 import { IoAlertCircleSharp } from "react-icons/io5";
 import Form from "@/components/form";
 import Button from "@/components/button";
 import useApiPrivate from "@/hooks/apiPrivate";
-import { queryClient } from "@/hooks/queryClient";
 import Link from "next/link";
 import { FaChevronLeft } from "react-icons/fa";
 import { fontOpenSans } from "@/app/fonts";
 import { Clients } from "@/types/clients";
+import moment from "moment-timezone";
+import { formData } from "@/app/(client)/register/formData";
 
 interface LabelFormData {
   name: string;
@@ -46,7 +46,7 @@ const CreateClientFormSchema = z.object({
   birth: z.string(),
 });
 
-const useCreate = () => {
+const useCreate = (client: Clients) => {
   const {
     control,
     handleSubmit,
@@ -58,16 +58,26 @@ const useCreate = () => {
 
   const api = useApiPrivate();
 
-  const submit = async (data: CreateClientFormData) => {
-    const response = await api.put("/clients/create", data);
-    if (response.data) {
-      queryClient.invalidateQueries(["clients"]);
-    }
-    reset();
-  };
+  const submit = async (data: CreateClientFormData) => {};
+
+  async function uploadPhoto(e: any) {
+    e.preventDefault();
+
+    const file = e.target.files[0];
+    const form = new FormData();
+    form.append("photo", file);
+    form.append("name", "Nome");
+
+    const res = await api.put(`/clients/update/photo/${client.id}`, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
 
   return {
     handleSubmit,
+    uploadPhoto,
     submit,
     control,
     errors,
@@ -76,8 +86,9 @@ const useCreate = () => {
 };
 
 export default function Create({ client }: { client: Clients }) {
-  const { handleSubmit, submit, control, errors, reset } = useCreate();
-
+  const { handleSubmit, uploadPhoto, submit, control, errors, reset } =
+    useCreate(client);
+  client.birth = moment(client.birth).format("YYYY-MM-DD");
   return (
     <Form
       initial={{ opacity: 0, y: 10 }}
@@ -95,9 +106,12 @@ export default function Create({ client }: { client: Clients }) {
           Clientes
         </Link>
       </header>
-      <div className="flex mx-auto flex-col opacity-60 font-semibold gap-2">
-        <h2 className="text-center">Foto do cliente</h2>
-        <div className="bg-zinc-500 bg-opacity-20 w-[10rem] h-[10rem] rounded-xl"></div>
+      <div className="flex mx-auto flex-col opacity-60 font-semibold gap-5">
+        <div className="flex flex-col justify-center items-center gap-1">
+          <h2 className="text-center">Foto do cliente</h2>
+          <div className="bg-zinc-500 bg-opacity-20 w-[10rem] h-[10rem] rounded-xl"></div>
+        </div>
+        <input type="file" onChange={uploadPhoto} />
       </div>
       {labelFormData.map((form: LabelFormData, index: number) => (
         <Label.Root
@@ -110,7 +124,7 @@ export default function Create({ client }: { client: Clients }) {
           <Controller
             name={form.name as keyof CreateClientFormData}
             control={control}
-            defaultValue=""
+            defaultValue={client[form.name as keyof CreateClientFormData] || ""}
             render={({ field }) => (
               <input
                 {...field}
@@ -129,6 +143,7 @@ export default function Create({ client }: { client: Clients }) {
           )}
         </Label.Root>
       ))}
+      {/* s */}
       <div className="flex w-full gap-2">
         <Button
           className="bg-gradient-45 from-cyan-600 to-blue-600 rounded p-3 text-lg text-white"
