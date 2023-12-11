@@ -18,7 +18,7 @@ import Label from "@/components/label";
 import { Clients } from "@/types/clients";
 import { Service } from "@/types/services";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
-import { ModalDelete } from "@/components/eventModalDelete";
+import { ModalDelete } from "@/components/modalDelete";
 import React, { Suspense } from "react";
 import Skeleton from "./skeleton";
 import { useRouter } from "next/navigation";
