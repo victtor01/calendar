@@ -1,22 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import useApiPrivate from "./apiPrivate";
-
-export interface Clients {
-  id: number;
-  code: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  cpf?: string;
-  cep?: string;
-  color?: string;
-  phone?: string;
-  street?: string;
-  birth?: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: number;
-}
+import { Clients } from "@/types/clients";
 
 export const useClients = () => {
   const api = useApiPrivate();

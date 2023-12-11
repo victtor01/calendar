@@ -1,16 +1,24 @@
 "use client";
-import styled from "styled-components";
+
 import { motion } from "framer-motion";
+import styled from "styled-components";
 
-export const Content = styled(motion.main)`
-  /* background-color: ${({ theme }) => theme.secundary}; */
-`;
-export const Header = styled(motion.header)`
-  background: ${({ theme }) => theme.secundary};
-`;
+export const Annotations = styled(motion.div)`
+  background-color: ${({ theme }) => theme.secundary};
+  position: relative;
 
-export const Calendar = styled(motion.div)`
-  background: ${({ theme }) => theme.secundary};
+  &::before {
+    content: "";
+    width: 98%;
+    position: absolute;
+    background-color: red;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    height: 0.3rem;
+    border-radius: 0.3rem 0.3rem 0 0;
+    background: linear-gradient(45deg, #6157ff, #74febd);
+  }
 `;
 
 export const Bubble = styled.div`
@@ -65,24 +73,5 @@ export const Bubble = styled.div`
       #74febd,
       transparent
     );
-  }
-`;
-
-export const Modal = styled(motion.div)`
-  background-color: ${({ theme }) => theme.secundary};
-  border: 1px solid ${({ theme }) => theme.border};
-  position: relative;
-
-  &::before {
-    content: "";
-    width: 99%;
-    position: absolute;
-    background-color: red;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -100%);
-    height: 0.4rem;
-    border-radius: 0.3rem 0.3rem 0 0;
-    background: linear-gradient(45deg, #6157ff, #74febd);
   }
 `;

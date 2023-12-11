@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
 import moment from "moment-timezone";
-import { EventContentArg, EventSourceInput } from "@fullcalendar/core/index.js";
+import { EventSourceInput } from "@fullcalendar/core/index.js";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/hooks/queryClient";
@@ -159,34 +159,7 @@ const useCalendar = () => {
   };
 };
 
-const CustomizeEvent = ({ eventInfo, setIdSelected }: any) => {
-  return (
-    <>
-      <motion.button
-        key={eventInfo.event.id}
-        className="flex flex-col"
-        onClick={() => setIdSelected(eventInfo.event.id)}
-      >
-        <strong>{eventInfo.event.title}</strong>
-        <p>{eventInfo.timeText}</p>
-      </motion.button>
-
-      {/*  {modalVisible && (
-        <motion.div
-          key={`modal-${eventInfo.event.id}`}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          style={{ zIndex: 10000 }}
-          className="fixed top-0 left-0 w-full h-screen bg-zinc-900 bg-opacity-10 z-[100] backdrop-blur-md flex justify-center items-center"
-        >
-          <button onClick={() => setModalVisible(false)}>FECHAR</button>
-        </motion.div>
-      )} */}
-    </>
-  );
-};
-
-export default function Calendar() {
+function Calendar() {
   const {
     eventsTemplates,
     allEvents,
@@ -215,13 +188,6 @@ export default function Calendar() {
             <Loading className="bg-cyan-600" />
           </div>
         )}
-        <S.Annotations className="flex m-1 rounded flex-col relative p-3 w-full max-w-[15rem] mx-auto flex hover:shadow-xl transition-shadow">
-          <S.Bubble />
-          <header className="flex items-center gap-3 justify-between">
-            Anotações
-          </header>
-        </S.Annotations>
-
         <AnimatePresence>
           {itemSelected && (
             <motion.div
@@ -267,7 +233,7 @@ export default function Calendar() {
                   </div>
                 </section>
                 <footer className="flex w-full p-3">
-                  <Link href={`/events/details/${itemSelected.code}/`}>
+                  <Link href={`/calendar/details/${itemSelected.code}/`}>
                     Mais detalhes
                   </Link>
                 </footer>

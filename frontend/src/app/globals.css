@@ -145,3 +145,25 @@ body {
   @apply bg-cyan-500 border-none;
 }
 
+.scroll-none::-webkit-scrollbar {
+  display: none;
+  width: 12px; /* Largura da barra de rolagem */
+}
+
+/* Estilo para o indicador da barra de rolagem (thumb) */
+.scroll-none::-webkit-scrollbar-thumb {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.2); /* Cor de fundo da barra de rolagem */
+}
+
+/* Estilo para o indicador da barra de rolagem quando passa o mouse */
+.scroll-none::-webkit-scrollbar-thumb:hover {
+  opacity: 1; /* Cor de fundo da barra de rolagem quando passa o mouse */
+  display: none;
+}
+
+/* Estilo para a barra de rolagem (track) */
+.scroll-none::-webkit-scrollbar-track {
+  display: none;
+  opacity: 0;
+}

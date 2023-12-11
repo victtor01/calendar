@@ -15,18 +15,17 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
-import {
-  Clients as Client,
-  useClients as useClientsHook,
-} from "@/hooks/useClients";
+import { useClients as useClientsHook } from "@/hooks/useClients";
 import { IoMdAdd } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
 import { FaAngleRight, FaPhoneSquareAlt } from "react-icons/fa";
 import { MdAccessTime, MdEmail, MdFilterList } from "react-icons/md";
 import moment from "moment-timezone";
 import * as S from "./style";
-import { fontValela } from "@/app/fonts";
+import { fontOpenSans, fontValela } from "@/app/fonts";
 import Image from "next/image";
+import { Server } from "@/constants/server";
+import { Clients as Client } from "@/types/clients";
 
 moment.locale("pt-br");
 
@@ -47,16 +46,23 @@ const ClientComponent = ({ item, index }: { item: Client; index: number }) => {
         href={`/clients/${item.code}`}
         className="w-full h-[10rem] bg-zinc-500 relative bg-opacity-10 overflow-hidden opacity-90 hover:opacity-100"
       >
-        <Image
-          className="hover:scale-[1.1] transition-all"
-          src="/cliente.png"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority
-          fill
-          quality={50}
-          style={{ objectFit: "cover" }}
-          alt="Foto do cliente"
-        />
+        {item.photo && (
+          <Image
+            className="hover:scale-[1.1] transition-all"
+            src={`${Server}/uploads/clients/${item?.photo}`}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
+            fill
+            quality={50}
+            style={{ objectFit: "cover" }}
+            alt="Foto do cliente"
+          />
+        )}
+        {!item.photo && (
+          <div className="flex flex-1 w-full h-full justify-center items-center">
+            <span className={`text-lg ${fontOpenSans}`}>Sem foto</span>
+          </div>
+        )}
       </Link>
       <div className="relative max-h-[4.4rem] min-h-[4.4rem]">
         <S.ClientContent
@@ -113,7 +119,7 @@ const ClientComponent = ({ item, index }: { item: Client; index: number }) => {
           >
             <MdAccessTime />
             <span>
-              {moment(item.createdAt).format("dddd,  DD [de] MMMM [de] YYYY")}
+              {moment(item.createdAt).format("ddd,  DD [de] MMM [de] YYYY")}
             </span>
           </motion.span>
         </S.ClientContent>

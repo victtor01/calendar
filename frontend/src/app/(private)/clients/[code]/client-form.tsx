@@ -13,7 +13,8 @@ import { FaChevronLeft } from "react-icons/fa";
 import { fontOpenSans } from "@/app/fonts";
 import { Clients } from "@/types/clients";
 import moment from "moment-timezone";
-import { formData } from "@/app/(client)/register/formData";
+import { Server } from "@/constants/server";
+import Image from "next/image";
 
 interface LabelFormData {
   name: string;
@@ -89,6 +90,7 @@ export default function Create({ client }: { client: Clients }) {
   const { handleSubmit, uploadPhoto, submit, control, errors, reset } =
     useCreate(client);
   client.birth = moment(client.birth).format("YYYY-MM-DD");
+
   return (
     <Form
       initial={{ opacity: 0, y: 10 }}
@@ -109,7 +111,18 @@ export default function Create({ client }: { client: Clients }) {
       <div className="flex mx-auto flex-col opacity-60 font-semibold gap-5">
         <div className="flex flex-col justify-center items-center gap-1">
           <h2 className="text-center">Foto do cliente</h2>
-          <div className="bg-zinc-500 bg-opacity-20 w-[10rem] h-[10rem] rounded-xl"></div>
+          <div className="bg-zinc-500 bg-opacity-20 w-[10rem] h-[10rem] rounded-xl relative overflow-hidden">
+            <Image
+              className="hover:scale-[1.1] transition-all"
+              src={`${Server}/uploads/clients/${client?.photo}`}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority
+              fill
+              quality={50}
+              style={{ objectFit: "cover" }}
+              alt="Foto do usuario"
+            />
+          </div>
         </div>
         <input type="file" onChange={uploadPhoto} />
       </div>
@@ -143,7 +156,6 @@ export default function Create({ client }: { client: Clients }) {
           )}
         </Label.Root>
       ))}
-      {/* s */}
       <div className="flex w-full gap-2">
         <Button
           className="bg-gradient-45 from-cyan-600 to-blue-600 rounded p-3 text-lg text-white"

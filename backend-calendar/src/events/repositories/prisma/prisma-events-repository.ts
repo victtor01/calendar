@@ -102,6 +102,10 @@ export class PrismaEventsRepository implements EventsRepository {
       orderBy: {
         start: 'asc',
       },
+      include: {
+        clients: true,
+        services: true,
+      }
     });
     return res;
   }
