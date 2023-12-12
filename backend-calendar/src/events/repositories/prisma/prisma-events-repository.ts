@@ -21,11 +21,12 @@ export class PrismaEventsRepository implements EventsRepository {
     });
   }
 
-  async update(data: UpdateEventsDto): Promise<any> {
+  async update(data: UpdateEventsDto): Promise<Events> {
     const { id, ...rest } = data;
+    console.log(rest);
     return await this.prismaService.events.update({
       where: { id },
-      data: rest,
+      data: { ...rest },
     });
   }
 
