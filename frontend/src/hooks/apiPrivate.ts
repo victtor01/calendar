@@ -6,11 +6,9 @@ import Cookies from "js-cookie";
 
 export async function refreshToken() {
   try {
-    const cookies =  parseCookies();
+    const cookies = parseCookies();
     const access_token = cookies.access_token;
     const refresh_token = cookies.refresh_token;
-
-   /* return access_token */
 
     const { data } = await api.post(
       "/auth/refresh",
@@ -23,7 +21,6 @@ export async function refreshToken() {
       }
     );
 
-    /* Cookies.set("access_token", data.access_token); */
     return data;
   } catch (error) {
     console.log(error);

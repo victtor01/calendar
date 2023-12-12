@@ -75,7 +75,7 @@ const useCalendar = () => {
       .put(`/events/update/${updatedEvent.id}`, updatedData)
       .catch((err) => console.log(err));
 
-    toast.promise(res, {
+    await toast.promise(res, {
       pending: "Salvando alterações",
       success: "Salvo com sucesso! 👌",
       error: "Houve um erro! Tente novamente mais tarde! ",
