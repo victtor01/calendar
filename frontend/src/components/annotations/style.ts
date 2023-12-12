@@ -5,8 +5,8 @@ import styled from "styled-components";
 
 export const Annotations = styled(motion.div)`
   background-color: ${({ theme }) => theme.secundary};
-  position: relative;
-
+  position: sticky;
+  top: 0.4rem;
   &::before {
     content: "";
     width: 98%;

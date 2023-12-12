@@ -179,6 +179,7 @@ export default function Calendar() {
 
   return (
     <>
+      <Annotations />
       <motion.main
         variants={variants}
         initial="pageInitial"
@@ -190,7 +191,6 @@ export default function Calendar() {
             <Loading className="bg-cyan-600" />
           </div>
         )}
-        <Annotations />
         <AnimatePresence>
           {itemSelected && (
             <ClientComponent

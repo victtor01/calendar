@@ -1,6 +1,6 @@
 export default function Empty() {
   return (
-    <div className="w-full gap-3 flex-col h-full overflow-hidden flex justify-center items-center">
+    <div className="w-full gap-3 h-screen flex-col h-full overflow-hidden flex justify-center items-center">
       <div className="w-auto h-auto bg-zinc-800 text-white p-5 text-2xl">
         ERROR 404
       </div>

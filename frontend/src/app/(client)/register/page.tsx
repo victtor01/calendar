@@ -34,18 +34,31 @@ const createUserFormSchema = z
         (file) => file?.size <= 5 * 1024 * 1024 && file.name,
         "Selecione uma foto para o seu perfil"
       ),
+    /* cep: z
+      .string()
+      .nonempty("Campo obrigatório")
+      .min(8, "Preencha corretamente")
+      .max(8, "Preencha o campo corretamente"), */
     password: z.string().min(5, "A senha deve conter no mínimo 6 digitos"),
     repeatPassword: z.string(),
-    phone: z.string().refine(
-      (phone) => {
-        return /^\d+$/.test(phone);
-      },
-      {
-        message: "Digite apenas números",
-      }
-    ),
+    phone: z
+      .string().nonempty('O campo é obrigatório')
+      .min(11, 'Digite o número corretamente!')
+      .max(11, 'Digite o número corretamente')
+      .refine(
+        (phone) => {
+          return /^\d+$/.test(phone);
+        },
+        {
+          message: "Digite apenas números",
+        }
+      ),
     birth: z.string().refine((date) => date.length < 11, "Data inválida"),
-    cpf: z.string().nonempty(),
+    cpf: z
+      .string()
+      .nonempty('O campo não pode estar vazío')
+      .min(11, "Formato errado! Digite o formato certo")
+      .max(11, "Formato errado! Digite o formato certo"),
   })
   .refine((data) => data.password === data.repeatPassword, {
     message: "As senhas não coecidem",
@@ -62,16 +75,12 @@ const useRegister = () => {
   });
 
   async function createUser(body: CreateUserFormData): Promise<void> {
-    try {
-      const response = await UsersService.create(body);
-      const { data } = response;
+    const response = await UsersService.create(body);
+    const { data } = response;
 
-      if (response.status === 201 && response.data.key) {
-        const { key } = data;
-        window.location.href = `/confirm-email/${key}`;
-      }
-    } catch (error) {
-      console.log(error);
+    if (response.status === 201 && response.data.key) {
+      const { key } = data;
+      window.location.href = `/confirm-email/${key}`;
     }
   }
 
@@ -187,10 +196,10 @@ export default function RegisterPage() {
                     <span className="text-[1rem] font-semibold opacity-60 ">
                       {span}
                     </span>
-                    <Input
+                    <input
                       type={type}
-                      className={`${classError} border focus:border-cyan-600 placeholder:opacity-40 rounded appearance-none px-3e`}
-                      register={register(name as keyof CreateUserFormData)}
+                      className={`${classError} border border-transparent p-3 focus:border-cyan-600 outline-none placeholder:opacity-40 rounded appearance-none px-3 bg-zinc-500 bg-opacity-10`}
+                      {...register(name as keyof CreateUserFormData)}
                       autoComplete="off"
                       placeholder={`exp: ${ex}`}
                     />

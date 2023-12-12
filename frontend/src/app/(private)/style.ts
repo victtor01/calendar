@@ -24,7 +24,7 @@ export const Container = styled.main`
 export const Content = styled.div`
   display: flex;
   grid-area: content;
-  flex-direction: column;
+
   height: 100%;
   position: relative;
   min-width: auto;

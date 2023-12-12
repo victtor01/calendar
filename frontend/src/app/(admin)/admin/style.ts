@@ -146,3 +146,7 @@ export const Bubble = styled.div`
 export const ActionsComponents = styled(motion.button)`
   background-color: ${({ theme }) => theme.secundary};
 `;
+
+export const UserComponent = styled(motion.button)`
+  background-color: ${({theme}) => theme.secundary};
+`

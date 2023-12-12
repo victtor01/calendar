@@ -43,7 +43,6 @@ export function SubmitCode({ userId }: submitCodeProps) {
 
   return (
     <>
-      {userId}
       <Input
         name="code"
         value={code}

@@ -4,7 +4,7 @@ export interface User {
   key: string;
   lastName: string;
   email: string;
-  status: string;
+  status: UserStatus;
   photo: string;
   password: string;
   role: UserRole;
@@ -13,4 +13,5 @@ export interface User {
   birth: Date;
 }
 
-type UserRole = "ADMIN" | "USER";
+export type UserRole = "ADMIN" | "USER";
+export type UserStatus = 'CREATED' | 'VERIFIED' | 'APPROVED'
