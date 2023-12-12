@@ -1,5 +1,5 @@
 import Link from "next/link";
-import * as S from "../style";
+import * as S from "./style";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaCreditCard } from "react-icons/fa";
 import { MdFilterList } from "react-icons/md";

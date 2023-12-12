@@ -1,11 +1,12 @@
 import axios from "axios";
+import { Server } from "@/constants/server";
 
 const api = axios.create({
-  baseURL: 'http://192.168.0.106:8000',
+  baseURL: Server,
 });
 
 export const apiPrivate = axios.create({
-  baseURL: 'http://192.168.0.106:8000',
+  baseURL: Server,
   headers: {'Content-Type': 'application/json'},
   withCredentials: true
 })

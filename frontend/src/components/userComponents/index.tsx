@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import * as S from "./style";
 import { SessionContext, useSessionContext } from "@/contexts/sessionContext";
 import { motion } from "framer-motion";
+import { Server } from "@/constants/server";
 
 type Select = "NOTIFICATION" | "EXIT" | "USER" | null;
 
@@ -46,7 +47,7 @@ export default function UserComponents() {
       <Button className="flex bg-cyan-500 relative h-10 w-10 items-center overflow-hidden rounded-full">
       <Image
           className="hover:scale-[1.1] transition-all"
-          src={`http://localhost:8000/uploads/${userInfo.photo}`}
+          src={`${Server}/uploads/${userInfo.photo}`}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           /* priority */
           fill

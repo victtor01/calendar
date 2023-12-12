@@ -1,1 +1,1 @@
-export const Server = 'http://localhost:8000'
+export const Server = "https://backend-calendar-s71x.onrender.com";

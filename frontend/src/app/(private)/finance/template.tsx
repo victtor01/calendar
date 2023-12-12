@@ -1,5 +1,5 @@
 import Link from "next/link";
-import * as S from "../style";
+import * as S from "./style";
 import { IoHome } from "react-icons/io5";
 import { CiCircleList } from "react-icons/ci";
 

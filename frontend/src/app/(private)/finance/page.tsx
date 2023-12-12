@@ -18,7 +18,7 @@ import { queryClient } from "@/hooks/queryClient";
 import { useRouter } from "next/navigation";
 import moment from "moment-timezone";
 import { AnimatePresence, motion } from "framer-motion";
-import * as S from "../style";
+import * as S from "./style";
 import SkeletonRegister from "@/components/registerSkeleton";
 import { Header } from "./header";
 import Pagination from "@/components/pagination";
@@ -104,15 +104,11 @@ const formatDataForDates = (registers: Register[]): Labels[] => {
   return data;
 };
 
-export default function Registers({
-  params: { post },
-}: {
-  params: {
-    post: string;
-  };
-}) {
+export default function Registers() {
+  const [post, setPost] = useState(0);
+
+  const currentPage: number = post ? Number(post) : 1;
   const router = useRouter();
-  const currentPage: number = post ? Number(post[0]) : 1;
 
   const { handleItemDelete, deleteRegister, itemDelete, isLoading, data } =
     useRegisters(currentPage);
@@ -302,11 +298,11 @@ export default function Registers({
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Pagination
+      {/* <Pagination
         baseUrl="/finance"
         countPage={countPage}
         currentPage={currentPage}
-      />
+      /> */}
     </div>
   );
 }
