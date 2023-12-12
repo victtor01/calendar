@@ -23,10 +23,12 @@ export class PrismaEventsRepository implements EventsRepository {
 
   async update(data: UpdateEventsDto): Promise<Events> {
     const { id, ...rest } = data;
-    return await this.prismaService.events.update({
+    const res = await this.prismaService.events.update({
       where: { id },
       data: { ...rest },
     });
+    console.log('resposta: ', res);
+    return res;
   }
 
   async updateStatus({

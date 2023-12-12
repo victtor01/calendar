@@ -16,7 +16,9 @@ export class EventsService {
   constructor(private readonly eventsRepository: EventsRepository) {}
 
   async getAll(userId: number): Promise<Events[]> {
-    return await this.eventsRepository.findAll(Number(userId));
+    const res = await this.eventsRepository.findAll(Number(userId));
+    console.log('todos os serviços', res);
+    return res;
   }
 
   async create(data: CreateEventsDto): Promise<Events> {
@@ -27,7 +29,8 @@ export class EventsService {
 
   async update(data: UpdateEventsDto): Promise<Events> {
     data.start = new Date(data.start.toString());
-    data.end = new Date(data.end.toString());
+    data.end = parseISO(data.end.toString());
+    console.log('fazendo update... ', data);
     return await this.eventsRepository.update(data);
   }
 
