@@ -24,8 +24,10 @@ import interactionPlugin, {
 import Loading from "@/components/loading";
 import { toast } from "react-toastify";
 import { IoClose } from "react-icons/io5";
-import { fontInter, fontValela } from "@/app/fonts";
+import { fontInter } from "@/app/fonts";
 import Link from "next/link";
+import { Annotations } from "@/components/annotations";
+import { ClientComponent } from "./clientComponent";
 
 const variants = {
   pageInitial: { opacity: 0 },
@@ -159,7 +161,7 @@ const useCalendar = () => {
   };
 };
 
-function Calendar() {
+export default function Calendar() {
   const {
     eventsTemplates,
     allEvents,
@@ -188,57 +190,13 @@ function Calendar() {
             <Loading className="bg-cyan-600" />
           </div>
         )}
+        <Annotations />
         <AnimatePresence>
           {itemSelected && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              key={idSelected}
-              style={{ zIndex: 100 }}
-              className="fixed top-0 left-0 w-full  h-screen bg-zinc-900 bg-opacity-10 z-[100] backdrop-blur-md flex justify-center items-center"
-            >
-              <S.Modal
-                className="bg-zinc-800 flex flex-col shadow-xl rounded-md w-[30rem] h-[25rem] relative z-[100]"
-                layoutId={"filter"}
-                initial={{ y: 40 }}
-                animate={{ y: 0 }}
-                exit={{ y: -40 }}
-                transition={{ type: "spring" }}
-              >
-                <S.Bubble />
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="flex p-3 rounded-md  absolute z-[30] top-0 right-0 absolute translate-x-[50%] translate-y-[-50%]"
-                >
-                  <button
-                    className="bg-gradient-45 from-purple-500 opacity-90 hover:opacity-100 shadow-lg to-emerald-500 p-2 rounded-full flex w-auto"
-                    onClick={() => setIdSelected(null)}
-                  >
-                    <IoClose size="24" />
-                  </button>
-                </motion.div>
-                <section className="flex p-3 flex-1 flex-col">
-                  <div className={`p-3 ${fontInter}`}>
-                    <h1 className="text-2xl font-semibold">
-                      {itemSelected?.name}
-                    </h1>
-                  </div>
-                  <div className="p-3">
-                    <span className="">
-                      {itemSelected?.description || "Nenhuma descrição"}
-                    </span>
-                  </div>
-                </section>
-                <footer className="flex w-full p-3">
-                  <Link href={`/calendar/details/${itemSelected.code}/`}>
-                    Mais detalhes
-                  </Link>
-                </footer>
-              </S.Modal>
-            </motion.div>
+            <ClientComponent
+              itemSelected={itemSelected}
+              setIdSelected={setIdSelected}
+            />
           )}
         </AnimatePresence>
         <div className="flex flex-col flex-1">

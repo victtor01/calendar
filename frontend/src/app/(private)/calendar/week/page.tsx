@@ -4,9 +4,10 @@ import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment-timezone";
 import { Event } from "../../../../types/events";
-import { BsArrowLeft, BsArrowRightShort, BsCheck } from "react-icons/bs";
+import { BsArrowLeft, BsArrowRightShort } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
-import { Fragment, useState } from "react";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import * as S from "./style";
 import {
@@ -20,6 +21,8 @@ import {
 import { Clients } from "@/types/clients";
 import Image from "next/image";
 import { Server } from "@/constants/server";
+import { useRouter } from "next/navigation";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 function useWeek() {
   const api = useApiPrivate();
@@ -33,19 +36,6 @@ function useWeek() {
   const [showModalDeleteItems, setShowModalDeleteItems] =
     useState<boolean>(false);
 
-  function addItemForDelete(id: number) {
-    setItemsForDelete((prev: number[] | null) => {
-      if (prev === null) {
-        return [id];
-      }
-      if (!prev.includes(id)) {
-        return [...prev, id];
-      } else {
-        return prev.filter((item) => item !== id);
-      }
-    });
-  }
-
   async function deleteItems() {
     if (itemsForDelete) {
       const res = await api.delete(`/events/delete-many/`, {
@@ -55,12 +45,47 @@ function useWeek() {
     }
   }
 
+  function scroll() {
+    var slider = window.document.getElementById("scroll-component");
+
+    const left = () => {
+      if (slider instanceof HTMLElement && slider.scrollLeft !== undefined) {
+        const value = slider.scrollLeft - 500;
+        slider.scrollLeft -= 500;
+
+        if (value > 0) {
+          slider.style.boxShadow = "inset 3px 0 3px -2px rgba(0, 0, 0, 0.1)";
+        } else {
+          slider.style.boxShadow = "none";
+        }
+      }
+    };
+
+    const right = () => {
+      if (slider instanceof HTMLElement && slider.scrollLeft !== undefined) {
+        const value = slider.scrollLeft + 500;
+        slider.scrollLeft += 500;
+
+        if (value > 0) {
+          slider.style.boxShadow = "inset 3px 0 3px -2px rgba(0, 0, 0, 0.1)";
+        } else {
+          slider.style.boxShadow = "none";
+        }
+      }
+    };
+
+    return {
+      left,
+      right,
+    };
+  }
+
   const handleShowModalDeleteItems = () =>
     setShowModalDeleteItems((prev) => !prev);
 
   return {
     query: { events, isLoading },
-    utils: { itemsForDelete, addItemForDelete },
+    utils: { itemsForDelete, scroll },
     modal: { handleShowModalDeleteItems, deleteItems, showModalDeleteItems },
   };
 }
@@ -68,9 +93,11 @@ function useWeek() {
 export default function Week() {
   const {
     query: { events, isLoading },
-    utils: { itemsForDelete, addItemForDelete },
+    utils: { itemsForDelete, scroll },
     modal: { handleShowModalDeleteItems, deleteItems, showModalDeleteItems },
   } = useWeek();
+
+  const router = useRouter();
 
   if (isLoading) return;
 
@@ -96,12 +123,9 @@ export default function Week() {
 
     events.forEach((event: Event) => {
       const key = moment(event.start, "YYYY-MM-DD").format(dateFormat);
-
-      // Certifique-se de que data[key] esteja definido antes de chamar push
       if (data[key]) {
         data[key].push(event);
       } else {
-        // Se data[key] não estiver definido, pode ser necessário inicializá-lo
         data[key] = [event];
       }
     });
@@ -119,41 +143,53 @@ export default function Week() {
           <BsArrowLeft />
           <h1 className={`text-lg ${fontInter}`}>Calendário</h1>
         </Link>
-        <div className="flex">
-          {itemsForDelete && itemsForDelete?.length > 0 && (
-            <button
-              onClick={handleShowModalDeleteItems}
-              className="flex opacity-60 hover:bg-zinc-200 rounded-full hover:bg-opacity-20 p-3 hover:opacity-100"
-            >
-              <BiTrash size="21" />
-            </button>
-          )}
+        <div className="flex gap-2">
+          <button onClick={() => scroll().left()}>
+            <FaAngleLeft size="25" />
+          </button>
+          <button onClick={() => scroll().right()}>
+            <FaAngleRight size="25" />
+          </button>
         </div>
       </header>
-      <div className="flex overflow-auto min-h-[40rem] h-auto gap-2 scroll-none w-full max-w-[160rem]">
+      <div
+        id="scroll-component"
+        className="flex overflow-x-scroll snap-x scroll-none scroll-smooth min-h-[40rem] h-auto gap-2 w-full max-w-[160rem]"
+      >
         {eventsGroups &&
           Object.entries(eventsGroups)?.map(([date, value], index: number) => (
             <S.ThemeComponent
               key={index}
-              className="bg-zinc-400 gap-3 bg-opacity-10 min-w-[20rem] mx-auto p-3 rounded-xl"
+              className={`bg-zinc-400 gap-3 w-full bg-opacity-10 min-w-[20rem] mx-auto p-3 rounded-xl opacity-80 transition-opacity hover:opacity-100`}
             >
-              <header className="py-3 font-semibold text-lg">
+              <header className="py-3 font-semibold text-lg flex justify-between">
+                {moment(date, "DD/MM/YYYY").format("DD/MM") ===
+                  moment().format("DD/MM") && <span>Hoje</span>}
                 {moment(date, "DD/MM/YYYY").format("ddd, DD, MM [de] YYYY")}
               </header>
               <section className="flex flex-col gap-4">
                 {value?.map((event: Event, index: number) => {
                   return (
                     <S.ContainerClient
+                      onClick={() => {
+                        router.push(`/calendar/details/${event.code}`);
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      initial={{ y: 40, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ type: "spring", delay: index / 7 }}
                       key={index}
-                      className={`p-2 flex-col bg-zinc-400 gap-2 bg-opacity-5 flex rounded hover:shadow-xl font-semibold transition-shadow ${fontOpenSans}`}
+                      className={`p-2 flex-col bg-zinc-300 shadow gap-2 bg-opacity-5 flex rounded hover:shadow-xl transition-shadow ${fontOpenSans}`}
                     >
-                      <header className="flex justify-between w-auto items-center">
+                      <header className="flex justify-between w-auto items-center w-full">
                         <span
                           className={`font-semibold opacity-80 font-semibold ${fontOpenSans}`}
                         >
                           {event.name}
                         </span>
-                        <span className={`flex flex-col text-xs text-end ${fontValela}`}>
+                        <span
+                          className={`flex flex-col text-xs text-end ${fontValela}`}
+                        >
                           Criado em:
                           <span>
                             {moment(event.createdAt).format(
@@ -162,13 +198,23 @@ export default function Week() {
                           </span>
                         </span>
                       </header>
-                      <section className="block">
-                        <div className="p-2 bg-zinc-500 bg-opacity-5 shadow-inner">{event?.description || "Nenhum descrição"}</div>
-                        <div className="flex flex-col">
+                      <section
+                        className={`flex flex-col w-full items-start gap-2 ${fontRoboto}`}
+                      >
+                        <div className="p-2 bg-zinc-500 bg-opacity-5 shadow-inner w-full text-left items-start">
+                          {event?.description || "Nenhum descrição"}
+                        </div>
+                        <div
+                          className={`flex flex-col p-1 px-2 font-semibold text-xs text-white rounded ${
+                            event?.services?.length
+                              ? "bg-cyan-500 bg-opacity-60"
+                              : "bg-rose-600"
+                          }`}
+                        >
                           {event?.services?.length || 0} Serviços
                         </div>
                       </section>
-                      <footer className="flex justify-between w-full py-3 items-center">
+                      <section className="flex justify-between w-full pb-3 items-center">
                         <div>Clientes:</div>
                         <div className="flex relative h-[2rem] flex-row-reverse flex-row">
                           {event?.clients
@@ -189,11 +235,11 @@ export default function Week() {
                                         className="hover:scale-[1.1] transition-all"
                                         src={`${Server}/uploads/clients/${client?.photo}`}
                                         /*  sizes="(max-width: 768px) 4rem, (max-width: 1200px) 2rem, 2rem" */
-                                        /*  priority */
+                                        priority
                                         fill
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         /* quality={25} */
-                                        /* style={{ objectFit: "cover" }} */
+                                        style={{ objectFit: "cover" }}
                                         alt="Foto do cliente"
                                       />
                                     )}
@@ -216,14 +262,13 @@ export default function Week() {
                             </div>
                           )}
                         </div>
-                      </footer>
+                      </section>
                     </S.ContainerClient>
                   );
                 })}
               </section>
             </S.ThemeComponent>
           ))}
-       
       </div>
       <Modal
         onOpenChange={handleShowModalDeleteItems}

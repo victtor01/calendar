@@ -18,11 +18,10 @@ export const ThemeComponent = styled(motion.div)`
   );
 `;
 
-export const ContainerClient = styled(motion.div)`
-  background: ${({ theme }) => theme.primary};
-
+export const ContainerClient = styled(motion.button)`
+  /* background: ${({ theme }) => theme.primary}; */
   position: relative;
-
+    
   &::before {
     opacity: 0.8;
     content: "";
