@@ -26,8 +26,8 @@ export class EventsService {
   }
 
   async update(data: UpdateEventsDto): Promise<Events> {
-    data.start = parseISO(data.start.toString());
-    data.end = parseISO(data.end.toString());
+    data.start = new Date(data.start.toString());
+    data.end = new Date(data.end.toString());
     return await this.eventsRepository.update(data);
   }
 
