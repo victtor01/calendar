@@ -55,6 +55,19 @@ export class UsersService {
     return await this.usersRepository.findOne(userId);
   }
 
+  async updateStatus(data: { user: User; userId: number; status: string }) {
+    const { user, userId, status } = data;
+    if (user.role !== 'ADMIN') {
+      return new UnauthorizedException({
+        message: 'Você não tem permisão para fazer isso!',
+      });
+    }
+    console.log('teste')
+    const res = await this.usersRepository.update(userId, { status });
+    console.log(res)
+    return res;
+  }
+
   async findAll(userId: number): Promise<User[] | UnauthorizedException> {
     userId = typeof userId === 'number' ? userId : Number(userId);
     const user = await this.usersRepository.findOne(userId);

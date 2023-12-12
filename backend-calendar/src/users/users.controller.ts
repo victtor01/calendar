@@ -11,6 +11,8 @@ import {
   HttpStatus,
   HttpCode,
   Delete,
+  Put,
+  Patch,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './repositories/users-repository';
@@ -26,18 +28,37 @@ export class UsersController {
     private users: UsersRepository,
     private readonly usersService: UsersService,
   ) {}
-  
+
   @Get('')
   async findAll(@Request() req: any) {
     return await this.usersService.findAll(req.user.id);
   }
-  
+
   @Get('find')
   async findInfo(@Request() req: any) {
     const { id } = req.user;
     return await this.usersService.findOne(id);
   }
-  
+
+  @Get('find-by-id/:id')
+  async findById(@Param('id') id: number, @Request() req: { user: User }) {
+    return await this.usersService.findOne(+id);
+  }
+
+  @Patch('update-status/:id')
+  async updateStatus(
+    @Body() data: { status: string },
+    @Request() req: { user: User },
+    @Param('id') id: string,
+  ) {
+
+    return await this.usersService.updateStatus({
+      user: req.user,
+      status: data.status,
+      userId: +id,
+    });
+  }
+
   @Public()
   @Post('register')
   @UseInterceptors(
