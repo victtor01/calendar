@@ -27,7 +27,6 @@ export class PrismaEventsRepository implements EventsRepository {
       where: { id },
       data: { ...rest },
     });
-    console.log('resposta: ', res);
     return res;
   }
 
