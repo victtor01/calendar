@@ -17,7 +17,6 @@ export class EventsService {
 
   async getAll(userId: number): Promise<Events[]> {
     const res = await this.eventsRepository.findAll(Number(userId));
-    console.log('todos os serviços', res);
     return res;
   }
 
@@ -43,11 +42,17 @@ export class EventsService {
     const threeDaysAgo = startOfDay(subDays(today, 3));
     const threeDaysLater = startOfDay(addDays(today, 3));
 
-    return await this.eventsRepository.findByDate({
+    console.log(threeDaysAgo, threeDaysLater)
+
+    const res =  await this.eventsRepository.findByDate({
       userId,
       start: threeDaysAgo,
       end: threeDaysLater,
     });
+
+    console.log('resposta do eventos da semana: ', res);
+
+    return res;
   }
 
   async findByDate({
