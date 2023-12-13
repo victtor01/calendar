@@ -23,9 +23,6 @@ import interactionPlugin, {
 } from "@fullcalendar/interaction";
 import Loading from "@/components/loading";
 import { toast } from "react-toastify";
-import { IoClose } from "react-icons/io5";
-import { fontInter } from "@/app/fonts";
-import Link from "next/link";
 import { Annotations } from "@/components/annotations";
 import { ClientComponent } from "./clientComponent";
 
@@ -60,22 +57,20 @@ const useCalendar = () => {
 
     updatedEvent.allDay = event.allDay;
 
-    const dateStart = moment(event.start).tz("America/Sao_Paulo");
-    const dateEnd = event.end
-      ? moment(event.end).tz("America/Sao_Paulo")
-      : dateStart;
+    const dateStart = new Date(event.start);
+    const dateEnd = event.end ? new Date(event.end) : new Date(dateStart);
 
     const updatedData = {
       ...updatedEvent,
-      start: dateStart.format("YYYY-MM-DDTHH:mm:ss.SSS"),
-      end: dateEnd.format("YYYY-MM-DDTHH:mm:ss.SSS"),
+      start: dateStart,
+      end: dateEnd,
     };
 
     const res = api
       .put(`/events/update/${updatedEvent.id}`, updatedData)
       .catch((err) => console.log(err));
 
-    await toast.promise(res, {
+     await toast.promise(res, {
       pending: "Salvando alterações",
       success: "Salvo com sucesso! 👌",
       error: "Houve um erro! Tente novamente mais tarde! ",
@@ -83,7 +78,7 @@ const useCalendar = () => {
 
     const { code } = updatedData;
 
-    queryClient.setQueryData(["event", code], (prevData: any) => {
+     queryClient.setQueryData(["event", code], (prevData: any) => {
       if (prevData) return updatedData;
     });
 
@@ -96,15 +91,9 @@ const useCalendar = () => {
         return prevData;
       }
     });
-  }
 
-  function eventDetails(arg: { event: Event }) {
-    setLoading(true);
-    const { id } = arg.event;
-    const { code } = allEvents.filter(
-      (even: Event) => even.id.toString() === id.toString()
-    )[0];
-    push(`/calendar/details/${code}`);
+    queryClient.invalidateQueries(['events-week'])
+
   }
 
   async function addEvent(data: DropArg) {
@@ -132,7 +121,7 @@ const useCalendar = () => {
     });
 
     queryClient.invalidateQueries(["events"]);
-    queryClient.invalidateQueries(["events-weeks"]);
+    queryClient.invalidateQueries(["events", "events-week"]);
   }
 
   useEffect(() => {
@@ -156,7 +145,6 @@ const useCalendar = () => {
     allEvents,
     addEvent,
     handleEventReceive,
-    eventDetails,
     loading,
   };
 };
@@ -168,12 +156,10 @@ export default function Calendar() {
     loading,
     handleEventReceive,
     addEvent,
-    eventDetails,
   } = useCalendar();
 
   const [idSelected, setIdSelected] = useState<number | null>(null);
-  const itemSelected: Event | null =
-    allEvents?.filter(
+  const itemSelected: Event | null = allEvents?.filter(
       (event: Event) => event.id.toString() === idSelected?.toString()
     )[0] || null;
 

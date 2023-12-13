@@ -105,17 +105,47 @@ const formatDataForDates = (registers: Register[]): Labels[] => {
 };
 
 export default function Registers() {
+  //state to save URL parameter
   const [post, setPost] = useState(0);
-
+  
+  //Get params
   const currentPage: number = post ? Number(post) : 1;
+ 
+  //Get all items of hook
+  const { handleItemDelete, deleteRegister, itemDelete, isLoading, data } =
+  useRegisters(currentPage);
+
   const router = useRouter();
 
-  const { handleItemDelete, deleteRegister, itemDelete, isLoading, data } =
-    useRegisters(currentPage);
-
+  // all Registers
   const registers: Register[] = data?.registers || [];
-  const countPage: number = data?.countPage || 0;
-  const labels: Labels[] = formatDataForDates(registers);
+
+  //const countPage: number = data?.countPage || 0;
+
+  const labels: Labels[] = (() => {
+    const data: any = [];
+    registers.forEach((item: Register) => {
+      const findIndex = data.findIndex((obj: any) => {
+        return (
+          moment(item.createdAt, "YYYY-MM-DD").format("DD/MM/YYYY") ===
+          moment(obj.date, "DD/MM/YYYY").format("DD/MM/YYYY")
+        );
+      });
+
+      if (findIndex !== -1) {
+        data[findIndex].registers.push(item);
+      } else {
+        data.push({
+          date: moment(item.createdAt, "YYYY-MM-DD").format("DD/MM/YYYY"),
+          registers: [item],
+        });
+      }
+    });
+
+    return data;
+  })();
+
+  //verify if exists finance today
   const financeToDay =
     moment().diff(labels[0]?.registers[0]?.createdAt, "days") || 0;
 
@@ -178,10 +208,18 @@ export default function Registers() {
                     </div>
                   </div>
                   <div className="flex flex-1 p-1 w-full gap-2">
-                    <div className="flex-1 px-2 font-semibold opacity-50">Nome</div>
-                    <div className="flex-1 px-2 font-semibold opacity-50">Descrição</div>
-                    <div className="flex-1 px-1 font-semibold opacity-50">Valor</div>
-                    <div className="flex-1 px-2 font-semibold opacity-50">Hora</div>
+                    <div className="flex-1 px-2 font-semibold opacity-50">
+                      Nome
+                    </div>
+                    <div className="flex-1 px-2 font-semibold opacity-50">
+                      Descrição
+                    </div>
+                    <div className="flex-1 px-1 font-semibold opacity-50">
+                      Valor
+                    </div>
+                    <div className="flex-1 px-2 font-semibold opacity-50">
+                      Hora
+                    </div>
                     <div className="w-[4rem]"></div>
                   </div>
                   <S.ContainerRegisters>

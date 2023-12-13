@@ -14,7 +14,8 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
-import { AxiosResponse } from "axios";
+
+import * as S from './style';
 
 function useClients(event: Event) {
   const api = useApiPrivate();
@@ -85,7 +86,7 @@ export default function Clients({ event }: { event: Event }) {
   }
 
   return (
-    <form className="flex flex-col max-w-[25rem] gap-0 min-w-[20rem] w-full gap-2 justify-center  mx-auto items-center ">
+    <S.ComponentForm className="flex flex-col max-w-[30rem] gap-0 min-w-[20rem] w-full gap-2  rounded-md items-center p-6 ">
       <div
         className={`rounded w-full h-10 flex justify-between items-center gap-3 ${fontRoboto}`}
       >
@@ -130,7 +131,7 @@ export default function Clients({ event }: { event: Event }) {
                   key={client.id}
                   className="flex gap-1 items-center opacity-90 hover:opacity-100"
                 >
-                  <div className="w-full flex justify-between p-2 bg-gray-400 bg-opacity-10 items-center border-b border-zinc-500 border-opacity-30">
+                  <div className="w-full flex justify-between p-2 bg-zinc-400 bg-opacity-5 shadow hover:shadow-lg rounded items-center">
                     <div>{client.firstName}</div>
                     <Button
                       type="button"
@@ -146,6 +147,6 @@ export default function Clients({ event }: { event: Event }) {
           </AnimatePresence>
         </div>
       </div>
-    </form>
+    </S.ComponentForm>
   );
 }

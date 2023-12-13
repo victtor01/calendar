@@ -1,5 +1,6 @@
 import { Clients } from "./clients";
 import { Service } from "./services";
+import { Comment } from './comment';
 
 export interface Event {
   id: number;
@@ -11,16 +12,10 @@ export interface Event {
   description?: string;
   allDay?: boolean;
   color?: string;
-  comments?: CommentsEvents[];
+  comments?: Comment[];
   clients?: Clients[];
   services?: Service[];
   createdAt: Date;
-}
-
-interface CommentsEvents {
-  id: number;
-  content: string;
-  eventId: number;
 }
 
 export type StatusEvent = "ACTIVATED" | "CONCLUDED" | "FILED";

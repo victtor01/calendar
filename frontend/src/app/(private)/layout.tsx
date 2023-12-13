@@ -69,9 +69,9 @@ const pages: Page[] = [
 
 const useLayout = () => {
   const router = useRouter();
+
   const [sidebarShow, setSidebarShow] = useState(false);
   const [theme, setTheme] = useState<string>("dark");
-  const widthSidebar = !sidebarShow ? "left-[-120%]" : "left-0";
 
   const handleTheme = () =>
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
@@ -81,24 +81,19 @@ const useLayout = () => {
     setSidebarShow((prev) => !prev);
   };
 
-  const logout = () => {
-    Cookies.remove("access_token");
-    Cookies.remove("refresh_token");
-    Cookies.remove("adminRote");
-    router.push("/login");
-  };
-
   const currentPath = usePathname().split("/")[1];
 
   return {
-    theme,
-    handleTheme,
-    logout,
-    sidebarShow,
-    widthSidebar,
-    onClickSidebarShow,
-    currentPath,
-    IconTheme,
+    theme: {
+      theme,
+      handleTheme,
+      IconTheme,
+    },
+    utils: {
+      sidebarShow,
+      onClickSidebarShow,
+      currentPath,
+    },
   };
 };
 
@@ -113,16 +108,11 @@ const variants = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const {
-    onClickSidebarShow,
-    handleTheme,
-    logout,
-    currentPath,
-    sidebarShow,
-    IconTheme,
-    theme,
+    theme: { theme, handleTheme, IconTheme },
+    utils: { sidebarShow, onClickSidebarShow, currentPath },
   } = useLayout();
 
-  const { userInfo } = useSessionContext();
+  const { userInfo, logout } = useSessionContext();
 
   return (
     <PrivateRoute>

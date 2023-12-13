@@ -14,17 +14,17 @@ import moment from "moment-timezone";
 const useResumeFinance = () => {
   const api = useApiPrivate();
 
-  const start = moment().startOf("month").format("MM-DD-YYYY");
-  const end = moment().endOf("month").format("MM-DD-YYYY");
+  const start: string = moment().startOf("month").format("MM-DD-YYYY");
+  const end: string = moment().endOf("month").format("MM-DD-YYYY");
 
-  const { data: registers, isLoading: loadingRegisters } = useQuery({
+  const { data: registers, isLoading: loadingRegisters } = useQuery<Register[]>({
     queryKey: ["registers", "date"],
     queryFn: async (): Promise<Register[]> => {
       return (await api.get(`/registers/find/date/${start}/${end}`)).data;
     },
   });
 
-  const profit = (() => {
+  const profit: number = (() => {
     const income =
       registers
         ?.filter((item: Register) => item.type === "INCOME")

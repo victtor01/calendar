@@ -1,6 +1,6 @@
 "use client";
 
-import { fontOpenSans, fontRoboto, fontValela } from "@/app/fonts";
+import { fontRoboto } from "@/app/fonts";
 import Loading from "@/components/loading";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { Service } from "@/types/services";
@@ -18,6 +18,8 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
 import { toast } from "react-toastify";
 
+import * as S from './style';
+
 function useServices(event: Event) {
   const [showAllServices, setShowAllServices] = useState<boolean>(true);
 
@@ -31,7 +33,6 @@ function useServices(event: Event) {
   });
 
   async function addService(serviceId: number) {
-    /* Depois fazer uma notificação */
     const res = api.put(`/events/connect-services/${event.id}`, {
       serviceId,
     });
@@ -81,7 +82,8 @@ export default function Services({ event }: { event: Event }) {
     (showAllServices ? allServices : event?.services) || "Sem serviços";
 
   return (
-    <form className="flex flex-col max-w-[30rem] w-full gap-2 mx-auto">
+    <S.ComponentForm className="flex flex-col max-w-[30rem] w-full gap-2 p-6 rounded-md">
+      
       <header
         className={`rounded justify-between w-full h-10 flex items-center gap-3 ${fontRoboto}`}
       >
@@ -148,6 +150,6 @@ export default function Services({ event }: { event: Event }) {
           })}
         </AnimatePresence>
       </div>
-    </form>
+    </S.ComponentForm>
   );
 }

@@ -16,6 +16,8 @@ import { useState } from "react";
 import { Event } from "@/types/events";
 import { AnimatePresence, motion } from "framer-motion";
 
+import * as S from './style';
+
 const createEventsFormSchema = z.object({
   name: z.string().nonempty("Preencha o nome!"),
   allDay: z.boolean(),
@@ -143,8 +145,8 @@ export default function Edit({ event }: { event: Event | undefined }) {
   if(!event) return; 
 
   return (
-    <form
-      className="flex flex-col max-w-[25rem] w-full gap-2 mx-auto items-center"
+    <S.ComponentForm
+    className="flex flex-col max-w-[30rem] w-full gap-2 p-6 rounded-md"
       onSubmit={handleSubmit(updateEvents)}
     >
       <div
@@ -281,6 +283,6 @@ export default function Edit({ event }: { event: Event | undefined }) {
           )}
         </AnimatePresence>
       </div>
-    </form>
+    </S.ComponentForm>
   );
 }

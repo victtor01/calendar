@@ -27,7 +27,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 function useWeek() {
   const api = useApiPrivate();
   const { data: events, isLoading } = useQuery({
-    queryKey: ["events", "events-week"],
+    queryKey: ["events-week", "events"],
     queryFn: async () => {
       return (await api.get("/events/find/week")).data;
     },
@@ -103,26 +103,21 @@ export default function Week() {
 
   const eventsGroups = (() => {
     if (!events) return null;
+
     const data: Record<string, Event[]> = {};
 
-    const currentDate = moment();
-    const minDate = currentDate.subtract(3, "days");
-
-    const maxDate = moment.max(events.map((event: Event) => moment(event.end)));
+    const minDate = moment().clone().subtract(3, "days");
+    const maxDate = moment().clone().add(3, 'days');
 
     const dateFormat = "DD/MM/YYYY";
 
-    for (
-      let date = moment(minDate);
-      date.isSameOrBefore(maxDate);
-      date.add(1, "day")
-    ) {
+    for ( let date = moment(minDate); date.isSameOrBefore(maxDate); date.add(1, "day")) {
       const key = date.format(dateFormat);
       data[key] = [];
     }
 
     events.forEach((event: Event) => {
-      const key = moment(event.start, "YYYY-MM-DD").format(dateFormat);
+      const key = moment(event.start).format(dateFormat);
       if (data[key]) {
         data[key].push(event);
       } else {

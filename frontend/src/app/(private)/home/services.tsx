@@ -12,7 +12,7 @@ import { Service } from "@/types/services";
 function useServices() {
   const api = useApiPrivate();
 
-  const { data: services, isLoading: loadingServices } = useQuery({
+  const { data: services, isLoading: loadingServices } = useQuery<Service[]>({
     queryKey: ["services"],
     queryFn: async (): Promise<Service[]> => {
       return (await api.get("/services")).data;

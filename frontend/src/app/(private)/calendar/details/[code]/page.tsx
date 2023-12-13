@@ -64,10 +64,10 @@ export default function Details({
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="p-2 flex w-full"
+      className="p-2 flex w-full gap-6"
     >
-      <S.Container className="flex  bg-white w-full mx-auto mt-0 flex-col pb-5 gap-2 shadow-md rounded-md">
-        <div className="flex justify-between gap-3 p-2 bg-gray-400 bg-opacity-10 rounded-t-lg">
+      <S.Container className="flex bg-transparent w-full mx-auto mt-0 flex-col pb-5 gap-2 rounded-md">
+        <S.ComponentTheme className="flex justify-between gap-3 p-2 bg-gray-400 bg-opacity-5 rounded">
           <div className="flex flex-1">
             <Link
               href="/calendar"
@@ -76,15 +76,6 @@ export default function Details({
               <BsArrowLeft />
               Voltar
             </Link>
-          </div>
-          <div className="flex items-center flex-1">
-            <div
-              className={`${fontValela} ${
-                statusClassName[event?.status || "ACTIVATED"]
-              } p-3 text-white text-sm rounded opacity-50 items-center flex justify-center`}
-            >
-              {status[event?.status || "ACTIVATED"]}
-            </div>
           </div>
           <div className="flex gap-3 items-center justify-end">
             <Button
@@ -217,24 +208,22 @@ export default function Details({
               )}
             </AnimatePresence>
           </div>
-        </div>
-        <div className="w-full h-full pt-4 px-1 flex relative justify-between rounded-xl">
-          <div className="flex flex-row flex-wrap gap-2 w-full">
-            <React.Fragment>
-              <Suspense fallback={<Skeleton />}>
-                <Edit event={event} />
-              </Suspense>
-              <Suspense fallback={<Skeleton />}>
-                <Comments event={event} />
-              </Suspense>
-              <Suspense fallback={<Skeleton />}>
-                <ComponentClient event={event} />
-              </Suspense>
-              <Suspense fallback={<Skeleton />}>
-                <ComponentService event={event} />
-              </Suspense>
-            </React.Fragment>
-          </div>
+        </S.ComponentTheme>
+        <div className="w-full h-full pt-3 gap-3 flex relative justify-between flex-wrap">
+          <React.Fragment>
+            <Suspense fallback={<Skeleton />}>
+              <Comments event={event} />
+            </Suspense>
+            <Suspense fallback={<Skeleton />}>
+              <Edit event={event} />
+            </Suspense>
+            <Suspense fallback={<Skeleton />}>
+              <ComponentClient event={event} />
+            </Suspense>
+            <Suspense fallback={<Skeleton />}>
+              <ComponentService event={event} />
+            </Suspense>
+          </React.Fragment>
         </div>
         <ModalDelete
           show={showModalDelete}

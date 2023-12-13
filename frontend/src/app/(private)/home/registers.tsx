@@ -14,10 +14,10 @@ moment.tz.setDefault("America/Sao_Paulo");
 function useRegisters() {
   const api = useApiPrivate();
 
-  const { data: registers, isLoading: loadingRegisters } = useQuery({
+  const { data: registers, isLoading: loadingRegisters } = useQuery<Register[]>({
     queryKey: ["registers-page", "registers"],
     queryFn: async (): Promise<Register[]> => {
-      return (await api.get("/registers/page/1")).data.registers;
+      return ((await api.get("/registers/page/1")).data).registers;
     },
   });
 

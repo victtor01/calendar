@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 
 export const Container = styled.main`
-  background-color: ${({ theme }) => theme.secundary};
+/*   background-color: ${({ theme }) => theme.secundary}; */
 `;
 
 export const Bubble = styled.div`
@@ -56,3 +56,26 @@ export const Separator = styled.span`
   height: 1px;
   display: flex;
 `;
+
+export const ComponentForm = styled(motion.form)`
+  background: linear-gradient(to bottom, ${({theme}) => theme.secundary}, transparent);
+  position: relative;
+
+  &::before {
+    content: "";
+    width: 98%;
+    position: absolute;
+    background-color: red;
+    top: 0;
+    left: 50%;
+    opacity: 0.9;
+    transform: translate(-50%, -100%);
+    height: 0.3rem;
+    border-radius: 0.3rem 0.3rem 0 0;
+    background: linear-gradient(45deg, #6157ff, #74febd);
+  }
+`
+
+export const ComponentTheme = styled(motion.div)`
+  background-color: ${({theme}) => theme.secundary};
+`
