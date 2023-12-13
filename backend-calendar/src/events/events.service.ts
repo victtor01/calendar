@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventsRepository } from './repositories/events-repository';
 import { CreateEventsDto } from './dto/create-events.dto';
 import { Events } from './entities/events.entity';
-import { addDays, parseISO, subDays, parse, format, startOfDay} from 'date-fns';
+import { addDays, parseISO, subDays, parse, format, startOfDay, endOfDay} from 'date-fns';
 import { UpdateEventsDto } from './dto/update-events.dto';
 import { findEventsDto } from './dto/find-events.dto';
 import { DeleteEventsDto } from './dto/delete-events.dto';
@@ -40,7 +40,7 @@ export class EventsService {
   async findByWeek(userId: number): Promise<Events[]> {
     const today = new Date();
     const threeDaysAgo = startOfDay(subDays(today, 3));
-    const threeDaysLater = startOfDay(addDays(today, 3));
+    const threeDaysLater = endOfDay(addDays(today, 3));
 
     console.log(threeDaysAgo, threeDaysLater)
 
