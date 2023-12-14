@@ -84,7 +84,25 @@ export default function Comments({ event }: CommentsProps) {
         </div>
         <div className="flex flex-col mt-2 gap-1 px-6 w-full flex-1 h-auto overflow-y-auto overflow-x-hidden">
           {event?.comments?.map((item: Comment, index: any) => (
-            <CommentComponent item={item} index={index} key={index} />
+            <motion.button
+              type="button"
+              layout
+              onClick={() => null}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: index / 10 }}
+              key={index}
+              className="flex flex-col rounded gap-2 bg-zinc-300 z-[200] bg-opacity-5 shadow hover:shadow-xl transition-shadow border border-zinc-300 border-opacity-10 opacity-80 hover:opacity-100 justify-center p-3 pl-4 relative min-h-auto"
+            >
+              <div className="flex min-h-auto">
+                {moment
+                  .tz(item.createdAt, "America/Sao_Paulo")
+                  .format("MM/DD - HH[h]mm")}
+              </div>
+              <div className="flex w-full">
+                <div className="flex-1 flex text-justify">{item.content}</div>
+              </div>
+            </motion.button>
           ))}
         </div>
       </div>
@@ -92,7 +110,7 @@ export default function Comments({ event }: CommentsProps) {
   );
 }
 
-const CommentComponent = memo(
+/* const CommentComponent = memo(
   ({ item, index }: { item: Comment; index: number }) => {
     return (
       <motion.button
@@ -117,7 +135,7 @@ const CommentComponent = memo(
     );
   }
 );
-
+ */
 /* 
         {modalOpen && (
           <motion.div

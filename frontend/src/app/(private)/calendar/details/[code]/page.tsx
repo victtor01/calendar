@@ -13,7 +13,7 @@ import Edit from "./edit";
 import Comments from "./comments";
 import ComponentClient from "./clients";
 import ComponentService from "./services";
-import { fontInter, fontValela } from "@/app/fonts";
+import { fontInter } from "@/app/fonts";
 import Label from "@/components/label";
 import { Clients } from "@/types/clients";
 import { Service } from "@/types/services";

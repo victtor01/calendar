@@ -21,6 +21,9 @@ import { BsCalendar2Week } from "react-icons/bs";
 import { IoAddSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { FaCalendar } from "react-icons/fa";
+import { InputColors } from "@/components/inputColors";
+
+const colors = ["#312E81", "#DC2626", "#059669"];
 
 type CreateModelEventFormData = z.infer<typeof createModelEventFormSchema>;
 
@@ -43,8 +46,15 @@ const useHeader = () => {
 
   const [showModalAddEvent, setShowModalAddEvent] = useState<boolean>(false);
   const handleShowModalAddEvent = () => setShowModalAddEvent((prev) => !prev);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
-  const createEventTemplate = async (data: CreateModelEventFormData) => {
+  function handleColor(color: string): void {
+    setSelectedColor(color);
+  }
+
+  async function createEventTemplate(
+    data: CreateModelEventFormData
+  ): Promise<void> {
     const { data: eventsTemplatesData } = await api.post(
       "/events-templates/create",
       data
@@ -53,7 +63,7 @@ const useHeader = () => {
     queryClient.invalidateQueries(["events-templates"]);
 
     console.log(eventsTemplatesData);
-  };
+  }
 
   return {
     model: {
@@ -67,6 +77,9 @@ const useHeader = () => {
       reset,
       errors,
     },
+    colors: {
+      handleColor,
+    },
   };
 };
 
@@ -74,6 +87,7 @@ export default function Header() {
   const {
     model: { showModalAddEvent, handleShowModalAddEvent },
     form: { control, handleSubmit, createEventTemplate, reset, errors },
+    colors: { handleColor },
   } = useHeader();
 
   return (
@@ -127,7 +141,7 @@ export default function Header() {
       >
         <ModalContent className="flex">
           <ModalHeader className="flex flex-col gap-1">
-            Criar novo item
+            Novo Template
           </ModalHeader>
           <form onSubmit={handleSubmit(createEventTemplate)}>
             <ModalBody>
@@ -135,24 +149,37 @@ export default function Header() {
                 Para register um novo modelo, digite as informações necessárias
                 abaixo:
               </p>
-              <div className="flex flex-col w-full gap-2">
-                {["name", "description"].map((name: string, index: number) => (
-                  <Controller
-                    defaultValue=""
-                    key={index}
-                    name={name as keyof CreateModelEventFormData}
-                    control={control}
-                    render={({ field }) => (
-                      <input
-                        className="p-3 border border-zinc-600 bg-zinc-800 rounded outline-none"
-                        {...field}
-                        autoComplete="off"
-                        placeholder={name}
-                      />
-                    )}
+
+              <Controller
+                defaultValue=""
+                name={"name"}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    className="p-3 border border-zinc-600 bg-zinc-800 rounded outline-none"
+                    {...field}
+                    autoComplete="off"
+                    placeholder={"Digite um nome..."}
                   />
-                ))}
-              </div>
+                )}
+              />
+              <Controller
+                defaultValue=""
+                name={"description"}
+                control={control}
+                render={({ field }) => (
+                  <textarea
+                    className="p-3 border h-[10rem] resize-none border-zinc-600 bg-zinc-800 rounded outline-none"
+                    {...field}
+                    autoComplete="off"
+                    placeholder={"Digite uma descrição..."}
+                  />
+                )}
+              />
+              <span className="text-lg font-semibold">
+                Escolha uma cor:
+              </span>
+              <InputColors colors={colors} handle={handleColor} />
             </ModalBody>
             <ModalFooter>
               <Button

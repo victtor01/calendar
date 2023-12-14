@@ -9,7 +9,6 @@ import { EventSourceInput } from "@fullcalendar/core/index.js";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/hooks/queryClient";
-import { useRouter } from "next/navigation";
 import { Event } from "../../../types/events";
 import { AnimatePresence, motion } from "framer-motion";
 import * as S from "./style";
@@ -21,7 +20,6 @@ import interactionPlugin, {
   Draggable,
   DropArg,
 } from "@fullcalendar/interaction";
-import Loading from "@/components/loading";
 import { toast } from "react-toastify";
 import { Annotations } from "@/components/annotations";
 import { ClientComponent } from "./clientComponent";
@@ -33,9 +31,12 @@ const variants = {
 
 const useCalendar = () => {
   const api = useApiPrivate();
-  const { push } = useRouter();
+
   const { data: eventsTemplates } = useEventsTemplates().getAll();
-  const [loading, setLoading] = useState<boolean>(false);
+
+  const [selectedDay, setSelectedDay] = useState<
+    { start: Date; end: Date } | {}
+  >({});
 
   const { data: allEvents } = useQuery({
     queryKey: ["events"],
@@ -52,6 +53,7 @@ const useCalendar = () => {
     );
 
     if (!updatedEvent) {
+      toast.error("Houve um erro, tente novamente mais tarde!");
       return;
     }
 
@@ -70,15 +72,15 @@ const useCalendar = () => {
       .put(`/events/update/${updatedEvent.id}`, updatedData)
       .catch((err) => console.log(err));
 
-     await toast.promise(res, {
+    await toast.promise(res, {
       pending: "Salvando alterações",
-      success: "Salvo com sucesso! 👌",
+      success: "Salvo com sucesso!",
       error: "Houve um erro! Tente novamente mais tarde! ",
     });
 
     const { code } = updatedData;
 
-     queryClient.setQueryData(["event", code], (prevData: any) => {
+    queryClient.setQueryData(["event", code], (prevData: any) => {
       if (prevData) return updatedData;
     });
 
@@ -92,8 +94,7 @@ const useCalendar = () => {
       }
     });
 
-    queryClient.invalidateQueries(['events-week'])
-
+    queryClient.invalidateQueries(["events-week"]);
   }
 
   async function addEvent(data: DropArg) {
@@ -124,6 +125,13 @@ const useCalendar = () => {
     queryClient.invalidateQueries(["events", "events-week"]);
   }
 
+  function openModalAddEvent(event: any) {
+    setSelectedDay({
+      start: event.start,
+      end: event.end,
+    });
+  }
+
   useEffect(() => {
     let draggableEl = document.getElementById("draggable-el");
     if (draggableEl) {
@@ -141,50 +149,52 @@ const useCalendar = () => {
   }, []);
 
   return {
-    eventsTemplates,
-    allEvents,
-    addEvent,
-    handleEventReceive,
-    loading,
+    handles: {
+      openModalAddEvent,
+      handleEventReceive,
+      addEvent,
+    },
+    utils: {
+      selectedDay,
+    },
+    data: {
+      eventsTemplates,
+      allEvents,
+    },
   };
 };
 
 export default function Calendar() {
   const {
-    eventsTemplates,
-    allEvents,
-    loading,
-    handleEventReceive,
-    addEvent,
+    handles: { openModalAddEvent, handleEventReceive, addEvent },
+    data: { eventsTemplates, allEvents },
+    utils: { selectedDay },
   } = useCalendar();
 
   const [idSelected, setIdSelected] = useState<number | null>(null);
-  const itemSelected: Event | null = allEvents?.filter(
+
+  const itemSelected: Event | null =
+    allEvents?.filter(
       (event: Event) => event.id.toString() === idSelected?.toString()
     )[0] || null;
 
   return (
     <>
       <Annotations />
+      <AnimatePresence>
+        {itemSelected && (
+          <ClientComponent
+            itemSelected={itemSelected}
+            setIdSelected={setIdSelected}
+          />
+        )}
+      </AnimatePresence>
       <motion.main
         variants={variants}
         initial="pageInitial"
         animate="pageAnimate"
         className="p-2 flex gap-[1rem] mx-auto w-full h-full"
       >
-        {loading && (
-          <div className="top-0 left-0 w-screen flex justify-center items-center h-screen bg-zinc-900 fixed bg-opacity-5 z-[20]">
-            <Loading className="bg-cyan-600" />
-          </div>
-        )}
-        <AnimatePresence>
-          {itemSelected && (
-            <ClientComponent
-              itemSelected={itemSelected}
-              setIdSelected={setIdSelected}
-            />
-          )}
-        </AnimatePresence>
         <div className="flex flex-col flex-1">
           <S.Content className="gap-4 max-w-[100rem] flex flex-col mx-auto">
             <Header />
@@ -212,6 +222,7 @@ export default function Calendar() {
                     }) as EventSourceInput
                   }
                   nowIndicator={true}
+                  locale={'pt-br'}
                   editable={true}
                   droppable={true}
                   selectable={true}
@@ -220,40 +231,9 @@ export default function Calendar() {
                   eventDrop={handleEventReceive}
                   drop={(data) => addEvent(data)}
                   eventClick={(data: any) => setIdSelected(data.event.id)}
-                  /* eventContent={(eventInfo: any) => {
-                    return (
-                      <button onClick={() => setItemSelected(event)}>
-                        <strong>{eventInfo.event.title}</strong>
-                        <p>{eventInfo.timeText}</p>
-                      </button>
-                    );
-                  }} */
-                  eventClassNames={"m-1 gap-2 overflow-hidden"}
+                  select={openModalAddEvent}
+                  eventClassNames={"m-1 gap-1 overflow-hidden"}
                 />
-              </div>
-              <div
-                id="draggable-el"
-                className="min-w-[12rem] roun/ded-md mt-16 gap-2 flex flex-col p-2"
-              >
-                <h1 className="font-semibold text-md p-2 text-center text-white bg-gradient-45 from-cyan-500 to-cyan-700">
-                  Modelos de eventos
-                </h1>
-                {eventsTemplates?.map(
-                  (event: EventsTemplates, index: number) => (
-                    <motion.div
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index / 5 }}
-                      id={event.id.toString()}
-                      title={event.name}
-                      key={event.id}
-                      className="fc-event w-full p-2 overflow-hidden flex bg-cyan-500 text-white relative rounded"
-                    >
-                      <span className="absolute left-0 top-0 h-full w-1" />
-                      {event.name}
-                    </motion.div>
-                  )
-                )}
               </div>
             </S.Calendar>
           </S.Content>

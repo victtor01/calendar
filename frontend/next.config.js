@@ -7,8 +7,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "backend-calendar-s71x.onrender.com",
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
         pathname: "/uploads/**/*",
       },
     ],
