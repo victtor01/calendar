@@ -63,7 +63,7 @@ body {
   @apply w-full bg-transparent !important;
 }
 
-.fc table * {
+.fc table td {
   @apply border-zinc-500 border-opacity-30 !important;
 }
 
@@ -129,7 +129,7 @@ body {
 
 /* define day of week */
 .fc-h-event {
-  @apply bg-gradient-45 from-blue-600 to-blue-500 border border-zinc-900;
+  @apply bg-blue-500 border border-zinc-900;
 }
 
 .fc .fc-daygrid-day.fc-day-today {

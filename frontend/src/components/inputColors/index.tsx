@@ -13,7 +13,9 @@ export const InputColors = ({ colors, handle }: InputColorsProps) => {
       {colors?.map((color: string) => {
         return (
           <motion.button
-          whileTap={{ scale: 0.94 }}
+            onClick={() => handle(color)}
+            type="button"
+            whileTap={{ scale: 0.94 }}
             className="p-3 rounded-full border border-zinc-500 border-opacity-20"
             style={{
               background: color,

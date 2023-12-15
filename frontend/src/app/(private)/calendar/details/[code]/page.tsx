@@ -61,20 +61,19 @@ export default function Details({
   }
 
   return (
-    <motion.main
+    <S.ComponentTheme
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="p-2 flex w-full gap-6"
+      className="p-2 flex w-full gap-6 fixed w-full h-full overflow-auto top-0 left-0 z-[100]"
     >
       <S.Container className="flex bg-transparent w-full mx-auto mt-0 flex-col pb-5 gap-2 rounded-md">
-        <S.ComponentTheme className="flex justify-between gap-3 p-2 bg-gray-400 bg-opacity-5 rounded">
+        <header className="flex justify-between gap-3 rounded">
           <div className="flex flex-1">
             <Link
               href="/calendar"
-              className="flex gap-3 px-3 items-center opacity-60"
+              className="flex gap-3 px-3 items-center rounded-full opacity-60 hover:opacity-100 hover:bg-zinc-500 hover:bg-opacity-10"
             >
-              <BsArrowLeft />
-              Voltar
+              <IoClose size="24" />
             </Link>
           </div>
           <div className="flex gap-3 items-center justify-end">
@@ -87,13 +86,13 @@ export default function Details({
             <Button className="flex opacity-60 hover:bg-zinc-500 rounded hover:bg-opacity-20 items-center  justify-center rounded-full w-10 h-10">
               <BiArchiveIn size="20" />
             </Button>
+            <motion.button
+              onClick={handleShowModalFinish}
+              className="opacity-90 hover:opacity-100 rounded p-3 items-center font-bold bg-gradient-45 from-purple-500 to-blue-500 text-white"
+            >
+              Finalizar Evento
+            </motion.button>
             <AnimatePresence>
-              <motion.button
-                onClick={handleShowModalFinish}
-                className="opacity-90 hover:opacity-100 rounded p-3 items-center font-bold bg-gradient-45 from-purple-500 to-blue-500 text-white"
-              >
-                Finalizar Evento
-              </motion.button>
               {showModalFinish && event && (
                 <motion.div
                   key={`modal-finish`}
@@ -208,14 +207,14 @@ export default function Details({
               )}
             </AnimatePresence>
           </div>
-        </S.ComponentTheme>
+        </header>
         <div className="w-full h-full pt-3 gap-3 flex relative justify-between flex-wrap">
           <React.Fragment>
             <Suspense fallback={<Skeleton />}>
-              <Comments event={event} />
+              <Edit event={event} />
             </Suspense>
             <Suspense fallback={<Skeleton />}>
-              <Edit event={event} />
+              <Comments event={event} />
             </Suspense>
             <Suspense fallback={<Skeleton />}>
               <ComponentClient event={event} />
@@ -231,6 +230,6 @@ export default function Details({
           eventDelete={deleteEvent}
         />
       </S.Container>
-    </motion.main>
+    </S.ComponentTheme>
   );
 }

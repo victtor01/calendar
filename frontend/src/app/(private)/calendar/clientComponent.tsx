@@ -1,27 +1,31 @@
 "use client";
 
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { fontInter, fontValela } from "@/app/fonts";
 import { Event, StatusEvent } from "@/types/events";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import * as S from "./style";
 import moment from "moment-timezone";
 import Link from "next/link";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import {
-  FaCheckCircle,
-  FaExclamationCircle,
-  FaList,
-  FaPen,
-} from "react-icons/fa";
+import { FaExclamationCircle, FaList, FaPen } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
-import { TfiTime } from "react-icons/tfi";
 import { BiSolidTime } from "react-icons/bi";
-import { BsJustifyLeft, BsListNested } from "react-icons/bs";
+import { BsJustifyLeft } from "react-icons/bs";
+import { useQuery } from "@tanstack/react-query";
+import useApiPrivate from "@/hooks/apiPrivate";
+import { EventsTemplates } from "@/types/eventsTemplates";
+import { useRouter } from "next/navigation";
+
+type Page = "INFORMATIONS" | "CLIENTS" | "SERVICES" | "COMMENTARIES";
 
 interface ClientComponentProps {
   itemSelected: Event;
   setIdSelected: Dispatch<SetStateAction<number | null>>;
+}
+
+interface Popup {
+  templates: boolean;
 }
 
 const StatusPT: Record<StatusEvent, string> = {
@@ -30,10 +34,43 @@ const StatusPT: Record<StatusEvent, string> = {
   FILED: "Arquivado!",
 };
 
-function useClientComponent() {
-  const [indicator, setIndicator] = useState<any>(null);
+const PagePT: Record<Page, string> = {
+  CLIENTS: "Clientes",
+  INFORMATIONS: "Informações",
+  COMMENTARIES: "Comentários",
+  SERVICES: "Services",
+};
 
-  function moveIndicator(event: React.MouseEvent<HTMLElement>) {
+function useClientComponent() {
+  const api = useApiPrivate();
+  const [page, setPage] = useState<Page>("INFORMATIONS");
+  const [popups, setPopups] = useState<Popup>({
+    templates: false,
+  });
+  const [indicator, setIndicator] = useState<{
+    width: number;
+    left: number;
+  } | null>(null);
+
+  const { data: templates } = useQuery({
+    queryKey: ["events-templates"],
+    queryFn: async () => {
+      return (await api.get("/events-templates")).data;
+    },
+  });
+
+  function handlePopup(key: string) {
+    setPopups((prev) => {
+      const prevBool = prev[key as keyof Popup];
+
+      return {
+        ...prev,
+        [key as keyof Popup]: !prevBool,
+      };
+    });
+  }
+
+  function moveIndicator(data: Page, event: React.MouseEvent<HTMLElement>) {
     event.preventDefault();
     const target = event.currentTarget;
 
@@ -49,14 +86,22 @@ function useClientComponent() {
       width: target.offsetWidth,
       left: leftRelativeToParent,
     });
+
+    setPage(data);
   }
 
   return {
-    refs: {
-      indicator,
+    data: {
+      templates,
     },
     utils: {
+      indicator,
+      popups,
+      page,
+    },
+    handles: {
       moveIndicator,
+      handlePopup,
     },
   };
 }
@@ -66,9 +111,12 @@ export function ClientComponent({
   setIdSelected,
 }: ClientComponentProps) {
   const {
-    refs: { indicator },
-    utils: { moveIndicator },
+    data: { templates },
+    utils: { indicator, popups, page },
+    handles: { moveIndicator, handlePopup },
   } = useClientComponent();
+
+  const router = useRouter();
 
   const status = ((): string => {
     const currentStatus = itemSelected.status;
@@ -90,22 +138,27 @@ export function ClientComponent({
       exit={{ opacity: 0 }}
       key={itemSelected.id}
       style={{ zIndex: 100 }}
-      className="fixed top-0 left-0 w-full h-screen bg-zinc-900 bg-opacity-10 z-[100] backdrop-blur-md p-4 flex justify-center overflow-y-auto"
+      className="fixed top-0 left-0 w-full h-screen overflow-x-hidden z-[100] p-4 flex justify-center overflow-y-auto"
     >
       <S.Modal
-        className="bg-zinc-800 flex flex-col shadow-xl rounded-md max-w-[55rem] h-auto w-full relative z-[100] my-auto"
+        className="bg-zinc-800 flex flex-col shadow-2xl rounded-md max-w-[55rem] min-h-[40rem] h-auto w-full relative z-[100] my-auto"
         layoutId={"filter"}
         initial={{ y: 40 }}
+        transition={{ type: "spring" }}
         animate={{ y: 0 }}
         exit={{ y: -40 }}
-        transition={{ type: "spring" }}
       >
         <header className="flex p-2 border-b border-zinc-500 items-center border-opacity-20 justify-between">
           <div className="text-lg opacity-80">
             <h1 className={`${fontValela} opacity-80`}>Detalhes do evento</h1>
           </div>
           <div className="flex gap-2">
-            <button className="opacity-80 hover:opacity-100 rounded-full p-3 hover:bg-zinc-400 hover:bg-opacity-10">
+            <button
+              onClick={() =>
+                router.push(`/calendar/details/${itemSelected?.code}`)
+              }
+              className="opacity-80 hover:opacity-100 rounded-full p-3 hover:bg-zinc-400 hover:bg-opacity-10"
+            >
               <FaPen />
             </button>
             <button className="opacity-80 hover:opacity-100 rounded-full p-3 hover:bg-zinc-400 hover:bg-opacity-10">
@@ -124,17 +177,17 @@ export function ClientComponent({
         </header>
         <S.Bubble />
         <section className="flex p-3 flex-1 flex-col">
-          <header className="flex flex-1">
-            <div className="flex mx-auto gap-3 rounded relative bg-zinc-500 overflow-hidden bg-opacity-5">
-              {["Informações", "Clientes", "Serviços", "Comentários"].map(
+          <header className="flex">
+            <div className="flex mx-auto gap-3 rounded relative overflow-hidden">
+              {["INFORMATIONS", "SERVICES", "CLIENTS", "COMMENTARIES"].map(
                 (item: string) => {
                   return (
                     <button
                       key={item}
                       className="p-3 font-semibold opacity-90 min-w-[6rem]"
-                      onClick={moveIndicator}
+                      onClick={(e) => moveIndicator(item as Page, e)}
                     >
-                      {item}
+                      {PagePT[item as Page]}
                     </button>
                   );
                 }
@@ -149,67 +202,123 @@ export function ClientComponent({
               />
             </div>
           </header>
-          <section className="flex flex-col gap-7 p-3">
-            <div className={`py-1 opacity-80 ${fontInter} flex flex-col gap-2`}>
-              <h2 className="text-2xl font-semibold flex">
-                <div className="w-[2rem] h-full" />
-                {itemSelected?.name}
-              </h2>
-              <p className="text-sm flex items-center">
-                <div className="w-[2rem] h-full justify-center flex ">
-                  <BiSolidTime size="20" />
+          {page === "INFORMATIONS" && (
+            <section className="flex flex-col gap-7 p-3">
+              <div
+                className={`py-1 opacity-80 ${fontInter} flex flex-col gap-2`}
+              >
+                <h2 className="text-2xl font-semibold flex">
+                  <div className="w-[2rem] h-full" />
+                  {itemSelected?.name}
+                </h2>
+                <div className="text-sm flex items-center">
+                  <div className="w-[2rem] h-full justify-center flex ">
+                    <BiSolidTime size="20" />
+                  </div>
+                  {itemSelected.allDay && (
+                    <>
+                      {moment(itemSelected.start).format("DD MMM. YYYY")} -{" "}
+                      {moment(itemSelected.end).format("DD MMM. YYYY")}
+                    </>
+                  )}
+                  {!itemSelected.allDay && (
+                    <div className="flex gap-3 items-center">
+                      <div className="flex items-center gap-1">
+                        <span>
+                          {moment(itemSelected.start).format("DD MMM. YYYY")}
+                        </span>
+                        <p className="bg-zinc-500 bg-opacity-10 font-semibold rounded p-2">
+                          {moment(itemSelected.start).format("HH[h]mm")}
+                        </p>
+                      </div>
+                      -
+                      <div className="flex items-center gap-1">
+                        <span>
+                          {moment(itemSelected.end).format("DD MMM. YYYY")}
+                        </span>
+                        <p className="bg-zinc-500 bg-opacity-10 font-semibold rounded p-2">
+                          {moment(itemSelected.end).format("HH[h]mm")}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                {itemSelected.allDay && (
-                  <>
-                    {moment(itemSelected.start).format("DD MMM. YYYY")} -{" "}
-                    {moment(itemSelected.start).format("DD MMM. YYYY")}
-                  </>
-                )}
-              </p>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center">
-                <div className="w-[2rem] justify-center flex h-full opacity-80">
-                  <FaExclamationCircle size="16" />
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center">
+                  <div className="w-[2rem] justify-center flex h-full opacity-80">
+                    <FaExclamationCircle size="16" />
+                  </div>
+                  <h3 className="font-semibold opacity-60">Status:</h3>
                 </div>
-                <h3 className="font-semibold opacity-60">Status:</h3>
-              </div>
-              <span className="font-semibold text-lg flex">
-                <div className="w-[2rem] h-full " />
-                <span>{status}</span>
-              </span>
-            </div>
-            <div className="flex flex-1 w-full">
-              <div className="w-[2rem] justify-center flex h-full opacity-80">
-                <BsJustifyLeft size="20" />
-              </div>
-              <div className="bg-zinc-500 bg-opacity-10 w-full p-3 min-h-[10rem] rounded-md shadow-inner">
-                <span className="font-semibold opacity-90">
-                  {itemSelected?.description || "Nenhuma descrição"}
+                <span className="font-semibold text-lg flex">
+                  <div className="w-[2rem] h-full " />
+                  <span>{status}</span>
                 </span>
               </div>
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center ">
-                <div className="w-[2rem] justify-center items-center flex h-full opacity-80">
-                  <FaList />
+              <div className="flex flex-1 w-full">
+                <div className="w-[2rem] justify-center flex h-full opacity-80">
+                  <BsJustifyLeft size="20" />
                 </div>
-                <h3 className="font-semibold opacity-60">Template:</h3>
+                <div className="bg-zinc-500 bg-opacity-10 w-full p-3 min-h-[10rem] rounded-md shadow-inner">
+                  <span className="font-semibold opacity-90">
+                    {itemSelected?.description || "Nenhuma descrição"}
+                  </span>
+                </div>
               </div>
-              <div className="flex">
-                <div className="w-[2rem] h-full " />
-                <div className="w-full max-w-[20rem] relative">
-                  <motion.button 
-                  whileTap={{ scale: 0.94 }}
-                  className="p-3 bg-zinc-500 font-semibold bg-opacity-10 rounded-md flex w-full">
-                    Urgente
-                  </motion.button>
-                  <div className="absolute w-full rounded-md h-full top-[100%] mt-2 p-2 bg-emerald-400">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center ">
+                  <div className="w-[2rem] justify-center items-center flex h-full opacity-80">
+                    <FaList />
+                  </div>
+                  <h3 className="font-semibold opacity-60">Template:</h3>
+                </div>
+                <div className="flex">
+                  <div className="w-[2rem] h-full " />
+                  <div className="w-full max-w-[20rem] relative">
+                    <motion.button
+                      onClick={() => handlePopup("templates")}
+                      whileTap={{ scale: 0.94 }}
+                      className="p-3 bg-zinc-500 font-semibold bg-opacity-10 rounded-md flex w-full"
+                    >
+                      Nenhum selecionado!
+                    </motion.button>
+                    <AnimatePresence>
+                      {popups["templates"] && (
+                        <motion.div
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                          key={"modal-template"}
+                          className="absolute w-full p-0 rounded-md h-[5rem] overflow-auto top-[100%] p-2 rounded mt-2 bg-zinc-500 bg-opacity-5"
+                        >
+                          {templates?.map(
+                            (template: EventsTemplates, index: number) => {
+                              return (
+                                <motion.button
+                                  key={index}
+                                  className="flex items-center w-full gap-3 p-1 px-3 rounded hover:bg-zinc-500 bg-opacity-10"
+                                >
+                                  <span
+                                    className="p-1 w-3 h-3 rounded"
+                                    style={{ background: template.color }}
+                                  />
+                                  <div className="">{template.name}</div>
+                                </motion.button>
+                              );
+                            }
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
+          {page === "SERVICES" && (
+            <section className="flex flex-col gap-7 p-3"></section>
+          )}
         </section>
         <footer className="flex w-full p-3 justify-end p-5">
           <Link

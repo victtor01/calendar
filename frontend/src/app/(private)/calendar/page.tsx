@@ -13,9 +13,7 @@ import { Event } from "../../../types/events";
 import { AnimatePresence, motion } from "framer-motion";
 import * as S from "./style";
 import Header from "./header";
-import useEventsTemplates, {
-  EventsTemplates,
-} from "@/hooks/useEventsTemplates";
+import useEventsTemplates from "@/hooks/useEventsTemplates";
 import interactionPlugin, {
   Draggable,
   DropArg,
@@ -23,6 +21,7 @@ import interactionPlugin, {
 import { toast } from "react-toastify";
 import { Annotations } from "@/components/annotations";
 import { ClientComponent } from "./clientComponent";
+import { EventsTemplates } from "@/types/eventsTemplates";
 
 const variants = {
   pageInitial: { opacity: 0 },
@@ -214,15 +213,15 @@ export default function Calendar() {
                   }}
                   events={
                     allEvents?.map((event: Event) => {
-                      const { name, ...rest } = event;
+                      const { name, color, ...rest } = event;
                       return {
                         title: event.name,
+                        color: color || 'var(--purple)',
                         ...rest,
                       };
                     }) as EventSourceInput
                   }
                   nowIndicator={true}
-                  locale={'pt-br'}
                   editable={true}
                   droppable={true}
                   selectable={true}

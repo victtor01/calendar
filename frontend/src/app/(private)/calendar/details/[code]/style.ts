@@ -61,7 +61,7 @@ export const ComponentForm = styled(motion.form)`
   background: linear-gradient(to bottom, ${({theme}) => theme.secundary}, transparent);
   position: relative;
 
-  &::before {
+/*   &::before {
     content: "";
     width: 98%;
     position: absolute;
@@ -73,7 +73,7 @@ export const ComponentForm = styled(motion.form)`
     height: 0.3rem;
     border-radius: 0.3rem 0.3rem 0 0;
     background: linear-gradient(45deg, #6157ff, #74febd);
-  }
+  } */
 `
 
 export const ComponentTheme = styled(motion.div)`

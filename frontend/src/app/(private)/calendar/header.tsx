@@ -15,15 +15,15 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
-import * as S from "./style";
 import { MdBackupTable } from "react-icons/md";
 import { BsCalendar2Week } from "react-icons/bs";
 import { IoAddSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { FaCalendar } from "react-icons/fa";
 import { InputColors } from "@/components/inputColors";
-
-const colors = ["#312E81", "#DC2626", "#059669"];
+import { toast } from "react-toastify";
+import { colorsEvents as colors } from "@/constants/colorsEvents";
+import * as S from "./style";
 
 type CreateModelEventFormData = z.infer<typeof createModelEventFormSchema>;
 
@@ -55,14 +55,23 @@ const useHeader = () => {
   async function createEventTemplate(
     data: CreateModelEventFormData
   ): Promise<void> {
+
+    if (!data.name || data.name.length < 2) {
+      toast.error("Digite um nome para o template!");
+      return;
+    }
+
+    if(!selectedColor) {
+      toast.error("Escolha uma cor para o template!")
+      return;
+    }
+
     const { data: eventsTemplatesData } = await api.post(
       "/events-templates/create",
-      data
+      { ...data, color: selectedColor }
     );
 
     queryClient.invalidateQueries(["events-templates"]);
-
-    console.log(eventsTemplatesData);
   }
 
   return {
@@ -176,9 +185,7 @@ export default function Header() {
                   />
                 )}
               />
-              <span className="text-lg font-semibold">
-                Escolha uma cor:
-              </span>
+              <span className="text-lg font-semibold">Escolha uma cor:</span>
               <InputColors colors={colors} handle={handleColor} />
             </ModalBody>
             <ModalFooter>

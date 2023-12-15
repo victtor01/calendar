@@ -70,7 +70,7 @@ export const Bubble = styled.div`
 
 export const Modal = styled(motion.div)`
   background-color: ${({ theme }) => theme.secundary};
-  border: 1px solid ${({ theme }) => theme.border};
+ /*  border: 1px solid ${({ theme }) => theme.border}; */
   position: relative;
 
   &::before {

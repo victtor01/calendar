@@ -121,7 +121,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Sidebar
             bgTheme
             style={{ gridArea: "sidebar" }}
-            className={`w-[4rem] lg:w-[13rem] m-1 shadow-xl rounded-md relative overflow-x-hidden overflow-y-auto items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
+            className={`w-[4rem] lg:w-[13rem] relative overflow-x-hidden overflow-y-auto rounded-md shadow-lg items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
           >
             <S.Bubble />
             <header className="w-full h-[3.2rem] flex justify-center items-center">
@@ -241,9 +241,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </Sidebar>
           <Header.Root
-            className="justify-between m-1 relative p-0 relative rounded-md w-auto "
+            className="justify-between relative p-0 m-1 relative w-auto shadow rounded-md"
             style={{
-              width: "100%",
+              width: "auto",
               border: "none",
             }}
           >
