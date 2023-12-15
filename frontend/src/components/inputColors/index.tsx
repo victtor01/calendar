@@ -13,6 +13,7 @@ export const InputColors = ({ colors, handle }: InputColorsProps) => {
       {colors?.map((color: string) => {
         return (
           <motion.button
+            key={color}
             onClick={() => handle(color)}
             type="button"
             whileTap={{ scale: 0.94 }}

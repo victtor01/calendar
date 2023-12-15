@@ -97,7 +97,7 @@ export function useFormDetails(event: Event | undefined) {
       };
     });
 
-    queryClient.setQueryData(["event"], (prevData: any) => {
+    queryClient.setQueryData(["events"], (prevData: any) => {
       return prevData?.map((item: Event) =>
         item.id === updated.id ? { ...item, ...updated } : item
       );
@@ -237,9 +237,10 @@ export default function Edit({ event }: { event: Event | undefined }) {
             render={({ field }: { field: OmitAllday }) => {
               return (
                 <div className="flex gap-2 items-center">
-                  {colorsEvents.map((color: string) => {
+                  {colorsEvents.map((color: string, index: number) => {
                     return (
                       <button
+                        key={index}
                         onClick={() => field.onChange(color)}
                         className="rounded-md p-4"
                         style={{
