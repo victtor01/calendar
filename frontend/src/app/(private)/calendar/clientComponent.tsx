@@ -16,6 +16,8 @@ import { useQuery } from "@tanstack/react-query";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { EventsTemplates } from "@/types/eventsTemplates";
 import { useRouter } from "next/navigation";
+import { Service } from "@/types/services";
+import { convertToRealMoney } from "@/helpers/convertToRealMoney";
 
 type Page = "INFORMATIONS" | "CLIENTS" | "SERVICES" | "COMMENTARIES";
 
@@ -138,15 +140,14 @@ export function ClientComponent({
       exit={{ opacity: 0 }}
       key={itemSelected.id}
       style={{ zIndex: 100 }}
-      className="fixed top-0 left-0 w-full h-screen overflow-x-hidden z-[100] p-4 flex justify-center overflow-y-auto"
+      className="fixed top-0 left-0 w-full h-screen bg-zinc-800 bg-opacity-10 overflow-x-hidden z-[100] p-4 flex justify-center overflow-y-auto"
     >
-      <S.Modal
-        className="bg-zinc-800 flex flex-col shadow-2xl rounded-md max-w-[55rem] min-h-[40rem] h-auto w-full relative z-[100] my-auto"
-        layoutId={"filter"}
-        initial={{ y: 40 }}
-        transition={{ type: "spring" }}
-        animate={{ y: 0 }}
-        exit={{ y: -40 }}
+      <motion.section
+        className="bg-white dark:bg-zinc-900 flex flex-col shadow-2xl rounded-md max-w-[55rem] min-h-[40rem] h-auto w-full relative z-[100] my-auto"
+        initial={{ scale: 0 }}
+        transition={{ type: "tween" }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
       >
         <header className="flex p-2 border-b border-zinc-500 items-center border-opacity-20 justify-between">
           <div className="text-lg opacity-80">
@@ -176,7 +177,7 @@ export function ClientComponent({
           </div>
         </header>
         <S.Bubble />
-        <section className="flex p-3 flex-1 flex-col">
+        <section className="flex py-3 flex-1 flex-col">
           <header className="flex">
             <div className="flex mx-auto gap-3 rounded relative overflow-hidden">
               {["INFORMATIONS", "SERVICES", "CLIENTS", "COMMENTARIES"].map(
@@ -317,7 +318,45 @@ export function ClientComponent({
             </section>
           )}
           {page === "SERVICES" && (
-            <section className="flex flex-col gap-7 p-3"></section>
+            <section className="flex flex-col gap-7 mt-5">
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      Nome do serviço
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Criado em
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Preço
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {itemSelected?.services?.map((service: Service) => {
+                    return (
+                      <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                        <th
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          {service?.name}
+                        </th>
+                        <td className="px-6 py-4">
+                          {moment(service.createdAt).format(
+                            "DD, MMM [de] YYYY"
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          {convertToRealMoney.format(service.price)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </section>
           )}
         </section>
         <footer className="flex w-full p-3 justify-end p-5">
@@ -328,7 +367,7 @@ export function ClientComponent({
             Terminar Evento
           </Link>
         </footer>
-      </S.Modal>
+      </motion.section>
     </motion.div>
   );
 }

@@ -58,7 +58,7 @@ export const Separator = styled.span`
 `;
 
 export const ComponentForm = styled(motion.form)`
-  background: linear-gradient(to bottom, ${({theme}) => theme.secundary}, transparent);
+  //background: linear-gradient(to bottom, ${({theme}) => theme.secundary}, transparent);
   position: relative;
 
 /*   &::before {

@@ -1,0 +1,30 @@
+"use client";
+
+import { HTMLMotionProps, motion } from "framer-motion";
+import { twMerge } from "tailwind-merge";
+import * as S from "./style";
+
+interface ModalProps extends HTMLMotionProps<"div"> {
+  children: React.ReactNode;
+}
+
+export default function Modal({ children, ...props }: ModalProps) {
+  const { className, ...rest } = props;
+  return (
+    <motion.div
+      className={
+        "fixed w-full h-screen overflow fixed bg-black flex bg-opacity-10 top-0 left-0"
+      }
+    >
+      <S.Modal
+        {...rest}
+        className={twMerge(
+          "w-full max-w-[40rem] m-auto p-2 bg-white rounded dark:bg-zinc-900",
+          className
+        )}
+      >
+        {children}
+      </S.Modal>
+    </motion.div>
+  );
+}

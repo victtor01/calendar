@@ -7,6 +7,7 @@ export const Annotations = styled(motion.div)`
   background-color: ${({ theme }) => theme.secundary};
   position: sticky;
   top: 0.7rem;
+  margin-left: 0.7rem;
   
   &::before {
     content: "";

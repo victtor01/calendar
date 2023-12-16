@@ -2,7 +2,6 @@
 
 import PrivateRoute from "@/components/privateRoute";
 import { usePathname, useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import * as S from "./style";
 import { Sidebar } from "@/components/sidebar";
 import { IconType } from "react-icons";
@@ -10,7 +9,7 @@ import { BsCalendarRange, BsFillGearFill, BsHouse } from "react-icons/bs";
 import { FiTrendingUp } from "react-icons/fi";
 import Link from "next/link";
 import { fontOpenSans, fontRoboto, fontValela } from "../fonts";
-import { Suspense, useContext, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BiSolidGroup } from "react-icons/bi";
 import Button from "@/components/button";
@@ -68,8 +67,6 @@ const pages: Page[] = [
 ];
 
 const useLayout = () => {
-  const router = useRouter();
-
   const [sidebarShow, setSidebarShow] = useState(false);
   const [theme, setTheme] = useState<string>("dark");
 
@@ -80,6 +77,19 @@ const useLayout = () => {
   const onClickSidebarShow = () => {
     setSidebarShow((prev) => !prev);
   };
+
+  useEffect(() => {
+    const html = document.querySelector("html");
+    if (html) {
+      if (theme === 'dark') {
+        html.classList.add('dark');
+        html.classList.remove('light');
+      } else {
+        html.classList.add('light');
+        html.classList.remove('dark');
+      }
+    }
+  }, [theme]);
 
   const currentPath = usePathname().split("/")[1];
 
@@ -119,11 +129,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         <S.Container>
           <Sidebar
-            bgTheme
+            bgTheme={false}
             style={{ gridArea: "sidebar" }}
-            className={`w-[4rem] lg:w-[13rem] relative overflow-x-hidden overflow-y-auto rounded-md shadow-lg items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
+            className={`w-[4rem] lg:w-[13rem] bg-zinc-900 relative shadow-2xl shadow-zin-800 overflow-x-hidden overflow-y-auto items-center text-white lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
           >
-            <S.Bubble />
+            {/*    <S.Bubble /> */}
             <header className="w-full h-[3.2rem] flex justify-center items-center">
               <Header.Division
                 bgTheme={false}
@@ -142,7 +152,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <FaChevronRight />
             </button>
-            <div className="flex flex-col lg:px-4 mt-5 gap-5 flex-1 flex-nowrap w-full">
+            <div className="flex flex-col  mt-5 gap-1 flex-1 flex-nowrap w-full">
               {pages.map(({ name, icon: Icon, href }: Page, index: number) => {
                 const selected = currentPath === href.substring(1);
                 return (
@@ -154,20 +164,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   >
                     <S.LinkRoute
                       href={href}
-                      className={`transition-all flex-nowrap w-full justify-center relative lg:justify-start flex py-0 items-center gap-2 text-md opacity-80 hover:opacity-100 p-1 lg:rounded `}
+                      className={`${
+                        selected
+                          ? "bg-gradient-45 from-zinc-800 to-zinc-700 opacity-100"
+                          : "transparent opacity-80"
+                      } transition-all flex-nowrap w-full justify-center relative lg:justify-start flex py-3 items-center gap-2 text-md hover:opacity-100 p-1  `}
                     >
-                      <AnimatePresence>
-                        {selected && (
-                          <motion.span
-                            initial={{ opacity: 0, x: -25 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -25 }}
-                            transition={{ type: "tween" }}
-                            key={`mark-${name}`}
-                            className="w-[0.5rem] h-[0.5rem] rounded-full left-[-0.4rem] absolute bg-cyan-500 shadow-xl shadow-red-200"
-                          />
-                        )}
-                      </AnimatePresence>
                       <Icon size={"18"} className="min-w-[3rem]" />
                       <span className="hidden lg:flex">{name}</span>
                     </S.LinkRoute>

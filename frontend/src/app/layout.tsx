@@ -22,7 +22,7 @@ export default function RootLayout({
     
     <ProviderSessionContext>
       <QueryClientProvider client={queryClient}>
-        <html lang="pt-br">
+        <html lang="pt-br" className="light">
           <body>
             <NextTopLoader color="#17919f" showSpinner={false} crawl={false} />
             {children}
