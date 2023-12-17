@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { fontInter, fontValela } from "@/app/fonts";
 import { Event, StatusEvent } from "@/types/events";
 import { AnimatePresence, motion } from "framer-motion";
@@ -18,6 +18,10 @@ import { EventsTemplates } from "@/types/eventsTemplates";
 import { useRouter } from "next/navigation";
 import { Service } from "@/types/services";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
+import { Clients } from "@/types/clients";
+import Image from "next/image";
+import { Server } from "@/constants/server";
+import { Comment } from "@/types/comment";
 
 type Page = "INFORMATIONS" | "CLIENTS" | "SERVICES" | "COMMENTARIES";
 
@@ -108,6 +112,110 @@ function useClientComponent() {
   };
 }
 
+const ClientsComponent = ({ clients }: { clients: Clients[] }) => (
+  <section className="flex flex-col gap-7 mt-5 px-4">
+    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-zinc-800 dark:text-gray-400">
+        <tr>
+          <th scope="col" className="px-3 py-3">
+            foto
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Nome do cliente
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Nome do cliente
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Email
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {clients?.map((client: Clients, index: number) => {
+          return (
+            <tr
+              key={index}
+              className="odd:bg-white odd:dark:bg-zinc-900 even:bg-gray-50 even:dark:bg-gray-900 border-b dark:border-gray-700"
+            >
+              <th
+                scope="row"
+                className="px-6 py-4 w-4 h-8 bg-zinc-300 dark:bg-zinc-700 rounded overflow-hidden relative font-medium text-gray-900 whitespace-nowrap"
+              >
+                {client?.photo && (
+                  <Image
+                    fill
+                    src={`${Server}/uploads/clients/${client?.photo}`}
+                    quality={50}
+                    alt="Foto do cliente"
+                    className="pointer-events-none"
+                    style={{
+                      objectFit: "cover",
+                    }}
+                  />
+                )}
+              </th>
+              <th
+                scope="row"
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              >
+                {client?.firstName}
+              </th>
+              <td className="px-6 py-4">
+                {moment(client.createdAt).format("DD, MMM [de] YYYY")}
+              </td>
+              <td className="px-6 py-4">{client?.email}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </section>
+);
+
+const ServiceComponent = ({ services }: { services: Service[] }) => (
+  <section className="flex flex-col gap-7 mt-5 px-4">
+    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-zinc-800 dark:text-gray-400">
+        <tr>
+          <th scope="col" className="px-6 py-3">
+            Nome do serviço
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Criado em
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Preço
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {services?.map((service: Service, index: number) => {
+          return (
+            <tr
+              key={index}
+              className="odd:bg-white odd:dark:bg-zinc-900 even:bg-gray-50 even:dark:bg-gray-900 border-b dark:border-gray-700"
+            >
+              <th
+                scope="row"
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              >
+                {service?.name}
+              </th>
+              <td className="px-6 py-4">
+                {moment(service.createdAt).format("DD, MMM [de] YYYY")}
+              </td>
+              <td className="px-6 py-4">
+                {convertToRealMoney.format(service.price)}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </section>
+);
+
 export function ClientComponent({
   itemSelected,
   setIdSelected,
@@ -178,8 +286,8 @@ export function ClientComponent({
         </header>
         <S.Bubble />
         <section className="flex py-3 flex-1 flex-col">
-          <header className="flex">
-            <div className="flex mx-auto gap-3 rounded relative overflow-hidden">
+          <header className="flex min-w-[5rem] w-auto overflow-x-auto">
+            <div className="flex mx-auto gap-3 rounded relative overflow-hidden min-w-[30rem] ">
               {["INFORMATIONS", "SERVICES", "CLIENTS", "COMMENTARIES"].map(
                 (item: string) => {
                   return (
@@ -198,8 +306,8 @@ export function ClientComponent({
                   left: indicator?.left || 0,
                   width: indicator?.width || "7rem",
                 }}
-                transition={{ type: "tween" }}
-                className="absolute pointer-events-none w-[6rem] h-full rounded-md z-[-1] bg-zinc-500 bg-opacity-10 shadow-inner"
+                transition={{ type: "linear" }}
+                className="absolute pointer-events-none w-[6rem] bottom-0 rounded-md z-[-1] h-1 bg-gradient-45 from-purple-600 to-cyan-500"
               />
             </div>
           </header>
@@ -317,43 +425,52 @@ export function ClientComponent({
               </div>
             </section>
           )}
-          {page === "SERVICES" && (
-            <section className="flex flex-col gap-7 mt-5">
+
+          {page === "SERVICES" && itemSelected?.services && (
+            <ServiceComponent services={itemSelected.services} />
+          )}
+
+          {page === "CLIENTS" && itemSelected?.clients && (
+            <ClientsComponent clients={itemSelected.clients} />
+          )}
+
+          {page === "COMMENTARIES" && itemSelected?.comments && (
+            <section className="flex flex-col gap-7 mt-5 px-4">
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-zinc-800 dark:text-gray-400">
                   <tr>
-                    <th scope="col" className="px-6 py-3">
-                      Nome do serviço
+                    <th scope="col" className="px-3 py-3">
+                      Conteúdo
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Criado em
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Preço
+                      Comentado em
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {itemSelected?.services?.map((service: Service) => {
-                    return (
-                      <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  {itemSelected?.comments?.map(
+                    (comment: Comment, index: number) => {
+                      return (
+                        <tr
+                          key={index}
+                          className="odd:bg-white odd:dark:bg-zinc-900 even:bg-gray-50 even:dark:bg-gray-900 border-b dark:border-gray-700"
                         >
-                          {service?.name}
-                        </th>
-                        <td className="px-6 py-4">
-                          {moment(service.createdAt).format(
-                            "DD, MMM [de] YYYY"
-                          )}
-                        </td>
-                        <td className="px-6 py-4">
-                          {convertToRealMoney.format(service.price)}
-                        </td>
-                      </tr>
-                    );
-                  })}
+                          <th
+                            scope="row"
+                            className="odd:bg-white odd:dark:bg-zinc-900 even:bg-gray-50 even:dark:bg-gray-900 border-b dark:border-gray-700"
+                          >
+                            {comment?.content}
+                          </th>
+                          <th
+                            scope="row"
+                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                          >
+                            {moment(comment.createdAt).format('DD de MMM, YYYY')}
+                          </th>
+                        </tr>
+                      );
+                    }
+                  )}
                 </tbody>
               </table>
             </section>

@@ -4,18 +4,20 @@ import { Annotation } from "@/types/annotations";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
 function useFormAnnotations() {
   const [openInput, setOpenInput] = useState<boolean>(false);
   const handleOpenInput = (): void => setOpenInput((prev) => !prev);
-  
-  const [annotations, setAnnotations] = useState<Annotation[]>([])
 
-  async function addAnnotation (): Promise<void> {
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
 
-  }
+  async function addAnnotation(): Promise<void> {}
 
   return {
+    utils: {
+      addAnnotation,
+    },
     input: {
       handleOpenInput,
       openInput,
@@ -25,50 +27,46 @@ function useFormAnnotations() {
 
 export function FormAnnotations() {
   const {
+    utils: { addAnnotation },
     input: { handleOpenInput, openInput },
   } = useFormAnnotations();
 
   return (
     <form className="flex flex-col gap-3">
       <header className="items-center flex ">
-        <motion.button
-          onClick={handleOpenInput}
-          type="button"
-          whileTap={{ scale: 0.93 }}
-          className="border-2 w-full p-2 px-3 border-zinc-400 border-opacity-30 opacity-80 hover:opacity-100 rounded-md border-dashed"
-        >
-          <span className="flex justify-center items-center text-md text-zinc-500 font-semibold">
-            Adicionar anotação
-          </span>
-        </motion.button>
-      </header>
-      <AnimatePresence>
-        {openInput && (
-          <motion.div
-            key={"input"}
-            exit={{ opacity: 0, height: 0, padding: "0" }}
-            initial={{ opacity: 0, height: 0, padding: "0" }}
-            transition={{ type: "spring" }}
-            animate={{
-              opacity: 1,
-              height: "3rem",
-              
-            }}
-            className="flex gap-2 items-center w-full"
+        {!openInput && (
+          <motion.button
+            onClick={handleOpenInput}
+            type="button"
+            whileTap={{ scale: 0.93 }}
+            className="border-2 w-full p-2 px-3 border-zinc-400 border-opacity-30 opacity-80 hover:opacity-100 rounded-md border-dashed"
           >
-            <motion.input
-              placeholder="Lembre-me mais tarde..."
-              className="bg-zinc-500 bg-opacity-10 outline-none shadow transition-shadow focus:shadow-xl p-3 w-full rounded"
-            />
-            <motion.button
-              whileTap={{ scale: 0.93 }}
-              className="center w-14 h-10 grid place-content-center bg-gradient-45 from-purple-500 to-cyan-500 rounded opacity-50 hover:opacity-100"
-            >
-              <FaCheck />
-            </motion.button>
-          </motion.div>
+            <span className="flex justify-center items-center text-md text-zinc-500 font-semibold">
+              Adicionar anotação
+            </span>
+          </motion.button>
         )}
-      </AnimatePresence>
+        {openInput && (
+          <section className="flex flex-col gap-2 flex-1">
+            <header className="flex justify-between items-center">
+              <div className="flex flex-1">Create Annotation</div>
+              <div>
+                <button>
+                  <IoClose />
+                </button>
+              </div>
+            </header>
+            <section className="flex flex-1">
+              <textarea className="flex p-2 flex-1 bg-zinc-100 rounded resize-none outline-none dark:bg-gray-800" />
+            </section>
+            <footer className="flex-1">
+              <button className="bg-cyan-500 opacity-80 hover:opacity-100 p-1 px-3 rounded text-sm">
+                Criar
+              </button>
+            </footer>
+          </section>
+        )}
+      </header>
     </form>
   );
 }

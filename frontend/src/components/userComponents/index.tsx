@@ -19,12 +19,9 @@ export default function UserComponents() {
       return prev === value ? null : value;
     });
 
-  const {
-    logout,
-    userInfo,
-  } = useContext(SessionContext);
+  const { logout, userInfo } = useContext(SessionContext);
 
-  if(!userInfo.photo) return;
+  if (!userInfo.photo) return;
 
   return (
     <div className={`flex gap-2 p-2 items-center gap-3 relative ${fontRoboto}`}>
@@ -45,10 +42,10 @@ export default function UserComponents() {
         <IoMdExit size="20" />
       </Button>
       <Button className="flex bg-cyan-500 relative h-10 w-10 items-center overflow-hidden rounded-full">
-      <Image
+        <Image
           className="hover:scale-[1.1] transition-all"
           src={`${Server}/uploads/${userInfo.photo}`}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 2rem) 2rem, 1200px"
           /* priority */
           fill
           quality={25}

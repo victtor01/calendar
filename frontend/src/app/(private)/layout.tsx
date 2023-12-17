@@ -1,35 +1,34 @@
 "use client";
 
 import PrivateRoute from "@/components/privateRoute";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import * as S from "./style";
 import { Sidebar } from "@/components/sidebar";
 import { IconType } from "react-icons";
 import { BsCalendarRange, BsFillGearFill, BsHouse } from "react-icons/bs";
 import { FiTrendingUp } from "react-icons/fi";
-import Link from "next/link";
 import { fontOpenSans, fontRoboto, fontValela } from "../fonts";
 import { Suspense, useEffect, useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa";
 import { BiSolidGroup } from "react-icons/bi";
-import Button from "@/components/button";
 import { ThemeProvider } from "styled-components";
 import { RxExit } from "react-icons/rx";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import { PiSuitcaseSimple } from "react-icons/pi";
 import Loading from "@/components/loading";
-import Header from "@/components/header";
 import UserComponents from "@/components/userComponents";
 import { useSessionContext } from "@/contexts/sessionContext";
 import { Theme, ToastContainer } from "react-toastify";
-import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
+import { LuListTodo } from "react-icons/lu";
+import Link from "next/link";
 
 /* #1f1d2b */
+/*  rgb(24, 24, 27) */
 
 const darkTheme = {
-  primary: "rgb(24, 24, 27, 1)",
-  secundary: "#1f1d2b",
+  primary: "rgb(9, 9, 11)",
+  secundary: "rgb(24, 24, 27, 1)",
   text: "#ebe8e8",
   shadow: "#202020",
   lightPurple: "#4B0082",
@@ -54,16 +53,24 @@ const lightTheme = {
 interface Page {
   name: string;
   href: string;
-  icon: IconType;
+  icon?: IconType;
 }
 
 const pages: Page[] = [
-  { name: "Home", icon: BsHouse, href: "/home" },
+  { name: "Dashboard", icon: BsHouse, href: "/home" },
   { name: "Calendário", icon: BsCalendarRange, href: "/calendar" },
   { name: "Financeiro", icon: FiTrendingUp, href: "/finance" },
   { name: "Clientes", icon: BiSolidGroup, href: "/clients" },
   { name: "Serviços", icon: PiSuitcaseSimple, href: "/services" },
+  { name: "To-do", icon: LuListTodo, href: "/todo" },
   { name: "Configurar", icon: BsFillGearFill, href: "/configurations" },
+];
+
+const otherPages: Page[] = [
+  { name: "Entrar em contato", href: "/" },
+  { name: "Reportar bug", href: "/" },
+  { name: "Ajuda", href: "/" },
+  { name: "Termos de serviço", href: "/" },
 ];
 
 const useLayout = () => {
@@ -81,12 +88,12 @@ const useLayout = () => {
   useEffect(() => {
     const html = document.querySelector("html");
     if (html) {
-      if (theme === 'dark') {
-        html.classList.add('dark');
-        html.classList.remove('light');
+      if (theme === "dark") {
+        html.classList.add("dark");
+        html.classList.remove("light");
       } else {
-        html.classList.add('light');
-        html.classList.remove('dark');
+        html.classList.add("light");
+        html.classList.remove("dark");
       }
     }
   }, [theme]);
@@ -127,24 +134,32 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <PrivateRoute>
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-        <S.Container>
+        <S.Container className="bg-white dark:bg-zinc-950">
           <Sidebar
             bgTheme={false}
             style={{ gridArea: "sidebar" }}
-            className={`w-[4rem] lg:w-[13rem] bg-zinc-900 relative shadow-2xl shadow-zin-800 overflow-x-hidden overflow-y-auto items-center text-white lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
+            className={`w-[4rem] lg:w-[12rem] bg-zinc-900 relative shadow-2xl shadow-zin-800 overflow-x-hidden overflow-y-auto items-center text-white lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
           >
-            {/*    <S.Bubble /> */}
-            <header className="w-full h-[3.2rem] flex justify-center items-center">
-              <Header.Division
-                bgTheme={false}
+            <header className="w-full flex items-center relative h-auto">
+              <div
                 className={
-                  "flex-none p-2 m-2 bg-transparent font-semibold text-md opacity-50" +
+                  "flex-none bg-transparent font-semibold text-md p-5" +
                   ` ${fontRoboto}`
                 }
               >
-                <span className="hidden lg:flex z-20">CalendarUD</span>
-              </Header.Division>
+                <span className="hidden lg:flex z-20">CRS</span>
+              </div>
             </header>
+            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+            <div className="p-3 px-5 flex-col flex gap-1">
+              <span className="text-sm">{userInfo?.firstName}</span>
+              <span className="text-xs">
+                Ver o meu{" "}
+                <strong className="font-semibold text-purple-600">
+                  Plano!
+                </strong>
+              </span>
+            </div>
             <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
             <button
               onClick={onClickSidebarShow}
@@ -152,12 +167,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <FaChevronRight />
             </button>
-            <div className="flex flex-col  mt-5 gap-1 flex-1 flex-nowrap w-full">
+            <div className="flex flex-col mt-0 gap-1 relative flex-nowrap w-full p-2">
               {pages.map(({ name, icon: Icon, href }: Page, index: number) => {
                 const selected = currentPath === href.substring(1);
                 return (
                   <motion.div
                     key={name}
+                    className="relative"
                     initial={{ opacity: 0, x: -40 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index / 10, type: "spring" }}
@@ -166,11 +182,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       href={href}
                       className={`${
                         selected
-                          ? "bg-gradient-45 from-zinc-800 to-zinc-700 opacity-100"
+                          ? "bg-gradient-45 bg-zinc-800 opacity-100"
                           : "transparent opacity-80"
-                      } transition-all flex-nowrap w-full justify-center relative lg:justify-start flex py-3 items-center gap-2 text-md hover:opacity-100 p-1  `}
+                      } transition-all rounded hover:bg-zinc-800 flex-nowrap w-full justify-center relative lg:justify-start flex py-2 items-center gap-2 text-sm hover:opacity-100 p-1  `}
                     >
-                      <Icon size={"18"} className="min-w-[3rem]" />
+                      {Icon && <Icon size={"16"} className="min-w-[3rem]" />}
                       <span className="hidden lg:flex">{name}</span>
                     </S.LinkRoute>
                   </motion.div>
@@ -178,93 +194,138 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               })}
             </div>
             <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
-            <button onClick={logout} className="p-4 flex items-center gap-3">
-              <RxExit />
-              <span className="hidden lg:flex">Logout</span>
-            </button>
-            <button
-              onClick={handleTheme}
-              className="p-4 flex items-center gap-3"
-            >
-              <IconTheme />
-              <span className="hidden lg:flex">
-                Tema: {theme === "dark" ? "Escuro" : "Claro"}
-              </span>
-            </button>
+            <div className="p-3 flex-1 w-full flex flex-col">
+              {otherPages.map(({ name, href }: Page, index: number) => {
+                const selected = currentPath === href.substring(1);
+                return (
+                  <motion.div
+                    key={name}
+                    className="relative"
+                    initial={{ opacity: 0, x: -40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index / 10, type: "spring" }}
+                  >
+                    <S.LinkRoute
+                      href={href}
+                      className={`${
+                        selected
+                          ? "bg-gradient-45 bg-zinc-800 opacity-100"
+                          : "transparent opacity-60"
+                      } transition-all text-sm rounded hover:bg-zinc-800 flex-nowrap w-full px-4 justify-center relative lg:justify-start flex py-2 items-center gap-2 text-sm hover:opacity-100 p-1  `}
+                    >
+                      <span className="hidden lg:flex">{name}</span>
+                    </S.LinkRoute>
+                  </motion.div>
+                );
+              })}
+            </div>
+            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+            <footer className="flex flex-col text-sm">
+              <button onClick={logout} className="p-3 flex items-center gap-3">
+                <RxExit />
+                <span className="hidden lg:flex">Logout</span>
+              </button>
+              <button
+                onClick={handleTheme}
+                className="p-3 flex items-center gap-3"
+              >
+                <IconTheme />
+                <span className="hidden lg:flex">
+                  Tema: {theme === "dark" ? "Escuro" : "Claro"}
+                </span>
+              </button>
+            </footer>
           </Sidebar>
           <Sidebar
             animate={sidebarShow ? "open" : "hidden"}
             variants={variants}
             transition={{ duration: 0.4 }}
-            className={`w-[100%] text-white max-h-[100%] overflow-y-scroll fixed h-[100%] max-h-[100%] flex flex-col bg-gradient-to-b from-cyan-600 to-cyan-900 ${fontOpenSans} w-[15rem]`}
+            className={`w-[100%] text-white max-h-[100%] z-[50000] overflow-y-scroll fixed h-[100%] max-h-[100%] flex flex-col bg-zinc-900 ${fontOpenSans} w-[15rem]`}
           >
-            <div className="flex flex-col flex-1">
-              <header className="p-3 gap-1 text-xl font-semibold flex-nowrap flex justify-between items-center">
-                <div>Olá, Victor</div>
-                <div>
-                  <Button
-                    onClick={onClickSidebarShow}
-                    className="relative w-[3rem] opacity-70 hover:opacity-100 rounded h-[3rem] flex items-center bg-zinc-900 justify-center p-3 "
-                  >
-                    <FaChevronLeft />
-                  </Button>
-                </div>
-              </header>
-              <div className="flex flex-col px-4 mt-5 gap-5 flex-1 flex-nowrap">
-                {pages.map(
-                  ({ name, icon: Icon, href }: Page, index: number) => {
-                    return (
-                      <Link
-                        key={index}
-                        href={href}
-                        className=" flex-nowrap flex items-center gap-2 text-lg opacity-80 hover:opacity-100 p-1 rounded"
-                      >
-                        <Icon size={"20"} className="min-w-[3rem]" />
-                        {name}
-                      </Link>
-                    );
-                  }
-                )}
+            <header className="w-full flex items-center relative h-auto">
+              <div
+                className={
+                  "flex-none bg-transparent font-semibold text-md p-5" +
+                  ` ${fontRoboto}`
+                }
+              >
+                <span className="flex z-20">CRS</span>
+                <button onClick={onClickSidebarShow}>fechar</button>
               </div>
-              <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+            </header>
+            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+            <div className="p-3 px-5 flex-col flex gap-1">
+              <span className="text-sm">{userInfo?.firstName}</span>
+              <span className="text-xs">
+                Ver o meu{" "}
+                <strong className="font-semibold text-purple-600">
+                  Plano!
+                </strong>
+              </span>
+            </div>
+            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+            <div className="flex flex-col mt-0 gap-1 relative flex-nowrap w-full p-2">
+              {pages.map(({ name, icon: Icon, href }: Page, index: number) => {
+                const selected = currentPath === href.substring(1);
+                return (
+                  <motion.div
+                    key={name}
+                    className="relative"
+                    initial={{ opacity: 0, x: -40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index / 10, type: "spring" }}
+                  >
+                    <S.LinkRoute
+                      href={href}
+                      className={`${
+                        selected
+                          ? "bg-gradient-45 bg-zinc-800 opacity-100"
+                          : "transparent opacity-80"
+                      } transition-all rounded hover:bg-zinc-800 flex-nowrap w-full justify-center relative lg:justify-start flex py-2 items-center gap-2 text-sm hover:opacity-100 p-1`}
+                    >
+                      {Icon && <Icon size={"16"} className="min-w-[3rem]" />}
+                      <span className="felx">{name}</span>
+                    </S.LinkRoute>
+                  </motion.div>
+                );
+              })}
+            </div>
+            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+            <div className="p-3 flex-1"></div>
+            <span className="w-full h-[1px] bg-zinc-500 bg-opacity-30" />
+            <footer className="flex flex-col text-sm">
+              <button onClick={logout} className="p-3 flex items-center gap-3">
+                <RxExit />
+                <span className="hidden lg:flex">Logout</span>
+              </button>
               <button
                 onClick={handleTheme}
-                className="p-4 flex items-center gap-3"
+                className="p-3 flex items-center gap-3"
               >
-                <RxExit />
-                <span className="flex">Logout</span>
-              </button>
-              <button onClick={logout} className="p-4 flex items-center gap-3">
                 <IconTheme />
-                <span className="flex">
+                <span className="hidden lg:flex">
                   Tema: {theme === "dark" ? "Escuro" : "Claro"}
                 </span>
               </button>
-            </div>
+            </footer>
           </Sidebar>
-          <Header.Root
-            className="justify-between relative p-0 m-1 relative w-auto shadow rounded-md"
+          <header
+            className="justify-between relative flex px-4 h-auto items-center relative w-auto border-b dark:border-zinc-800"
             style={{
+              gridArea: "header",
               width: "auto",
-              border: "none",
             }}
           >
-            <Header.Division
-              bgTheme={false}
-              className={
-                "flex p-2 justify-start relative h-[100%] font-bold text-lg overflow-hidden" +
-                ` ${fontValela}`
-              }
-            >
-              <span className="absolute p-3 bg-gradient-45 from-[#6157FF] via-[#74FEBD] from-10% to-80% blur-2xl opacity-20 shadow-purple-500 to-transparent bg-opacity-50 h-full w-[50%] z-[-1] transform -skew-x-[-26deg] left-[-20px]" />
+            <div className={"flex" + ` ${fontValela}`}>
+              <span className="absolute bg-gradient-45 from-[#6157FF] via-[#74FEBD] from-10% to-80% blur-2xl opacity-20 shadow-purple-500 to-transparent bg-opacity-50 h-full w-[50%] z-[-1] transform -skew-x-[-26deg] left-[-20px]" />
               Olá, {userInfo?.firstName}!
-            </Header.Division>
-            <Header.Division className="flex-none rounded-full">
+            </div>
+            <div className="flex rounded-full">
               <UserComponents />
-            </Header.Division>
-          </Header.Root>
+            </div>
+          </header>
           <Suspense fallback={<Loading />}>
-            <S.Content>
+            <S.Content className="bg-transparent dark:bg-zinc-950">
               <ToastContainer
                 position="top-right"
                 autoClose={2000}

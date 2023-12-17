@@ -17,7 +17,6 @@ export const Container = styled.main`
   position: relative;
   min-width: auto;
   overflow: hidden;
-  background-color: ${(props) => props.theme.primary};
 `;
 
 

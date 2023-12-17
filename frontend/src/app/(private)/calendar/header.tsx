@@ -107,10 +107,7 @@ export default function Header() {
         transition={{ delay: 0.4 }}
         className=" w-full items-center flex justify-between rounded-md"
       >
-        <div className="p-2 text-xl font-semibold flex items-center gap-2">
-          <FaCalendar />
-          Calendário
-        </div>
+
         <motion.div className="flex gap-2 items-center relative ">
           <button
             onClick={handleShowModalAddEvent}

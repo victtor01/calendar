@@ -26,15 +26,16 @@ export default function PrivateRoute({
     if (data) {
       setUserInfo({
         id: Number(data.id),
+        email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
         photo: data.photo,
       });
     }
     setLoading(false);
-  }, [data, loading]);
+  }, [data, setUserInfo, setLoading]);
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return (
       <div className="w-full h-screen items-center bg-zinc-900 justify-center flex">
         <Loading className="bg-cyan-600" />
@@ -48,7 +49,9 @@ export default function PrivateRoute({
         <div className="flex flex-col gap-2 w-full max-w-[20rem] justify-center items-center">
           <div className="flex flex-col">
             <h1 className="text-4xl font-semibold">Sessão expirada</h1>
-            <h2 className="text-lg">Faça o login novamente para continuar usando o sistema</h2>
+            <h2 className="text-lg">
+              Faça o login novamente para continuar usando o sistema
+            </h2>
           </div>
           <motion.button
             whileTap={{ scale: 0.9 }}

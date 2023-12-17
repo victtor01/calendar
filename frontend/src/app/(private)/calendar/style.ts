@@ -10,7 +10,7 @@ export const Header = styled(motion.header)`
 `;
 
 export const Calendar = styled(motion.div)`
-  background: ${({ theme }) => theme.secundary};
+  /* background: ${({ theme }) => theme.secundary}; */
 `;
 
 export const Bubble = styled.div`
@@ -30,14 +30,14 @@ export const Bubble = styled.div`
 
   &::before {
     content: "";
-    width: 100%;
-    height: 20%;
+    width: 30%;
+    height: 40%;
     position: absolute;
     top: 0;
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
-    filter: blur(2em);
-    opacity: 0.1;
+    filter: blur(4vh);
+    opacity: 0.15;
     background: linear-gradient(
       34deg,
       transparent,
@@ -49,15 +49,15 @@ export const Bubble = styled.div`
 
   &::after {
     content: "";
-    width: 100%;
+    width: 50%;
     height: 40%;
     position: absolute;
     top: 40%;
     right: 0;
     padding: 2rem;
     border-radius: 77% 23% 17% 83% / 35% 61% 39% 65%;
-    filter: blur(2em);
-    opacity: 0.1;
+    filter: blur(4vh);
+    opacity: 0.15;
     background: linear-gradient(
       34deg,
       transparent,
@@ -70,7 +70,7 @@ export const Bubble = styled.div`
 
 export const Modal = styled(motion.div)`
   background-color: ${({ theme }) => theme.secundary};
- /*  border: 1px solid ${({ theme }) => theme.border}; */
+  /*  border: 1px solid ${({ theme }) => theme.border}; */
   position: relative;
 
   &::before {

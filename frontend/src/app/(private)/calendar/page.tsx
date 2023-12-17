@@ -20,7 +20,7 @@ import interactionPlugin, {
 } from "@fullcalendar/interaction";
 import { toast } from "react-toastify";
 import { Annotations } from "@/components/annotations";
-import { ClientComponent } from "./clientComponent";
+import { ClientComponent } from "./details";
 import { EventsTemplates } from "@/types/eventsTemplates";
 
 const variants = {
@@ -179,7 +179,6 @@ export default function Calendar() {
 
   return (
     <>
-      <Annotations />
       <AnimatePresence>
         {itemSelected && (
           <ClientComponent
@@ -192,8 +191,9 @@ export default function Calendar() {
         variants={variants}
         initial="pageInitial"
         animate="pageAnimate"
-        className="p-2 flex gap-[1rem] mx-auto w-full h-full"
+        className="p-2 flex gap-[1rem] mx-auto w-full h-full relative"
       >
+        <S.Bubble/>
         <div className="flex flex-col flex-1">
           <S.Content className="gap-4 max-w-[100rem] flex flex-col mx-auto">
             <Header />
@@ -216,7 +216,7 @@ export default function Calendar() {
                       const { name, color, ...rest } = event;
                       return {
                         title: event.name,
-                        color: color || 'var(--purple)',
+                        color: color || "var(--purple)",
                         ...rest,
                       };
                     }) as EventSourceInput
