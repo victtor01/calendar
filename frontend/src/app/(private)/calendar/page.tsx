@@ -4,7 +4,6 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useEffect, useState } from "react";
-import moment from "moment-timezone";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
@@ -14,14 +13,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import * as S from "./style";
 import Header from "./header";
 import useEventsTemplates from "@/hooks/useEventsTemplates";
+import { toast } from "react-toastify";
+import { ClientComponent } from "./details";
+import { EventsTemplates } from "@/types/eventsTemplates";
+import AddClient from "./create";
 import interactionPlugin, {
   Draggable,
   DropArg,
 } from "@fullcalendar/interaction";
-import { toast } from "react-toastify";
-import { Annotations } from "@/components/annotations";
-import { ClientComponent } from "./details";
-import { EventsTemplates } from "@/types/eventsTemplates";
 
 const variants = {
   pageInitial: { opacity: 0 },
@@ -33,9 +32,10 @@ const useCalendar = () => {
 
   const { data: eventsTemplates } = useEventsTemplates().getAll();
 
-  const [selectedDay, setSelectedDay] = useState<
-    { start: Date; end: Date } | {}
-  >({});
+  const [selectedDay, setSelectedDay] = useState<{
+    start: Date;
+    end: Date;
+  } | null>(null);
 
   const { data: allEvents } = useQuery({
     queryKey: ["events"],
@@ -96,34 +96,6 @@ const useCalendar = () => {
     queryClient.invalidateQueries(["events-week"]);
   }
 
-  async function addEvent(data: DropArg) {
-    const templete = eventsTemplates.filter(
-      (even: EventsTemplates) =>
-        even.id.toString() === data.draggedEl.id.toString()
-    )[0];
-
-    if (!templete) {
-      return;
-    }
-
-    const res = api.post("/events/create", {
-      name: data.draggedEl.innerText,
-      description: "",
-      allDay: data.allDay,
-      start: data.date.toISOString(),
-      end: data.date.toISOString(),
-    });
-
-    await toast.promise(res, {
-      pending: "Salvando alterações",
-      success: "Salvo com sucesso!",
-      error: "Houve um erro! Tente novamente mais tarde! ",
-    });
-
-    queryClient.invalidateQueries(["events"]);
-    queryClient.invalidateQueries(["events", "events-week"]);
-  }
-
   function openModalAddEvent(event: any) {
     setSelectedDay({
       start: event.start,
@@ -151,7 +123,7 @@ const useCalendar = () => {
     handles: {
       openModalAddEvent,
       handleEventReceive,
-      addEvent,
+      setSelectedDay,
     },
     utils: {
       selectedDay,
@@ -165,8 +137,8 @@ const useCalendar = () => {
 
 export default function Calendar() {
   const {
-    handles: { openModalAddEvent, handleEventReceive, addEvent },
-    data: { eventsTemplates, allEvents },
+    handles: { openModalAddEvent, setSelectedDay, handleEventReceive },
+    data: { allEvents },
     utils: { selectedDay },
   } = useCalendar();
 
@@ -179,7 +151,10 @@ export default function Calendar() {
 
   return (
     <>
+      <Header />
+      <S.Bubble />
       <AnimatePresence>
+        {selectedDay?.start && <AddClient setSelectedDay={setSelectedDay} />}
         {itemSelected && (
           <ClientComponent
             itemSelected={itemSelected}
@@ -191,17 +166,15 @@ export default function Calendar() {
         variants={variants}
         initial="pageInitial"
         animate="pageAnimate"
-        className="p-2 flex gap-[1rem] mx-auto w-full h-full relative"
+        className="p-10 flex gap-[1rem] mx-auto w-full h-full relative"
       >
-        <S.Bubble/>
         <div className="flex flex-col flex-1">
-          <S.Content className="gap-4 max-w-[100rem] flex flex-col mx-auto">
-            <Header />
+          <S.Content className="gap-4 flex flex-col mx-auto">
             <S.Calendar
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="flex flex-1 gap-2 p-2 z-[2] relative"
+              className="flex flex-1 gap-2 p-4 z-[2] relative bg-white bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-900 shadow-inner dark:shadow-black shadow-zinc-300 mb-4 rounded"
             >
               <div className="col-span-8 max-h-auto w-full">
                 <FullCalendar
@@ -228,7 +201,6 @@ export default function Calendar() {
                   selectMirror={true}
                   height={"auto"}
                   eventDrop={handleEventReceive}
-                  drop={(data) => addEvent(data)}
                   eventClick={(data: any) => setIdSelected(data.event.id)}
                   select={openModalAddEvent}
                   eventClassNames={"m-1 gap-1 overflow-hidden"}

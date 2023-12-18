@@ -24,6 +24,8 @@ import { InputColors } from "@/components/inputColors";
 import { toast } from "react-toastify";
 import { colorsEvents as colors } from "@/constants/colorsEvents";
 import * as S from "./style";
+import { useRouter } from "next/navigation";
+import { IoMdCheckbox } from "react-icons/io";
 
 type CreateModelEventFormData = z.infer<typeof createModelEventFormSchema>;
 
@@ -55,14 +57,13 @@ const useHeader = () => {
   async function createEventTemplate(
     data: CreateModelEventFormData
   ): Promise<void> {
-
     if (!data.name || data.name.length < 2) {
       toast.error("Digite um nome para o template!");
       return;
     }
 
-    if(!selectedColor) {
-      toast.error("Escolha uma cor para o template!")
+    if (!selectedColor) {
+      toast.error("Escolha uma cor para o template!");
       return;
     }
 
@@ -93,6 +94,7 @@ const useHeader = () => {
 };
 
 export default function Header() {
+  const router = useRouter();
   const {
     model: { showModalAddEvent, handleShowModalAddEvent },
     form: { control, handleSubmit, createEventTemplate, reset, errors },
@@ -100,43 +102,35 @@ export default function Header() {
   } = useHeader();
 
   return (
-    <div className="flex flex-col w-full min-h-auto z-[2]">
+    <div className="flex flex-col min-h-auto z-[2] sticky top-0">
       <motion.header
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className=" w-full items-center flex justify-between rounded-md"
+        className=" w-full flex rounded-md flex-1 items-center"
       >
-
-        <motion.div className="flex gap-2 items-center relative ">
-          <button
+        <motion.div className="flex gap-2 py-3 relative flex-col mx-auto flex-col flex-1">
+          <motion.button className="opacity-90 flex items-center justify-center gap-2 font-semibold text-md shadow hover:opacity-100 p-4 text-white rounded-full hover:shadow-inner bg-gradient-45 from-purple-600 to-blue-600">
+            <IoAddSharp size="23" />
+          </motion.button>
+          <motion.button
             onClick={handleShowModalAddEvent}
-            className="opacity-90 flex gap-3 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded px-6"
+            className="border hover:shadow-inner hover:shadow-zinc-300 hover:dark:shadow-zinc-600 border-transparent dark:border-zinc-700 opacity-90 shadow flex gap-2 items-center hover:opacity-100 p-4 rounded-full bg-white dark:bg-zinc-900"
           >
-            <MdBackupTable />
-            Eventos Finalizados
-          </button>
-          <button
+            <IoMdCheckbox size="21" />
+          </motion.button>
+          <motion.button
             onClick={handleShowModalAddEvent}
-            className="opacity-90 flex gap-3 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded px-6"
+            className="border hover:shadow-inner hover:shadow-zinc-300 hover:dark:shadow-zinc-600 border-transparent dark:border-zinc-700 opacity-90 shadow flex gap-2 items-center hover:opacity-100 p-4 rounded-full bg-white dark:bg-zinc-900"
           >
-            <MdBackupTable />
-            Novo modelo
-          </button>
-          <Link
-            href={"/calendar/week"}
-            className="opacity-90 flex gap-2 items-center hover:opacity-100 text-white p-3 bg-cyan-500 rounded px-6"
+            <MdBackupTable size="21" />
+          </motion.button>
+          <motion.button
+            onClick={() => router.push("/calendar/week/")}
+            className="border hover:shadow-inner hover:shadow-zinc-300 hover:dark:shadow-zinc-600 border-transparent dark:border-zinc-700 opacity-90 shadow flex gap-2 items-center hover:opacity-100 p-4 rounded-full bg-white dark:bg-zinc-900"
           >
-            <BsCalendar2Week />
-            Minha semana
-          </Link>
-          <Link
-            href={"/calendar"}
-            className="opacity-90 flex items-center gap-2 hover:opacity-100 p-3 px-6 text-white rounded bg-gradient-45 from-purple-600 to-cyan-500"
-          >
-            <IoAddSharp size="20" />
-            Criar
-          </Link>
+            <BsCalendar2Week size="21" />
+          </motion.button>
         </motion.div>
       </motion.header>
       <Modal

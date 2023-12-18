@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import styled, { keyframes } from "styled-components";
 
 export const Container = styled(motion.div)`
-  background-color: transparent;
   width: 100%;
   max-width: 95rem;
   height: auto;
@@ -13,7 +12,6 @@ export const Container = styled(motion.div)`
   flex-direction: column;
   position: relative;
   gap: 1rem;
-  padding: 1rem;
 `;
 
 export const Component = styled.div`

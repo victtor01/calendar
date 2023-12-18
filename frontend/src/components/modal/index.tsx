@@ -13,7 +13,7 @@ export default function Modal({ children, ...props }: ModalProps) {
   return (
     <motion.div
       className={
-        "fixed w-full h-screen overflow fixed bg-black flex bg-opacity-10 top-0 left-0"
+        "z-[100] fixed w-full h-screen overflow fixed bg-black flex bg-opacity-10 top-0 left-0"
       }
     >
       <S.Modal

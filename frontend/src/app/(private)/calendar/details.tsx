@@ -248,7 +248,7 @@ export function ClientComponent({
       exit={{ opacity: 0 }}
       key={itemSelected.id}
       style={{ zIndex: 100 }}
-      className="fixed top-0 left-0 w-full h-screen bg-zinc-800 bg-opacity-10 overflow-x-hidden z-[100] p-4 flex justify-center overflow-y-auto"
+      className="fixed top-0 left-0 w-full h-screen bg-zinc-800 bg-opacity-40 overflow-x-hidden z-[100] p-4 flex justify-center overflow-y-auto"
     >
       <motion.section
         className="bg-white dark:bg-zinc-900 flex flex-col shadow-2xl rounded-md max-w-[55rem] min-h-[40rem] h-auto w-full relative z-[100] my-auto"
@@ -307,7 +307,7 @@ export function ClientComponent({
                   width: indicator?.width || "7rem",
                 }}
                 transition={{ type: "linear" }}
-                className="absolute pointer-events-none w-[6rem] bottom-0 rounded-md z-[-1] h-1 bg-gradient-45 from-purple-600 to-cyan-500"
+                className="absolute pointer-events-none w-[6rem] bottom-0 rounded-md z-[-1] h-1 bg-zinc-300 dark:bg-zinc-700 opacity-100"
               />
             </div>
           </header>

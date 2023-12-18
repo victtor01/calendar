@@ -46,7 +46,7 @@ export default function Home() {
   const { userInfo } = useSessionContext();
 
   return (
-    <S.Container className={fontOpenSans}>
+    <S.Container className={'p-2'}>
       <header className="flex items-center justify-between">
         <motion.div
           initial={{ opacity: 0, x: -10 }}
@@ -54,7 +54,7 @@ export default function Home() {
           transition={{ delay: 0.1 }}
           className="flex flex-col"
         >
-          <h1 className={`text-2xl font-semibold`}>DASHBOARD</h1>
+          <h1 className={`text-2xl font-semibold`}>Dashboard</h1>
           <h2 className={`text-cyan-500 ${fontValela}`}>
             {moment().format("dddd, DD MMM YYYY")}
           </h2>

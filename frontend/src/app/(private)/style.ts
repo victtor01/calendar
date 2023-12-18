@@ -14,6 +14,7 @@ export const Container = styled.main`
   grid-gap: 0rem;
   height: 100vh;
   color: ${(props) => props.theme.text};
+  background-color: ${({theme}) => theme.primary};
   position: relative;
   min-width: auto;
   overflow: hidden;
@@ -23,7 +24,6 @@ export const Container = styled.main`
 export const Content = styled.div`
   display: flex;
   grid-area: content;
-
   height: 100%;
   position: relative;
   min-width: auto;
@@ -74,7 +74,7 @@ export const Bubble = styled.div`
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61% ;
     filter: blur(2em);
-    opacity: 0.1;
+    opacity: 0.08;
     background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
   }
 
@@ -88,7 +88,7 @@ export const Bubble = styled.div`
     padding: 2rem;
     border-radius:  77% 23% 17% 83% / 35% 61% 39% 65% ;
     filter: blur(2em) ;
-    opacity: 0.1;
+    opacity: 0.08;
     background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
   }
 `;
