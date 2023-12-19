@@ -2,7 +2,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventsRepository } from './repositories/events-repository';
 import { CreateEventsDto } from './dto/create-events.dto';
 import { Events } from './entities/events.entity';
-import { addDays, parseISO, subDays, parse, format, startOfDay, endOfDay} from 'date-fns';
+import {
+  addDays,
+  parseISO,
+  subDays,
+  parse,
+  format,
+  startOfDay,
+  endOfDay,
+} from 'date-fns';
 import { UpdateEventsDto } from './dto/update-events.dto';
 import { findEventsDto } from './dto/find-events.dto';
 import { DeleteEventsDto } from './dto/delete-events.dto';
@@ -15,9 +23,29 @@ import { UpdateStatusEventsDto } from './dto/update-status-events.dto';
 export class EventsService {
   constructor(private readonly eventsRepository: EventsRepository) {}
 
+  private async validateFields(data: UpdateEventsDto | Events): Promise<{
+    success: boolean;
+    errors: Array<{ message: string; type: string }>;
+  }> {
+    const errors = [];
+
+    const { name, start, end } = data;
+
+    if (!name || !start || !end) {
+      errors.push({
+        message: '',
+        type: 'Invalidate fields',
+      });
+    }
+
+    return {
+      success: !errors?.length,
+      errors,
+    };
+  }
+
   async getAll(userId: number): Promise<Events[]> {
-    const res = await this.eventsRepository.findAll(Number(userId));
-    return res;
+    return await this.eventsRepository.findAll(Number(userId));
   }
 
   async create(data: CreateEventsDto): Promise<Events> {
@@ -26,10 +54,36 @@ export class EventsService {
     return await this.eventsRepository.create(data);
   }
 
-  async update(data: UpdateEventsDto): Promise<Events> {
+  async update({
+    userId,
+    data,
+  }: {
+    userId: number;
+    data: UpdateEventsDto;
+  }): Promise<Events> {
+    const { success, errors } = await this.validateFields(data);
+
+    if (!success) {
+      console.log('error');
+      throw new BadRequestException({
+        massage: 'Invalidate field',
+        errors,
+      });
+    }
+
+    if (data.templates) {
+
+      const templates = data.templates.map(template => ({ id: template.id }))
+      await this.eventsRepository.connectTemplate({
+        eventId: +data.id,
+        templates,
+        userId,
+      });
+    }
+
     data.start = new Date(data.start.toString());
     data.end = parseISO(data.end.toString());
-    console.log('fazendo update... ', data);
+
     return await this.eventsRepository.update(data);
   }
 
@@ -42,17 +96,11 @@ export class EventsService {
     const threeDaysAgo = startOfDay(subDays(today, 3));
     const threeDaysLater = endOfDay(addDays(today, 3));
 
-    console.log(threeDaysAgo, threeDaysLater)
-
-    const res =  await this.eventsRepository.findByDate({
+    return await this.eventsRepository.findByDate({
       userId,
       start: threeDaysAgo,
       end: threeDaysLater,
     });
-
-    console.log('resposta do eventos da semana: ', res);
-
-    return res;
   }
 
   async findByDate({

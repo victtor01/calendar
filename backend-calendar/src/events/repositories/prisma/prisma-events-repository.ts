@@ -10,6 +10,7 @@ import { DeleteManyEventsDto } from 'src/events/dto/delete-many-events.dto';
 import { UpdateConnectManyDto } from 'src/events/dto/update-connect-many.dto';
 import { UpdateConnectService } from 'src/events/dto/update-connect-service';
 import { UpdateStatusEventsDto } from 'src/events/dto/update-status-events.dto';
+import { eventsTemplates } from 'src/events-templates/entities/events-templates.entity';
 
 @Injectable()
 export class PrismaEventsRepository implements EventsRepository {
@@ -18,6 +19,12 @@ export class PrismaEventsRepository implements EventsRepository {
   async findAll(userId: number): Promise<Events[]> {
     return await this.prismaService.events.findMany({
       where: { userId },
+      include: {
+        services: true,
+        clients: true,
+        comments: true,
+        templates: true,
+      },
     });
   }
 
@@ -25,7 +32,15 @@ export class PrismaEventsRepository implements EventsRepository {
     const { id, ...rest } = data;
     const res = await this.prismaService.events.update({
       where: { id },
-      data: { ...rest },
+      data: {
+        name: rest.name,
+        description: rest.description,
+        color: rest.color,
+        allDay: rest.allDay,
+        status: rest.status,
+        start: rest.start,
+        end: rest.end,
+      },
     });
     return res;
   }
@@ -35,7 +50,6 @@ export class PrismaEventsRepository implements EventsRepository {
     userId,
     status,
   }: UpdateStatusEventsDto): Promise<Events> {
-
     return await this.prismaService.events.update({
       where: {
         id,
@@ -43,6 +57,25 @@ export class PrismaEventsRepository implements EventsRepository {
       },
       data: {
         status,
+      },
+    });
+  }
+
+  async connectTemplate(data: {
+    templates: Array<{ id: number }>;
+    userId: number;
+    eventId: number;
+  }): Promise<any> {
+    const { userId, templates, eventId: id } = data;
+    return await this.prismaService.events.update({
+      where: {
+        id,
+        userId,
+      },
+      data: {
+        templates: {
+          connect: templates,
+        },
       },
     });
   }
@@ -69,6 +102,7 @@ export class PrismaEventsRepository implements EventsRepository {
             createdAt: 'desc',
           },
         },
+        templates: true,
       },
     });
   }
@@ -106,7 +140,7 @@ export class PrismaEventsRepository implements EventsRepository {
       include: {
         clients: true,
         services: true,
-      }
+      },
     });
     return res;
   }

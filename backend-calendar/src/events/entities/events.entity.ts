@@ -1,5 +1,6 @@
 import { Clients } from 'src/clients/entities/clients.entity';
 import { EventsComments } from 'src/events-comments/entities/events-comments.entity';
+import { eventsTemplates } from 'src/events-templates/entities/events-templates.entity';
 import { Service } from 'src/services/entities/service.entity';
 
 export class Events {
@@ -18,6 +19,7 @@ export class Events {
   clients?: Clients[];
   comments?: EventsComments[];
   services?: Service[];
+  templates?: eventsTemplates[];
 }
 
 export type StatusEvent = 'ACTIVATED' | 'CONCLUDED' | 'FILED';

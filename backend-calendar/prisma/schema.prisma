@@ -106,6 +106,7 @@ model eventsTemplates {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
   user        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event events[]
 }
 
 model events {
@@ -125,6 +126,7 @@ model events {
   comments    eventsComments[]
   clients     clients[]        @relation("clientsToevents")
   services    services[]       @relation("eventsToservices")
+  templates eventsTemplates[]
 }
 
 model eventsComments {

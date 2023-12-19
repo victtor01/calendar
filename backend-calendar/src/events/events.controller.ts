@@ -15,7 +15,6 @@ import { CreateEventsDto } from './dto/create-events.dto';
 import { User } from 'src/users/entities/user.entity';
 import { EventsService } from './events.service';
 import { UpdateEventsDto } from './dto/update-events.dto';
-import { UpdateConnectManyDto } from './dto/update-connect-many.dto';
 import { StatusEvent } from './entities/events.entity';
 
 /* 
@@ -77,7 +76,10 @@ export class EventsController {
     @Request() req: { user: User },
   ) {
     body.id = Number(id);
-    return await this.eventsService.update(body);
+    return await this.eventsService.update({
+      data: body,
+      userId: +req.user.id
+    });
   }
 
   @Patch('/update-status/:id')
