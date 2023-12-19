@@ -151,7 +151,6 @@ export default function Calendar() {
 
   return (
     <>
-      <Header />
       <S.Bubble />
       <AnimatePresence>
         {selectedDay?.start && <AddClient setSelectedDay={setSelectedDay} />}
@@ -166,15 +165,16 @@ export default function Calendar() {
         variants={variants}
         initial="pageInitial"
         animate="pageAnimate"
-        className="p-10 flex gap-[1rem] mx-auto w-full h-full relative"
+        className="p-4 flex gap-[1rem] mx-auto flex-col w-full h-full relative"
       >
+        <Header />
         <div className="flex flex-col flex-1">
           <S.Content className="gap-4 flex flex-col mx-auto">
             <S.Calendar
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="flex flex-1 gap-2 p-4 z-[2] relative bg-white bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-900 shadow-inner dark:shadow-black shadow-zinc-300 mb-4 rounded"
+              className="flex flex-1 gap-2 p-4 z-[2] relative bg-white border-2 border-white dark:border-zinc-900 bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-900 shadow-inner dark:shadow-black shadow-zinc-300 mb-4 rounded"
             >
               <div className="col-span-8 max-h-auto w-full">
                 <FullCalendar

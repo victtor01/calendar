@@ -23,20 +23,6 @@ export const Header = () => {
               <span>Filtrar</span>
             </motion.button>
           </AnimatePresence>
-          <Link
-            href="/finance/accounts"
-            className="bg-cyan-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
-          >
-            <FaCreditCard />
-            Contas
-          </Link>
-          <Link
-            href="/finance/create"
-            className="bg-gradient-45 from-purple-500 to-blue-500 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
-          >
-            <IoMdAdd />
-            Criar
-          </Link>
         </motion.div>
       </div>
       <motion.div

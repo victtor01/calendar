@@ -1,37 +1,56 @@
 "use client";
 
-import { BsFillPersonLinesFill, BsPenFill } from "react-icons/bs";
 import { Button } from "@nextui-org/react";
-import { AiOutlineClose } from "react-icons/ai";
 import Label from "@/components/label";
-import { Controller } from "react-hook-form";
-import { fontOpenSans, fontRoboto } from "@/app/fonts";
+import { Controller, useFieldArray } from "react-hook-form";
+import { fontOpenSans } from "@/app/fonts";
 import { z } from "zod";
 import { ControllerRenderProps, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import moment from "moment";
 import { queryClient } from "@/hooks/queryClient";
 import useApiPrivate from "@/hooks/apiPrivate";
-import { useState } from "react";
 import { Event } from "@/types/events";
 import { AnimatePresence, motion } from "framer-motion";
 import { colorsEvents } from "@/constants/colorsEvents";
-
-import * as S from "./style";
-import { InputColors } from "@/components/inputColors";
-
-const createEventsFormSchema = z.object({
-  name: z.string().nonempty("Preencha o nome!"),
-  allDay: z.boolean(),
-  description: z.string(),
-  start: z.string(),
-  end: z.string(),
-  color: z.string(),
-});
+import { BiCheck } from "react-icons/bi";
+import { useQuery } from "@tanstack/react-query";
+import { EventsTemplates } from "@/types/eventsTemplates";
+import { IoClose } from "react-icons/io5";
+import { useState } from "react";
 
 export type CreateEventsFormData = z.infer<typeof createEventsFormSchema>;
 export type KeyOfEventsFormData = keyof CreateEventsFormData;
 export type OmitAllday = Omit<ControllerRenderProps, "allDay">;
+
+const createEventsFormSchema = z
+  .object({
+    name: z.string().nonempty("Preencha o nome!"),
+    allDay: z.boolean(),
+    description: z.string(),
+    start: z.string(),
+    color: z.string(),
+    end: z.string(),
+    templates: z.array(
+      z.object({
+        id: z.number(),
+        color: z.string(),
+        name: z.string(),
+      })
+    ),
+  })
+  .refine(
+    (data: any) => {
+      if (new Date(data.end) < new Date(data.start)) {
+        return false;
+      }
+
+      return true;
+    },
+    {
+      message: "A data de término deve ser posterior à data de início.",
+    }
+  );
 
 export interface LabelFormEventsDataProps {
   name: string;
@@ -51,35 +70,22 @@ export function useFormDetails(event: Event | undefined) {
     resolver: zodResolver(createEventsFormSchema),
   });
 
-  const handleEditingClient = () => setEditingClient((prev) => !prev);
+  const [openTemplates, setOpenTemplates] = useState<boolean>(false);
+  const handleOpenTemplates = () => setOpenTemplates((prev) => !prev);
 
-  const [editingClient, setEditingClient] = useState<boolean>(false);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "templates",
+  });
 
   const api = useApiPrivate();
 
-  const labelFormEventsData = [
-    { name: "name", span: "Nome" },
-    {
-      name: "start",
-      span: "Começa em",
-      default: moment
-        .tz(event?.start?.toString(), "America/Sao_Paulo")
-        .format("YYYY-MM-DDTHH:mm"),
-      type: "datetime-local",
+  const { data: templates } = useQuery({
+    queryKey: ["events-templates"],
+    queryFn: async () => {
+      return (await api.get("/events-templates")).data;
     },
-    {
-      name: "end",
-      span: "Termina em",
-      default: moment
-        .tz(event?.end?.toString(), "America/Sao_Paulo")
-        .format("YYYY-MM-DDTHH:mm"),
-      type: "datetime-local",
-    },
-    {
-      name: "description",
-      span: "Descrição",
-    },
-  ];
+  });
 
   async function updateEvents(data: CreateEventsFormData) {
     if (!event) {
@@ -102,13 +108,10 @@ export function useFormDetails(event: Event | undefined) {
         item.id === updated.id ? { ...item, ...updated } : item
       );
     });
-
-    setEditingClient(false);
   }
 
   return {
     form: {
-      labelFormEventsData,
       handleSubmit,
       control,
       errors,
@@ -116,17 +119,23 @@ export function useFormDetails(event: Event | undefined) {
     },
     utils: {
       updateEvents,
-      handleEditingClient,
-      editingClient,
+      handleOpenTemplates,
+      openTemplates,
+      fields,
+      append,
+      remove,
     },
-    data: { event },
+    data: {
+      templates,
+    },
   };
 }
 
 export default function Edit({ event }: { event: Event | undefined }) {
   const {
     form: { handleSubmit, control, errors, reset },
-    utils: { updateEvents },
+    utils: { updateEvents, openTemplates, handleOpenTemplates, append, remove },
+    data: { templates },
   } = useFormDetails(event);
 
   if (!event) return;
@@ -153,6 +162,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
           );
         }}
       />
+
       <Controller
         control={control}
         name={"description"}
@@ -162,7 +172,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
             <Label.Root className="m-0">
               <textarea
                 {...field}
-                placeholder="Digite uma descrição"
+                placeholder="Digite uma descrição..."
                 className="min-h-[5rem] bg-zinc-500 bg-opacity-5 p-3 rounded resize-none h-[8rem] shadow-inner text-md p-1 outline-none"
               />
               {errors?.name && errors?.name?.message}
@@ -170,6 +180,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
           );
         }}
       />
+
       <div className="flex justify-between items-center gap-3">
         <Controller
           control={control}
@@ -200,7 +211,9 @@ export default function Edit({ event }: { event: Event | undefined }) {
             );
           }}
         />
+        {errors?.end && errors?.end?.message}
       </div>
+
       <Controller
         control={control}
         name={"allDay"}
@@ -227,6 +240,90 @@ export default function Edit({ event }: { event: Event | undefined }) {
           );
         }}
       />
+
+      <Label.Root>
+        <Label.Title>Templates</Label.Title>
+        <div className="relative flex gap-3">
+          <Controller
+            control={control}
+            name="templates"
+            render={({ field }) => (
+              <>
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-zinc-800 flex-1 p-3 gap-3 flex-wrap flex w-full rounded"
+                >
+                  {field?.value?.map((item: any, index: number) => (
+                    <div
+                      key={index}
+                      className="bg-zinc-200 items-center gap-2 flex bg-zinc-700 p-1 px-2 font-semibold rounded"
+                    >
+                      {item?.color && (
+                        <span
+                          className="w-3 h-3 rounded"
+                          style={{ background: item.color }}
+                        />
+                      )}
+                      {item.name}
+                      <button
+                        onClick={() => {
+                          remove(index);
+                        }}
+                      >
+                        <IoClose size="18" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {!field?.value?.length && <span>Nenhum selecionado</span>}
+                </motion.button>
+                <button
+                  onClick={handleOpenTemplates}
+                  className="text-cyan-500 font-semibold"
+                >
+                  ABRIR
+                </button>
+                <AnimatePresence>
+                  {openTemplates && (
+                    <motion.div
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      key={"modal-template"}
+                      className="absolute w-full z-[30] p-0 rounded-md h-[5rem] overflow-auto top-[100%] p-2 rounded mt-2 bg-zinc-200 dark:bg-zinc-800"
+                    >
+                      {templates?.map(
+                        (template: EventsTemplates, index: number) => {
+                          return (
+                            <motion.button
+                              onClick={() => {
+                                append({
+                                  id: template.id,
+                                  color: template.color || "",
+                                  name: template.name,
+                                });
+                              }}
+                              key={index}
+                              className="flex items-center w-full gap-3 p-1 px-3 rounded hover:bg-zinc-500 bg-opacity-10"
+                            >
+                              <span
+                                className="p-1 w-3 h-3 rounded"
+                                style={{ background: template.color }}
+                              />
+                              <div className="">{template.name}</div>
+                            </motion.button>
+                          );
+                        }
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
+          />
+        </div>
+      </Label.Root>
+
       <Label.Root className="m-0">
         <Label.Title className="text-lg">Cor</Label.Title>
         <Label.Content className="flex-row ">
@@ -242,11 +339,13 @@ export default function Edit({ event }: { event: Event | undefined }) {
                       <button
                         key={index}
                         onClick={() => field.onChange(color)}
-                        className="rounded-md p-4"
+                        className="rounded-md p-2 w-10 h-10 flex justify-center items-center"
                         style={{
                           backgroundColor: color,
                         }}
-                      ></button>
+                      >
+                        {field?.value === color && <BiCheck />}
+                      </button>
                     );
                   })}
                 </div>

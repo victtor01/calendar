@@ -19,7 +19,7 @@ export const Bubble = styled.div`
   display: flex;
   height: 100%;
   min-height: fit-content;
-  position: absolute;
+  position: fixed;
   z-index: 2;
   overflow: hidden;
   top: 0;

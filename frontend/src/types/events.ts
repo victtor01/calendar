@@ -1,6 +1,7 @@
 import { Clients } from "./clients";
 import { Service } from "./services";
 import { Comment } from './comment';
+import { EventsTemplates } from "./eventsTemplates";
 
 export interface Event {
   id: number;
@@ -15,6 +16,7 @@ export interface Event {
   comments?: Comment[];
   clients?: Clients[];
   services?: Service[];
+  templates?: EventsTemplates[];
   createdAt: Date;
 }
 

@@ -129,6 +129,9 @@ const ClientsComponent = ({ clients }: { clients: Clients[] }) => (
           <th scope="col" className="px-6 py-3">
             Email
           </th>
+          <th scope="col" className="px-6 py-3">
+            Opções
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -140,7 +143,7 @@ const ClientsComponent = ({ clients }: { clients: Clients[] }) => (
             >
               <th
                 scope="row"
-                className="px-6 py-4 w-4 h-8 bg-zinc-300 dark:bg-zinc-700 rounded overflow-hidden relative font-medium text-gray-900 whitespace-nowrap"
+                className="px-6 py-4 w-4 h-8 bg-zinc-200 dark:bg-zinc-700 rounded overflow-hidden relative font-medium text-gray-900 whitespace-nowrap"
               >
                 {client?.photo && (
                   <Image
@@ -165,6 +168,14 @@ const ClientsComponent = ({ clients }: { clients: Clients[] }) => (
                 {moment(client.createdAt).format("DD, MMM [de] YYYY")}
               </td>
               <td className="px-6 py-4">{client?.email}</td>
+              <td className="px-6 py-4">
+                <Link
+                  href={`/clients/${client?.code}`}
+                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                >
+                  Editar
+                </Link>
+              </td>
             </tr>
           );
         })}
@@ -247,8 +258,8 @@ export function ClientComponent({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       key={itemSelected.id}
-      style={{ zIndex: 100 }}
-      className="fixed top-0 left-0 w-full h-screen bg-zinc-800 bg-opacity-40 overflow-x-hidden z-[100] p-4 flex justify-center overflow-y-auto"
+      style={{ zIndex: 30 }}
+      className="fixed top-0 left-0 w-full h-screen overflow-x-hidden backdrop-blur-md z-[100] p-4 flex justify-center overflow-y-auto"
     >
       <motion.section
         className="bg-white dark:bg-zinc-900 flex flex-col shadow-2xl rounded-md max-w-[55rem] min-h-[40rem] h-auto w-full relative z-[100] my-auto"
@@ -284,30 +295,27 @@ export function ClientComponent({
             </motion.button>
           </div>
         </header>
-        <S.Bubble />
         <section className="flex py-3 flex-1 flex-col">
           <header className="flex min-w-[5rem] w-auto overflow-x-auto">
-            <div className="flex mx-auto gap-3 rounded relative overflow-hidden min-w-[30rem] ">
+            <div className="flex mx-auto border-b dark:border-zinc-700 relative gap-2 overflow-hidden justify-between items-center min-w-[30rem] ">
               {["INFORMATIONS", "SERVICES", "CLIENTS", "COMMENTARIES"].map(
-                (item: string) => {
-                  return (
-                    <button
-                      key={item}
-                      className="p-3 font-semibold opacity-90 min-w-[6rem]"
-                      onClick={(e) => moveIndicator(item as Page, e)}
-                    >
-                      {PagePT[item as Page]}
-                    </button>
-                  );
-                }
+                (item: string) => (
+                  <button
+                    key={item}
+                    className="p-3 font-semibold opacity-90 min-w-[6rem]"
+                    onClick={(e) => moveIndicator(item as Page, e)}
+                  >
+                    {PagePT[item as Page]}
+                  </button>
+                )
               )}
               <motion.span
                 animate={{
                   left: indicator?.left || 0,
                   width: indicator?.width || "7rem",
                 }}
-                transition={{ type: "linear" }}
-                className="absolute pointer-events-none w-[6rem] bottom-0 rounded-md z-[-1] h-1 bg-zinc-300 dark:bg-zinc-700 opacity-100"
+                transition={{ type: "spring", stiffness: 50 }}
+                className="absolute pointer-events-none w-[6rem] bottom-0 z-[-1] h-[1.4px] bg-black dark:bg-zinc-700 opacity-100"
               />
             </div>
           </header>
@@ -390,36 +398,16 @@ export function ClientComponent({
                       whileTap={{ scale: 0.94 }}
                       className="p-3 bg-zinc-500 font-semibold bg-opacity-10 rounded-md flex w-full"
                     >
-                      Nenhum selecionado!
-                    </motion.button>
-                    <AnimatePresence>
-                      {popups["templates"] && (
-                        <motion.div
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={{ scale: 0, opacity: 0 }}
-                          key={"modal-template"}
-                          className="absolute w-full p-0 rounded-md h-[5rem] overflow-auto top-[100%] p-2 rounded mt-2 bg-zinc-500 bg-opacity-5"
-                        >
-                          {templates?.map(
-                            (template: EventsTemplates, index: number) => {
-                              return (
-                                <motion.button
-                                  key={index}
-                                  className="flex items-center w-full gap-3 p-1 px-3 rounded hover:bg-zinc-500 bg-opacity-10"
-                                >
-                                  <span
-                                    className="p-1 w-3 h-3 rounded"
-                                    style={{ background: template.color }}
-                                  />
-                                  <div className="">{template.name}</div>
-                                </motion.button>
-                              );
-                            }
-                          )}
-                        </motion.div>
+                      {itemSelected?.templates?.map(
+                        (template: EventsTemplates) => (
+                          <div>{template?.name}</div>
+                        )
                       )}
-                    </AnimatePresence>
+
+                      {!itemSelected?.templates?.length && (
+                        <span>Sem templates</span>
+                      )}
+                    </motion.button>
                   </div>
                 </div>
               </div>
@@ -465,7 +453,9 @@ export function ClientComponent({
                             scope="row"
                             className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                           >
-                            {moment(comment.createdAt).format('DD de MMM, YYYY')}
+                            {moment(comment.createdAt).format(
+                              "DD de MMM, YYYY"
+                            )}
                           </th>
                         </tr>
                       );

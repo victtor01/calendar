@@ -102,14 +102,14 @@ export default function Header() {
   } = useHeader();
 
   return (
-    <div className="flex flex-col min-h-auto z-[2] sticky top-0">
+    <div className="flex min-h-auto z-[2] w-full justify-between items-center">
       <motion.header
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className=" w-full flex rounded-md flex-1 items-center"
+        className=" flex rounded-md items-center"
       >
-        <motion.div className="flex gap-2 py-3 relative flex-col mx-auto flex-col flex-1">
+        <motion.div className="flex gap-2 py-3 relative mx-auto flex-1">
           <motion.button className="opacity-90 flex items-center justify-center gap-2 font-semibold text-md shadow hover:opacity-100 p-4 text-white rounded-full hover:shadow-inner bg-gradient-45 from-purple-600 to-blue-600">
             <IoAddSharp size="23" />
           </motion.button>
