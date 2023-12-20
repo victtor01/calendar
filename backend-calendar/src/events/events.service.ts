@@ -18,6 +18,7 @@ import { DeleteManyEventsDto } from './dto/delete-many-events.dto';
 import { UpdateConnectService } from './dto/update-connect-service';
 import { findEventsByDateDto } from './dto/find-events-by-date.dto';
 import { UpdateStatusEventsDto } from './dto/update-status-events.dto';
+import { eventsTemplates } from 'src/events-templates/entities/events-templates.entity';
 
 @Injectable()
 export class EventsService {
@@ -64,22 +65,19 @@ export class EventsService {
     const { success, errors } = await this.validateFields(data);
 
     if (!success) {
-      console.log('error');
       throw new BadRequestException({
         massage: 'Invalidate field',
         errors,
       });
     }
 
-    if (data.templates) {
+    const templates = data.templates.map((template) => ({ id: template.id }));
 
-      const templates = data.templates.map(template => ({ id: template.id }))
-      await this.eventsRepository.connectTemplate({
-        eventId: +data.id,
-        templates,
-        userId,
-      });
-    }
+    await this.eventsRepository.connectTemplate({
+      eventId: +data.id,
+      templates,
+      userId,
+    });
 
     data.start = new Date(data.start.toString());
     data.end = parseISO(data.end.toString());

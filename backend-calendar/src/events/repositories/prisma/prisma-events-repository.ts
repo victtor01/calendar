@@ -41,6 +41,9 @@ export class PrismaEventsRepository implements EventsRepository {
         start: rest.start,
         end: rest.end,
       },
+      include: {
+        templates: true,
+      },
     });
     return res;
   }
@@ -74,7 +77,7 @@ export class PrismaEventsRepository implements EventsRepository {
       },
       data: {
         templates: {
-          connect: templates,
+          set: templates,
         },
       },
     });
@@ -215,6 +218,7 @@ export class PrismaEventsRepository implements EventsRepository {
       include: {
         clients: true,
         services: true,
+        templates: true,
       },
     });
   }
