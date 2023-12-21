@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@nextui-org/react";
+import { Button, colors } from "@nextui-org/react";
 import Label from "@/components/label";
 import { Controller, useFieldArray } from "react-hook-form";
 import { fontOpenSans } from "@/app/fonts";
@@ -18,6 +18,8 @@ import { useQuery } from "@tanstack/react-query";
 import { EventsTemplates } from "@/types/eventsTemplates";
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import Spinner from "@/components/spinner";
 
 export type CreateEventsFormData = z.infer<typeof createEventsFormSchema>;
 export type KeyOfEventsFormData = keyof CreateEventsFormData;
@@ -31,13 +33,15 @@ const createEventsFormSchema = z
     start: z.string(),
     color: z.string(),
     end: z.string(),
-    templates: z.array(
-      z.object({
-        id: z.number(),
-        color: z.string(),
-        name: z.string(),
-      })
-    ),
+    templates: z
+      .array(
+        z.object({
+          id: z.number(),
+          color: z.string().nullable(),
+          name: z.string(),
+        })
+      )
+      .nullable(),
   })
   .refine(
     (data: any) => {
@@ -65,7 +69,7 @@ export function useFormDetails(event: Event | undefined) {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<CreateEventsFormData>({
     resolver: zodResolver(createEventsFormSchema),
   });
@@ -92,27 +96,48 @@ export function useFormDetails(event: Event | undefined) {
       return;
     }
 
-    const updated = (await api.put(`/events/update/${event?.id}`, data)).data;
-    const { code } = event;
+    try {
+      const updated = (await api.put(`/events/update/${event?.id}`, data)).data;
+      const { code } = event;
 
-    queryClient.setQueryData(["event", code], (prevData: any) => {
-      return {
-        ...updated,
-        ...prevData,
-        comments: prevData.comments ? [...prevData.comments] : [],
-      };
-    });
+      const updateQueryDataPromises = [
+        queryClient.setQueryData(
+          ["event", code],
+          (prevData: Event | undefined) => {
+            return {
+              ...updated,
+              services: prevData?.services ? [...prevData.services] : [],
+              comments: prevData?.comments ? [...prevData.comments] : [],
+              template: updated?.templates ? [...updated.templates] : [],
+            };
+          }
+        ),
+        queryClient.setQueryData(["events"], (prevData: any) => {
+          return prevData?.map((event: Event) =>
+            event.id === updated.id
+              ? {
+                  ...updated,
+                  services: prevData?.services ? [...prevData.services] : [],
+                  comments: prevData?.comments ? [...prevData.comments] : [],
+                  template: updated?.templates ? [...updated.templates] : [],
+                }
+              : event
+          );
+        }),
+      ];
 
-    queryClient.setQueryData(["events"], (prevData: any) => {
-      return prevData?.map((item: Event) =>
-        item.id === updated.id ? { ...item, ...updated } : item
-      );
-    });
+      await Promise.all(updateQueryDataPromises);
+
+      toast.success("Atualizado com sucesso!");
+    } catch (error) {
+      toast.error("Houve um erro, tente novamente mais tarde!");
+    }
   }
 
   return {
     form: {
       handleSubmit,
+      isSubmitting,
       control,
       errors,
       reset,
@@ -133,7 +158,7 @@ export function useFormDetails(event: Event | undefined) {
 
 export default function Edit({ event }: { event: Event | undefined }) {
   const {
-    form: { handleSubmit, control, errors, reset },
+    form: { handleSubmit, control, isSubmitting, errors, reset },
     utils: { updateEvents, openTemplates, handleOpenTemplates, append, remove },
     data: { templates },
   } = useFormDetails(event);
@@ -246,17 +271,15 @@ export default function Edit({ event }: { event: Event | undefined }) {
         <div className="relative flex gap-3">
           <Controller
             control={control}
+            defaultValue={event.templates || []}
             name="templates"
             render={({ field }) => (
               <>
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-zinc-800 flex-1 p-3 gap-3 flex-wrap flex w-full rounded"
-                >
+                <div className="bg-zinc-100 dark:bg-zinc-800 flex-1 p-3 gap-3 flex-wrap flex w-full rounded">
                   {field?.value?.map((item: any, index: number) => (
                     <div
                       key={index}
-                      className="bg-zinc-200 items-center gap-2 flex bg-zinc-700 p-1 px-2 font-semibold rounded"
+                      className="bg-zinc-200 items-center gap-2 flex dark:bg-zinc-700 p-1 px-2 font-semibold rounded"
                     >
                       {item?.color && (
                         <span
@@ -266,6 +289,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
                       )}
                       {item.name}
                       <button
+                        type="button"
                         onClick={() => {
                           remove(index);
                         }}
@@ -274,10 +298,10 @@ export default function Edit({ event }: { event: Event | undefined }) {
                       </button>
                     </div>
                   ))}
-
                   {!field?.value?.length && <span>Nenhum selecionado</span>}
-                </motion.button>
+                </div>
                 <button
+                  type="button"
                   onClick={handleOpenTemplates}
                   className="text-cyan-500 font-semibold"
                 >
@@ -296,19 +320,28 @@ export default function Edit({ event }: { event: Event | undefined }) {
                         (template: EventsTemplates, index: number) => {
                           return (
                             <motion.button
+                              type="button"
                               onClick={() => {
-                                append({
-                                  id: template.id,
-                                  color: template.color || "",
-                                  name: template.name,
-                                });
+                                if (
+                                  !field?.value?.some(
+                                    (item) => item.id === template.id
+                                  )
+                                ) {
+                                  append({
+                                    id: template.id,
+                                    color: template.color || "",
+                                    name: template.name,
+                                  });
+                                }
                               }}
                               key={index}
                               className="flex items-center w-full gap-3 p-1 px-3 rounded hover:bg-zinc-500 bg-opacity-10"
                             >
                               <span
                                 className="p-1 w-3 h-3 rounded"
-                                style={{ background: template.color }}
+                                style={{
+                                  background: template.color || "transparent",
+                                }}
                               />
                               <div className="">{template.name}</div>
                             </motion.button>
@@ -330,7 +363,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
           <Controller
             control={control}
             name={"color"}
-            defaultValue={event.color || "#01f9f1"}
+            defaultValue={event.color}
             render={({ field }: { field: OmitAllday }) => {
               return (
                 <div className="flex gap-2 items-center">
@@ -338,6 +371,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
                     return (
                       <button
                         key={index}
+                        type="button"
                         onClick={() => field.onChange(color)}
                         className="rounded-md p-2 w-10 h-10 flex justify-center items-center"
                         style={{
@@ -354,6 +388,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
           />
         </Label.Content>
       </Label.Root>
+
       <div className="flex w-full gap-2 justify-between">
         <AnimatePresence>
           <motion.div
@@ -372,9 +407,15 @@ export default function Edit({ event }: { event: Event | undefined }) {
             </Button>
             <Button
               type="submit"
-              className="bg-gradient-45 from-purple-600 to-blue-500 px-6 rounded text-white flex justify-center p-3"
+              className="bg-gradient-45 from-purple-600 to-blue-500 px-6 rounded text-white flex justify-center p-5 w-full max-w-[10rem]"
             >
-              <span className="font-semibold">Salvar alterações</span>
+              <span className="font-semibold">
+                {isSubmitting ? (
+                  <Spinner className="w-5 h-5" />
+                ) : (
+                  "Salvar Alterações"
+                )}
+              </span>
             </Button>
           </motion.div>
         </AnimatePresence>

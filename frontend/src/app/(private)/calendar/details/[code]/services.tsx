@@ -17,7 +17,6 @@ import Input from "@/components/input/input";
 import { AiOutlineSearch } from "react-icons/ai";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
 import { toast } from "react-toastify";
-
 import * as S from './style';
 
 function useServices(event: Event) {

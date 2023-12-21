@@ -32,9 +32,14 @@ export default function useApiPrivate() {
     const interceptorRequest = api.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
+          //Get access token of cookies
           const { access_token } = parseCookies();
+
+          //create auth in header request
           config.headers["Authorization"] = `Bearer ${access_token}`;
         }
+
+        //return config of request
         return config;
       },
       (err) => Promise.reject(err)
@@ -44,22 +49,29 @@ export default function useApiPrivate() {
 
     const interceptorResponse = api.interceptors.response.use(
       (response) => response,
+      //execute err function
       async (err: any) => {
+
+        //get config of err request
         const originalConfig = err.config;
+        
         if (err.response) {
+          //if not is secound request of error and status is 401
           if (err.response.status === 401 && !_retry) {
             _retry = true;
-            try {
-              const { access_token } = await refreshToken();
-              if (access_token) {
-                Cookies.set("access_token", access_token);
-                originalConfig.headers[
-                  "Authorization"
-                ] = `Bearer ${access_token}`;
-                return api(originalConfig);
-              }
-            } catch (error) {
-              console.log(error);
+            //refresh token access
+            const { access_token } = await refreshToken();
+            
+            //is token , request again
+            if (access_token) {
+              //set refreash token in cookies
+              Cookies.set("access_token", access_token);
+              //modify header of request
+              originalConfig.headers[
+                "Authorization"
+              ] = `Bearer ${access_token}`;
+              // request again
+              return api(originalConfig);
             }
           }
         }

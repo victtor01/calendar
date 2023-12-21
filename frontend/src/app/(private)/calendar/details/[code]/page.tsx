@@ -227,8 +227,13 @@ export default function Details({
             <p>Não haverá como recupera-lo depois!</p>
           </section>
           <footer className="flex justify-between">
-            <motion.button className="bg-blue-500 p-2 rounded hover:opacity-100 opacity-90">Cancelar</motion.button>
-            <motion.button className="bg-rose-600 p-2 rounded hover:opacity-100 opacity-90">
+            <motion.button className="bg-blue-500 p-2 rounded hover:opacity-100 opacity-90">
+              Cancelar
+            </motion.button>
+            <motion.button
+              onClick={deleteEvent}
+              className="bg-rose-600 p-2 rounded hover:opacity-100 opacity-90"
+            >
               Tenho certeza!
             </motion.button>
           </footer>

@@ -153,7 +153,12 @@ export default function Calendar() {
     <>
       <S.Bubble />
       <AnimatePresence>
-        {selectedDay?.start && <AddClient setSelectedDay={setSelectedDay} />}
+        {selectedDay?.start && (
+          <AddClient
+            setSelectedDay={setSelectedDay}
+            selectedDay={selectedDay}
+          />
+        )}
         {itemSelected && (
           <ClientComponent
             itemSelected={itemSelected}

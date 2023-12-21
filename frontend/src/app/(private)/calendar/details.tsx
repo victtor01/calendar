@@ -252,6 +252,8 @@ export function ClientComponent({
     return "Evento atrasado!";
   })();
 
+  console.log(itemSelected);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -314,8 +316,8 @@ export function ClientComponent({
                   left: indicator?.left || 0,
                   width: indicator?.width || "7rem",
                 }}
-                transition={{ type: "spring", stiffness: 50 }}
-                className="absolute pointer-events-none w-[6rem] bottom-0 z-[-1] h-[1.4px] bg-black dark:bg-zinc-700 opacity-100"
+                transition={{ type: "just" }}
+                className="absolute pointer-events-none w-[6rem] bottom-0 z-[-1] h-[1.4px] bg-black dark:bg-white opacity-100"
               />
             </div>
           </header>
@@ -393,21 +395,31 @@ export function ClientComponent({
                 <div className="flex">
                   <div className="w-[2rem] h-full " />
                   <div className="w-full max-w-[20rem] relative">
-                    <motion.button
-                      onClick={() => handlePopup("templates")}
-                      whileTap={{ scale: 0.94 }}
-                      className="p-3 bg-zinc-500 font-semibold bg-opacity-10 rounded-md flex w-full"
-                    >
+                    <div className="p-3 bg-zinc-500 font-semibold gap-2 bg-opacity-10 rounded-md flex flex-wrap w-full">
                       {itemSelected?.templates?.map(
-                        (template: EventsTemplates) => (
-                          <div>{template?.name}</div>
-                        )
+                        (template: EventsTemplates, index: number) => {
+                          const { color } = template;
+                          
+                          return (
+                            <div
+                              key={index}
+                              className={`bg-zinc-200 dark:bg-zinc-700 rounded flex items-center gap-2 p-1 px-2`}
+                            >
+                              {template?.color && (
+                                <span
+                                  className="w-3 h-3 rounded"
+                                  style={{ background: template.color }}
+                                />
+                              )}
+                              {template?.name}
+                            </div>
+                          );
+                        }
                       )}
-
                       {!itemSelected?.templates?.length && (
-                        <span>Sem templates</span>
+                        <span>Sem Templates</span>
                       )}
-                    </motion.button>
+                    </div>
                   </div>
                 </div>
               </div>
