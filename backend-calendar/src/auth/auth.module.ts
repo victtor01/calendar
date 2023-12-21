@@ -5,6 +5,7 @@ import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfirmationCodesModule } from 'src/confirmation-codes/codes-confirmation.module';
 import { EmailService } from 'src/email/email.service';
+import { jwtConstants } from './constants';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { EmailService } from 'src/email/email.service';
     JwtModule.register({
       global: true,
       secret: 'EXEMPLE',
-      signOptions: { expiresIn: '5m' },
+      signOptions: { expiresIn: jwtConstants.expiration },
     }),
   ],
   controllers: [AuthController],

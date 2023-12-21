@@ -71,13 +71,15 @@ export class EventsService {
       });
     }
 
-    const templates = data.templates.map((template) => ({ id: template.id }));
+    if (data?.templates?.length) {
+      const templates = data.templates.map((template) => ({ id: template.id }));
 
-    await this.eventsRepository.connectTemplate({
-      eventId: +data.id,
-      templates,
-      userId,
-    });
+      await this.eventsRepository.connectTemplate({
+        eventId: +data.id,
+        templates,
+        userId,
+      });
+    }
 
     data.start = new Date(data.start.toString());
     data.end = parseISO(data.end.toString());
