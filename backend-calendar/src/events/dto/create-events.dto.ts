@@ -1,3 +1,5 @@
+import { eventsTemplates } from "src/events-templates/entities/events-templates.entity";
+
 export class CreateEventsDto {
   name: string;
   description?: string;
@@ -6,4 +8,5 @@ export class CreateEventsDto {
   start: Date;
   end: Date;
   userId: number;
+  templates?: eventsTemplates[];
 }

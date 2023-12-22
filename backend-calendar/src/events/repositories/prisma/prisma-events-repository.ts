@@ -224,7 +224,7 @@ export class PrismaEventsRepository implements EventsRepository {
   }
 
   async create(data: CreateEventsDto): Promise<Events> {
-    const { userId, ...rest } = data;
+    const { userId, templates, ...rest } = data;
     return await this.prismaService.events.create({
       data: {
         ...rest,
@@ -232,6 +232,11 @@ export class PrismaEventsRepository implements EventsRepository {
           connect: {
             id: userId,
           },
+        },
+        templates: {
+          connect: templates?.map((template: eventsTemplates) => ({
+            id: template.id,
+          })) || [],
         },
       },
     });

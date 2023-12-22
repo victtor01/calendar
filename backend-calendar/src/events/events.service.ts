@@ -24,7 +24,9 @@ import { eventsTemplates } from 'src/events-templates/entities/events-templates.
 export class EventsService {
   constructor(private readonly eventsRepository: EventsRepository) {}
 
-  private async validateFields(data: UpdateEventsDto | Events): Promise<{
+  private async validateFields(
+    data: UpdateEventsDto | CreateEventsDto,
+  ): Promise<{
     success: boolean;
     errors: Array<{ message: string; type: string }>;
   }> {
@@ -52,6 +54,16 @@ export class EventsService {
   async create(data: CreateEventsDto): Promise<Events> {
     data.start = new Date(data.start.toString());
     data.end = parseISO(data.end.toString());
+
+    const { success, errors } = await this.validateFields(data);
+
+    if (!success) {
+      throw new BadRequestException({
+        massage: 'Invalidate field',
+        errors,
+      });
+    } 
+
     return await this.eventsRepository.create(data);
   }
 
