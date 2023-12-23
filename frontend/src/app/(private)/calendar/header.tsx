@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   Modal,
   ModalContent,
@@ -19,8 +18,7 @@ import { MdBackupTable } from "react-icons/md";
 import { BsCalendar2Week } from "react-icons/bs";
 import { IoAddSharp } from "react-icons/io5";
 import { motion } from "framer-motion";
-import { FaCalendar } from "react-icons/fa";
-import { InputColors } from "@/components/inputColors";
+import {  FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { colorsEvents as colors } from "@/constants/colorsEvents";
 import * as S from "./style";
@@ -31,6 +29,7 @@ type CreateModelEventFormData = z.infer<typeof createModelEventFormSchema>;
 
 const createModelEventFormSchema = z.object({
   name: z.string(),
+  color: z.string(),
   description: z.string(),
 });
 
@@ -48,11 +47,6 @@ const useHeader = () => {
 
   const [showModalAddEvent, setShowModalAddEvent] = useState<boolean>(false);
   const handleShowModalAddEvent = () => setShowModalAddEvent((prev) => !prev);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
-
-  function handleColor(color: string): void {
-    setSelectedColor(color);
-  }
 
   async function createEventTemplate(
     data: CreateModelEventFormData
@@ -62,14 +56,9 @@ const useHeader = () => {
       return;
     }
 
-    if (!selectedColor) {
-      toast.error("Escolha uma cor para o template!");
-      return;
-    }
-
     const { data: eventsTemplatesData } = await api.post(
       "/events-templates/create",
-      { ...data, color: selectedColor }
+      data
     );
 
     queryClient.invalidateQueries(["events-templates"]);
@@ -87,9 +76,6 @@ const useHeader = () => {
       reset,
       errors,
     },
-    colors: {
-      handleColor,
-    },
   };
 };
 
@@ -98,7 +84,6 @@ export default function Header() {
   const {
     model: { showModalAddEvent, handleShowModalAddEvent },
     form: { control, handleSubmit, createEventTemplate, reset, errors },
-    colors: { handleColor },
   } = useHeader();
 
   return (
@@ -177,7 +162,30 @@ export default function Header() {
                 )}
               />
               <span className="text-lg font-semibold">Escolha uma cor:</span>
-              <InputColors colors={colors} handle={handleColor} />
+              <Controller
+                name="color"
+                defaultValue={""}
+                control={control}
+                render={({ field }) => (
+                  <div className="flex gap-3">
+                    {colors?.map((color: string) => (
+                      <button
+                        type="button"
+                        className="w-8 h-8 rounded-md opacity-80 flex items-center justify-center transition-all"
+                        key={color}
+                        onClick={() => {
+                          field.onChange(color);
+                        }}
+                        style={{
+                          background: color,
+                        }}
+                      >
+                        {field.value === color && <FaCheck size="16" />}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              />
             </ModalBody>
             <ModalFooter>
               <Button
@@ -188,6 +196,7 @@ export default function Header() {
                 Fechar
               </Button>
               <Button
+                onClick={handleShowModalAddEvent}
                 color="danger"
                 className="rounded-lg bg-emerald-400 opacity-80 hover:opacity-100"
                 type="submit"

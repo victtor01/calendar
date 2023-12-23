@@ -75,11 +75,11 @@ export default function Details({
         <div className="flex gap-3 items-center justify-end">
           <Button
             onClick={handleShowModalDelete}
-            className="flex opacity-60 hover:bg-zinc-500 rounded hover:bg-opacity-20 items-center justify-center rounded-full w-10 h-10"
+            className="flex opacity-60 hover:bg-zinc-500  hover:bg-opacity-20 items-center justify-center rounded-full w-10 h-10"
           >
             <FiTrash size="20" />
           </Button>
-          <Button className="flex opacity-60 hover:bg-zinc-500 rounded hover:bg-opacity-20 items-center  justify-center rounded-full w-10 h-10">
+          <Button className="flex opacity-60 hover:bg-zinc-500 hover:bg-opacity-20 items-center  justify-center rounded-full w-10 h-10">
             <BiArchiveIn size="20" />
           </Button>
           <motion.button
@@ -109,7 +109,7 @@ export default function Details({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
-                    className="flex p-3 rounded-md absolute z-[30] top-0 right-0 absolute translate-x-[50%] translate-y-[-50%]"
+                    className="flex p-3 rounded-md absolute z-[30] top-0 right-0 translate-x-[50%] translate-y-[-50%]"
                   >
                     <button
                       className="bg-gradient-45 from-purple-500 opacity-90 hover:opacity-100 shadow-lg to-emerald-500 p-2 rounded-full flex w-auto"

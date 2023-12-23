@@ -398,8 +398,6 @@ export function ClientComponent({
                     <div className="p-3 bg-zinc-500 font-semibold gap-2 bg-opacity-10 rounded-md flex flex-wrap w-full">
                       {itemSelected?.templates?.map(
                         (template: EventsTemplates, index: number) => {
-                          const { color } = template;
-                          
                           return (
                             <div
                               key={index}

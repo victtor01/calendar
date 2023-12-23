@@ -3,6 +3,8 @@ import * as S from "./style";
 import { IoAdd, IoHome } from "react-icons/io5";
 import { CiCircleList } from "react-icons/ci";
 import { FaCreditCard } from "react-icons/fa";
+import fetchs from "@/hooks/fetch";
+import { QueryClient } from "@tanstack/react-query";
 
 interface layoutProps {
   children: React.ReactNode;
@@ -14,7 +16,8 @@ const links = {
   reminder: { path: "/finance/", icon: CiCircleList },
 };
 
-export default function Layout({ children }: layoutProps) {
+export default async function Layout({ children }: layoutProps) {
+
   return (
     <>
       <div className="sticky mr-3 top-0 flex items-center gap-2 h-full flex-col justify-center rounded-xl">

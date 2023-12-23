@@ -170,7 +170,7 @@ export default function Calendar() {
         variants={variants}
         initial="pageInitial"
         animate="pageAnimate"
-        className="p-4 flex gap-[1rem] mx-auto flex-col w-full h-full relative"
+        className="p-4 flex gap-[1rem] mx-auto flex-col w-full max-w-[110rem] h-full relative"
       >
         <Header />
         <div className="flex flex-col flex-1">

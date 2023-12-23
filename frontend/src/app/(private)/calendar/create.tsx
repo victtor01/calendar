@@ -13,6 +13,9 @@ import { EventsTemplates } from "@/types/eventsTemplates";
 import { colorsEvents } from "@/constants/colorsEvents";
 import { BiCheck } from "react-icons/bi";
 import { z } from "zod";
+import useApiPrivate from "@/hooks/apiPrivate";
+import { toast } from "react-toastify";
+import { queryClient } from "@/hooks/queryClient";
 
 const maxLenghtDescriptionInput = 100;
 
@@ -76,6 +79,8 @@ function useAddEvent() {
     resolver: zodResolver(createEventsFormSchema),
   });
 
+  const api = useApiPrivate();
+
   const { append: addTemplate, remove: removeTemplate } = useFieldArray({
     control,
     name: "templates",
@@ -86,32 +91,22 @@ function useAddEvent() {
   const [openModalTemplates, setOpenModalTemplates] = useState<boolean>(false);
 
   async function addEvent(data: CreateEventsFormData) {
-    console.log(data);
-    /*  const templete = eventsTemplates.filter(
-      (even: EventsTemplates) =>
-        even.id.toString() === data.draggedEl.id.toString()
-    )[0];
+    const { start, end, ...rest } = data;
 
-    if (!templete) {
-      return;
-    }
-
-    const res = api.post("/events/create", {
-      name: data.draggedEl.innerText,
-      description: "",
-      allDay: data.allDay,
-      start: data.date.toISOString(),
-      end: data.date.toISOString(),
+    const res = await api.post("/events/create", {
+      ...rest,
+      start: new Date(data.start),
+      end: new Date(data.end),
     });
 
-    await toast.promise(res, {
+    /*   await toast.promise(res, {
       pending: "Salvando alterações",
       success: "Salvo com sucesso!",
       error: "Houve um erro! Tente novamente mais tarde! ",
-    });
+    }); */
 
-    queryClient.invalidateQueries(["events"]);
-    queryClient.invalidateQueries(["events", "events-week"]); */
+    await queryClient.invalidateQueries(["events"]);
+    await queryClient.invalidateQueries(["events", "events-week"]);
   }
 
   return {
@@ -202,7 +197,7 @@ export default function AddClient(props: AddClientProps) {
                   maxLength={maxLenghtDescriptionInput}
                   value={field.value || ""}
                   placeholder="Digite uma descrição..."
-                  className="p-2 bg-zinc-100 flex-1 dark:bg-zinc-800 shadow resize-none h-[7rem] outline-none rounded"
+                  className="p-2 bg-zinc-400 bg-opacity-10 flex-1 dark:bg-zinc-800 shadow resize-none h-[7rem] outline-none font-semibold text-zinc-700 dark:text-zinc-300 rounded transition-shadow focus:shadow-lg"
                 />
                 <span className="absolute z-10 right-2 top-2 font-semibold">
                   {maxLenghtDescriptionInput - (field.value?.length || 0)}
@@ -231,6 +226,11 @@ export default function AddClient(props: AddClientProps) {
                   />
                 )}
               />
+              {errors?.start && (
+                <span className="font-semibold opacity-80 text-red-600">
+                  {errors?.start?.message}
+                </span>
+              )}
             </div>
             <span className="font-semibold opacity-70">ATÉ</span>
             <div>
@@ -247,6 +247,11 @@ export default function AddClient(props: AddClientProps) {
                   />
                 )}
               />
+              {errors?.end && (
+                <span className="font-semibold opacity-80 text-red-600">
+                  {errors?.end?.message}
+                </span>
+              )}
             </div>
           </div>
 
@@ -283,34 +288,42 @@ export default function AddClient(props: AddClientProps) {
             />
           </div>
 
-          <div className="flex gap-3 items-center">
-            <span className="font-semibold opacity-60">Escolha uma cor:</span>
-            <Controller
-              control={control}
-              name={"color"}
-              defaultValue={""}
-              render={({ field }) => {
-                return (
-                  <div className="flex gap-2 items-center">
-                    {colorsEvents.map((color: string, index: number) => {
-                      return (
-                        <button
-                          key={index}
-                          type="button"
-                          onClick={() => field.onChange(color)}
-                          className="rounded-md p-2 w-10 h-10 flex justify-center items-center"
-                          style={{
-                            backgroundColor: color,
-                          }}
-                        >
-                          {field?.value === color && <BiCheck />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                );
-              }}
-            />
+          <div className="flex gap-1 justify-center flex-col">
+            <div className="flex gap-3 items-center">
+              <span className="font-semibold opacity-60">Escolha uma cor:</span>
+              <Controller
+                control={control}
+                name={"color"}
+                defaultValue={""}
+                render={({ field }) => {
+                  return (
+                    <div className="flex gap-2 items-center">
+                      {colorsEvents.map((color: string, index: number) => {
+                        return (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => field.onChange(color)}
+                            className="rounded-full p-2 w-8 h-8 flex justify-center items-center text-white"
+                            style={{
+                              opacity: field.value == color ? 1 : 0.8,
+                              backgroundColor: color,
+                            }}
+                          >
+                            {field?.value === color && <BiCheck />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  );
+                }}
+              />
+            </div>
+            {errors?.color && (
+              <span className="font-semibold opacity-80 text-red-600">
+                {errors?.color?.message}
+              </span>
+            )}
           </div>
 
           <Controller
@@ -371,11 +384,10 @@ export default function AddClient(props: AddClientProps) {
                           <button
                             type="button"
                             onClick={() => {
-                              if (
-                                !field?.value?.some(
-                                  (item) => item.id === template.id
-                                )
-                              ) {
+                              const includes = field?.value?.some(
+                                (item) => item.id === template.id
+                              );
+                              if (!includes) {
                                 addTemplate({
                                   id: template.id,
                                   name: template.name,
@@ -405,8 +417,11 @@ export default function AddClient(props: AddClientProps) {
         </section>
         <footer className="border-t py-2 border-zinc-200 dark:border-zinc-700  mt-2">
           <button
-            type="submit"
             className="p-2 px-3 opacity-90 hover:opacity-100 rounded bg-gradient-45 from-purple-600 to-blue-600 "
+            onClick={() => {
+              setSelectedDay(null);
+            }}
+            type="submit"
           >
             <span className="font-semibold text-lg text-white">Pronto!</span>
           </button>

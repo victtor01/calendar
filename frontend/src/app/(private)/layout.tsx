@@ -5,12 +5,10 @@ import { usePathname } from "next/navigation";
 import * as S from "./style";
 import { Sidebar } from "@/components/sidebar";
 import { IconType } from "react-icons";
-import { BsCalendarRange, BsFillGearFill, BsHouse } from "react-icons/bs";
-import { FiTrendingUp } from "react-icons/fi";
-import { fontOpenSans, fontRoboto, fontValela } from "../fonts";
+import { fontOpenSans, fontRoboto } from "../fonts";
 import { Suspense, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
-import { BiExit, BiPen, BiSolidGroup } from "react-icons/bi";
+import { BiExit, BiPen } from "react-icons/bi";
 import { ThemeProvider } from "styled-components";
 import { RxExit } from "react-icons/rx";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
@@ -20,10 +18,16 @@ import UserComponents from "@/components/userComponents";
 import { useSessionContext } from "@/contexts/sessionContext";
 import { Theme, ToastContainer } from "react-toastify";
 import { AnimatePresence, motion } from "framer-motion";
-import { LuListTodo } from "react-icons/lu";
-import Link from "next/link";
 import { IoIosArrowUp, IoMdNotificationsOutline } from "react-icons/io";
 import { GoGear } from "react-icons/go";
+import {
+  CiAlignBottom,
+  CiCalendar,
+  CiCircleList,
+  CiDollar,
+  CiUser,
+} from "react-icons/ci";
+import Image from "next/image";
 
 /* #1f1d2b */
 /*  rgb(24, 24, 27) */
@@ -42,7 +46,7 @@ const darkTheme = {
 };
 
 const lightTheme = {
-  primary: "rgba(238,240,248,1) ",
+  primary: "#F5F9FC",
   secundary: "#fff",
   shadow: "#f6f6f6",
   text: "#000",
@@ -59,12 +63,12 @@ interface Page {
 }
 
 const pages: Page[] = [
-  { name: "Dashboard", icon: BsHouse, href: "/home" },
-  { name: "Calendário", icon: BsCalendarRange, href: "/calendar" },
-  { name: "Financeiro", icon: FiTrendingUp, href: "/finance" },
-  { name: "Clientes", icon: BiSolidGroup, href: "/clients" },
+  { name: "Dashboard", icon: CiAlignBottom, href: "/home" },
+  { name: "Calendário", icon: CiCalendar, href: "/calendar" },
+  { name: "Financeiro", icon: CiDollar, href: "/finance" },
+  { name: "Clientes", icon: CiUser, href: "/clients" },
   { name: "Serviços", icon: PiSuitcaseSimple, href: "/services" },
-  { name: "To-do", icon: LuListTodo, href: "/todo" },
+  { name: "To-do", icon: CiCircleList, href: "/todo" },
   { name: "Configurar", icon: GoGear, href: "/configurations" },
 ];
 
@@ -239,7 +243,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Sidebar
             bgTheme={false}
             style={{ gridArea: "sidebar" }}
-            className={`w-[4rem] lg:w-[14rem] bg-white m-2 rounded-xl dark:bg-zinc-900 dark:bg-opacity-80 relative shadow-md items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
+            className={`w-[4rem] lg:w-[14rem] bg-white m-2 dark:text-white rounded-xl dark:bg-zinc-900 dark:bg-opacity-80 relative border dark:border-zinc-800 items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
           >
             <S.Bubble />
             <header className="w-full flex items-center p-5 justify-between relative h-auto">
@@ -260,13 +264,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <FaChevronRight />
             </button>
             <section className="flex flex-1 flex-col gap-2 w-full overflow-y-auto">
-              <div className="flex flex-col mt-0 gap-1 relative flex-nowrap w-full p-2">
+              <div className="flex flex-col mt-0 gap-2 py-4 relative flex-nowrap w-full p-2">
                 {pages.map(
                   ({ name, icon: Icon, href }: Page, index: number) => {
                     const selected = currentPath === href.substring(1);
                     const selectedClass = selected
-                      ? "bg-zinc-100 dark:bg-zinc-800 opacity-100"
-                      : "transparent opacity-80";
+                      ? "bg-blue-50 dark:bg-zinc-200 hover:dark:bg-white text-black opacity-100"
+                      : "transparent opacity-80 hover:dark:bg-zinc-800";
 
                     return (
                       <motion.div
@@ -278,11 +282,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       >
                         <S.LinkRoute
                           href={href}
-                          className={`${selectedClass} rounded hover:bg-zinc-100 hover:dark:bg-zinc-800 flex-nowrap w-full justify-center relative lg:justify-start flex py-2 items-center gap-2 text-sm hover:opacity-100 p-1  `}
+                          whileHover={{ scale: 1.03 }}
+                          transition={{ type: "spring", duration: 0.1 }}
+                          className={`${selectedClass} rounded transition-[background] hover:bg-blue-50 flex-nowrap w-full justify-center relative lg:justify-start flex py-2 items-center gap-2 text-sm hover:opacity-100 p-1  `}
                         >
-                          {Icon && (
-                            <Icon size={"16"} className="min-w-[3rem]" />
-                          )}
+                          {Icon && <Icon size="21" className="min-w-[3rem]" />}
                           <span className="hidden lg:flex">{name}</span>
                         </S.LinkRoute>
                       </motion.div>
@@ -307,7 +311,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     >
                       <S.LinkRoute
                         href={href}
-                        className={`${selectedClass} text-sm rounded hover:bg-zinc-100 hover:dark:bg-zinc-800 hover:dark:bg-zinc-800flex-nowrap w-full px-4 justify-center relative lg:justify-start flex py-2 items-center gap-2 text-sm hover:opacity-100 p-1  `}
+                        className={`${selectedClass} rounded hover:bg-zinc-100 hover:dark:bg-zinc-800 hover:dark:bg-zinc-800flex-nowrap w-full px-4 justify-center relative lg:justify-start flex py-2 items-center gap-2 text-sm hover:opacity-100 p-1  `}
                       >
                         <span className="hidden lg:flex">{name}</span>
                       </S.LinkRoute>
@@ -409,6 +413,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </button>
             </footer>
           </Sidebar>
+
           {/*    <header
             className="justify-between relative flex pl-2 h-auto items-center relative w-auto"
             style={{

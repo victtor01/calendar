@@ -180,7 +180,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
               <input
                 {...field}
                 type="text"
-                className={`${fontOpenSans} min-h-[3rem] bg-transparent font-semibold opacity-80 transition-[border-color] text-xl focus:border-cyan-500 px-1 outline-none border-b-[0.13rem] border-zinc-500 border-opacity-40`}
+                className={`${fontOpenSans} bg-transparent font-semibold opacity-80 transition-[border-color] text-xl outline-none`}
               />
               {errors?.name && errors?.name?.message}
             </Label.Root>
@@ -198,7 +198,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
               <textarea
                 {...field}
                 placeholder="Digite uma descrição..."
-                className="min-h-[5rem] bg-zinc-500 bg-opacity-5 p-3 rounded resize-none h-[8rem] shadow-inner text-md p-1 outline-none"
+                className="min-h-[5rem] bg-zinc-500 bg-opacity-5  rounded resize-none h-[8rem] shadow-inner text-md p-1 outline-none"
               />
               {errors?.name && errors?.name?.message}
             </Label.Root>
@@ -250,15 +250,26 @@ export default function Edit({ event }: { event: Event | undefined }) {
                 O evento acontecerá todo o dia?
               </Label.Title>
               <Label.Content>
-                <Button
+                <button
+                  style={{
+                    justifyContent: field.value ? "flex-end" : "flex-start",
+                  }}
                   type="button"
-                  className={`p-3 flex w-full justify-center items-center text-white rounded ${
-                    !!field.value ? "bg-cyan-500" : "bg-rose-500"
-                  }`}
-                  onClick={() => field.onChange(field.value ? false : true)}
+                  className="bg-zinc-200 dark:bg-zinc-800 overflow-hidden w-16 h-8 p-[1px] flex border-2 border-zinc-100 dark:border-zinc-800 rounded-full shadow-inner"
+                  onClick={() => {
+                    field.onChange(field.value ? false : true);
+                  }}
                 >
-                  {field.value ? "Ligado" : "Desligado"}
-                </Button>
+                  <motion.div
+                    layout
+                    transition={{ type: "spring", stiffness: 700, damping: 30 }}
+                    className={`w-7 h-full rounded-full flex transition-background ${
+                      field?.value
+                        ? " bg-cyan-500 shadow-cyan-400 shadow-lg"
+                        : "bg-zinc-600 dark:bg-zinc-700"
+                    }`}
+                  />
+                </button>
               </Label.Content>
               {errors?.allDay?.message}
             </Label.Root>
@@ -266,7 +277,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
         }}
       />
 
-      <Label.Root>
+      <Label.Root className="mt-0">
         <Label.Title>Templates</Label.Title>
         <div className="relative flex gap-3">
           <Controller
@@ -275,7 +286,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
             name="templates"
             render={({ field }) => (
               <>
-                <div className="bg-zinc-100 dark:bg-zinc-800 flex-1 p-3 gap-3 flex-wrap flex w-full rounded">
+                <div className="bg-zinc-100 dark:bg-zinc-800 flex-1 p-3 gap-1 flex-wrap flex w-full rounded">
                   {field?.value?.map((item: any, index: number) => (
                     <div
                       key={index}
@@ -305,7 +316,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
                   onClick={handleOpenTemplates}
                   className="text-cyan-500 font-semibold"
                 >
-                  ABRIR
+                  {openTemplates ? "Fechar" : "Abrir"}
                 </button>
                 <AnimatePresence>
                   {openTemplates && (
@@ -314,7 +325,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0, opacity: 0 }}
                       key={"modal-template"}
-                      className="absolute w-full z-[30] p-0 rounded-md h-[5rem] overflow-auto top-[100%] p-2 rounded mt-2 bg-zinc-200 dark:bg-zinc-800"
+                      className="absolute w-full flex flex-wrap z-[30] gap-1 h-[5rem] overflow-auto top-[100%] p-2 rounded mt-2 bg-zinc-200 dark:bg-zinc-800"
                     >
                       {templates?.map(
                         (template: EventsTemplates, index: number) => {
@@ -335,7 +346,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
                                 }
                               }}
                               key={index}
-                              className="flex items-center w-full gap-3 p-1 px-3 rounded hover:bg-zinc-500 bg-opacity-10"
+                              className="flex items-center bg-zinc-100 dark:bg-zinc-700 gap-3 p-1 px-3 rounded hover:bg-zinc-500 bg-opacity-10"
                             >
                               <span
                                 className="p-1 w-3 h-3 rounded"
