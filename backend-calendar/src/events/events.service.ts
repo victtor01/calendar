@@ -52,10 +52,8 @@ export class EventsService {
   }
 
   async create(data: CreateEventsDto): Promise<Events> {
-    console.log('minhas datas 1, ', data.start, data.end)
     data.start = new Date(data.start.toString());
     data.end = parseISO(data.end.toString());
-    console.log('minhas datas 2, ', data.start, data.end)
 
     const { success, errors } = await this.validateFields(data);
 
