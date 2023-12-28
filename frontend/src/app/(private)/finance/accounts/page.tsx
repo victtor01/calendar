@@ -31,40 +31,43 @@ const useAccounts = () => {
 
 const Account = ({ item }: { item: Account }) => {
   return (
-    <div className="p-2 flex justify-between items-center bg-zinc-400 bg-opacity-5 rounded hover:opacity-100 hover:shadow-lg">
-      <div>{item.name}</div>
-      <div>{item?.registers?.length || 0}</div>
-      <div>
-        <button className="p-3 hover:text-blue-400">
+    <tr className="even:bg-blue-50 border-b dark:bg-zinc-800 even:dark:bg-zinc-900 dark:border-zinc-700">
+      <th
+        scope="row"
+        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+      >
+        {item.name}
+      </th>
+      <td className="px-6 py-4">{item?.registers?.length || 0}</td>
+      <td className="px-6 py-4">
+        <Link
+          href={`/finance/accounts/${item.code}`}
+          className="p-3 hover:text-blue-400 flex"
+        >
           <BsFillPenFill />
-        </button>
-      </div>
-    </div>
+        </Link>
+      </td>
+    </tr>
   );
 };
 
 export default function Accounts() {
   const { data, isLoading } = useAccounts();
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <S.Container
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-3 m-auto shadow rounded w-[100%] max-w-[30rem] flex flex-col gap-2"
+      className="p-3 m-auto border dark:border-zinc-800 rounded w-[100%] max-w-[50rem] flex flex-col gap-2"
     >
       <header
-        className={`${fontOpenSans} overflow-auto flex items-center gap-2`}
+        className={`${fontOpenSans} overflow-auto flex items-center justify-between gap-2`}
       >
         <Link
           href={"/finance/"}
-          className="bg-cyan-500 flex items-center gap-3 text-white p-2 px-3 rounded opacity-90 hover:opacity-100 "
+          className="bg-blue-50 dark:bg-zinc-800 flex items-center gap-3 p-3 rounded opacity-90 hover:opacity-100 "
         >
           <BsArrowLeft size="18" />
-          Voltar
         </Link>
         <Link
           href={"/finance/accounts/create/"}
@@ -82,11 +85,28 @@ export default function Accounts() {
         </div>
       </div>
       <div className="opacity-70 text-lg  flex flex-col gap-2">
-        {data?.length > 0
-          ? data?.map((item: Account, index: number) => (
-              <Account key={index} item={item} />
-            ))
-          : "Nenhum item"}
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-zinc-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Nome
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Quan. de registros
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Ações
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.length > 0
+              ? data?.map((item: Account, index: number) => (
+                  <Account key={index} item={item} />
+                ))
+              : "Nenhum item"}
+          </tbody>
+        </table>
       </div>
     </S.Container>
   );

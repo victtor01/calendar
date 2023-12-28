@@ -122,22 +122,84 @@ export const Bubble = styled.div`
   }
 `;
 
-export const ContainerRegisters = styled(motion.div)`
-  position: relative;
+export const BubbleHeader = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  height: 100%;
+  min-height: fit-content;
+  position: absolute;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
 
   &::before {
     content: "";
+    width: 30%;
+    height: 40%;
     position: absolute;
-    height: 100%;
-    width: 4px;
-    left: -4px;
     top: 0;
-    border-radius: 2px 0 0 2px;
-    opacity: 0.5;
-    background-color: #6157ff;
+    left: -2rem;
+    padding: 2rem;
+    border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
+    filter: blur(4vh);
+    opacity: 0.17;
+    background: linear-gradient(
+      34deg,
+      transparent,
+      #6157ff,
+      #74febd,
+      transparent
+    );
+  }
+
+  &::after {
+    content: "";
+    width: 50%;
+    height: 40%;
+    position: absolute;
+    top: 40%;
+    right: 0;
+    padding: 2rem;
+    border-radius: 77% 23% 17% 83% / 35% 61% 39% 65%;
+    filter: blur(4vh);
+    opacity: 0.15;
+    background: linear-gradient(
+      34deg,
+      transparent,
+      #6157ff,
+      #74febd,
+      transparent
+    );
   }
 `;
 
 export const OptionsOfPageRegisters = styled(motion.div)`
   background-color: ${({ theme }) => theme.secundary};
+`;
+
+interface LinkedProps {
+  $selected: boolean;
+}
+
+export const Linked = styled(Link)<LinkedProps>`
+  position: relative;
+
+  &::before {
+    content: "";
+    background: ${({ theme }) => theme.text};
+    bottom: 0;
+    height: 0.2rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.3s, opacity 0.3s;
+    width: ${(props) => (props.$selected ? "100% !important" : 0)};
+    opacity: ${(props) => (props.$selected ? 1 : 0)};
+  }
+
+  &:hover::before {
+    width: 20%;
+    opacity: 1;
+  }
 `;

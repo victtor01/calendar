@@ -2,23 +2,23 @@ import { EventsTemplates } from "@/types/eventsTemplates";
 import apiPrivate from "./api";
 import { useQuery } from "@tanstack/react-query";
 
-interface getAllProps {
+interface GetAllProps {
   templates: EventsTemplates[] | undefined;
   isLoading: boolean;
 }
 
-export default class Templates {
-  static getAll(): getAllProps {
-    const { data: templates, isLoading } = useQuery({
+export default function useTemplates() {
+  const useGetAll = () => {
+    return useQuery({
       queryKey: ["templates"],
       queryFn: async (): Promise<EventsTemplates[] | undefined> => {
         return (await apiPrivate.get("/events-templates/")).data;
       },
     });
+  };
 
-    return {
-      templates,
-      isLoading,
-    };
-  }
+  return {
+    useGetAll,
+  };
 }
+

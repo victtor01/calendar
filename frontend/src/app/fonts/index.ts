@@ -4,6 +4,7 @@ import {
   Inter,
   Varela_Round,
   Fira_Code,
+  Playfair_Display
 } from "next/font/google";
 
 const roboto = Roboto({

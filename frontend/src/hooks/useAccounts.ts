@@ -11,22 +11,26 @@ export interface Accounts {
 export const useAccounts = () => {
   const api = useApiPrivate();
 
-  const get = async (): Promise<Accounts[]> => {
-    return (await api.get("/accounts")).data;
+  const useGetAccounts = () => {
+    return useQuery<Accounts[]>({
+      queryKey: ['accounts'],
+      queryFn: async (): Promise<Accounts[]> => {
+        return (await api.get('/accounts')).data;
+      },
+    });
   };
 
-  const { data: accounts } = useQuery<Accounts[]>({
-    queryKey: ["accounts"],
-    queryFn: get,
-  });
-
-  const getAccounts = () => {
-    return {
-      accounts,
-    };
+  const useFindByCode = (code: string) => {
+    return useQuery<Accounts>({
+      queryKey: ['account', code],
+      queryFn: async (): Promise<Accounts> => {
+        return (await api.get(`/accounts/find-by-code/${code}`)).data;
+      },
+    });
   };
 
   return {
-    getAccounts,
+    useGetAccounts,
+    useFindByCode,
   };
 };

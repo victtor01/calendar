@@ -151,7 +151,7 @@ export default function Calendar() {
 
   return (
     <>
-      <S.Bubble />
+      {/* <S.Bubble /> */}
       <AnimatePresence>
         {selectedDay?.start && (
           <AddClient
@@ -172,7 +172,6 @@ export default function Calendar() {
         animate="pageAnimate"
         className="p-4 flex gap-[1rem] mx-auto flex-col w-full max-w-[110rem] h-full relative"
       >
-        <Header />
         <div className="flex flex-col flex-1">
           <S.Content className="gap-4 flex flex-col mx-auto">
             <S.Calendar

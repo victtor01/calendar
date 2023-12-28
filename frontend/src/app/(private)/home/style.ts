@@ -5,7 +5,6 @@ import styled, { keyframes } from "styled-components";
 
 export const Container = styled(motion.div)`
   width: 100%;
-  max-width: 95rem;
   height: auto;
   margin: auto;
   display: flex;

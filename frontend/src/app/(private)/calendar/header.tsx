@@ -16,14 +16,14 @@ import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
 import { MdBackupTable } from "react-icons/md";
 import { BsCalendar2Week } from "react-icons/bs";
-import { IoAddSharp } from "react-icons/io5";
-import { motion } from "framer-motion";
-import {  FaCheck } from "react-icons/fa";
+import { IoAddSharp, IoHome, IoList } from "react-icons/io5";
+import { AnimatePresence, motion } from "framer-motion";
+import { FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { colorsEvents as colors } from "@/constants/colorsEvents";
-import * as S from "./style";
-import { useRouter } from "next/navigation";
-import { IoMdCheckbox } from "react-icons/io";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import * as S from './style';
 
 type CreateModelEventFormData = z.infer<typeof createModelEventFormSchema>;
 
@@ -79,45 +79,86 @@ const useHeader = () => {
   };
 };
 
+const before = `
+  bg-zinc-900 
+  bottom-0
+  h-[0.2rem]
+  dark:bg-white
+  absolute
+  left-[50%]
+  translate-x-[-50%] 
+`;
+
+const links = {
+  week: {
+    icon: BsCalendar2Week,
+    path: "/calendar/week",
+  },
+  home: {
+    icon: IoHome,
+    path: "/calendar",
+  },
+  list: {
+    icon: IoList,
+    path: "/calendar/list",
+  },
+};
+
 export default function Header() {
-  const router = useRouter();
   const {
     model: { showModalAddEvent, handleShowModalAddEvent },
     form: { control, handleSubmit, createEventTemplate, reset, errors },
   } = useHeader();
 
+  const pathName = usePathname();
+
   return (
-    <div className="flex min-h-auto z-[2] w-full justify-between items-center">
-      <motion.header
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className=" flex rounded-md items-center"
-      >
-        <motion.div className="flex gap-2 py-3 relative mx-auto flex-1">
-          <motion.button className="opacity-90 flex items-center justify-center gap-2 font-semibold text-md shadow hover:opacity-100 p-4 text-white rounded-full hover:shadow-inner bg-gradient-45 from-purple-600 to-blue-600">
+    <motion.div
+      initial={{ opacity: 0, y: -100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4, type: "linear", duration: 0.3 }}
+      className="flex min-h-auto z-[2] w-auto bg-blue-100 bg-opacity-50 dark:bg-zinc-900 dark:bg-opacity-50 justify-between items-center relative m-1 rounded-xl"
+    >
+      <S.Bubble className="overflow-hidden rounded-xl"/>
+      <header className=" flex rounded-md items-center mx-auto">
+        <div className="flex gap-2 relative mx-auto flex-1">
+          <button className="h-14 w-14 px-4 flex justify-center items-center opacity-100 relative">
             <IoAddSharp size="23" />
-          </motion.button>
+          </button>
+          {Object.entries(links).map(([key, value]: any, index: number) => {
+            const Icon = value.icon;
+            const selected = pathName === value.path;
+
+            return (
+              <Link
+                href={value.path}
+                className="h-14 w-14 px-4 flex justify-center items-center opacity-100 relative"
+                key={index}
+                onClick={value.onclick}
+              >
+                <Icon size="20" />
+                <AnimatePresence>
+                  {selected && (
+                    <motion.span
+                      key={`span-${key}`}
+                      initial={{ width: 0, opacity: 0 }}
+                      animate={{ width: "100%", opacity: 1 }}
+                      exit={{ width: 0, opacity: 0 }}
+                      className={before}
+                    />
+                  )}
+                </AnimatePresence>
+              </Link>
+            );
+          })}
           <motion.button
+            className="h-14 w-14 px-4 flex justify-center items-center opacity-100 relative"
             onClick={handleShowModalAddEvent}
-            className="border hover:shadow-inner hover:shadow-zinc-300 hover:dark:shadow-zinc-600 border-transparent dark:border-zinc-700 opacity-90 shadow flex gap-2 items-center hover:opacity-100 p-4 rounded-full bg-white dark:bg-zinc-900"
-          >
-            <IoMdCheckbox size="21" />
-          </motion.button>
-          <motion.button
-            onClick={handleShowModalAddEvent}
-            className="border hover:shadow-inner hover:shadow-zinc-300 hover:dark:shadow-zinc-600 border-transparent dark:border-zinc-700 opacity-90 shadow flex gap-2 items-center hover:opacity-100 p-4 rounded-full bg-white dark:bg-zinc-900"
           >
             <MdBackupTable size="21" />
           </motion.button>
-          <motion.button
-            onClick={() => router.push("/calendar/week/")}
-            className="border hover:shadow-inner hover:shadow-zinc-300 hover:dark:shadow-zinc-600 border-transparent dark:border-zinc-700 opacity-90 shadow flex gap-2 items-center hover:opacity-100 p-4 rounded-full bg-white dark:bg-zinc-900"
-          >
-            <BsCalendar2Week size="21" />
-          </motion.button>
-        </motion.div>
-      </motion.header>
+        </div>
+      </header>
       <Modal
         onOpenChange={handleShowModalAddEvent}
         isDismissable={false}
@@ -134,7 +175,6 @@ export default function Header() {
                 Para register um novo modelo, digite as informações necessárias
                 abaixo:
               </p>
-
               <Controller
                 defaultValue=""
                 name={"name"}
@@ -207,6 +247,6 @@ export default function Header() {
           </form>
         </ModalContent>
       </Modal>
-    </div>
+    </motion.div>
   );
 }

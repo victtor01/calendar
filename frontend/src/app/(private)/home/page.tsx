@@ -49,35 +49,88 @@ export default function Home() {
 
   return (
     <S.Container className={"p-2"}>
-      <motion.div
+     {/*  <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ type: "spring", duration: 1.5, delay: 0.1 }}
-        className="w-full gap-10 h-[30rem] flex justify-center items-center relative overflow-y-visible bg-gradient-45 from-purple-600 to-emerald-300 rounded-md "
+        className="w-full gap-10 h-[20rem] flex justify-center items-center overflow-hidden relative overflow-y-visible bg-gradient-45 from-purple-700 to-cyan-400  dark:to-purple-800 dark:from-cyan-400 rounded-xl "
       >
-        <header className="flex items-center justify-between self-start z-10 flex-1 p-1 px-2">
+        <section className="flex w-full h-full items-center justify-center relative ">
+          <span className="absolute left-[50%] translate-x-[-50%] w-[70%] h-[170%] bg-black p-7 top-[-70%] rounded-b-full  blur-[10rem]" />
+          { <Image
+          src={`/moon.png`}
+          className="rounded-md filter  brightness-[0.9]"
+          sizes="(max-width: 2rem) 2rem, 1200px"
+          fill
+          objectPosition="center bottom"
+          quality={100}
+          style={{ objectFit: "cover" }}
+          alt="Foto do usuario"
+        />}
+          <div className="  flex justify-between rounded-xl absolute w-full max-w-[60rem] text-white">
+            <div className="flex flex-col justify-center">
+              <motion.h1
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className={`text-[1.4rem] flex gap-2 font-semibold ${fontOpenSans}`}
+              >
+                Olá! Bem vindo de volta,
+                <p className={`${fontInter} font-semibold`}>
+                  {userInfo?.firstName}
+                </p>
+              </motion.h1>
+              <motion.h2
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className={`${fontValela} text-md`}
+              >
+                Tenha uma ótimo dia!
+              </motion.h2>
+            </div>
+            <div className="flex gap-2 items-center">
+              <div className="flex flex-col items-end">
+                <h1 className="font-semibold">{userInfo.email}</h1>
+                <h2 className={fontInter}>{userInfo.firstName}</h2>
+              </div>
+              <div className="bg-zinc-400 w-16 h-16 relative rounded-full overflow-hidden">
+                <Image
+                  src={`${Server}/uploads/${userInfo.photo}`}
+                  sizes="(max-width: 2rem) 2rem, 1200px"
+                  fill
+                  quality={25}
+                  style={{ objectFit: "cover" }}
+                  alt="Foto do usuario"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      </motion.div> */}
+      <section className="flex flex-col gap-3 max-w-[100rem] w-full mx-auto">
+        <header className="flex items-center justify-between self-start  w-full flex-1 ">
           <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
             className="flex flex-col"
           >
-            <h1 className={`text-3xl font-semibold text-white`}>Dashboard</h1>
-            <time className="block mb-2 text-sm font-normal leading-none text-white dark:text-gray-500">
+            <h1 className={`text-3xl opacity-90`}>Dashboard</h1>
+            <time className="block mb-2 text-sm font-normal leading-none">
               {moment().format("dddd, DD MMM YYYY")}
             </time>
           </motion.div>
-          <div className="flex gap-2">
+          <section className="flex gap-2">
             <AnimatePresence>
               <motion.button
                 key={"button-modal"}
                 onClick={() => setShowModalFilter(true)}
                 layoutId={"filter"}
                 whileTap={{ scale: 0.9, transition: { type: "spring" } }}
-                className="bg-blue-50 dark:bg-zinc-900 border dark:border-zinc-700 z-[3] flex gap-2 items-center rounded p-3 px-4"
+                className="bg-blue-50 dark:bg-zinc-900 border dark:border-zinc-700 z-[3] flex gap-2 items-center rounded p-3"
               >
                 <FaFilter />
-                Filtrar
               </motion.button>
               {showModalFilter && (
                 <motion.div
@@ -108,59 +161,8 @@ export default function Home() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </section>
         </header>
-        <Image
-          src={`/moon.png`}
-          className="rounded-md filter  brightness-[0.9]"
-          sizes="(max-width: 2rem) 2rem, 1200px"
-          fill
-          objectPosition="center bottom"
-          quality={100}
-          style={{ objectFit: "cover" }}
-          alt="Foto do usuario"
-        />
-        <div className="p-4 hover:shadow-xl h-[8rem] bg-opacity-70 dark:bg-opacity-80 backdrop-blur-md transition-shadow px-6 bg-blue-50 dark:bg-slate-900 shadow-md flex justify-between rounded-xl absolute  w-[50%]">
-          <div className="flex flex-col justify-center">
-            <motion.h1
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className={`text-[1.1rem] flex gap-2 font-semibold ${fontOpenSans}`}
-            >
-              Olá! Bem vindo de volta,
-              <p className={`${fontInter} font-semibold`}>
-                {userInfo?.firstName}
-              </p>
-            </motion.h1>
-            <motion.h2
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-              className={`${fontValela} text-md`}
-            >
-              Tenha uma ótimo dia!
-            </motion.h2>
-          </div>
-          <div className="flex gap-2 items-center">
-            <div className="flex flex-col items-end">
-              <h1 className="font-semibold">{userInfo.email}</h1>
-              <h2 className={fontInter}>{userInfo.firstName}</h2>
-            </div>
-            <div className="bg-zinc-400 w-16 h-16 relative rounded-full overflow-hidden">
-              <Image
-                src={`${Server}/uploads/${userInfo.photo}`}
-                sizes="(max-width: 2rem) 2rem, 1200px"
-                fill
-                quality={25}
-                style={{ objectFit: "cover" }}
-                alt="Foto do usuario"
-              />
-            </div>
-          </div>
-        </div>
-      </motion.div>
-      <section className="flex flex-col gap-3">
         <S.Component>
           <DashboardComponent
             key={"events"}

@@ -11,6 +11,8 @@ import { Server } from "@/constants/server";
 
 type Select = "NOTIFICATION" | "EXIT" | "USER" | null;
 
+const Separator = () => <span className="bg-zinc-100 dark:bg-zinc-800 h-[70%] mx-2 w-[1px]" />;
+
 export default function UserComponents() {
   const [selected, setSelected] = useState<Select>(null);
 
@@ -24,35 +26,41 @@ export default function UserComponents() {
   if (!userInfo.photo) return;
 
   return (
-    <div className={`flex gap-2 p-2 items-center gap-3 relative ${fontRoboto}`}>
+    <div className={`flex p-2 items-center gap-3 relative ${fontRoboto}`}>
       <Button
         onClick={() => handleSelected("NOTIFICATION")}
-        className={`flex p-2 rounded-full h-10 w-10 items-center gap-2 justify-center ${
-          selected === "NOTIFICATION" ? "bg-cyan-500 text-white" : "transparent"
+        className={`flex p-2 rounded-full h-10 w-10 dark:bg-zinc-800 dark:text-zinc-300 text-zinc-700  bg-blue-50 items-center gap-2 justify-center ${
+          selected === "NOTIFICATION" ? "shadow-xl" : "transparent"
         } transition-background`}
       >
         <IoMdNotificationsOutline size="20" />
       </Button>
       <Button
         onClick={() => handleSelected("EXIT")}
-        className={`flex p-2 rounded-full justify-center h-10 w-10 items-center gap-2 ${
-          selected === "EXIT" ? "bg-cyan-500 text-white" : "transparent"
+        className={`flex p-2 rounded-full bg-blue-50 dark:bg-zinc-800 dark:text-zinc-300 text-zinc-700 justify-center h-10 w-10 items-center gap-2 ${
+          selected === "EXIT" ? "shadow-xl" : "transparent"
         } transition-background`}
       >
         <IoMdExit size="20" />
       </Button>
-      <Button className="flex bg-cyan-500 relative h-10 w-10 items-center overflow-hidden rounded-full">
-        <Image
-          className="hover:scale-[1.1] transition-all"
-          src={`${Server}/uploads/${userInfo.photo}`}
-          sizes="(max-width: 2rem) 2rem, 1200px"
-          /* priority */
-          fill
-          quality={25}
-          style={{ objectFit: "cover" }}
-          alt="Foto do usuario"
-        />
-      </Button>
+      <div className="flex gap-2 dark:bg-zinc-800 dark:text-zinc-300 items-center bg-blue-50 p-1 px-2 rounded-full">
+        <div className="bg-zinc-400 w-10 h-10 relative rounded-full overflow-hidden">
+          <Image
+            src={`${Server}/uploads/${userInfo.photo}`}
+            sizes="(max-width: 2rem) 2rem, 1200px"
+            fill
+            quality={25}
+            style={{ objectFit: "cover" }}
+            alt="Foto do usuario"
+          />
+        </div>
+        <div className="flex flex-col items-start">
+          <h2 className={`${fontInter}  opacity-60 px-2`}>
+            {userInfo.firstName}
+          </h2>
+        </div>
+      </div>
+
       <AnimatePresence>
         {selected === "NOTIFICATION" && (
           <S.Modal

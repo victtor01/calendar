@@ -19,13 +19,9 @@ export const Bubble = styled.div`
   display: flex;
   height: 100%;
   min-height: fit-content;
-  position: fixed;
+  position: absolute;
   z-index: 2;
   overflow: hidden;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
   pointer-events: none;
 
   &::before {
@@ -34,10 +30,11 @@ export const Bubble = styled.div`
     height: 40%;
     position: absolute;
     top: 0;
+    left: -2rem;
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
     filter: blur(4vh);
-    opacity: 0.15;
+    opacity: 0.1;
     background: linear-gradient(
       34deg,
       transparent,

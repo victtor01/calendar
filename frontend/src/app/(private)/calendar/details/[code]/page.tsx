@@ -62,7 +62,7 @@ export default function Details({
   }
 
   return (
-    <S.Container className="flex bg-transparent relative w-full mx-auto mt-0 flex-col pb-5 gap-2 rounded-md">
+    <S.Container className="flex bg-transparent  relative w-full mx-auto mt-0 flex-col pb-5 gap-2 rounded-md">
       <header className="flex justify-between gap-3 rounded">
         <div className="flex flex-1">
           <Link
@@ -204,7 +204,7 @@ export default function Details({
           </AnimatePresence>
         </div>
       </header>
-      <div className="w-full h-full pt-3 gap-3 flex relative justify-between flex-wrap">
+      <div className="w-full overflow-auto h-auto pt-3 gap-3 flex relative justify-between flex-wrap">
         <Edit event={event} />
         <Comments event={event} />
         <ComponentClient event={event} />

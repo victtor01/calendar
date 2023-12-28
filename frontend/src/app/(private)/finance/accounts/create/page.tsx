@@ -60,7 +60,7 @@ const Create = () => {
     <S.Container
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`flex rounded flex-col w-auto flex min-w-[28rem] m-auto ${fontOpenSans}`}
+      className={`flex rounded flex-col w-auto min-w-[28rem] m-auto ${fontOpenSans}`}
     >
       <header
         className={`${fontRoboto} overflow-auto p-2 flex items-center gap-3 bg-zinc-300 bg-opacity-5`}

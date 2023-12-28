@@ -1,10 +1,9 @@
 import Link from "next/link";
 import * as S from "./style";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaCreditCard } from "react-icons/fa";
 import { MdFilterList } from "react-icons/md";
 import { GoSearch } from "react-icons/go";
-import { IoMdAdd } from "react-icons/io";
+
 
 export const Header = () => {
   return (
@@ -31,7 +30,7 @@ export const Header = () => {
         transition={{ delay: 0.4 }}
         className="flex gap-3 items-center w-auto backdrop-blur-md"
       >
-        <input className="focus:shadow rounded-lg w-full outline-none p-1 transition-shadow border-none p-3 bg-zinc-400 bg-opacity-10" />
+        <input className="focus:shadow rounded-lg w-full outline-none  transition-shadow border-none p-3 bg-zinc-400 bg-opacity-10" />
         <button className="w-[4rem] h-[3rem] rounded-md opacity-70 hover:opacity-80 bg-cyan-400 items-center justify-center flex">
           <GoSearch size="20" className="text-white" />
         </button>

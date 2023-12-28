@@ -16,6 +16,7 @@ import { z } from "zod";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { toast } from "react-toastify";
 import { queryClient } from "@/hooks/queryClient";
+import useTemplates from "@/hooks/templates";
 
 const maxLenghtDescriptionInput = 100;
 
@@ -85,8 +86,7 @@ function useAddEvent() {
     control,
     name: "templates",
   });
-
-  const { templates, isLoading } = Template.getAll();
+  const { data: templates, isLoading } = useTemplates().useGetAll();
 
   const [openModalTemplates, setOpenModalTemplates] = useState<boolean>(false);
 

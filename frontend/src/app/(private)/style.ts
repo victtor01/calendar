@@ -14,7 +14,6 @@ export const Container = styled.main`
   grid-gap: 0rem;
   height: 100vh;
   color: ${(props) => props.theme.text};
-  background-color: ${({theme}) => theme.primary};
   position: relative;
   min-width: auto;
   overflow: hidden;
@@ -24,14 +23,15 @@ export const Container = styled.main`
 export const Content = styled.div`
   display: flex;
   grid-area: content;
+  flex-direction: column;
   height: 100%;
   position: relative;
   min-width: auto;
   overflow: auto;
   width: auto;
-
+  
   &::-webkit-scrollbar {
-    width: 12px; /* Largura da barra de rolagem */
+    width: 0px; /* Largura da barra de rolagem */
   }
 
   /* Estilo para o indicador da barra de rolagem (thumb) */

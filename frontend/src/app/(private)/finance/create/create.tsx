@@ -163,7 +163,7 @@ export const Create = () => {
     },
   } = useCreate();
 
-  const { accounts } = useAccounts().getAccounts();
+  const { data: accounts } = useAccounts().useGetAccounts();
 
   return (
     <form
