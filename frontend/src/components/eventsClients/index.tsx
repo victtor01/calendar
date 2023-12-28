@@ -15,8 +15,6 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
 
-import * as S from './style';
-
 function useClients(event: Event) {
   const api = useApiPrivate();
 
@@ -86,7 +84,7 @@ export default function Clients({ event }: { event: Event }) {
   }
 
   return (
-    <S.ComponentForm className="flex flex-col max-w-[30rem] gap-0 min-w-[20rem] w-full gap-2  rounded-md items-center p-6 ">
+    <form className="flex flex-col max-w-[30rem] gap-0 min-w-[20rem] w-full gap-2  rounded-md items-center p-6 ">
       <div
         className={`rounded w-full h-10 flex justify-between items-center gap-3 ${fontRoboto}`}
       >
@@ -147,6 +145,6 @@ export default function Clients({ event }: { event: Event }) {
           </AnimatePresence>
         </div>
       </div>
-    </S.ComponentForm>
+    </form>
   );
 }

@@ -50,13 +50,6 @@ export const Modal = styled(motion.div)`
   }
 `;
 
-export const Separator = styled.span`
-  width: 100%;
-  background: linear-gradient(45deg, transparent, #6157ff, transparent);
-  height: 1px;
-  display: flex;
-`;
-
 export const ComponentForm = styled(motion.form)`
   //background: linear-gradient(to bottom, ${({theme}) => theme.secundary}, transparent);
   position: relative;

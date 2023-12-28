@@ -17,7 +17,6 @@ import Input from "@/components/input/input";
 import { AiOutlineSearch } from "react-icons/ai";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
 import { toast } from "react-toastify";
-import * as S from './style';
 
 function useServices(event: Event) {
   const [showAllServices, setShowAllServices] = useState<boolean>(true);
@@ -42,7 +41,7 @@ function useServices(event: Event) {
       error: "Houve um erro! Tente novamente mais tarde! ",
     });
 
-    queryClient.refetchQueries(["event", event.code]);
+    queryClient.invalidateQueries(["event", event.code]);
   }
 
   const totalPrice = event?.services?.reduce(
@@ -81,8 +80,7 @@ export default function Services({ event }: { event: Event }) {
     (showAllServices ? allServices : event?.services) || "Sem serviços";
 
   return (
-    <S.ComponentForm className="flex flex-col max-w-[30rem] w-full gap-2 p-6 rounded-md">
-      
+    <form className="flex flex-col max-w-[30rem] w-full gap-2 p-6 rounded-md">
       <header
         className={`rounded justify-between w-full h-10 flex items-center gap-3 ${fontRoboto}`}
       >
@@ -149,6 +147,6 @@ export default function Services({ event }: { event: Event }) {
           })}
         </AnimatePresence>
       </div>
-    </S.ComponentForm>
+    </form>
   );
 }

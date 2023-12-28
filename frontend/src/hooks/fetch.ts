@@ -1,3 +1,4 @@
+
 import { Server } from "@/constants/server";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
@@ -5,6 +6,17 @@ import { cookies } from "next/headers";
 interface TokenProps {
   access_token: string | null;
   refresh_token?: string | null;
+}
+
+async function serverAction(data: string) {
+  'use server';
+  cookies().set('name', 'junior');
+  cookies().set({ 
+    name: 'lastname', 
+    value: 'alves', 
+    httpOnly: true, 
+    path: '/', 
+  });
 }
 
 function getTokens() {
@@ -21,6 +33,7 @@ function getTokens() {
   };
 }
 
+
 export default async function fetchs(url: string) {
   const { access_token }: TokenProps = getTokens();
 
@@ -33,13 +46,30 @@ export default async function fetchs(url: string) {
       },
     });
 
+    console.log(access_token);
     if (res.status !== 401) return res.json();
 
     throw new Error(res.statusText);
   } catch (error) {
-    return {
-      error: error,
-    };
+    const { access_token } = await refreshToken();
+
+    if (!access_token) {
+      console.log(error);
+      return;
+    }
+
+    await serverAction('tes');
+    console.log(access_token);
+
+    const res = await fetch(`${Server}/${url}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    return res.json();
   }
 }
 
@@ -60,16 +90,5 @@ export async function refreshToken() {
 
   console.log(res);
 
-  /*  const { data } = await api.post(
-    "/auth/refresh",
-    {
-      access_token,
-      refresh_token,
-    },
-    {
-      headers: { Authorization: `Bearer ${refresh_token}` },
-    }
-  ); */
-  /* 
-  return data; */
+  return res.json();
 }
