@@ -1,22 +1,9 @@
-
-import { Server } from "@/constants/server";
+import { Server, ServerClient } from "@/constants/server";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
-
 interface TokenProps {
   access_token: string | null;
   refresh_token?: string | null;
-}
-
-async function serverAction(data: string) {
-  'use server';
-  cookies().set('name', 'junior');
-  cookies().set({ 
-    name: 'lastname', 
-    value: 'alves', 
-    httpOnly: true, 
-    path: '/', 
-  });
 }
 
 function getTokens() {
@@ -33,11 +20,11 @@ function getTokens() {
   };
 }
 
-
 export default async function fetchs(url: string) {
-  const { access_token }: TokenProps = getTokens();
+  const { access_token, refresh_token }: TokenProps = getTokens();
 
   try {
+    //try request data of server
     const res = await fetch(`${Server}/${url}`, {
       method: "GET",
       headers: {
@@ -46,21 +33,40 @@ export default async function fetchs(url: string) {
       },
     });
 
+    // print access
     console.log(access_token);
+
+    //retorn if response data
     if (res.status !== 401) return res.json();
 
+    // error
     throw new Error(res.statusText);
   } catch (error) {
-    const { access_token } = await refreshToken();
+    console.log(error);
 
-    if (!access_token) {
+    if (!refresh_token) return;
+
+    // try refresh token
+    const responseData = (await fetch(`${ServerClient}/api/auth/refresh`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+      body: JSON.stringify({
+        access_token,
+        refresh_token,
+      }),
+    }));
+
+    const res = await responseData.json() ?? '';
+
+    console.log(res);
+
+    /*     if (!access_token) {
       console.log(error);
       return;
     }
 
-    await serverAction('tes');
-    console.log(access_token);
-
     const res = await fetch(`${Server}/${url}`, {
       method: "GET",
       headers: {
@@ -69,7 +75,7 @@ export default async function fetchs(url: string) {
       },
     });
 
-    return res.json();
+    return res.json(); */
   }
 }
 

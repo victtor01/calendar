@@ -8,6 +8,8 @@ async function refreshToken() {
     const access_token = cookies.access_token;
     const refresh_token = cookies.refresh_token;
 
+    console.log(access_token)
+
     const { data } = await apiPrivate.post(
       "/auth/refresh",
       {
@@ -45,7 +47,8 @@ const interceptorResponse = apiPrivate.interceptors.response.use(
     if (err.response && _retry) {
       _retry = false;
       if (err.response.status === 401) {
-        const { access_token } = await refreshToken();
+        const access_token = (await refreshToken())?.access_token || null;
+
         if (access_token) {
           Cookies.set("access_token", access_token);
           originalConfig.headers["Authorization"] = `Bearer ${access_token}`;

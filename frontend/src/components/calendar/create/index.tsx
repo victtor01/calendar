@@ -7,14 +7,12 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { IoClose } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
-import Template from "@/hooks/templates";
 import Loading from "@/components/loading";
 import { EventsTemplates } from "@/types/eventsTemplates";
 import { colorsEvents } from "@/constants/colorsEvents";
 import { BiCheck } from "react-icons/bi";
 import { z } from "zod";
 import useApiPrivate from "@/hooks/apiPrivate";
-import { toast } from "react-toastify";
 import { queryClient } from "@/hooks/queryClient";
 import useTemplates from "@/hooks/templates";
 

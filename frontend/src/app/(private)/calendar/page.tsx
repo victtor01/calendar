@@ -11,15 +11,12 @@ import { queryClient } from "@/hooks/queryClient";
 import { Event } from "../../../types/events";
 import { AnimatePresence, motion } from "framer-motion";
 import * as S from "./style";
-import Header from "./header";
 import useEventsTemplates from "@/hooks/useEventsTemplates";
 import { toast } from "react-toastify";
 import { ClientComponent } from "./details";
-import { EventsTemplates } from "@/types/eventsTemplates";
-import AddClient from "./create";
+import AddClient from "../../../components/calendar/create";
 import interactionPlugin, {
   Draggable,
-  DropArg,
 } from "@fullcalendar/interaction";
 
 const variants = {
@@ -151,21 +148,6 @@ export default function Calendar() {
 
   return (
     <>
-      {/* <S.Bubble /> */}
-      <AnimatePresence>
-        {selectedDay?.start && (
-          <AddClient
-            setSelectedDay={setSelectedDay}
-            selectedDay={selectedDay}
-          />
-        )}
-        {itemSelected && (
-          <ClientComponent
-            itemSelected={itemSelected}
-            setIdSelected={setIdSelected}
-          />
-        )}
-      </AnimatePresence>
       <motion.main
         variants={variants}
         initial="pageInitial"
@@ -214,6 +196,21 @@ export default function Calendar() {
           </S.Content>
         </div>
       </motion.main>
+      <AnimatePresence>
+        {selectedDay?.start && (
+          <AddClient
+            setSelectedDay={setSelectedDay}
+            selectedDay={selectedDay}
+          />
+        )}
+
+        {itemSelected && (
+          <ClientComponent
+            itemSelected={itemSelected}
+            setIdSelected={setIdSelected}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }

@@ -120,14 +120,16 @@ export default function Login() {
         pauseOnHover
         theme={theme.toLowerCase() as Theme}
       />
+
       <Poster />
+      
       <Form
         bgTheme
         exit={{ opacity: 0 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         onSubmit={handleSubmit(onSubmit)}
-        className={`shadow-2xl max-w-[32rem] bg-opacity-20 h-auto relative backdrop-blur-3xl p-14 px-16 justify-center`}
+        className={`shadow-2xl max-w-[32rem] bg-red-200 bg-opacity-20 h-auto relative backdrop-blur-3xl p-14 px-16 justify-center`}
       >
         {error && <div>{error}</div>}
         <div className="flex flex-col mb-10 gap-1">

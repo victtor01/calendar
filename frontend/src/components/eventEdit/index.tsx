@@ -163,7 +163,11 @@ export default function Edit({ event }: { event: Event | undefined }) {
     data: { templates },
   } = useFormDetails(event);
 
-  if (!event) return;
+
+  if (!event) {
+    console.log('');
+    return;
+  }
 
   return (
     <form

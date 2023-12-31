@@ -20,6 +20,7 @@ const links = {
 
 export default function Layout({ children }: layoutProps) {
   const pathName = usePathname();
+
   return (
     <>
       <motion.header

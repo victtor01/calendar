@@ -6,19 +6,18 @@ import styled, { css } from "styled-components";
 export const Container = styled.main`
   display: grid;
   grid-template-areas:
-    "sidebar header header header"
-    "sidebar content content content"
-    "sidebar content content content";
-  grid-template-rows: auto 1fr 1fr;
-  grid-template-columns: auto 1fr 1fr auto;
-  grid-gap: 0rem;
+    "sidebar content content content user"
+    "sidebar content content content user"
+    "sidebar content content content user";
+  grid-template-rows: auto 1fr 1fr ;
+  grid-template-columns: auto 1fr 1fr 1fr auto;
+  grid-gap: 1rem;
   height: 100vh;
   color: ${(props) => props.theme.text};
   position: relative;
   min-width: auto;
   overflow: hidden;
 `;
-
 
 export const Content = styled.div`
   display: flex;
@@ -29,7 +28,7 @@ export const Content = styled.div`
   min-width: auto;
   overflow: auto;
   width: auto;
-  
+
   &::-webkit-scrollbar {
     width: 0px; /* Largura da barra de rolagem */
   }
@@ -58,7 +57,8 @@ export const Bubble = styled.div`
   height: 100%;
   min-height: fit-content;
   position: absolute;
-  z-index: -1;
+  z-index: 1;
+  pointer-events: none;
   overflow: hidden;
   top: 0;
   bottom: 0;
@@ -67,32 +67,66 @@ export const Bubble = styled.div`
 
   &::before {
     content: "";
-    width: 100%;
-    height: 20%;
+    width: 20rem;
+    height: 20rem;
     position: absolute;
-    top: 0;
+    top: 40%;
     padding: 2rem;
-    border-radius: 77% 23% 77% 23% / 39% 25% 75% 61% ;
+    border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
     filter: blur(2em);
-    opacity: 0.08;
-    background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
+    opacity: 0.05;
+    background: linear-gradient(
+      34deg,
+      transparent,
+      #6157ff,
+      #74febd,
+      transparent
+    );
   }
 
   &::after {
     content: "";
-    width: 100%;
-    height: 40%;
+    width: 20rem;
+    height: 20rem;
     position: absolute;
     top: 40%;
     right: 0;
     padding: 2rem;
-    border-radius:  77% 23% 17% 83% / 35% 61% 39% 65% ;
-    filter: blur(2em) ;
-    opacity: 0.08;
-    background: linear-gradient(34deg, transparent, #6157FF, #74FEBD, transparent);
+    border-radius: 77% 23% 17% 83% / 35% 61% 39% 65%;
+    filter: blur(2em);
+    opacity: 0.1;
+    background: linear-gradient(
+      34deg,
+      transparent,
+      #6157ff,
+      #74febd,
+      transparent
+    );
   }
 `;
 
-export const LinkRoute = styled(motion(Link))`
+interface LinkRouteProps {
+  $selected: boolean;
+}
 
-`
+export const LinkRoute = styled(motion(Link))<LinkRouteProps>`
+  position: relative;
+
+  &::before {
+    content: "";
+    top: 50%;
+    width: 0.2rem;
+    position: absolute;
+    left: 0%;
+    transform: translateY(-50%);
+    transition: height 0.1s, opacity 0.1s;
+    border-radius: 1rem;
+    height: ${(props) => (props.$selected ? "90% !important" : 0)};
+    opacity: ${(props) => (props.$selected ? 1 : 0)};
+  }
+
+  &:hover::before {
+    height: 40%;
+    opacity: 1;
+  }
+`;

@@ -1,7 +1,3 @@
-export default function List() {
-    return (
-        <div>
-            Minha lista
-        </div>
-    )
+export default async function List(ctx: Request) {
+  return <div>Minha página</div>;
 }

@@ -52,7 +52,7 @@ export const Bubble = styled.div<BubbleProps>`
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
     filter: blur(2em) brightness(80%);
-    opacity: 0.1;
+    opacity: 0.01;
     background: linear-gradient(34deg, #6157ff, #74febd);
   }
 `;

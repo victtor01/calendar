@@ -7,7 +7,6 @@ const api = axios.create({
 
 export const apiPrivate = axios.create({
   baseURL: Server,
- 
 })
 
 export default api

@@ -13,6 +13,34 @@ export interface PrivateRouteProps {
   name: string;
 }
 
+function usePrivateRoutes() {
+  const { push } = useRouter();
+  const api = useApiPrivate();
+
+  const logout = async () => {
+    Cookies.remove("access_token");
+    Cookies.remove("refresh_token");
+    Cookies.remove("adminRote");
+    push("/login");
+  };
+
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      return (await api.get("/users/find")).data;
+    },
+    refetchInterval: 1000 * 60,
+    staleTime: 1000 * 60,
+  });
+
+  return {
+    isError,
+    isLoading,
+    data,
+    logout,
+  };
+}
+
 export default function PrivateRoute({
   children,
 }: {
@@ -20,7 +48,7 @@ export default function PrivateRoute({
 }) {
   const { isError, isLoading, data, logout } = usePrivateRoutes();
   const [loading, setLoading] = useState<boolean>(true);
-  const { setUserInfo } = useSessionContext();
+  const { setUserInfo  } = useSessionContext();
 
   useEffect(() => {
     if (data) {
@@ -68,30 +96,3 @@ export default function PrivateRoute({
   return children;
 }
 
-function usePrivateRoutes() {
-  const { push } = useRouter();
-  const api = useApiPrivate();
-
-  const getUserInfo = async () => {
-    return (await api.get("/users/find")).data;
-  };
-
-  const logout = async () => {
-    Cookies.remove("access_token");
-    Cookies.remove("refresh_token");
-    Cookies.remove("adminRote");
-    push("/login");
-  };
-
-  const { data, isError, isLoading } = useQuery({
-    queryKey: ["user"],
-    queryFn: getUserInfo,
-  });
-
-  return {
-    isError,
-    isLoading,
-    data,
-    logout,
-  };
-}

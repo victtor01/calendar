@@ -1,4 +1,4 @@
-export default function Skeleton () {
+export default function Loading () {
     return (
         <div>
             LOADING...

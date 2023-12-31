@@ -1,18 +1,16 @@
-"use server"
-
+"use client";
 import React from "react";
 import Link from "next/link";
-import useDetails from "./useDatails";
 import { IoClose } from "react-icons/io5";
-import { useRouter } from "next/navigation";
 
 // components
 import Edit from "@/components/eventEdit";
 import Comments from "@/components/eventsComments";
 import ComponentClient from "@/components/eventsClients";
 import ComponentService from "@/components/eventServices";
-import fetchs from "@/hooks/fetch";
-import { cookies } from "next/headers";
+import { useQuery } from "@tanstack/react-query";
+import useApiPrivate from "@/hooks/apiPrivate";
+import { EventHeader } from "@/components/eventHeader";
 
 const status = {
   ACTIVATED: "ATIVADO",
@@ -30,33 +28,14 @@ interface DetailsProps {
   params: { code: string };
 }
 
+export default function Details({ params: { code } }: DetailsProps) {
+  const api = useApiPrivate();
+  const { data: event, isLoading } = useQuery(["event", code], async () => {
+    return (await api.get(`/events/find/${code}`)).data;
+  });
 
+  if (isLoading) return;
 
-export default async function Details({ params: { code } }: DetailsProps) {
-
-  const event = await fetchs(`events/find/${code}`);
-
-  console.log(event?.id);
-
-
-  /*   const router = useRouter(); */
-
-  /*   const {
-    query: { event, isLoading },
-    modalDelete: { handleShowModalDelete, showModalDelete },
-    modalFinish: { showModalFinish, handleShowModalFinish, UpdateStatusEvent },
-    events: { deleteEvent },
-  } = useDetails(code);
-
-  if (isLoading) {
-    return;
-  }
-
-  if (!event) {
-    router.push("/calendar/");
-    return;
-  }
- */
   return (
     <main className="flex bg-transparent  relative w-full mx-auto mt-0 flex-col pb-5 gap-2 rounded-md">
       <header className="flex justify-between gap-3 rounded">
@@ -68,6 +47,7 @@ export default async function Details({ params: { code } }: DetailsProps) {
             <IoClose size="24" />
           </Link>
         </div>
+        <EventHeader event={event} />
       </header>
       <div className="w-full overflow-auto h-auto pt-3 gap-3 flex relative justify-between flex-wrap">
         <Edit event={event} />
