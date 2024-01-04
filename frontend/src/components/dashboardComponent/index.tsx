@@ -18,7 +18,7 @@ export default function DashboardComponent({
       animate={{ opacity: 1, x: 0 }}
       {...props}
       className={twMerge(
-        "flex flex-1 rounded-xl bg-white dark:bg-zinc-900 dark:bg-opacity-50 flex-col relative border dark:border-none",
+        "flex flex-1 rounded-xl bg-white dark:bg-zinc-900 dark:bg-opacity-50 flex-col relative dark:border-none",
         props.className
       )}
     >

@@ -13,7 +13,6 @@ import { ImLock } from "react-icons/im";
 import Cookie from "js-cookie";
 import { useRouter } from "next/navigation";
 import * as S from "./style";
-import { ThemeContext } from "../layout";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import { motion } from "framer-motion";
 import moment from "moment";
@@ -21,6 +20,7 @@ import Link from "next/link";
 import Spinner from "@/components/spinner";
 import Poster from "./poster";
 import { Theme, ToastContainer, toast } from "react-toastify";
+import { ThemeContext } from "@/contexts/publicThemeContext";
 
 type LoginUserFormData = z.infer<typeof createUserFormSchema>;
 

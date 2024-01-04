@@ -18,7 +18,7 @@ function useEvents() {
   const end = moment().endOf("month").format("MM/DD/YYYY");
 
   const { data: events, isLoading } = useQuery<Event[]>({
-    queryKey: ["events"],
+    queryKey: ["events", "find-by-date"],
     queryFn: async () => {
       return (
         await api.post("/events/find-by-date", {
@@ -28,6 +28,7 @@ function useEvents() {
       ).data;
     },
   });
+
 
   const { data: lastMonth, isLoading: isLoadingLastMonth } = useQuery<Event[]>({
     queryKey: ["events-last-month"],

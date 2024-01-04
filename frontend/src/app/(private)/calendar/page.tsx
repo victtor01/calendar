@@ -152,7 +152,7 @@ export default function Calendar() {
         variants={variants}
         initial="pageInitial"
         animate="pageAnimate"
-        className="p-4 flex gap-[1rem] mx-auto flex-col w-full max-w-[110rem] h-full relative"
+        className="py-2 flex gap-[1rem] mx-auto flex-col w-full max-w-[110rem] h-full relative"
       >
         <div className="flex flex-col flex-1">
           <S.Content className="gap-4 flex flex-col mx-auto">

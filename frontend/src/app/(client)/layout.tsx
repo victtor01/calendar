@@ -1,10 +1,11 @@
 "use client";
-import { Suspense, useState, createContext } from "react";
+import { Suspense, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import * as S from "./style";
 import Footer from "@/components/footer";
 import Loading from "@/components/loading";
 import { AnimatePresence } from "framer-motion";
+import { ThemeContext } from "@/contexts/publicThemeContext";
 
 type ThemeType = "DARK" | "LIGHT";
 
@@ -16,11 +17,6 @@ interface ContextProps {
 interface layoutProps {
   children: React.ReactNode;
 }
-
-export const ThemeContext = createContext<ContextProps>({
-  handleTheme: () => null,
-  theme: "DARK",
-});
 
 const darkTheme = {
   primary: "#101010",

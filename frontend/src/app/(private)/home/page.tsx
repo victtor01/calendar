@@ -116,8 +116,8 @@ export default function Home() {
             transition={{ delay: 0.1 }}
             className="flex flex-col"
           >
-            <h1 className={`text-3xl opacity-90`}>Dashboard</h1>
-            <time className="block mb-2 text-sm font-normal leading-none">
+            <h1 className={`text-3xl opacity-90 dark:text-gray-400 text-gray-700 font-semibold`}>Dashboard</h1>
+            <time className="block mb-2 text-sm font-normal text-gray-600 px-1 leading-none">
               {moment().format("dddd, DD MMM YYYY")}
             </time>
           </motion.div>
@@ -128,7 +128,7 @@ export default function Home() {
                 onClick={() => setShowModalFilter(true)}
                 layoutId={"filter"}
                 whileTap={{ scale: 0.9, transition: { type: "spring" } }}
-                className="bg-blue-50 dark:bg-zinc-900 border dark:border-zinc-700 z-[3] flex gap-2 items-center rounded p-3"
+                className="bg-indigo-600 text-white z-[3] flex gap-2 items-center rounded p-3"
               >
                 <FaFilter />
               </motion.button>

@@ -16,9 +16,9 @@ import { UsersService } from "@/hooks/users";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
-import { ThemeContext } from "../layout";
 import Link from "next/link";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
+import { ThemeContext } from "@/contexts/publicThemeContext";
 
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 

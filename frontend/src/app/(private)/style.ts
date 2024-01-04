@@ -71,6 +71,7 @@ export const Bubble = styled.div`
     height: 20rem;
     position: absolute;
     top: 40%;
+    left: 50%;
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
     filter: blur(2em);

@@ -30,7 +30,6 @@ function usePrivateRoutes() {
       return (await api.get("/users/find")).data;
     },
     refetchInterval: 1000 * 60,
-    staleTime: 1000 * 60,
   });
 
   return {
@@ -48,7 +47,7 @@ export default function PrivateRoute({
 }) {
   const { isError, isLoading, data, logout } = usePrivateRoutes();
   const [loading, setLoading] = useState<boolean>(true);
-  const { setUserInfo  } = useSessionContext();
+  const { setUserInfo } = useSessionContext();
 
   useEffect(() => {
     if (data) {
@@ -95,4 +94,3 @@ export default function PrivateRoute({
 
   return children;
 }
-

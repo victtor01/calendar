@@ -28,9 +28,9 @@ export const LinkRoute = styled(motion(Link))<LinkRouteProps>`
     height: ${(props) => (props.$selected ? "90% !important" : 0)};
     opacity: ${(props) => (props.$selected ? 1 : 0)};
   }
-
+/* 
   &:hover::before {
     height: 40%;
     opacity: 1;
-  }
+  } */
 `;

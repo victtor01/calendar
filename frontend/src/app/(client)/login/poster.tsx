@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { ThemeContext } from "../layout";
+import { ThemeContext } from "@/contexts/publicThemeContext";
 import * as S from "./style";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";

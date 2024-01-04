@@ -17,8 +17,7 @@ import Loading from "@/components/loading";
 import UserComponents from "@/components/userComponents";
 import { useSessionContext } from "@/contexts/sessionContext";
 import { Theme, ToastContainer } from "react-toastify";
-import { AnimatePresence, motion } from "framer-motion";
-import { IoIosArrowUp, IoMdNotificationsOutline } from "react-icons/io";
+import { motion } from "framer-motion";
 import { GoGear, GoHomeFill, GoPersonFill } from "react-icons/go";
 import { CiCircleList } from "react-icons/ci";
 import Image from "next/image";
@@ -26,6 +25,8 @@ import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { Server } from "@/constants/server";
 import { IoClose } from "react-icons/io5";
 import { SidebarRelativePrivate } from "@/components/layoutPrivate/sidebar";
+import { ThemeContext } from "@/contexts/themeContext";
+import Information from "@/components/layoutPrivate/informations";
 
 /* #1f1d2b */
 /*  rgb(24, 24, 27) */
@@ -131,11 +132,6 @@ const useLayout = () => {
   };
 };
 
-export const ThemeContext = createContext({
-  theme: "dark",
-  handleTheme: (): any => null,
-});
-
 export default function Layout({ children }: { children: React.ReactNode }) {
   const {
     theme: { theme, handleTheme, IconTheme },
@@ -148,8 +144,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <PrivateRoute>
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         <ThemeContext.Provider value={{ theme, handleTheme }}>
-          <S.Bubble />
-          <S.Container className="bg-white dark:bg-gradient-45 from-neutral-950 to-zinc-900 p-2 pl-4 ">
+          <S.Container className="bg-white dark:bg-gradient-45 from-zinc-950 to-gray-900 p-4 ">
+           {/*  <S.Bubble /> */}
+
+            <div className="flex absolute right-0 top-0 h-full w-[30%] bg-blue-100 dark:bg-black"></div>
+
             <SidebarRelativePrivate />
 
             <Sidebar
@@ -234,24 +233,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Sidebar>
 
             <Suspense fallback={<Loading />}>
-              <S.Content className="bg-blue-50 dark:bg-zinc-950 rounded-2xl ">
-                {/*   <header
-                className="justify-between  bg-trnasparent flex pl-2 h-auto items-center top- w-auto m-1 rounded-xl top-0 sticky"
-                style={{
-                  width: "auto",
-                }}
-              >
-                <div className={`flex gap-1 font-semibold text-lg`}>
-                  <span className="absolute bg-gradient-45 from-[#6157FF] via-[#74FEBD] from-10% to-80% blur-2xl opacity-20 shadow-purple-500 to-transparent bg-opacity-50 h-full w-[50%] z-[2] transform -skew-x-[-26deg] left-[-20px]" />
-                  Olá,
-                  <span className="flex text-purple-700">
-                    {userInfo?.firstName}!
-                    </span>
-                </div>
-                <div className="flex rounded-full">
+              <S.Content className="bg-blue-50  dark:bg-neutral-950   rounded-2xl p-4">
                 <UserComponents />
-                </div>
-              </header> */}
+
                 <ToastContainer
                   position="top-right"
                   autoClose={2000}
@@ -268,38 +252,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </S.Content>
             </Suspense>
 
-            <div
-              style={{ gridArea: "user" }}
-              className="bg-transparent py-4 px-2 flex flex-col gap-5 w-[16rem]"
-            >
-              <header className="flex justify-between gap-20">
-                <div className="bg-gradient-45 border-2 border-zinc-600 shadow-inner from-purple-600 to-blue-600 w-14 h-14 relative rounded-full overflow-hidden opacity-90">
-                  <Image
-                    src={`${Server}/uploads/${userInfo.photo}`}
-                    sizes="(max-width: 2rem) 2rem, 1200px"
-                    fill
-                    quality={100}
-                    style={{ objectFit: "cover" }}
-                    alt="Foto do usuario"
-                  />
-                </div>
-                <div className="flex gap-5 py-1">
-                  <GoGear size="20" />
-                  <IoClose size="20" />
-                </div>
-              </header>
-
-              <section className={`flex flex-col opacity-70 ${fontRoboto}`}>
-                <h1 className="text-xl font-bold">{userInfo?.firstName}</h1>
-                <h2 className="text-xl font-bold">{userInfo?.lastName}</h2>
-              </section>
-              <section className="bg-blue-50 dark:bg-zinc-800 rounded flex p-3">
-                <div className=""></div>
-                <div className="flex flex-1 items-center">
-                  <h1 className="text-xl font-semibold">R$ 230,00</h1>
-                </div>
-              </section>
-            </div>
+            <Information />
           </S.Container>
         </ThemeContext.Provider>
       </ThemeProvider>
