@@ -17,12 +17,14 @@ const useResumeFinance = () => {
   const start: string = moment().startOf("month").format("MM-DD-YYYY");
   const end: string = moment().endOf("month").format("MM-DD-YYYY");
 
-  const { data: registers, isLoading: loadingRegisters } = useQuery<Register[]>({
-    queryKey: ["registers", "date"],
-    queryFn: async (): Promise<Register[]> => {
-      return (await api.get(`/registers/find/date/${start}/${end}`)).data;
-    },
-  });
+  const { data: registers, isLoading: loadingRegisters } = useQuery<Register[]>(
+    {
+      queryKey: ["registers", "date"],
+      queryFn: async (): Promise<Register[]> => {
+        return (await api.get(`/registers/find/date/${start}/${end}`)).data;
+      },
+    }
+  );
 
   const profit: number = (() => {
     const income =
@@ -48,16 +50,15 @@ const useResumeFinance = () => {
   };
 };
 
-export default function ResumeFinance() {
+export function ResumeFinance() {
   const { profit, loadingRegisters } = useResumeFinance();
 
   if (loadingRegisters) return <Loading />;
 
   return (
-    <motion.div className="flex flex-1 p-3 rounded-md flex-col z-40 backdrop-blur-xl">
+    <div className="flex flex-1 p-3 rounded-md flex-col z-40 ">
       <S.TitleComponent>
         <div className={`font-semibold opacity-70 ${fontOpenSans}`}>Lucro</div>
-        <div className="text-cyan-300">5%</div>
       </S.TitleComponent>
       <S.ContentComponent>
         <div className="flex flex-col gap-1 p-2">
@@ -65,41 +66,10 @@ export default function ResumeFinance() {
           <span className="text-xl font-semibold">
             {convertToRealMoney.format(profit)}
           </span>
-          <p className="text-sm text-cyan-500">
-            Lucro esse Mês 
-          </p>
+          <p className="text-sm text-cyan-500">Lucro esse Mês</p>
         </div>
-        <div className="relative items-center justify-center flex">
-          <svg
-            className="rotate-[-90deg]"
-            width="100"
-            height="100"
-            viewBox="0 0 100 100"
-          >
-            <S.Circle
-              cx="50"
-              cy="60"
-              r="30"
-              pathLength="1"
-              className="stroke-cyan-400"
-            />
-            <S.Progress
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 0.6 }}
-              transition={{
-                duration: 2,
-                delay: 0.2,
-                type: "spring",
-              }}
-              cx="50"
-              cy="60"
-              r="30"
-              pathLength="1"
-              className="stroke-cyan-500 relative"
-            ></S.Progress>
-          </svg>
-        </div>
+        <div className="relative items-center justify-center flex"></div>
       </S.ContentComponent>
-    </motion.div>
+    </div>
   );
 }

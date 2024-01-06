@@ -11,15 +11,13 @@ export default function DashboardComponent({
   children,
   ...props
 }: DarhboardProps) {
+  const { className, ...rest } = props;
   return (
     <S.Container
-      key={""}
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      {...props}
+      {...rest}
       className={twMerge(
-        "flex flex-1 rounded-xl bg-white dark:bg-zinc-900 dark:bg-opacity-50 flex-col relative dark:border-none",
-        props.className
+        "flex flex-1 rounded-xl bg-white dark:bg-zinc-900 dark:bg-opacity-50 flex-col relative dark:border-none hover:shadow-lg transition-shadow",
+        className
       )}
     >
       {children}

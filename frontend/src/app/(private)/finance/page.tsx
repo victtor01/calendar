@@ -52,9 +52,6 @@ interface Labels {
 
 const useRegisters = (page: number) => {
   const api = useApiPrivate();
-  const [itemDelete, setItemDelete] = useState<Register | null>(null);
-
-  const handleItemDelete = (item: Register | null): void => setItemDelete(item);
 
   const getRegisters = async (): Promise<ResponseData> =>
     (await api.get(`/registers/page/${page}`)).data;
@@ -64,17 +61,7 @@ const useRegisters = (page: number) => {
     queryFn: getRegisters,
   });
 
-  const deleteRegister = async (): Promise<void> => {
-    if (!itemDelete) return;
-    await api.delete(`/registers/delete/${itemDelete.id}`);
-    queryClient.invalidateQueries(["registers"]);
-    handleItemDelete(null);
-  };
-
   return {
-    handleItemDelete,
-    deleteRegister,
-    itemDelete,
     isLoading,
     isError,
     data,
@@ -89,10 +76,8 @@ export default function Registers() {
   const currentPage: number = post ? Number(post) : 1;
 
   //Get all items of hook
-  const { handleItemDelete, deleteRegister, itemDelete, isLoading, data } =
+  const { isLoading, data } =
     useRegisters(currentPage);
-
-  const router = useRouter();
 
   // all Registers
   const registers: Register[] = data?.registers || [];

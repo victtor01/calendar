@@ -105,7 +105,6 @@ export const ContentComponent = styled.div`
   justify-content: space-between;
   align-items: center;
   display: flex;
-
 `;
 
 export const ComponentRegister = styled(motion.div)`

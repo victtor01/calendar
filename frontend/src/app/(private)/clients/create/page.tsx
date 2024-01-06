@@ -13,6 +13,8 @@ import { fontOpenSans } from "@/app/fonts";
 import { PatternFormat } from "react-number-format";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface LabelFormData {
   name: string;
@@ -52,6 +54,8 @@ const CreateClientFormSchema = z.object({
 });
 
 const useCreate = () => {
+  const router = useRouter();
+
   const {
     control,
     handleSubmit,
@@ -64,10 +68,18 @@ const useCreate = () => {
   const api = useApiPrivate();
 
   const createClient = async (data: CreateClientFormData) => {
-    const response = await api.post("/clients/create", data);
-    if (response.data) {
-      queryClient.invalidateQueries(["clients"]);
-    }
+    const response = api.post("/clients/create", data);
+
+    const res = await toast.promise(response, {
+      pending: "Criando cliente",
+      success: "Oncluído com sucesso! redirecionando...",
+      error: "Houve algum erro, tente novamente mais tarde!",
+    });
+
+    await queryClient.invalidateQueries(["clients"]);
+
+    router.push("/clients");
+
     reset();
   };
 
@@ -118,17 +130,16 @@ export default function Create() {
                   {...field}
                   format={form.format}
                   autoComplete="off"
-              
                   placeholder={form.ex ? `ex: ${form.ex}` : ""}
-                  className="focus:shadow rounded-md transition-shadow p-4 outline-none bg-zinc-400 bg-opacity-5"
+                  className="focus:shadow rounded-md transition-shadow p-4 outline-none font-semibold bg-zinc-400 text-gray-700 dark:text-gray-300 bg-opacity-5"
                 />
               ) : (
                 <input
                   {...field}
                   type={form?.type || "text"}
-                  className="focus:shadow rounded-md transition-shadow p-4 outline-none bg-zinc-400 bg-opacity-5"
+                  className="focus:shadow rounded-md transition-shadow p-4 outline-none font-semibold bg-zinc-400 text-gray-700 dark:text-gray-300 bg-opacity-5"
                   autoComplete="off"
-                  placeholder={form.ex ? `ex: ${form.ex}` : ""}
+                  placeholder={form.ex ? `${form.ex}` : ""}
                 />
               )
             }

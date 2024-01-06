@@ -29,7 +29,6 @@ function useEvents() {
     },
   });
 
-
   const { data: lastMonth, isLoading: isLoadingLastMonth } = useQuery<Event[]>({
     queryKey: ["events-last-month"],
     queryFn: async () => {

@@ -1,30 +1,33 @@
 export default function SkeletonRegister() {
   return (
-    <div className="gap-2 shadow bg-zinc-500 bg-opacity-20 flex flex-col rounded-xl p-4 w-full mx-auto">
-      <div className="animate-pulse flex gap-6 items-center">
-        <div className="flex-col gap-2 flex-col flex flex-1">
-          <div className="p-2 w-20 bg-zinc-500 bg-opacity-30 rounded-xl"></div>
-          <div className="p-2 bg-zinc-500 bg-opacity-30 rounded"></div>
-        </div>
-        <div className="flex-col gap-2 flex-col flex flex-1">
-          <div className="p-2 w-20 bg-zinc-500 bg-opacity-30 rounded-xl"></div>
-          <div className="p-2 bg-zinc-500 bg-opacity-30 rounded"></div>
-        </div>
-        <div className="flex-col gap-2 flex-col flex flex-1">
-          <div className="p-2 w-20 bg-zinc-500 bg-opacity-30 rounded-xl"></div>
-          <div className="p-2 bg-zinc-500 bg-opacity-30 rounded"></div>
-        </div>
-        <div className="flex-col gap-2 flex-col flex flex-1">
-          <div className="p-2 w-20 bg-zinc-500 bg-opacity-30 rounded-xl"></div>
-          <div className="p-2 bg-zinc-500 bg-opacity-30 rounded"></div>
-        </div>
-        <div className="flex-col gap-2 flex-col flex">
-          <div className="p-2 w-8 h-8 bg-zinc-500 bg-opacity-30 rounded"></div>
-        </div>
-        <div className="flex-col gap-2 flex-col flex">
-          <div className="p-2 w-8 h-8 bg-zinc-500 bg-opacity-30 rounded"></div>
-        </div>
+    <div className="flex flex-col gap-1">
+    <div className="w-20 h-10 bg-zinc-100 dark:bg-zinc-800 rounded animate-pulse"></div>
+    <div className="w-full h-auto gap-[2px] flex flex-col">
+      <div className="bg-zinc-100 dark:bg-zinc-800 p-3 flex justify-between animate-pulse">
+        <div className="flex w-24 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+      </div>
+      <div className="bg-zinc-100 dark:bg-zinc-800 p-3 flex justify-between animate-pulse">
+        <div className="flex w-24 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+      </div>
+      <div className="bg-zinc-100 dark:bg-zinc-800 p-3 flex justify-between animate-pulse">
+        <div className="flex w-24 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
+        <div className="flex w-16 bg-zinc-200 dark:bg-zinc-600 h-10 animate-pulse rounded-md"></div>
       </div>
     </div>
+  </div>
   );
 }

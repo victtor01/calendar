@@ -165,7 +165,7 @@ export default function Clients() {
   const { clients } = useClientsHook().getClients();
 
   return (
-    <div className="flex flex-col p-4 w-full max-w-[65rem] mx-auto gap-4">
+    <div className="flex flex-col p-4 w-full max-w-[100rem] mx-auto gap-4">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

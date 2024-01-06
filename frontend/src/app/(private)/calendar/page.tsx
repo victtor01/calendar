@@ -15,9 +15,7 @@ import useEventsTemplates from "@/hooks/useEventsTemplates";
 import { toast } from "react-toastify";
 import { ClientComponent } from "./details";
 import AddClient from "../../../components/calendar/create";
-import interactionPlugin, {
-  Draggable,
-} from "@fullcalendar/interaction";
+import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 
 const variants = {
   pageInitial: { opacity: 0 },

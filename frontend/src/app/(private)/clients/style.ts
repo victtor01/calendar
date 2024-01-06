@@ -44,6 +44,12 @@ export const Component = styled(motion.div)`
 export const ClientEvent = styled(motion.div)`
   background-color: ${({ theme }) => theme.secundary};
   position: relative;
+
+  &:hover { 
+    .button-redirect {
+      opacity: 1;
+    }
+  }
 `;
 
 export const ClientEventComponent = styled(motion.section)`
@@ -53,8 +59,8 @@ export const ClientEventComponent = styled(motion.section)`
     content: "";
     position: absolute;
     top: 0;
-    left: -4px;
-    width: 4px;
+    left: -6px;
+    width: 2px;
     height: 100%;
     border-radius: 2px 0 0 2px;
     background: linear-gradient(to top, var(--purple), var(--green));

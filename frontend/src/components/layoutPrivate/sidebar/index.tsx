@@ -1,27 +1,18 @@
-"use client";
-
-import { NotificationComponent } from "./notification";
 import { otherPages, pages } from "@/constants/linksPrivates";
-import { motion } from "framer-motion";
 import { FaChevronRight, FaCrown } from "react-icons/fa";
 import { fontOpenSans } from "@/app/fonts";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
-import { Plan } from "./plan";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import * as S from "./style";
 
 /* components */
 import { Sidebar } from "@/components/sidebar";
-import { useSessionContext } from "@/contexts/sessionContext";
 import { ThemeContext } from "@/contexts/themeContext";
 
 export function SidebarRelativePrivate() {
-  const { theme, handleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const currentPath = usePathname().split("/")[1];
-  const { logout } = useSessionContext();
-
-  const IconTheme = theme === "dark" ? RiMoonLine : RiSunLine;
 
   return (
     <Sidebar
@@ -40,9 +31,6 @@ export function SidebarRelativePrivate() {
         </div>
       </header>
 
-      {/* <NotificationComponent /> */}
-      {/* <Plan /> */}
-
       <button
         onClick={() => null}
         className="relative w-[3rem] lg:hidden opacity-70 hover:opacity-100 rounded min-h-[3rem] flex items-center bg-zinc-500 bg-opacity-10 justify-center p-2 "
@@ -57,7 +45,7 @@ export function SidebarRelativePrivate() {
           {pages.map(({ name, icon: Icon, href }, index: number) => {
             const selected = currentPath === href.substring(1);
             const selectedClass = selected
-              ? "opacity-100 cursor-default text-indigo-500 px-1"
+              ? "opacity-100 cursor-default text-indigo-500 px-4"
               : "opacity-60 cursor-pointer dark:text-gray-200";
 
             return (
@@ -65,9 +53,9 @@ export function SidebarRelativePrivate() {
                 whileTap={{ scale: 0.93 }}
                 key={index}
                 href={href}
-                $selected={false}
+                $selected={selected}
                 transition={{ type: "spring", duration: 0.1 }}
-                className={`${fontOpenSans} ${selectedClass} transition-all before:bg-indigo-500  rounded flex-nowrap w-full justify-center relative lg:justify-start flex py-2 items-center gap-5 hover:opacity-100 font-semibold`}
+                className={`${fontOpenSans} ${selectedClass} px-4 transition-all before:bg-indigo-500  rounded flex-nowrap w-full justify-center relative lg:justify-start flex py-2 items-center gap-5 hover:opacity-100 font-semibold`}
               >
                 {Icon && <Icon size="22" />}
                 <span className="hidden lg:flex">{name}</span>

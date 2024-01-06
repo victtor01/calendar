@@ -4,12 +4,12 @@ import Loading from "@/components/loading";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <S.Container className="w-full h-auto flex-1 flex flex-col">
+    <main className="w-full h-auto flex-1 flex flex-col">
       <div className="p-2 flex-1 flex">
         <Suspense fallback={<Loading className="bg-cyan-400" />}>
           {children}
         </Suspense>
       </div>
-    </S.Container>
+    </main>
   );
 }

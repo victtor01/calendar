@@ -8,8 +8,8 @@ import { toast } from "react-toastify";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Button from "../button";
 import { FiTrash } from "react-icons/fi";
+import { Button } from "@nextui-org/react";
 
 function useDelete({ event }: { event: Event }) {
   const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
@@ -38,11 +38,14 @@ function useDelete({ event }: { event: Event }) {
   return {
     showModalDelete,
     handleShowModalDelete,
+    deleteEvent,
   };
 }
 
 export function Delete({ event }: { event: Event }) {
-  const { showModalDelete, handleShowModalDelete } = useDelete({ event });
+  const { showModalDelete, handleShowModalDelete, deleteEvent } = useDelete({
+    event,
+  });
 
   return (
     <>
@@ -73,7 +76,7 @@ export function Delete({ event }: { event: Event }) {
               Cancelar
             </motion.button>
             <motion.button
-              onClick={() => null}
+              onClick={deleteEvent}
               className="bg-rose-600 p-2 rounded hover:opacity-100 opacity-90"
             >
               Tenho certeza!

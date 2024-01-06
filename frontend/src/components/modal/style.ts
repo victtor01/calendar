@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 export const Modal = styled(motion.div)`
-  background-color: ${({ theme }) => theme.secundary};
+/*   background-color: ${({ theme }) => theme.secundary}; */
  /*  border: 1px solid ${({ theme }) => theme.border}; */
   position: relative;
 

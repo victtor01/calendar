@@ -1,13 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import * as S from "./style";
 import { fontValela } from "@/app/fonts";
 import { useQuery } from "@tanstack/react-query";
 import useApiPrivate from "@/hooks/apiPrivate";
 import Loading from "@/components/loading";
 import { Register } from "@/types/registers";
 import moment from "moment-timezone";
+import * as S from './style';
 
 moment.tz.setDefault("America/Sao_Paulo");
 
@@ -31,7 +31,7 @@ function useRegisters() {
   };
 }
 
-export default function Registers() {
+export  function Registers() {
   const {
     data: { registers },
     loading: { loadingRegisters },

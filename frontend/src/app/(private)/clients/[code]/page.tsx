@@ -47,7 +47,7 @@ export default function ClientInfos({ params: { code } }: ClientInfoProps) {
   if (!client) return <Empty />;
 
   return (
-    <div className="h-auto w-full flex p-5 gap-5">
+    <div className="h-auto w-full justify-between flex py-3 gap-5">
       <div className="flex max-w-[30rem] w-full">
         <S.Component className="w-full flex mx-auto rounded-xl">
           <Create client={client} />

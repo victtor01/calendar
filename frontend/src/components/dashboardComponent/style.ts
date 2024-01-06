@@ -8,7 +8,6 @@ export const Container = styled(motion.div)`
   flex-basis: 15rem;
   /* border: 1px solid ${({ theme }) => theme.border};  */
   z-index: 2;
-  padding: 0.5rem;
 
   &::-webkit-scrollbar {
     width: 0.5rem; /* Largura da barra de rolagem */

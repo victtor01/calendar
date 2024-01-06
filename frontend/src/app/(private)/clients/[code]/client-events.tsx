@@ -37,7 +37,7 @@ const ClientComponent = ({ event }: { event: Event }) => {
       <div className="flex p-1">
         <motion.button
           whileTap={{ scale: 0.9 }}
-          className="p-2 rounded text-white opacity-70 hover:opacity-100 bg-gradient-45 from-purple-700 to-blue-600"
+          className="button-redirect opacity-0 p-2 rounded text-white  hover:opacity-100 bg-indigo-600"
           onClick={() => push(`/calendar/details/${event.code}`)}
         >
           <FaArrowRight />
@@ -81,7 +81,7 @@ export default function EventsClients({ client }: { client: Clients }) {
       {Object.entries(groupEvents)?.map(([name, value], index: number) => {
         return (
           <div key={index} className={`mb-4 ${fontInter}`}>
-            <header className="opacity-70">{traductor[name]}</header>
+            <header className="opacity-70 text-lg font-bold text-gray-800 dark:text-gray-300">{traductor[name]}</header>
             <S.ClientEventComponent className={`flex flex-1 flex-col mt-3`}>
               {value?.map((event: Event, index: number) => {
                 return <ClientComponent key={index} event={event} />;

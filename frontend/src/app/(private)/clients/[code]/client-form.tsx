@@ -96,7 +96,7 @@ export default function Create({ client }: { client: Clients }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       bgTheme={false}
-      className="max-w-[30rem] rounded-md shadow-xl"
+      className="max-w-[30rem] rounded-md "
       onSubmit={handleSubmit(submit)}
     >
       <header className="flex w-full opacity-80 hover:opacity-100 transition-all">
@@ -142,7 +142,7 @@ export default function Create({ client }: { client: Clients }) {
               <input
                 {...field}
                 type={form?.type || "text"}
-                className={`border bg-zinc-500 bg-opacity-10 outline-none border-none focus:border-cyan-600 placeholder:opacity-40 rounded appearance-none p-3`}
+                className={`border bg-gray-100 dark:bg-neutral-900 dark:border-zinc-800 font-semibold outline-none  focus:border-cyan-600 placeholder:opacity-40 rounded appearance-none p-3`}
                 autoComplete="off"
                 placeholder={form.ex ? `ex: ${form.ex}` : ""}
               />

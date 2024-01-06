@@ -84,7 +84,7 @@ export const TemplateDialog = () => {
   return (
     <>
       <motion.button
-        className="h-12 w-12 px-4 flex justify-center items-center opacity-100 relative"
+        className="h-12 w-12 px-4 rounded-2xl flex justify-center transition-background items-center opacity-100 relative hover:bg-indigo-500 hover:dark:bg-indigo-700 hover:text-white"
         onClick={handleShowModalAddTemplate}
       >
         <MdBackupTable size="21" />

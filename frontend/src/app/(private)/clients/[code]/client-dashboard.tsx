@@ -8,6 +8,13 @@ export default function ClientDashboard() {
         <MdDashboard  />
         Dashboard
       </header>
+      <section>
+        <div className="flex w-full p-3 bg-black h-[20rem] rounded border dark:border-zinc-800">
+          <div className="flex m-auto font-3xl font-semibold text-white">
+            Em breve...
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

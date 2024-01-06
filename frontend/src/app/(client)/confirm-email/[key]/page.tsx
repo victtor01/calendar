@@ -26,11 +26,11 @@ export default async function ConfirmEmail({ params }: confirmEmailProps) {
 
   return (
     <div
-      className={`min-h-[50rem] justify-center m-auto gap-5 w-full max-w-[30rem] h-full p-10 flex flex-col gap-1`}
+      className={`min-h-[50rem] justify-center m-auto gap-5 w-full max-w-[30rem] h-full p-10 flex flex-col `}
     >
       <header className="w-full flex flex-col gap-2 ">
         <h1 className="text-3xl">Olá, {user.firstName}!</h1>
-        <h2 className="text-xl">Enviaremos um email para {user.email}</h2>
+        <h2 className="text-xl">Enviaremos um email para o email {user.email}</h2>
       </header>
       <SubmitCode userId={user.id} />
     </div>

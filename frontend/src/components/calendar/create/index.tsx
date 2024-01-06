@@ -137,6 +137,8 @@ export default function AddClient(props: AddClientProps) {
   } = props;
 
   const {
+    modals: { setOpenModalTemplates, openModalTemplates },
+    templates: { isLoading, templates },
     form: {
       templates: { addTemplate, removeTemplate },
       handleSubmit,
@@ -145,9 +147,6 @@ export default function AddClient(props: AddClientProps) {
       control,
       register,
     },
-    templates: { isLoading, templates },
-
-    modals: { setOpenModalTemplates, openModalTemplates },
   } = useAddEvent();
 
   if (isLoading) {
@@ -217,7 +216,6 @@ export default function AddClient(props: AddClientProps) {
                 defaultValue={moment(start).format("YYYY-MM-DDTHH:mm")}
                 render={({ field }) => (
                   <input
-                    disabled
                     className="p-2 rounded bg-zinc-100 dark:bg-zinc-800 outline-none"
                     type="datetime-local"
                     {...field}
@@ -238,7 +236,6 @@ export default function AddClient(props: AddClientProps) {
                 defaultValue={moment(end).format("YYYY-MM-DDTHH:mm")}
                 render={({ field }) => (
                   <input
-                    disabled
                     className="p-2 rounded bg-zinc-100 dark:bg-zinc-800 outline-none"
                     type="datetime-local"
                     {...field}

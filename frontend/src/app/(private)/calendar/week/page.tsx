@@ -23,11 +23,12 @@ import Image from "next/image";
 import { Server } from "@/constants/server";
 import { useRouter } from "next/navigation";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import Loading from "./loading";
 
 function useWeek() {
   const api = useApiPrivate();
   const { data: events, isLoading } = useQuery({
-    queryKey: ["events-week", "events"],
+    queryKey: ["events", "events-week"],
     queryFn: async () => {
       return (await api.get("/events/find/week")).data;
     },
@@ -107,11 +108,15 @@ export default function Week() {
     const data: Record<string, Event[]> = {};
 
     const minDate = moment().clone().subtract(3, "days");
-    const maxDate = moment().clone().add(3, 'days');
+    const maxDate = moment().clone().add(3, "days");
 
     const dateFormat = "DD/MM/YYYY";
 
-    for ( let date = moment(minDate); date.isSameOrBefore(maxDate); date.add(1, "day")) {
+    for (
+      let date = moment(minDate);
+      date.isSameOrBefore(maxDate);
+      date.add(1, "day")
+    ) {
       const key = date.format(dateFormat);
       data[key] = [];
     }

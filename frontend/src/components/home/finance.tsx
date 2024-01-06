@@ -141,7 +141,7 @@ function useFinance() {
   };
 }
 
-export default function Finance() {
+export  function Finance() {
   const { finance, registers, isLoading } = useFinance();
 
   if (isLoading) return <Loading />;

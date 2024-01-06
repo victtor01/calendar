@@ -7,6 +7,7 @@ import { FaCreditCard } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Loading from "./loading";
 
 interface layoutProps {
   children: React.ReactNode;

@@ -47,7 +47,7 @@ const useClientsMonth = () => {
   const daysInMonth = moment().month(start).daysInMonth();
 
   const { data: allClients, isLoading: loadingClients } = useQuery({
-    queryKey: ["clients"],
+    queryKey: ["clients", "clients-by-month"],
     queryFn: async (): Promise<Clients[]> => {
       return (await api.get(`/clients/find-by-date/${start}/${end}/`)).data;
     },
@@ -111,7 +111,7 @@ const useClientsMonth = () => {
   };
 };
 
-export default function ClientsMonth() {
+export function ClientsMonth() {
   const { clients, loadingClients } = useClientsMonth();
   if (loadingClients) return <Loading />;
 

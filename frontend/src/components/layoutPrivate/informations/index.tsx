@@ -5,7 +5,7 @@ import { useSessionContext } from "@/contexts/sessionContext";
 import Image from "next/image";
 import { GoGear } from "react-icons/go";
 import { IoClose } from "react-icons/io5";
-import { Line, LineChart, ResponsiveContainer } from "recharts";
+import { Income } from "./income";
 
 const data: any = [];
 for (let i = 0; i < 10; i++) {
@@ -63,24 +63,8 @@ export default function Information() {
         <h2 className="text-lg font-semibold text-zinc-500 dark:text-zinc-200">
           Rendimentos hoje
         </h2>
-        <div className="flex flex-col relative gap-3 overflow-hidden w-full h-[12rem] bg-gradient-45 from-zinc-900 to-zinc-950 rounded-xl hover:shadow-xl">
-          <ResponsiveContainer width="100%" height="80%">
-            <LineChart width={500} height={300} data={data} margin={{ top: 60 }}>
-              <Line
-                type="monotone"
-                dot={false}
-                dataKey="value"
-                stroke="#4F46E5"
-                strokeWidth={3}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-          <div className="absolute bottom-0 p-3 h-full flex items-end w-full ">
-            <span className="text-xl font-semibold text-zinc-200">
-              R$ 0,00 Hoje
-            </span>
-          </div>
-        </div>
+
+        <Income />
       </section>
     </div>
   );
