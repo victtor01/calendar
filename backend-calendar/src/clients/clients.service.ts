@@ -49,7 +49,7 @@ export class ClientsService {
   }
 
   async create(data: CreateClientsDto): Promise<Clients> {
-    data.birth = parseISO(data.birth.toString());
+    data.birth = parseISO(data.birth.toString()) || new Date();
     return await this.clientsRepository.create(data);
   }
 

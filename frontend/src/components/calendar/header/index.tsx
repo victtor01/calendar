@@ -16,7 +16,7 @@ export default function Header() {
       transition={{ delay: 0.4, type: "linear", duration: 0.3 }}
       className="flex min-h-auto z-[2] w-auto  justify-between items-center relative rounded-lg my-2"
     >
-      <header className=" flex rounded-md items-center mx-auto">
+      <header className=" flex rounded-md items-center mx-auto relative">
         <S.Bubble />
         <div className="flex gap-2 relative mx-auto flex-1 items-center rounded-xl bg-white dark:bg-zinc-900 p-2">
           <button className="h-12 w-12 px-4 flex justify-center items-center opacity-100 relative">

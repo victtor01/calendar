@@ -21,7 +21,7 @@ export const Bubble = styled.div`
     left: 0;
     padding: 2rem;
     border-radius: 77% 23% 77% 23% / 39% 25% 75% 61%;
-    filter: blur(2em) brightness(80%);
+    filter: blur(2em) brightness(40%);
     opacity: 0.1;
     background: linear-gradient(34deg, #6157ff, #74febd);
   }
@@ -31,5 +31,6 @@ export const Separator = styled.span`
   width: 100%;
   background: linear-gradient(45deg, transparent, #6157ff, transparent);
   height: 1px;
+  opacity: 0.4;
   display: flex;
 `;

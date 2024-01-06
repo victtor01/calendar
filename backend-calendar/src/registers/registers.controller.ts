@@ -65,7 +65,7 @@ export class RegistersController {
 
   @Post('create')
   async create(@Body() data: CreateRegisterDto, @Request() req: any) {
-    //Transformar em upercase
+    // Transformar em upercase
     data.type.toLocaleUpperCase();
     // por enquanto é necessário deletar a data!
     delete data.date;

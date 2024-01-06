@@ -145,9 +145,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         <ThemeContext.Provider value={{ theme, handleTheme }}>
           <S.Container className="bg-white dark:bg-gradient-45 from-zinc-950 to-gray-900 p-4 ">
-           {/*  <S.Bubble /> */}
+            <S.Bubble className="after:opacity-50 after:dark:opacity-[0.4] before:opacity-30 before:dark:opacity-[0.2]" />
 
-            <div className="flex absolute right-0 top-0 h-full w-[30%] bg-blue-100 dark:bg-black"></div>
+            <div className="flex absolute right-0 top-0 h-full w-[30%] bg-blue-100  dark:bg-black"></div>
 
             <SidebarRelativePrivate />
 

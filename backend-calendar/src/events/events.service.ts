@@ -18,7 +18,6 @@ import { DeleteManyEventsDto } from './dto/delete-many-events.dto';
 import { UpdateConnectService } from './dto/update-connect-service';
 import { findEventsByDateDto } from './dto/find-events-by-date.dto';
 import { UpdateStatusEventsDto } from './dto/update-status-events.dto';
-import { eventsTemplates } from 'src/events-templates/entities/events-templates.entity';
 
 @Injectable()
 export class EventsService {
@@ -62,7 +61,7 @@ export class EventsService {
         massage: 'Invalidate field',
         errors,
       });
-    } 
+    }
 
     return await this.eventsRepository.create(data);
   }

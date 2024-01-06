@@ -151,7 +151,7 @@ export class AuthService {
 
   private async verifyRefreshToken(body): Promise<User | undefined> {
     const refreshToken = body.refresh_token;
-
+    
     if (!refreshToken) {
       throw new NotFoundException('Token de refresh não encontrado');
     }
