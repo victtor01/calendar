@@ -10,6 +10,7 @@ import { UpdateClientPhotoDto } from './dto/update-client-photo.dto';
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { UpdateClientDto } from './dto/update-clients.dto';
 
 @Injectable()
 export class ClientsService {
@@ -32,7 +33,13 @@ export class ClientsService {
       });
 
     if (currentPhoto) {
-      const directoryPath = path.join(__dirname, '..', '..', 'uploads', 'clients');
+      const directoryPath = path.join(
+        __dirname,
+        '..',
+        '..',
+        'uploads',
+        'clients',
+      );
       const filePath = path.join(directoryPath, currentPhoto);
 
       console.log(filePath);
@@ -45,6 +52,14 @@ export class ClientsService {
       userId,
       photo,
       id,
+    });
+  }
+
+  async update({ data, userId }: { data: UpdateClientDto; userId: number }) {
+    data.birth = new Date(data.birth);
+    return await this.clientsRepository.update({
+      userId,
+      data,
     });
   }
 

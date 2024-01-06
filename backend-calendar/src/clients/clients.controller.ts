@@ -16,6 +16,7 @@ import { CreateClientsDto } from './dto/create-clients.dto';
 import { User } from 'src/users/entities/user.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { UpdateClientDto } from './dto/update-clients.dto';
 
 @Controller('clients')
 export class ClientsController {
@@ -51,9 +52,18 @@ export class ClientsController {
   }
 
   @Put('update/:id')
-  update(@UploadedFile() photo: Express.Multer.File, @Body() body: any) {
-    console.log(photo);
+  update(
+    @Body() body: UpdateClientDto,
+    @Param('id') id: string,
+    @Request() req: { user: User },
+  ) {
+    body.id = +id;
     console.log(body);
+
+    return this.clientsService.update({
+      userId: +req.user.id,
+      data: body,
+    });
   }
 
   @UseInterceptors(

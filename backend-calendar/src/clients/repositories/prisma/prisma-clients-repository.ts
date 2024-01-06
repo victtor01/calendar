@@ -8,6 +8,7 @@ import { FindClientsByDateDto } from 'src/clients/dto/find-clients-by-date.dto';
 import { FindClientByCode } from 'src/clients/dto/find-client-by-code.dto';
 import { UpdateClientPhotoDto } from 'src/clients/dto/update-client-photo.dto';
 import { FindClientById } from 'src/clients/dto/find-client-by-id.dto';
+import { UpdateClientDto } from 'src/clients/dto/update-clients.dto';
 
 @Injectable()
 export class PrismaClientsRepository implements ClientsRepository {
@@ -34,6 +35,23 @@ export class PrismaClientsRepository implements ClientsRepository {
       },
       data: {
         photo,
+      },
+    });
+  }
+
+  async update({
+    userId,
+    data,
+  }: {
+    userId: number;
+    data: UpdateClientDto;
+  }) {
+    const { id, ...rest } = data;
+    return await this.prisma.clients.update({
+      data: { ...rest },
+      where: {
+        id: Number(data.id),
+        userId,
       },
     });
   }
@@ -85,6 +103,9 @@ export class PrismaClientsRepository implements ClientsRepository {
           gte: new Date(start.getFullYear(), start.getMonth(), start.getDate()),
           lt: new Date(end.getFullYear(), end.getMonth(), end.getDate() + 1),
         },
+      },
+      include: {
+        events: true,
       },
     });
   }

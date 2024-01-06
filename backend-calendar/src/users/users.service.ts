@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
@@ -33,12 +34,28 @@ export class UsersService {
     data.birth = new Date('2004/08/08');
     data.password = await this.hashPassword(data.password);
 
-    const user = await this.usersRepository.create(data);
-
-    if (!user) {
-      new ConflictException({ message: 'Email já cadastrado' });
+    if(!data.email) {
+      new InternalServerErrorException({
+        message: 'Email não informado!'
+      })
     }
 
+    //search user of email
+    const exists = await this.usersRepository.findOneByEmail(data.email);
+
+    if(!!exists?.email) {
+      new InternalServerErrorException({
+        message: 'Email já cadastrado!'
+      })
+    }
+
+    const user = await this.usersRepository.create(data);
+
+    if (!user.id || !user.email) {
+      new ConflictException({ message: 'Houve um erro Ao tentar registrar' });
+    }
+
+    console.log(user);
     const { id, email }: User = user;
     const { code } = await this.confirmationCodesService.create(id);
 
