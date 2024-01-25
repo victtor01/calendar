@@ -6,7 +6,7 @@ export class User {
   email: string;
   status: UserStatus;
   role: UserRole;
-  cep: string;
+  cep?: string;
   password: string;
   cpf: string;
   photo?: string;
