@@ -6,6 +6,7 @@ import Footer from "@/components/footer";
 import Loading from "@/components/loading";
 import { AnimatePresence } from "framer-motion";
 import { ThemeContext } from "@/contexts/publicThemeContext";
+import { ToastContainer } from "react-toastify";
 
 type ThemeType = "DARK" | "LIGHT";
 
@@ -55,8 +56,20 @@ export default function Layout({ children }: layoutProps) {
     <>
       <ThemeContext.Provider value={{ handleTheme, theme }}>
         <ThemeProvider theme={theme === "DARK" ? darkTheme : lightTheme}>
+          <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover
+            theme={'dark'}
+          />
           <S.Container>
-            <Suspense fallback={<Loading className="bg-cyan-500"/>}>
+            <Suspense fallback={<Loading className="bg-cyan-500" />}>
               <S.Content>
                 <AnimatePresence>{children}</AnimatePresence>
               </S.Content>

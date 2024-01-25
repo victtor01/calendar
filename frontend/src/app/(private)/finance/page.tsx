@@ -112,7 +112,7 @@ export default function Registers() {
     moment().diff(labels[0]?.registers[0]?.createdAt, "days") || 0;
 
   return (
-    <div className="whitespace-nowrap w-full max-w-[55rem] flex-col m-auto flex ">
+    <div className="whitespace-nowrap w-full  flex-col m-auto flex ">
       <header className="relative flex p-2 items-center justify-between rounded">
         <S.Bubble />
         <div className="z-10">
@@ -177,7 +177,7 @@ export default function Registers() {
         )}
       </AnimatePresence>
       <section className=" flex items-center flex-col p-1 h-auto w-full">
-        <div className="w-full max-w-[60rem] flex flex-col gap-2">
+        <div className="w-full  flex flex-col gap-2">
           {isLoading && (
             <div className="w-auto flex flex-col gap-2">
               <SkeletonRegister />

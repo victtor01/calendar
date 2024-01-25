@@ -38,6 +38,8 @@ function useComments({ event }: CommentsProps) {
         comments: prevData.comments ? [comment, ...prevData.comments] : [],
       };
     });
+
+    queryClient.invalidateQueries(["event"]);
   }
 
   return {

@@ -15,17 +15,13 @@ for (let i = 0; i < 10; i++) {
   });
 }
 
-const Separator = () => (
-  <span className="flex w-full h-[1px] bg-gradient-to-r from-transparent via-blue-200 dark:via-zinc-900 to-transparent" />
-);
-
 export default function Information() {
   const { userInfo } = useSessionContext();
 
   return (
     <div
       style={{ gridArea: "user" }}
-      className="bg-transparent py-4 px-2 flex flex-col gap-4 w-[18rem] z-10"
+      className="bg-transparent py-4 px-2 flex flex-col mx-5 gap-4 w-[18rem] z-10"
     >
       <div className="flex flex-col gap-2">
         <header className="flex justify-between gap-20">

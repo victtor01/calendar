@@ -26,7 +26,7 @@ export default function Poster() {
   const router = useRouter();
 
   return (
-    <S.Poster className="flex flex-col relative w-full h-[100vh] overflow-hidden bg-gradient-45 from-purple-800 to-cyan-500 top-0">
+    <S.Poster className="flex flex-col relative w-[50%] h-[100vh] overflow-hidden bg-gradient-45 from-purple-800 to-cyan-500 top-0">
       <S.Bubble />
       <header className="z-[20] p-2 text-lg flex justify-between text-white">
         <S.ButtonTheme

@@ -1,4 +1,5 @@
 import {
+  BadGatewayException,
   BadRequestException,
   ConflictException,
   Injectable,
@@ -12,6 +13,7 @@ import { EmailService } from 'src/email/email.service';
 import { ConfirmationCodesService } from 'src/confirmation-codes/confirmation-codes.service';
 import { UsersRepository } from './repositories/users-repository';
 import { User } from './entities/user.entity';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -30,42 +32,61 @@ export class UsersService {
     return `${randomUUID()}${originalname} ${new Date().getTime()}`;
   }
 
-  async create(data: CreateUserDto): Promise<Omit<User, 'password' | 'cpf'>> {
-    data.birth = new Date('2004/08/08');
+  async create(
+    data: CreateUserDto,
+  ): Promise<Omit<User, 'password' | 'cpf'> | BadRequestException> {
+    data.birth = new Date(data.birth);
     data.password = await this.hashPassword(data.password);
 
-    if(!data.email) {
-      new InternalServerErrorException({
-        message: 'Email não informado!'
-      })
-    }
+    const { repeatPassword, ...createData } = data;
 
     //search user of email
-    const exists = await this.usersRepository.findOneByEmail(data.email);
+    const exists = await this.usersRepository.findOneByEmailOrPhone(
+      data.email,
+      data.phone,
+    );
 
-    if(!!exists?.email) {
-      new InternalServerErrorException({
-        message: 'Email já cadastrado!'
-      })
+    if (exists?.email) {
+      return new BadGatewayException({
+        message: 'Email já cadastrado!',
+      });
     }
 
-    const user = await this.usersRepository.create(data);
+    if (exists?.phone === createData?.phone) {
+      return new BadRequestException({
+        message: 'Telefone já está em uso!',
+      });
+    }
+
+    const dataSerializer = plainToClass(CreateUserDto, createData);
+
+    const user: User = await this.usersRepository.create(dataSerializer);
 
     if (!user.id || !user.email) {
-      new ConflictException({ message: 'Houve um erro Ao tentar registrar' });
+      return new ConflictException({
+        message: 'Houve um erro Ao tentar registrar',
+      });
     }
 
-    console.log(user);
-    const { id, email }: User = user;
-    const { code } = await this.confirmationCodesService.create(id);
+    const { id, email }: { id: number; email: string } = user;
 
-    this.emailService.sendEmail({
+    const { code }: { code: string } =
+      await this.confirmationCodesService.create(id);
+
+    const res = await this.emailService.sendEmail({
       to: email,
       text: code,
     });
 
-    const { password, cpf, ...rest } = user;
-    return rest;
+    if (!!res) {
+      const { password, cpf, ...rest } = user;
+
+      return rest;
+    }
+
+    return new BadRequestException({
+      message: 'Falha ao enviar email!',
+    });
   }
 
   async findOne(userId: number) {
@@ -79,9 +100,9 @@ export class UsersService {
         message: 'Você não tem permisão para fazer isso!',
       });
     }
-    console.log('teste')
+    console.log('teste');
     const res = await this.usersRepository.update(userId, { status });
-    console.log(res)
+    console.log(res);
     return res;
   }
 

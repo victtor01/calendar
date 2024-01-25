@@ -15,6 +15,8 @@ import { Clients } from "@/types/clients";
 import moment from "moment-timezone";
 import { Server } from "@/constants/server";
 import Image from "next/image";
+import { queryClient } from "@/hooks/queryClient";
+import { toast } from "react-toastify";
 
 interface LabelFormData {
   name: string;
@@ -59,7 +61,22 @@ const useCreate = (client: Clients) => {
 
   const api = useApiPrivate();
 
-  const submit = async (data: CreateClientFormData) => {};
+  const submit = async (data: CreateClientFormData) => {
+    if (!client.id) return;
+
+    const response = api.put(`/clients/update/${client.id}`, data);
+
+    const res = await toast.promise(response, {
+      success: "Dados atualizados com sucesso!",
+      error: "Houve um erro, verifique os campos e tente novamente!",
+      pending: "Atualizando os dados...",
+    });
+
+    await queryClient.invalidateQueries(['clients', client.code]);
+    await queryClient.invalidateQueries(['clients']);
+    
+    reset();
+  };
 
   async function uploadPhoto(e: any) {
     e.preventDefault();

@@ -8,6 +8,7 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import Link from "next/link";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { toast } from "react-toastify";
+import { queryClient } from "@/hooks/queryClient";
 
 const createServicesFormSchema = z.object({
   name: z.string(),
@@ -36,11 +37,12 @@ function useCreate() {
 
   async function addService(data: CreateServicesFormSchema) {
     const res = api.post("/services", data);
-    toast.promise(res, {
+    await toast.promise(res, {
       pending: "Salvando alterações",
       success: "Salvo com sucesso! 👌",
       error: "Houve um erro! Tente novamente mais tarde! ",
     });
+    queryClient.invalidateQueries(['services']);
     reset();
   }
 

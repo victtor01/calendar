@@ -15,7 +15,7 @@ interface LinkRouteProps {
 
 export const LinkRoute = styled(motion(Link))<LinkRouteProps>`
   position: relative;
-  
+ /*  
   &::before {
     content: "";
     top: 50%;
@@ -25,9 +25,9 @@ export const LinkRoute = styled(motion(Link))<LinkRouteProps>`
     transform: translateY(-50%);
     transition: height 0.1s, opacity 0.1s;
     border-radius: 1rem;
-    height: ${(props) => (props.$selected ? "60% !important" : "0.3rem")};
+    height: ${(props) => (props.$selected ? "70% !important" : "0.3rem")};
     opacity: ${(props) => (props.$selected ? 1 : 1)};
-  }
+  } */
 
 /* 
   &:hover::before {

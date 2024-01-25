@@ -1,13 +1,11 @@
 "use client";
-import Form from "@/components/form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fontOpenSans, fontRoboto, fontValela } from "@/app/fonts";
+import { fontRoboto, fontValela } from "@/app/fonts";
 import { IoAlertCircleSharp } from "react-icons/io5";
-import { MdInsertPhoto } from "react-icons/md";
 import { ListProps, FormDataProps } from "./interfaces";
 import { formData } from "./formData";
 import Button from "@/components/button";
-import Input from "@/components/input/input";
 import Label from "@/components/label";
 import { useForm } from "react-hook-form";
 import * as S from "./style";
@@ -19,6 +17,10 @@ import { useContext } from "react";
 import Link from "next/link";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import { ThemeContext } from "@/contexts/publicThemeContext";
+import Spinner from "@/components/spinner";
+import { toast } from "react-toastify";
+import api from "@/api";
+import { AxiosError } from "axios";
 
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
@@ -27,24 +29,25 @@ const createUserFormSchema = z
     firstName: z.string().nonempty("Digite o primeiro nome"),
     lastName: z.string().nonempty("Digite o sobrenome"),
     email: z.string().email("Email inválido!"),
-    photo: z
+    /*  photo: z
       .custom<FileList>()
       .transform((list) => list[0])
       .refine(
         (file) => file?.size <= 5 * 1024 * 1024 && file.name,
         "Selecione uma foto para o seu perfil"
-      ),
-    /* cep: z
+      ), */
+    cep: z
       .string()
       .nonempty("Campo obrigatório")
       .min(8, "Preencha corretamente")
-      .max(8, "Preencha o campo corretamente"), */
+      .max(8, "Preencha o campo corretamente"),
     password: z.string().min(5, "A senha deve conter no mínimo 6 digitos"),
     repeatPassword: z.string(),
     phone: z
-      .string().nonempty('O campo é obrigatório')
-      .min(11, 'Digite o número corretamente!')
-      .max(11, 'Digite o número corretamente')
+      .string()
+      .nonempty("O campo é obrigatório")
+      .min(11, "Digite o número corretamente!")
+      .max(11, "Digite o número corretamente")
       .refine(
         (phone) => {
           return /^\d+$/.test(phone);
@@ -56,7 +59,7 @@ const createUserFormSchema = z
     birth: z.string().refine((date) => date.length < 11, "Data inválida"),
     cpf: z
       .string()
-      .nonempty('O campo não pode estar vazío')
+      .nonempty("O campo não pode estar vazío")
       .min(11, "Formato errado! Digite o formato certo")
       .max(11, "Formato errado! Digite o formato certo"),
   })
@@ -69,18 +72,34 @@ const useRegister = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<CreateUserFormData>({
     resolver: zodResolver(createUserFormSchema),
   });
 
   async function createUser(body: CreateUserFormData): Promise<void> {
-    const response = await UsersService.create(body);
-    const { data } = response;
+    try {
+      const response = await api.post("/users/register", body);
 
-    if (response.status === 201 && response.data.key) {
+      const { data } = response;
+
+      if (!(response.status === 201) && !data?.key) {
+        toast.error(`Houve um erro: ${data.message}`);
+      }
+
       const { key } = data;
+
       window.location.href = `/confirm-email/${key}`;
+
+      toast.success("Agora confirme seu email conosco!");
+
+    } catch (err: any) {
+
+      const respose =
+        err?.response?.data?.message ||
+        "Verifique os campos e tente novamente!";
+
+      toast.error(`Houve um erro: ${respose}`);
     }
   }
 
@@ -89,11 +108,13 @@ const useRegister = () => {
     handleSubmit,
     createUser,
     errors,
+    isSubmitting,
   };
 };
 
 export default function RegisterPage() {
-  const { register, handleSubmit, createUser, errors } = useRegister();
+  const { register, handleSubmit, createUser, errors, isSubmitting } =
+    useRegister();
   const { theme, handleTheme } = useContext(ThemeContext);
   const pathName = usePathname();
   const IconTheme = theme === "DARK" ? RiMoonLine : RiSunLine;
@@ -215,26 +236,12 @@ export default function RegisterPage() {
             </Label.Root>
           )
         )}
-        <h2 className="mt-3 w-full text-lg flex gap-1 items-center">
-          <MdInsertPhoto size="20" /> Selecione uma foto para o seu perfil
-        </h2>
-        <div className="p-3 w-[15rem] h-[15rem] self-start flex bg-gradient-to-b opacity-30 rounded from-zinc-800 to-zinc-900 rounded">
-          <span className="text-2xl mx-auto flex center m-auto text-white h-auto items-center justify-center w-full text-center">
-            Nenhuma foto selecionada
-          </span>
-        </div>
-        <input type="file" {...register("photo")} className="self-start" />
-        {errors && errors.photo && (
-          <span className=" w-full opacity-90 text-red-400 text-normal flex gap-1 items-center">
-            <IoAlertCircleSharp />
-            {errors.photo?.message}
-          </span>
-        )}
+
         <Button
           type="submit"
           className={`bg-gradient-to-r from-purple-500 to-cyan-500 text-white font-semibold w-full py-4 rounded text-lg mt-3 `}
         >
-          Enviar
+          {isSubmitting ? <Spinner /> : "Registrar-se"}
         </Button>
       </S.Form>
     </motion.div>

@@ -11,6 +11,10 @@ import {
 } from "recharts";
 import * as S from "./style";
 import { convertToRealMoney } from "@/helpers/convertToRealMoney";
+import useApiPrivate from "@/hooks/apiPrivate";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment-timezone";
+import { Clients } from "@/types/clients";
 
 const data: any = [];
 for (let i = 1; i < 10; i++) {
@@ -21,12 +25,49 @@ for (let i = 1; i < 10; i++) {
   });
 }
 
+function useTopClients() {
+  const api = useApiPrivate();
+
+  const today = moment();
+  const start = moment().startOf("month").format("MM-DD-YYYY");
+  const end = moment().endOf("month").format("MM-DD-YYYY");
+
+  const { data: clients, isLoading: loadingClients } = useQuery({
+    queryKey: ["clients", "find-by-month"],
+    queryFn: async (): Promise<Clients[]> => {
+      return (await api.get(`/clients/find-by-date/${start}/${end}/`)).data;
+    },
+  });
+
+  return {
+    clients,
+    loadingClients,
+  };
+}
+
 export function TopClients() {
+  const { clients, loadingClients } = useTopClients();
+
+  if (loadingClients) {
+    return "Carregandos clientes...";
+  }
+
+  const sortedArrayX =
+    clients?.sort(
+      (a, b) => (a?.events?.length || 0) - (b?.events?.length || 0)
+    ) || [];
+
+  console.log("a: ", sortedArrayX);
+
+  const top10ArrayX = sortedArrayX.slice(0, 10);
+  console.log(top10ArrayX);
+
   return (
-    <div className="flex flex-1 p-3 rounded-md w-[100%] flex-col z-40 backdrop-blur-xl">
+    <div className="flex flex-1 p-2 rounded-md w-[100%] flex-col z-40 backdrop-blur-xl">
       <S.TitleComponent>
-        <div>Teste</div>
-        <div>25.3%</div>
+        <div className=" text-gray-700 font-bold dark:text-gray-400">
+          Top 10 clientes no mês de {moment().format("MMM [de] YYYY")}
+        </div>
       </S.TitleComponent>
       <ResponsiveContainer width={"99%"} height={"99%"}>
         <BarChart width={730} height={250} data={data}>

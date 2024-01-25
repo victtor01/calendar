@@ -4,19 +4,21 @@ import { usePathname } from "next/navigation";
 import * as S from "../style";
 import Link from "next/link";
 
-
 const links = {
   week: {
     icon: BsCalendar2Week,
     path: "/calendar/week",
+    name: "Todo",
   },
   home: {
     icon: IoHome,
     path: "/calendar",
+    name: "Home",
   },
   list: {
     icon: IoList,
     path: "/calendar/list",
+    name: "Lista",
   },
 };
 
@@ -27,16 +29,17 @@ export const Links = () => {
     const Icon = value.icon;
     const selected = pathName === value.path;
     const selectedClass = selected
-    ? 'bg-indigo-500 dark:bg-indigo-700 text-white' : ''
+      ? "bg-indigo-500 dark:bg-indigo-700 text-white"
+      : "  hover:bg-zinc-100 hover:dark:bg-zinc-800";
 
     return (
       <Link
-        style={{ opacity: selected ? 1 : 0.6 }}
         href={value.path}
         key={key}
-        className={`h-12 w-12 px-4 rounded-2xl flex justify-center transition-background items-center opacity-100 relative ${selectedClass}`}
+        className={`h-12 w-auto px-4 gap-2 rounded-md text-md font-semibold capitalize flex justify-center transition-background items-center opacity-100 relative ${selectedClass}`}
       >
         <Icon size="20" />
+        {value.name}
       </Link>
     );
   });

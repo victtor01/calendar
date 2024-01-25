@@ -3,9 +3,8 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { fontInter, fontValela } from "@/app/fonts";
 import { Event, StatusEvent } from "@/types/events";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
-import * as S from "./style";
 import moment from "moment-timezone";
 import Link from "next/link";
 import { FaExclamationCircle, FaList, FaPen } from "react-icons/fa";
@@ -22,6 +21,7 @@ import { Clients } from "@/types/clients";
 import Image from "next/image";
 import { Server } from "@/constants/server";
 import { Comment } from "@/types/comment";
+import Finish from "../eventHeader/finish";
 
 type Page = "INFORMATIONS" | "CLIENTS" | "SERVICES" | "COMMENTARIES";
 
@@ -50,31 +50,11 @@ const PagePT: Record<Page, string> = {
 function useClientComponent() {
   const api = useApiPrivate();
   const [page, setPage] = useState<Page>("INFORMATIONS");
-  const [popups, setPopups] = useState<Popup>({
-    templates: false,
-  });
+  const [modalFinish, setModalFinish] = useState<boolean>(false);
   const [indicator, setIndicator] = useState<{
     width: number;
     left: number;
   } | null>(null);
-
-  const { data: templates } = useQuery({
-    queryKey: ["events-templates"],
-    queryFn: async () => {
-      return (await api.get("/events-templates")).data;
-    },
-  });
-
-  function handlePopup(key: string) {
-    setPopups((prev) => {
-      const prevBool = prev[key as keyof Popup];
-
-      return {
-        ...prev,
-        [key as keyof Popup]: !prevBool,
-      };
-    });
-  }
 
   function moveIndicator(data: Page, event: React.MouseEvent<HTMLElement>) {
     event.preventDefault();
@@ -97,17 +77,11 @@ function useClientComponent() {
   }
 
   return {
-    data: {
-      templates,
-    },
-    utils: {
-      indicator,
-      popups,
-      page,
-    },
-    handles: {
-      moveIndicator,
-      handlePopup,
+    utils: { indicator, page },
+    handles: { moveIndicator },
+    modalFinish: {
+      setModalFinish,
+      modalFinish,
     },
   };
 }
@@ -232,9 +206,9 @@ export function ClientComponent({
   setIdSelected,
 }: ClientComponentProps) {
   const {
-    data: { templates },
-    utils: { indicator, popups, page },
-    handles: { moveIndicator, handlePopup },
+    modalFinish: { setModalFinish, modalFinish },
+    utils: { indicator, page },
+    handles: { moveIndicator },
   } = useClientComponent();
 
   const router = useRouter();
@@ -252,8 +226,6 @@ export function ClientComponent({
     return "Evento atrasado!";
   })();
 
-  console.log(itemSelected);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -264,7 +236,7 @@ export function ClientComponent({
       className="fixed top-0 left-0 w-full h-screen overflow-x-hidden backdrop-blur-md z-[100] p-4 flex justify-center overflow-y-auto"
     >
       <motion.section
-        className="bg-white dark:bg-zinc-900 flex flex-col shadow-2xl rounded-md max-w-[55rem] min-h-[40rem] h-auto w-full relative z-[100] my-auto"
+        className="bg-white dark:bg-neutral-950 flex flex-col shadow-2xl rounded-md max-w-[55rem] min-h-[40rem] h-auto w-full relative z-[100] my-auto"
         initial={{ scale: 0 }}
         transition={{ type: "tween" }}
         animate={{ scale: 1 }}
@@ -299,7 +271,7 @@ export function ClientComponent({
         </header>
         <section className="flex py-3 flex-1 flex-col">
           <header className="flex min-w-[5rem] w-auto overflow-x-auto">
-            <div className="flex mx-auto border-b dark:border-zinc-700 relative gap-2 overflow-hidden justify-between items-center min-w-[30rem] ">
+            <div className="flex mx-auto  relative gap-2 overflow-hidden justify-between items-center min-w-[30rem] ">
               {["INFORMATIONS", "SERVICES", "CLIENTS", "COMMENTARIES"].map(
                 (item: string) => (
                   <button
@@ -317,7 +289,7 @@ export function ClientComponent({
                   width: indicator?.width || "7rem",
                 }}
                 transition={{ type: "just" }}
-                className="absolute pointer-events-none w-[6rem] bottom-0 z-[-1] h-[1.4px] bg-black dark:bg-white opacity-100"
+                className="absolute pointer-events-none w-[6rem] bottom-0 z-[-1] h-[2px] bg-black dark:bg-white opacity-100"
               />
             </div>
           </header>
@@ -476,13 +448,8 @@ export function ClientComponent({
             </section>
           )}
         </section>
-        <footer className="flex w-full p-3 justify-end p-5">
-          <Link
-            href={`/calendar/details/${itemSelected.code}/`}
-            className="bg-gradient-45 from-purple-600 to-blue-500 p-2 rounded px-3 text-white opacity-90 hover:opacity-100"
-          >
-            Terminar Evento
-          </Link>
+        <footer className="flex w-full  justify-end p-5">
+          <Finish event={itemSelected} />
         </footer>
       </motion.section>
     </motion.div>

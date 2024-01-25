@@ -16,7 +16,7 @@ export class EmailService {
     });
   }
 
-  async sendEmail({ to, subject, text }: SendEmailDto) {
+  async sendEmail({ to, subject, text }: SendEmailDto): Promise<boolean> {
     const mailOptions = {
       from: 'josevictot.ar@gmail.com',
       to,
@@ -26,9 +26,16 @@ export class EmailService {
 
     try {
       const info = await this.transporter.sendMail(mailOptions);
+
       console.log('Email enviado:', info.response);
+
+      return true;
+      
     } catch (error) {
+
       console.error('Erro ao enviar e-mail:', error);
+
+      return false;
     }
   }
 }

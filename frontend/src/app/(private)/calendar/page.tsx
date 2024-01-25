@@ -13,7 +13,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import * as S from "./style";
 import useEventsTemplates from "@/hooks/useEventsTemplates";
 import { toast } from "react-toastify";
-import { ClientComponent } from "./details";
+import { ClientComponent } from "@/components/calendar/details";
 import AddClient from "../../../components/calendar/create";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 
@@ -158,7 +158,7 @@ export default function Calendar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="flex flex-1 gap-2 p-4 z-[2] relative bg-white border-2 border-white dark:border-zinc-900 bg-opacity-60 dark:bg-opacity-60 dark:bg-zinc-900 shadow-inner dark:shadow-black shadow-zinc-300 mb-4 rounded"
+              className="flex flex-1 gap-2 p-4 z-[2] relative bg-white border-2 border-white dark:border-zinc-900  dark:bg-zinc-900 shadow-inner dark:shadow-black shadow-zinc-300 mb-4 rounded"
             >
               <div className="col-span-8 max-h-auto w-full">
                 <FullCalendar

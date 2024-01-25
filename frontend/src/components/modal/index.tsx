@@ -19,7 +19,7 @@ export default function Modal({ children, ...props }: ModalProps) {
       <S.Modal
         {...rest}
         className={twMerge(
-          "w-full max-w-[40rem] m-auto p-2 bg-white rounded dark:bg-zinc-900",
+          "w-full max-w-[40rem] m-auto p-2 bg-white rounded dark:bg-gray-950",
           className
         )}
       >

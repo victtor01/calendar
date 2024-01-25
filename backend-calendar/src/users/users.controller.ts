@@ -51,7 +51,6 @@ export class UsersController {
     @Request() req: { user: User },
     @Param('id') id: string,
   ) {
-
     return await this.usersService.updateStatus({
       user: req.user,
       status: data.status,
@@ -61,7 +60,7 @@ export class UsersController {
 
   @Public()
   @Post('register')
-  @UseInterceptors(
+  /*   @UseInterceptors(
     FileInterceptor('photo', {
       storage: diskStorage({
         destination: './uploads',
@@ -72,12 +71,11 @@ export class UsersController {
         },
       }),
     }),
-  )
+  ) */
   async create(
     @Body() data: CreateUserDto,
-    @UploadedFile() photo: Express.Multer.File,
+    /*  @UploadedFile() photo: Express.Multer.File, */
   ) {
-    data.photo = photo.filename;
     return this.usersService.create(data);
   }
 

@@ -163,9 +163,7 @@ export default function Edit({ event }: { event: Event | undefined }) {
     data: { templates },
   } = useFormDetails(event);
 
-
   if (!event) {
-    console.log('');
     return;
   }
 

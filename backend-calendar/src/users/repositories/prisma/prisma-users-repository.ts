@@ -19,8 +19,8 @@ export class PrismaUsersRepository implements UsersRepository {
   async findAll(): Promise<User[]> {
     return await this.prisma.users.findMany({
       where: {
-        role: 'USER'
-      }
+        role: 'USER',
+      },
     });
   }
 
@@ -46,6 +46,17 @@ export class PrismaUsersRepository implements UsersRepository {
     });
 
     return user;
+  }
+
+  async findOneByEmailOrPhone(
+    email: string,
+    phone: string,
+  ): Promise<User | undefined> {
+    return await this.prisma.users.findFirst({
+      where: {
+        OR: [{ email }, { phone }],
+      },
+    });
   }
 
   async update(userId: number, data: any): Promise<boolean> {

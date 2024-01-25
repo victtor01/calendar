@@ -1,12 +1,27 @@
 import DashboardComponent from '../dashboardComponent';
+
+// finance of registers
 import { Registers } from './registers';
+
+//last registers
 import { ResumeFinance } from './resume-income';
+
+//quantity of services
 import { NewServices } from './services';
+
+//income and expense
 import { Finance } from './finance';
+
+// clientes in month (graphic)
 import { ClientsMonth } from './clients-month';
+
+// quantity of clientes
 import { NewClients } from './clients';
+
+//top clientes
 import { TopClients } from './topClients';
 
+//quantity of events in month
 import Events from './events';
 import * as S from './style';
 

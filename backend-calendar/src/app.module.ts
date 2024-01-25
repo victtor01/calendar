@@ -14,6 +14,7 @@ import { EventsTemplatesModule } from './events-templates/events-templates.modul
 import { EventsModule } from './events/events.module';
 import { EventsCommentsModule } from './events-comments/events-comments.module';
 import { ServicesModule } from './services/services.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 @Module({
   imports: [
     UsersModule,
@@ -27,6 +28,12 @@ import { ServicesModule } from './services/services.module';
     EventsModule,
     EventsCommentsModule,
     ServicesModule,
+    ThrottlerModule.forRoot([
+      {
+        ttl: 1000 * 10, //10 secounds
+        limit: 100, //limit requests
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [
@@ -34,6 +41,10 @@ import { ServicesModule } from './services/services.module';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

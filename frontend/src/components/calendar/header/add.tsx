@@ -18,10 +18,12 @@ export default function Add() {
             end: new Date(),
           });
         }}
-        className="h-12 w-12 px-4 rounded-2xl flex justify-center transition-background items-center opacity-100 relative hover:bg-indigo-500 hover:dark:bg-indigo-700 hover:text-white"
+        className={`h-12 w-auto px-4 gap-2 rounded-md text-md font-semibold capitalize flex justify-center transition-background items-center opacity-100 relative hover:bg-zinc-100 hover:dark:bg-zinc-800`}
       >
         <IoAddSharp size="20" />
+        Criar
       </button>
+
       <AnimatePresence>
         {selectedDay?.start && (
           <AddClient

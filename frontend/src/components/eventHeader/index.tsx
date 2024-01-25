@@ -33,7 +33,7 @@ export function EventHeader({ event }: EventHeaderProps) {
   }
 
   return (
-    <div className="flex gap-3 items-center justify-end">
+    <div className="flex gap-3 items-center justify-end z-[2000]">
       <Delete event={event} />
 
       <Button className="flex opacity-60 hover:bg-zinc-500 hover:bg-opacity-20 items-center  justify-center rounded-full w-10 h-10">

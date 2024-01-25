@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export class User {
   id: number;
   firstName: string;
@@ -7,7 +5,8 @@ export class User {
   lastName: string;
   email: string;
   status: UserStatus;
-  role: UserRole
+  role: UserRole;
+  cep: string;
   password: string;
   cpf: string;
   photo?: string;
@@ -17,5 +16,5 @@ export class User {
   updatedAt: Date;
 }
 
-export type UserRole = 'ADMIN' | 'USER'
-export type UserStatus = 'CREATED' | 'VERIFIED' | 'APPROVED'
+export type UserRole = 'ADMIN' | 'USER';
+export type UserStatus = 'CREATED' | 'VERIFIED' | 'APPROVED';

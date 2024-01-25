@@ -1,4 +1,11 @@
-import { Body, Controller, HttpStatus, Post, HttpCode } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+  HttpCode,
+  Get,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from 'src/constants';
 import { confirmEmailDto } from './dto/confirm-email.dto';

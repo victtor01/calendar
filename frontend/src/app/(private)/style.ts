@@ -6,12 +6,11 @@ import styled, { css } from "styled-components";
 export const Container = styled.main`
   display: grid;
   grid-template-areas:
-    "sidebar content content content user"
+    "header header header header header"
     "sidebar content content content user"
     "sidebar content content content user";
   grid-template-rows: auto 1fr 1fr ;
   grid-template-columns: auto 1fr 1fr 1fr auto;
-  grid-gap: 1rem;
   height: 100vh;
   color: ${(props) => props.theme.text};
   position: relative;
@@ -25,9 +24,7 @@ export const Content = styled.div`
   flex-direction: column;
   height: 100%;
   position: relative;
-  min-width: auto;
   overflow: auto;
-  width: auto;
 
   &::-webkit-scrollbar {
     width: 0px; /* Largura da barra de rolagem */

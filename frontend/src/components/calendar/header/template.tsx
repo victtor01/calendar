@@ -84,10 +84,11 @@ export const TemplateDialog = () => {
   return (
     <>
       <motion.button
-        className="h-12 w-12 px-4 rounded-2xl flex justify-center transition-background items-center opacity-100 relative hover:bg-indigo-500 hover:dark:bg-indigo-700 hover:text-white"
+        className={`h-12 w-auto px-4 gap-2 rounded-md text-md font-semibold capitalize flex justify-center transition-background items-center opacity-100 relative `}
         onClick={handleShowModalAddTemplate}
       >
         <MdBackupTable size="21" />
+        Novo template
       </motion.button>
       <Modal
         onOpenChange={handleShowModalAddTemplate}

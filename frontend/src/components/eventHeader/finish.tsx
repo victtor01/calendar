@@ -59,6 +59,8 @@ function useFinish({ event }: { event: Event }) {
     queryClient.invalidateQueries(["event", event.code]);
 
     queryClient.invalidateQueries(["events"]);
+
+    setShowModalFinish(false);
   }
 
   const { data: accounts, isLoading: loadingAccounts } = useQuery({
@@ -102,8 +104,8 @@ export default function Finish({ event }: { event: Event }) {
       </motion.button>
 
       {showModalFinish && event && (
-        <Modal className="z-40 max-w-[30rem] dark:bg-zinc-900">
-          {/* <S.Bubble /> */}
+        <Modal className="z-[100] max-w-[30rem] ">
+          <S.Bubble />
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -186,19 +188,21 @@ export default function Finish({ event }: { event: Event }) {
             </section>
             <span className="w-full bg-gradient-to-r from-transparent via-zinc-400 dark:via-zinc-800 to-transparent  h-[1px]" />
             <section className="flex flex-col gap-3">
-              Selecione a conta:
+              <span className="font-semibold text-gray-800 dark:text-gray-300">
+                Selecione a conta:
+              </span>
               <div className="flex gap-3 flex-wrap">
                 {accounts?.map((account: Account) => {
                   const selected =
                     selectedAccount?.id.toString() === account.id.toString();
                   const selectedClass = selected
-                    ? "bg-purple-600"
-                    : "dark:bg-zinc-800";
+                    ? "bg-purple-600 text-white"
+                    : "dark:bg-zinc-800 bg-zinc-100";
                   return (
                     <button
                       key={account.id}
                       onClick={() => setSelectedAccount(account)}
-                      className={`p-3 rounded  ${selectedClass}`}
+                      className={`p-3 rounded font-semibold ${selectedClass}`}
                     >
                       {account.name}
                     </button>

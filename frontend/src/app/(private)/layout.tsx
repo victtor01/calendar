@@ -144,10 +144,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <PrivateRoute>
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         <ThemeContext.Provider value={{ theme, handleTheme }}>
-          <S.Container className="bg-white dark:bg-gradient-45 from-zinc-950 to-gray-900 p-[1%] ">
-            <S.Bubble className="after:opacity-50 after:dark:opacity-[0.4] before:opacity-30 before:dark:opacity-[0.2]" />
+          <S.Container className="bg-gray-50 dark:bg-gradient-45 from-zinc-950 to-zinc-900 ">
+            {/*  <S.Bubble className="after:opacity-50 after:dark:opacity-[0.4] before:opacity-30 before:dark:opacity-[0.2]" /> */}
 
-            <div className="flex absolute right-0 top-0 h-full w-[30%] bg-blue-100  dark:bg-black"></div>
+            <div className="flex absolute right-0 top-0 h-full w-[30%] bg-gradient-to-r from-transparent to-blue-100 dark:from-transparent dark:to-black"></div>
 
             <SidebarRelativePrivate />
 
@@ -233,9 +233,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Sidebar>
 
             <Suspense fallback={<Loading />}>
-              <S.Content className="bg-blue-50  dark:bg-neutral-950   rounded-2xl p-4">
+              <S.Content className="bg-transparent p-4 max-w-[100rem]  w-full mx-auto">
                 <UserComponents />
-
                 <ToastContainer
                   position="top-right"
                   autoClose={2000}

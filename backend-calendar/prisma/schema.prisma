@@ -16,6 +16,7 @@ model users {
   password        String
   birth           DateTime
   cpf             String
+  cep             String?
   photo           String?
   phone           String?             @unique
   createdAt       DateTime            @default(now())
@@ -106,27 +107,27 @@ model eventsTemplates {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
   user        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  event events[]
+  event       events[]
 }
 
 model events {
-  id          Int              @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   description String?
   userId      Int
   color       String?
   end         DateTime
-  start       DateTime         @default(now())
+  start       DateTime          @default(now())
   name        String
-  allDay      Boolean          @default(true)
-  code        String           @unique @default(uuid())
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @default(now())
-  status      EventsStatus     @default(ACTIVATED)
-  user        users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  allDay      Boolean           @default(true)
+  code        String            @unique @default(uuid())
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @default(now())
+  status      EventsStatus      @default(ACTIVATED)
+  user        users             @relation(fields: [userId], references: [id], onDelete: Cascade)
   comments    eventsComments[]
-  clients     clients[]        @relation("clientsToevents")
-  services    services[]       @relation("eventsToservices")
-  templates eventsTemplates[]
+  clients     clients[]         @relation("clientsToevents")
+  services    services[]        @relation("eventsToservices")
+  templates   eventsTemplates[]
 }
 
 model eventsComments {
