@@ -83,8 +83,9 @@ const useRegister = () => {
 
       const { data } = response;
 
-      if (!(response.status === 201) && !data?.key) {
+      if (!(response.status === 201) || !data?.key) {
         toast.error(`Houve um erro: ${data.message}`);
+        return;
       }
 
       const { key } = data;

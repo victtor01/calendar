@@ -19,6 +19,9 @@ export class PrismaEventsRepository implements EventsRepository {
   async findAll(userId: number): Promise<Events[]> {
     return await this.prismaService.events.findMany({
       where: { userId },
+      orderBy: {
+        start: 'desc',
+      },
       include: {
         services: true,
         clients: true,
@@ -234,9 +237,10 @@ export class PrismaEventsRepository implements EventsRepository {
           },
         },
         templates: {
-          connect: templates?.map((template: eventsTemplates) => ({
-            id: template.id,
-          })) || [],
+          connect:
+            templates?.map((template: eventsTemplates) => ({
+              id: template.id,
+            })) || [],
         },
       },
     });

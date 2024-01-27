@@ -38,9 +38,7 @@ export const Input = styled.div`
     outline: none;
     transition: 0.2s;
     font-weight: 600;
-    background-color: transparent;
     color: ${({ theme }) => theme.text};
-    border: 1px solid ${({ theme }) => theme.border};
     appearance: inherit;
 
     :focus {

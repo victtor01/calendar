@@ -4,17 +4,7 @@ import Link from "next/link";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
 import RegistersComponent from "@/components/registers";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-} from "@nextui-org/react";
 import { useState } from "react";
-import { queryClient } from "@/hooks/queryClient";
-import { useRouter } from "next/navigation";
 import moment from "moment-timezone";
 import { AnimatePresence, motion } from "framer-motion";
 import * as S from "./style";

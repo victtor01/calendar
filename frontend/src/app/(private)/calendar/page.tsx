@@ -158,7 +158,7 @@ export default function Calendar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="flex flex-1 gap-2 p-4 z-[2] relative bg-white border-2 border-white dark:border-zinc-900  dark:bg-zinc-900 shadow-inner dark:shadow-black shadow-zinc-300 mb-4 rounded"
+              className="flex flex-1 gap-2 p-4 z-[2] relative bg-white border dark:border-zinc-900  dark:bg-zinc-900 dark:shadow-black shadow-zinc-300 mb-4"
             >
               <div className="col-span-8 max-h-auto w-full">
                 <FullCalendar

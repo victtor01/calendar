@@ -21,7 +21,7 @@ import { Clients } from "@/types/clients";
 import Image from "next/image";
 import { Server } from "@/constants/server";
 import { Comment } from "@/types/comment";
-import Finish from "../eventHeader/finish";
+import Finish from "../events/eventHeader/finish";
 
 type Page = "INFORMATIONS" | "CLIENTS" | "SERVICES" | "COMMENTARIES";
 

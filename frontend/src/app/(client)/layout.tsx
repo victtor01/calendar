@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import * as S from "./style";
 import Footer from "@/components/footer";
@@ -52,6 +52,19 @@ export default function Layout({ children }: layoutProps) {
     return null;
   };
 
+  useEffect(() => {
+    const html = document.querySelector("html");
+    if (html) {
+      if (theme === "DARK") {
+        html.classList.add("dark");
+        html.classList.remove("light");
+      } else {
+        html.classList.add("light");
+        html.classList.remove("dark");
+      }
+    }
+  }, [theme]);
+
   return (
     <>
       <ThemeContext.Provider value={{ handleTheme, theme }}>
@@ -66,7 +79,7 @@ export default function Layout({ children }: layoutProps) {
             pauseOnFocusLoss={false}
             draggable
             pauseOnHover
-            theme={'dark'}
+            theme={"dark"}
           />
           <S.Container>
             <Suspense fallback={<Loading className="bg-cyan-500" />}>

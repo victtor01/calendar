@@ -96,8 +96,8 @@ function useAddEvent() {
       start: new Date(data.start),
       end: new Date(data.end),
     });
-
-    /*   await toast.promise(res, {
+/* 
+      await toast.promise(res, {
       pending: "Salvando alterações",
       success: "Salvo com sucesso!",
       error: "Houve um erro! Tente novamente mais tarde! ",

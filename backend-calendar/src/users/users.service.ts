@@ -46,7 +46,7 @@ export class UsersService {
       data.phone,
     );
 
-    if (exists?.email) {
+    if (exists?.email === createData.email) {
       return new BadGatewayException({
         message: 'Email já cadastrado!',
       });
@@ -62,7 +62,7 @@ export class UsersService {
 
     const user: User = await this.usersRepository.create(dataSerializer);
 
-    if (!user.id || !user.email) {
+    if (!user.id) {
       return new ConflictException({
         message: 'Houve um erro Ao tentar registrar',
       });
@@ -73,20 +73,20 @@ export class UsersService {
     const { code }: { code: string } =
       await this.confirmationCodesService.create(id);
 
-    const res = await this.emailService.sendEmail({
-      to: email,
-      text: code,
-    });
+    try {
+      await this.emailService.sendEmail({
+        to: email,
+        text: code,
+      });
 
-    if (!!res) {
       const { password, cpf, ...rest } = user;
 
       return rest;
+    } catch (error) {
+      return new BadRequestException({
+        message: 'Falha ao enviar email!',
+      });
     }
-
-    return new BadRequestException({
-      message: 'Falha ao enviar email!',
-    });
   }
 
   async findOne(userId: number) {
@@ -100,9 +100,9 @@ export class UsersService {
         message: 'Você não tem permisão para fazer isso!',
       });
     }
-    console.log('teste');
+
     const res = await this.usersRepository.update(userId, { status });
-    console.log(res);
+
     return res;
   }
 

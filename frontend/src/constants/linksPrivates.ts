@@ -23,7 +23,7 @@ export const pages: Page[] = [
 /* { name: "Configurar", icon: GoGear, href: "/configurations" }, */
 
 export const otherPages: Page[] = [
-  { name: "Entrar em contato", href: "/" },
+  { name: "Entrar em contato", href: "/contact" },
   { name: "Reportar bug", href: "/" },
   { name: "Ajuda", href: "/" },
   { name: "Termos de serviço", href: "/" },

@@ -2,7 +2,7 @@ import { Event } from "@/types/events";
 import { IoClose } from "react-icons/io5";
 import { motion } from "framer-motion";
 
-import Modal from "../modal";
+import Modal from "../../modal";
 import { queryClient } from "@/hooks/queryClient";
 import { toast } from "react-toastify";
 import useApiPrivate from "@/hooks/apiPrivate";

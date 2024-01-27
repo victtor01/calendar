@@ -8,6 +8,7 @@ import * as S from "./style";
 /* components */
 import { Sidebar } from "@/components/sidebar";
 import { ThemeContext } from "@/contexts/themeContext";
+import Link from "next/link";
 
 export function SidebarRelativePrivate() {
   const { theme } = useContext(ThemeContext);
@@ -17,13 +18,13 @@ export function SidebarRelativePrivate() {
     <Sidebar
       bgTheme={false}
       style={{ gridArea: "sidebar" }}
-      className={`w-[4rem] lg:w-[15rem]  text-white bg-zinc-950 dark:bg-neutral-950  gap-4  relative items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
+      className={`w-[4rem] lg:w-[15rem]  text-white m-2 rounded-2xl border border-transparent border-zinc-900 bg-neutral-950  gap-4  relative items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
     >
-      <header className="w-full flex items-center lg:mb-0 lg:justify-between relative h-auto pt-2 lg:pt-6 lg:px-4 justify-center">
+      <header className="w-full flex items-center lg:mb-0 lg:justify-between relative h-auto pt-0 lg:pt-4 lg:px-2 justify-center">
         <div
           className={`bg-transparent font-semibold items-center text-md flex justify-center gap-2`}
         >
-          <span className="flex z-20  dark:opacity-100 bg-indigo-600 rounded-2xl text-white items-center justify-center w-12 h-12">
+          <span className="flex z-20  dark:opacity-100 bg-indigo-600 rounded-xl text-white items-center justify-center w-12 h-12">
             Cr
           </span>
           <span className="text-xl  dark:text-gray-100 hidden lg:flex">
@@ -41,34 +42,30 @@ export function SidebarRelativePrivate() {
 
       <span className="w-full h-[1px] bg-zinc-800 " />
 
-      <section className="flex flex-1 flex-col gap-2 w-full overflow-y-auto scroll-none px-1 lg:px-0">
+      <section className="flex flex-1 flex-col  w-full overflow-y-auto scroll-none px-1 gap-4 lg:px-0">
         <div className="flex font-normal flex-col gap-1  relative flex-nowrap w-full px-2">
           {pages.map(({ name, icon: Icon, href }, index: number) => {
             const selected = currentPath === href.substring(1);
             const selectedClass = selected
-              ? "opacity-100 cursor-default  bg-zinc-800"
+              ? "opacity-100 cursor-default bg-gradient-45 from-purple-700 to-indigo-700"
               : "opacity-60 cursor-pointer dark:text-gray-200";
 
             return (
-              <S.LinkRoute
-                whileTap={{ scale: 0.99 }}
+              <Link
                 key={index}
                 href={href}
-                $selected={selected}
-                transition={{ duration: 0.04 }}
-                className={`${fontOpenSans} ${selectedClass} before:bg-indigo-500 rounded-md flex-nowrap w-full justify-center relative lg:justify-start flex py-2 items-center gap-5 hover:opacity-100 font-semibold`}
+                className={`${fontOpenSans} ${selectedClass} lg:px-2 rounded-md flex-nowrap w-full justify-center relative lg:justify-start flex py-2 items-center gap-4 hover:opacity-100 font-semibold`}
               >
-                {Icon && <Icon size="22" />}
+                {Icon && <Icon size="20" />}
                 <span className="hidden lg:flex">{name}</span>
-              </S.LinkRoute>
+              </Link>
             );
           })}
         </div>
 
-        <span className="w-full h-[1px] bg-gradient-to-l from-transparent via-zinc-800 to-transparent " />
+        <span className="w-full h-[1px] bg-zinc-800 " />
 
         <div className="flex-1 w-full flex-col lg:flex hidden mt-4 ">
-        
           {otherPages.map(({ name, href }, index: number) => {
             const selected = currentPath === href.substring(1);
             const selectedClass = selected
@@ -90,6 +87,8 @@ export function SidebarRelativePrivate() {
         </div>
       </section>
 
+      <span className="w-full h-[1px] bg-zinc-800 " />
+      
       <footer className="flex flex-col gap-4 w-full lg:p-3">
         <button className="p-3 lg:m-0lg:px-5 w-auto flex-col text-normal text-white transition-opacity shadow-2xl  hover:shadow-xl text-md py-4 dark:opacity-60 opacity-80 hover:dark:opacity-100 hover:opacity-100 justify-center flex bg-gradient-45 from-purple-600  to-blue-600 rounded">
           <div className="flex gap-3 w-full  justify-center lg:justify-between">

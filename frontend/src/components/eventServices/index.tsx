@@ -41,7 +41,7 @@ function useServices(event: Event) {
       error: "Houve um erro! Tente novamente mais tarde! ",
     });
 
-    queryClient.invalidateQueries(["event"]);
+    queryClient.invalidateQueries(["events"]);
     queryClient.invalidateQueries(["event", event.code]);
   }
 

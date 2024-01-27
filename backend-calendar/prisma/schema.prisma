@@ -36,7 +36,7 @@ model codes_confirmation {
   id     Int    @id @default(autoincrement())
   code   String @unique
   userId Int    @unique
-  user   users  @relation(fields: [userId], references: [id])
+  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model accounts {

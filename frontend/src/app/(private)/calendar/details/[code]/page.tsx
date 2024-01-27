@@ -4,13 +4,13 @@ import Link from "next/link";
 import { IoClose } from "react-icons/io5";
 
 // components
-import Edit from "@/components/eventEdit";
+import Edit from "@/components/events/eventEdit";
 import Comments from "@/components/eventsComments";
 import ComponentClient from "@/components/eventsClients";
 import ComponentService from "@/components/eventServices";
 import { useQuery } from "@tanstack/react-query";
 import useApiPrivate from "@/hooks/apiPrivate";
-import { EventHeader } from "@/components/eventHeader";
+import { EventHeader } from "@/components/events/eventHeader";
 import { Event } from "@/types/events";
 
 const status = {
