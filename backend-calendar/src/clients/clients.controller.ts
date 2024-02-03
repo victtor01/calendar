@@ -17,6 +17,7 @@ import { User } from 'src/users/entities/user.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { UpdateClientDto } from './dto/update-clients.dto';
+import { GetTop10ClientsDto } from './dto/get-top-10-clients.dto';
 
 @Controller('clients')
 export class ClientsController {
@@ -106,5 +107,14 @@ export class ClientsController {
       userId: Number(req.user.id),
       id: Number(id),
     });
+  }
+
+  @Get('top-10-clients')
+  getTop10Clients(@Request() req: { user: User }) {
+    const {
+      user: { id },
+    } = req;
+
+    return this.clientsService.getTop10Clients({ userId: id });
   }
 }

@@ -63,9 +63,6 @@ export default function Details({ params: { code } }: DetailsProps) {
           </Link>
         </div>
 
-        <div className="flex absolute top-[50%] bg-red-200">
-          {status[event.status]}
-        </div>
 
         <EventHeader event={event} />
       </header>

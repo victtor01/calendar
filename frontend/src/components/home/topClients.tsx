@@ -33,9 +33,9 @@ function useTopClients() {
   const end = moment().endOf("month").format("MM-DD-YYYY");
 
   const { data: clients, isLoading: loadingClients } = useQuery({
-    queryKey: ["clients", "find-by-month"],
+    queryKey: ["clients", "top-10-clients"],
     queryFn: async (): Promise<Clients[]> => {
-      return (await api.get(`/clients/find-by-date/${start}/${end}/`)).data;
+      return (await api.get(`/clients/top-10-clients`)).data;
     },
   });
 
@@ -52,15 +52,12 @@ export function TopClients() {
     return "Carregandos clientes...";
   }
 
-  const sortedArrayX =
-    clients?.sort(
-      (a, b) => (a?.events?.length || 0) - (b?.events?.length || 0)
-    ) || [];
+  const data = clients?.map((client) => ({
+    name: client?.firstName,
+    value: client?.events?.length || 0,
+  }));
 
-  console.log("a: ", sortedArrayX);
-
-  const top10ArrayX = sortedArrayX.slice(0, 10);
-  console.log(top10ArrayX);
+  console.log(clients?.length)
 
   return (
     <div className="flex flex-1 p-2 rounded-md w-[100%] flex-col z-40 backdrop-blur-xl">

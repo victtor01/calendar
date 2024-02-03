@@ -6,6 +6,7 @@ import Image from "next/image";
 import { GoGear } from "react-icons/go";
 import { IoClose } from "react-icons/io5";
 import { Income } from "./income";
+import Link from "next/link";
 
 const data: any = [];
 for (let i = 0; i < 10; i++) {
@@ -36,7 +37,9 @@ export default function Information() {
             />
           </div>
           <div className="flex gap-5 py-1">
-            <GoGear size="20" />
+            <Link href={"/configurations"}>
+              <GoGear size="20" />
+            </Link>
             <IoClose size="20" />
           </div>
         </header>

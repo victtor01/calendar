@@ -15,27 +15,50 @@ export class ConfirmationCodesService {
   private max = 999999;
 
   private async random(): Promise<string> {
-    return (Math.floor(Math.random() * (this.max - this.min + 1)) + this.min).toString();
+    return (
+      Math.floor(Math.random() * (this.max - this.min + 1)) + this.min
+    ).toString();
   }
 
+  async findByUserId(userId: number): Promise<ConfirmationCodes> {
+    return this.prismaCodesConfirmationRepository.findOneByUserId(+userId);
+  }
 
   async create(userId: number): Promise<ConfirmationCodes> {
-    userId = typeof userId !== 'number' ? Number(userId) : userId
+    userId = typeof userId !== 'number' ? Number(userId) : userId;
 
-    const randomCode = await this.random()
+    const randomCode = await this.random();
 
-    const codeExists = await this.prismaCodesConfirmationRepository.findOneByUserId(+userId);
+    const codeExists =
+      await this.prismaCodesConfirmationRepository.findOneByUserId(+userId);
 
-    if(codeExists) {
+    if (codeExists) {
       console.log(codeExists);
-      return codeExists
+      return codeExists;
     }
 
     const code = await this.prismaCodesConfirmationRepository.create({
       userId,
       code: randomCode,
     });
-  
-    return code
+
+    return code;
+  }
+
+  async createCustomize({
+    userId,
+    code,
+  }: {
+    userId: number;
+    code: string;
+  }): Promise<ConfirmationCodes> {
+    return this.prismaCodesConfirmationRepository.create({
+      userId,
+      code,
+    });
+  }
+
+  async delete(id: number): Promise<any> {
+    return await this.prismaCodesConfirmationRepository.delete(+id);
   }
 }

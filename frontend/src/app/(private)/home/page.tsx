@@ -3,15 +3,15 @@
 import * as S from "./style";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSessionContext } from "@/contexts/sessionContext";
+import { useState } from "react";
 
 // components
-import ComponentsHome from "@/components/home";
 import { FaFilter } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import moment from "moment-timezone";
-import { useState } from "react";
-import Modal from "@/components/modal";
 import { Building } from "@/components/building";
+import ComponentsHome from "@/components/home";
+import moment from "moment-timezone";
+import Modal from "@/components/modal";
 
 function getRandomInt(min: number, max: number): number {
   min = Math.ceil(min);

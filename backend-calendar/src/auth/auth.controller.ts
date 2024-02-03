@@ -33,7 +33,6 @@ export class AuthController {
   @Post('confirm-email')
   async confirmEmail(@Body() Body: confirmEmailDto) {
     const { userId, code } = Body;
-    console.log(userId, code);
     return await this.authService.confirmEmail(Number(userId), code);
   }
 

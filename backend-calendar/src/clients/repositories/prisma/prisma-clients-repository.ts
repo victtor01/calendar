@@ -9,6 +9,7 @@ import { FindClientByCode } from 'src/clients/dto/find-client-by-code.dto';
 import { UpdateClientPhotoDto } from 'src/clients/dto/update-client-photo.dto';
 import { FindClientById } from 'src/clients/dto/find-client-by-id.dto';
 import { UpdateClientDto } from 'src/clients/dto/update-clients.dto';
+import { GetTop10ClientsDto } from 'src/clients/dto/get-top-10-clients.dto';
 
 @Injectable()
 export class PrismaClientsRepository implements ClientsRepository {
@@ -39,13 +40,7 @@ export class PrismaClientsRepository implements ClientsRepository {
     });
   }
 
-  async update({
-    userId,
-    data,
-  }: {
-    userId: number;
-    data: UpdateClientDto;
-  }) {
+  async update({ userId, data }: { userId: number; data: UpdateClientDto }) {
     const { id, ...rest } = data;
     return await this.prisma.clients.update({
       data: { ...rest },
@@ -106,6 +101,27 @@ export class PrismaClientsRepository implements ClientsRepository {
       },
       include: {
         events: true,
+      },
+    });
+  }
+
+  async getTop10Clients({ userId }: GetTop10ClientsDto): Promise<Clients[]> {
+    return await this.prisma.clients.findMany({
+      take: 10,
+      where: {
+        userId,
+      },
+      orderBy: {
+        events: {
+          _count: 'desc',
+        },
+      },
+      include: {
+        events: {
+          include: {
+            services: true,
+          },
+        },
       },
     });
   }

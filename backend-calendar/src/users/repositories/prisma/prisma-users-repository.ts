@@ -3,6 +3,7 @@ import { UsersRepository } from '../users-repository';
 import { PrismaService } from 'src/database/prisma.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/entities/user.entity';
+import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -59,7 +60,7 @@ export class PrismaUsersRepository implements UsersRepository {
     });
   }
 
-  async update(userId: number, data: any): Promise<boolean> {
+  async update(userId: number, data: UpdateUserDto): Promise<boolean> {
     await this.prisma.users.update({
       where: {
         id: userId,

@@ -21,6 +21,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
+import { RedefinePasswordDto } from './dto/redefine-password.dto';
+import { SendEmailRedefinePasswordDto } from './dto/send-email-redefine-password';
 
 @Controller('users')
 export class UsersController {
@@ -56,6 +58,18 @@ export class UsersController {
       status: data.status,
       userId: +id,
     });
+  }
+
+  @Public()
+  @Post('redefine-password')
+  async redefinePassowrd (@Body() body: RedefinePasswordDto) {
+    return await this.usersService.redefinePassowrd(body);
+  }
+
+  @Public()
+  @Post('send-email-redefine-password') 
+  sendRedefinePassword(@Body() body: SendEmailRedefinePasswordDto) {
+    return this.usersService.sendEmailForRedefinePassword(body)
   }
 
   @Public()

@@ -15,6 +15,7 @@ import { z } from "zod";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { queryClient } from "@/hooks/queryClient";
 import useTemplates from "@/hooks/templates";
+import { toast } from "react-toastify";
 
 const maxLenghtDescriptionInput = 100;
 
@@ -91,17 +92,17 @@ function useAddEvent() {
   async function addEvent(data: CreateEventsFormData) {
     const { start, end, ...rest } = data;
 
-    const res = await api.post("/events/create", {
+    const res = api.post("/events/create", {
       ...rest,
       start: new Date(data.start),
       end: new Date(data.end),
     });
-/* 
-      await toast.promise(res, {
+
+    await toast.promise(res, {
       pending: "Salvando alterações",
       success: "Salvo com sucesso!",
       error: "Houve um erro! Tente novamente mais tarde! ",
-    }); */
+    });
 
     await queryClient.invalidateQueries(["events"]);
     await queryClient.invalidateQueries(["events", "events-week"]);
@@ -158,7 +159,7 @@ export default function AddClient(props: AddClientProps) {
   }
 
   return (
-    <Modal>
+    <Modal className="p-8 dark:bg-zinc-900">
       <form onSubmit={handleSubmit(addEvent)}>
         <header className="flex items-center justify-between p-2">
           <div className="font-semibold capitalize text-lg">
@@ -170,7 +171,7 @@ export default function AddClient(props: AddClientProps) {
             </button>
           </div>
         </header>
-        <section className="flex flex-col gap-3">
+        <section className="flex flex-col gap-6">
           <input
             {...register("name")}
             autoComplete="off"
@@ -410,7 +411,7 @@ export default function AddClient(props: AddClientProps) {
             )}
           />
         </section>
-        <footer className="border-t py-2 border-zinc-200 dark:border-zinc-700  mt-2">
+        <footer className=" py-2 border-zinc-200 dark:border-zinc-700  mt-2">
           <button
             className="p-2 px-3 opacity-90 hover:opacity-100 rounded bg-gradient-45 from-purple-600 to-blue-600 "
             onClick={() => {

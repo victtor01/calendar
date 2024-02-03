@@ -60,7 +60,10 @@ export default function List() {
             const price = calculeTotalValueOfEvent(event?.services || []);
 
             return (
-              <tr className="bg-white border-b dark:bg-zinc-900 dark:border-gray-700 even:bg-blue-50 even:dark:bg-neutral-900">
+              <tr
+                key={event.id}
+                className="bg-white border-b dark:bg-zinc-900 dark:border-gray-700 even:bg-blue-50 even:dark:bg-neutral-900"
+              >
                 <th className="p-2">
                   <input type="checkbox" className="w-4 h-4" />
                 </th>

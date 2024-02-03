@@ -11,6 +11,7 @@ import { UpdateClientPhotoDto } from './dto/update-client-photo.dto';
 import * as fs from 'fs';
 import * as path from 'path';
 import { UpdateClientDto } from './dto/update-clients.dto';
+import { GetTop10ClientsDto } from './dto/get-top-10-clients.dto';
 
 @Injectable()
 export class ClientsService {
@@ -74,5 +75,9 @@ export class ClientsService {
 
   async findOneByDate(data: FindClientsByDateDto): Promise<Clients[]> {
     return await this.clientsRepository.findByDate(data);
+  }
+
+  getTop10Clients({ userId }: GetTop10ClientsDto) {
+    return this.clientsRepository.getTop10Clients({ userId });
   }
 }

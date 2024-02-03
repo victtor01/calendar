@@ -13,9 +13,9 @@ export class PrismaCodesConfirmationRepository
   async findOneByUserId(userId: number): Promise<ConfirmationCodes> {
     return await this.prisma.codes_confirmation.findFirst({
       where: {
-        userId
-      }
-    })
+        userId,
+      },
+    });
   }
 
   async findOne(code: string): Promise<ConfirmationCodes> {
@@ -28,19 +28,18 @@ export class PrismaCodesConfirmationRepository
 
   async create(body: CreateConfirmationCodesDto): Promise<ConfirmationCodes> {
     const { userId, code } = body;
-  
+
     const codeExist = await this.prisma.codes_confirmation.findFirst({
       where: { userId },
     });
 
-    if(codeExist) {
+    if (codeExist) {
       await this.prisma.codes_confirmation.delete({
         where: { userId },
       });
     }
 
     return await this.prisma.codes_confirmation.create({
-      
       data: {
         userId,
         code,

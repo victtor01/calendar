@@ -124,14 +124,14 @@ export default function Login() {
       <Poster />
 
       <Form
-        bgTheme
+        bgTheme={false}
         exit={{ opacity: 0 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         onSubmit={handleSubmit(onSubmit)}
-        className={`shadow-2xl w-[50%] bg-opacity-20 h-auto relative backdrop-blur-3xl p-14 px-16 justify-center`}
+        className={`shadow-2xl w-[50%] h-auto relative backdrop-blur-3xl p-14 px-16 justify-center bg-gray-50 dark:bg-gray-900`}
       >
-        <div className="flex w-full flex-col gap-3 max-w-[28rem]">
+        <div className="flex w-full flex-col gap-3 max-w-[30rem]">
           {error && <div>{error}</div>}
           <div className="flex flex-col mb-10 gap-1">
             <h1
@@ -151,7 +151,7 @@ export default function Login() {
             type="text"
             autoComplete="off"
             register={register("email")}
-            className={`border focus:border-cyan-500 rounded `}
+            className={`border focus:border-cyan-500 rounded bg-white dark:bg-gray-800 `}
           >
             <div className="absolute z-10 right-4 pointer-events-none ">
               <MdMail className="opacity-40" size="20" />
@@ -169,7 +169,7 @@ export default function Login() {
             required
             type="password"
             autoComplete="off"
-            className={`border focus:border-cyan-500 rounded `}
+            className={`border focus:border-cyan-500 rounded bg-white dark:bg-gray-800`}
           >
             <div className="absolute z-10 right-4 pointer-events-none ">
               <ImLock className="opacity-40" size="20" />
@@ -182,17 +182,22 @@ export default function Login() {
               {errors.password.message}
             </div>
           )}
-          <div className="flex w-full items-center gap-2">
-            <button
-              type="button"
-              className="w-5 h-5 border rounded border-zinc-400"
-            />
-            <span>Mantenha-me contectado</span>
+          <div className="flex w-full items-center justify-between gap-2">
+            <div className="flex gap-2">
+              <input type="checkbox" />
+              <span>Mantenha-me contectado</span>
+            </div>
+            <Link
+              href={"/redefine-password/"}
+              className="font-semibold text-indigo-700 dark:text-indigo-500"
+            >
+              Esqueceu sua senha?
+            </Link>
           </div>
           <motion.button
             whileHover={{ scale: 1.04 }}
             transition={{ type: "spring", duration: 0.2 }}
-            className="py-3 mt-5 bg-gradient-45 from-purple-600 to-blue-500 w-full text-white font-normal text-lg rounded font-semibold"
+            className="py-3 mt-5 bg-gradient-45 from-purple-600 to-blue-500 w-full text-white text-lg rounded font-semibold"
           >
             {isSubmitting ? (
               <Spinner className="w-[1.3rem] h-[1.3rem]" />
@@ -202,7 +207,7 @@ export default function Login() {
           </motion.button>
           <p className="flex gap-1">
             Ainda não tem uma conta?{" "}
-            <Link href="/register" className="text-cyan-600">
+            <Link href="/register" className="text-indigo-600 font-semibold">
               Crie uma conta!
             </Link>
           </p>

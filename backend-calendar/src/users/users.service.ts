@@ -4,16 +4,23 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { EmailService } from 'src/email/email.service';
 import { ConfirmationCodesService } from 'src/confirmation-codes/confirmation-codes.service';
 import { UsersRepository } from './repositories/users-repository';
 import { User } from './entities/user.entity';
 import { plainToClass } from 'class-transformer';
+import { SendEmailRedefinePasswordDto } from './dto/send-email-redefine-password';
+import { differenceInMinutes } from 'date-fns';
+import { RedefinePasswordDto } from './dto/redefine-password.dto';
+import * as bcrypt from 'bcrypt';
+import { jwtConstants } from 'src/auth/constants';
+import { ConfirmationCodes } from 'src/confirmation-codes/entities/confirmation-codes.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
@@ -23,9 +30,104 @@ export class UsersService {
     private readonly usersRepository: UsersRepository,
   ) {}
 
+  private readonly salt = 10;
+
   private async hashPassword(password: string): Promise<string> {
-    const salt = 10;
-    return await bcrypt.hash(password, salt);
+    return await bcrypt.hash(password, this.salt);
+  }
+
+  async sendEmailForRedefinePassword(data: SendEmailRedefinePasswordDto) {
+    const { email } = data;
+    // get user
+
+    const userExists = await this.usersRepository.findOneByEmail(email);
+
+    // if user not exists
+
+    if (!userExists?.id) {
+      return new NotFoundException({
+        message: 'Usuário não encontrado!',
+      });
+    }
+
+    const codeExists = await this.confirmationCodesService.findByUserId(
+      userExists.id,
+    );
+
+    // if exists code
+
+    if (codeExists?.id) {
+      // verify hour
+      const diffInMinutes = differenceInMinutes(
+        new Date(),
+        new Date(codeExists.createdAt),
+      );
+
+      // if the difference is greater than 5 minutes
+
+      if (diffInMinutes < 5) {
+        return new BadRequestException({
+          message: 'Espere um pouco antes de pedir o código novamente!',
+        });
+      }
+
+      const deleted = await this.confirmationCodesService.delete(
+        +codeExists.id,
+      );
+
+      if (!deleted) {
+        return new InternalServerErrorException({
+          message: 'Houve um erro no servidor, entre em contato com o suporte!',
+        });
+      }
+
+      // create and sendEmail
+
+      const { code } = await this.confirmationCodesService.createCustomize({
+        userId: +userExists.id,
+        code: uuidv4(),
+      });
+
+      const sendEmail: boolean = await this.emailService.sendEmail({
+        to: userExists.email,
+        subject: 'Código de confirmação.',
+        text: `
+        ${code.toString()}
+        `,
+      });
+
+      return {
+        message: 'Código enviado para o email!',
+        error: false,
+      };
+    }
+
+    // create code
+
+    const createdCode: ConfirmationCodes =
+      await this.confirmationCodesService.createCustomize({
+        userId: +userExists.id,
+        code: uuidv4(),
+      });
+
+    if (!createdCode?.code) {
+      return new InternalServerErrorException({
+        message: 'houve um erro ao tentar enviar o código!',
+      });
+    }
+
+    const sendEmail: boolean = await this.emailService.sendEmail({
+      to: userExists.email,
+      subject: 'Código de confirmação.',
+      text: `
+      ${createdCode.code.toString()}
+      `,
+    });
+
+    return {
+      error: false,
+      message: 'Email enviado com sucesso!',
+    };
   }
 
   async createNameFile(originalname: string) {
@@ -36,6 +138,7 @@ export class UsersService {
     data: CreateUserDto,
   ): Promise<Omit<User, 'password' | 'cpf'> | BadRequestException> {
     data.birth = new Date(data.birth);
+
     data.password = await this.hashPassword(data.password);
 
     const { repeatPassword, ...createData } = data;
@@ -87,6 +190,41 @@ export class UsersService {
         message: 'Falha ao enviar email!',
       });
     }
+  }
+
+  async redefinePassowrd(data: RedefinePasswordDto) {
+    const { email, code, password, repeatPassword } = data;
+
+    const userExists = await this.usersRepository.findOneByEmail(email);
+
+    if (!userExists.id) {
+      return new BadRequestException({
+        message: 'Usuário não existe!',
+      });
+    }
+
+    const codeExists = await this.confirmationCodesService.findByUserId(
+      +userExists.id,
+    );
+
+    if (!codeExists.code && code !== codeExists.code) {
+      return new BadRequestException({
+        message: 'Código incorreto!',
+      });
+    }
+
+    if (password !== repeatPassword) {
+      return new BadGatewayException({
+        message: 'Senha não coecidem!',
+      });
+    }
+    const hash = await this.hashPassword(data.password);
+
+    return await this.usersRepository.update(+userExists.id, {
+      password: hash,
+    });
+
+    // if userExists and code confirm
   }
 
   async findOne(userId: number) {

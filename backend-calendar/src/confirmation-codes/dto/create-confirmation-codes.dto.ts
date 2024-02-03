@@ -1,4 +1,4 @@
 export class CreateConfirmationCodesDto {
-    userId: number
-    code: string
+  userId: number;
+  code: string;
 }
