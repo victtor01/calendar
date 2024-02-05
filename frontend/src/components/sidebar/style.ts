@@ -31,6 +31,5 @@ export const Sidebar = styled(motion.div)<SidebarProps>`
     background-color: transparent; /* Cor de fundo da área da barra de rolagem */
   }
 
-  z-index: 10;
   /* Estilo para a barra de rolagem (track) quando passa o mouse */
 `;

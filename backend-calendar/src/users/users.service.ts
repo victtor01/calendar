@@ -207,7 +207,7 @@ export class UsersService {
       +userExists.id,
     );
 
-    if (!codeExists.code && code !== codeExists.code) {
+    if (!codeExists.code || code !== codeExists.code) {
       return new BadRequestException({
         message: 'Código incorreto!',
       });
@@ -218,6 +218,7 @@ export class UsersService {
         message: 'Senha não coecidem!',
       });
     }
+
     const hash = await this.hashPassword(data.password);
 
     return await this.usersRepository.update(+userExists.id, {

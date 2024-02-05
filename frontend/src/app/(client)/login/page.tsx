@@ -129,7 +129,7 @@ export default function Login() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         onSubmit={handleSubmit(onSubmit)}
-        className={`shadow-2xl w-[50%] h-auto relative backdrop-blur-3xl p-14 px-16 justify-center bg-gray-50 dark:bg-gray-900`}
+        className={`shadow-2xl w-[50%] h-auto relative backdrop-blur-3xl p-14 px-16 justify-center bg-gray-50 dark:bg-zinc-900`}
       >
         <div className="flex w-full flex-col gap-3 max-w-[30rem]">
           {error && <div>{error}</div>}
@@ -151,7 +151,7 @@ export default function Login() {
             type="text"
             autoComplete="off"
             register={register("email")}
-            className={`border focus:border-cyan-500 rounded bg-white dark:bg-gray-800 `}
+            className={`border focus:border-cyan-500 rounded bg-white dark:bg-zinc-800 `}
           >
             <div className="absolute z-10 right-4 pointer-events-none ">
               <MdMail className="opacity-40" size="20" />
@@ -169,7 +169,7 @@ export default function Login() {
             required
             type="password"
             autoComplete="off"
-            className={`border focus:border-cyan-500 rounded bg-white dark:bg-gray-800`}
+            className={`border focus:border-cyan-500 rounded bg-white dark:bg-zinc-800`}
           >
             <div className="absolute z-10 right-4 pointer-events-none ">
               <ImLock className="opacity-40" size="20" />
