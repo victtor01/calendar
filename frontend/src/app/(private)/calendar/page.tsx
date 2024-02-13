@@ -62,23 +62,25 @@ const useCalendar = () => {
       end: dateEnd,
     };
 
-    const res = api
+    const response = api
       .put(`/events/update/${updatedEvent.id}`, updatedData)
       .catch((err) => console.log(err));
 
-    await toast.promise(res, {
+    const { code } = updatedData;
+
+    await toast.promise(response, {
       pending: "Salvando alterações",
       success: "Salvo com sucesso!",
       error: "Houve um erro! Tente novamente mais tarde! ",
     });
+    const updates = await Promise.all([
+      queryClient.setQueryData(["event", code], (prevData: any) => {
+        if (prevData) return updatedData;
+      }),
+      queryClient.invalidateQueries(["events", "events-week"]),
+    ]);
 
-    const { code } = updatedData;
-
-    queryClient.setQueryData(["event", code], (prevData: any) => {
-      if (prevData) return updatedData;
-    });
-
-    queryClient.setQueryData(["events"], (prevData: any) => {
+    const res = queryClient.setQueryData(["events"], (prevData: any) => {
       if (prevData) {
         return prevData.map((event: any) =>
           event.id === updatedEvent.id ? updatedData : event
@@ -87,8 +89,6 @@ const useCalendar = () => {
         return prevData;
       }
     });
-
-    queryClient.invalidateQueries(["events-week"]);
   }
 
   function openModalAddEvent(event: any) {
@@ -146,19 +146,14 @@ export default function Calendar() {
 
   return (
     <>
-      <motion.main
-        variants={variants}
-        initial="pageInitial"
-        animate="pageAnimate"
-        className="py-2 flex gap-[1rem] mx-auto flex-col w-full max-w-[110rem] h-full relative"
-      >
+      <div className="flex gap-[1rem] mx-auto flex-col w-full max-w-[110rem] h-full relative">
         <div className="flex flex-col flex-1">
-          <S.Content className="gap-4 flex flex-col mx-auto">
+          <S.Content className="flex flex-col mx-auto">
             <S.Calendar
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="flex flex-1 gap-2 p-4 z-[2] relative bg-white border dark:border-zinc-900  dark:bg-zinc-900 dark:shadow-black shadow-zinc-300 mb-4"
+              className="flex flex-1 gap-0 p-1 z-[2] relative bg-white dark:bg-neutral-950 dark:shadow-black shadow-zinc-300 "
             >
               <div className="col-span-8 max-h-auto w-full">
                 <FullCalendar
@@ -180,6 +175,7 @@ export default function Calendar() {
                   }
                   nowIndicator={true}
                   editable={true}
+                  themeSystem="flaty"
                   droppable={true}
                   selectable={true}
                   selectMirror={true}
@@ -193,7 +189,7 @@ export default function Calendar() {
             </S.Calendar>
           </S.Content>
         </div>
-      </motion.main>
+      </div>
       <AnimatePresence>
         {selectedDay?.start && (
           <AddClient

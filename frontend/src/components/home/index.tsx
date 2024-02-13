@@ -1,30 +1,29 @@
-import DashboardComponent from '../dashboardComponent';
+import DashboardComponent from "../dashboardComponent";
 
 // finance of registers
-import { Registers } from './registers';
+import { Registers } from "./registers";
 
 //last registers
-import { ResumeFinance } from './resume-income';
+import { ResumeFinance } from "./resume-income";
 
 //quantity of services
-import { NewServices } from './services';
+import { NewServices } from "./services";
 
 //income and expense
-import { Finance } from './finance';
+import { Finance } from "./finance";
 
 // clientes in month (graphic)
-import { ClientsMonth } from './clients-month';
+import { ClientsMonth } from "./clients-month";
 
 // quantity of clientes
-import { NewClients } from './clients';
+import { NewClients } from "./clients";
 
 //top clientes
-import { TopClients } from './topClients';
+import { TopClients } from "./top-clients";
 
 //quantity of events in month
-import Events from './events';
-import * as S from './style';
-
+import Events from "./events";
+import * as S from "./style";
 
 export default function ComponentsHome() {
   return (
@@ -33,7 +32,7 @@ export default function ComponentsHome() {
         <DashboardComponent
           key={"resume-registers"}
           transition={{ delay: 0.2 }}
-          className=" w-auto min-h-[10rem] bg-gradient-45 from-purple-600 to-blue-600 dark:from-purple-700 dark:to-blue-700 text-white"
+          className=" w-auto min-h-[10rem] bg-gradient-45 from-neutral-900 to-zinc-950 dark:from-neutral-950 dark:to-zinc-950 text-white"
         >
           <S.Bubble $top={"-40%"} />
           <ResumeFinance />
@@ -99,7 +98,7 @@ export default function ComponentsHome() {
           <ClientsMonth />
         </DashboardComponent>
       </S.Component>
-      <S.Component>
+      <div className="grid w-full grid-cols-1 gap-3">
         <DashboardComponent
           key={"component2"}
           transition={{ delay: 0.6 }}
@@ -108,15 +107,7 @@ export default function ComponentsHome() {
           <S.Bubble $top="60%" />
           <TopClients />
         </DashboardComponent>
-        <DashboardComponent
-          key={"component3"}
-          transition={{ delay: 0.8 }}
-          className="w-auto min-h-[20rem] "
-        >
-          <S.Bubble $top="60%" />
-          <TopClients />
-        </DashboardComponent>
-      </S.Component>
+      </div>
     </>
   );
 }

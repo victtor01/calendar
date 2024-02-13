@@ -10,7 +10,6 @@ import { Line, LineChart, ResponsiveContainer } from "recharts";
 function useIncome() {
   const api = useApiPrivate();
 
-  // get date and hour
   const start = moment().subtract(30, "days").format("MM-DD-YYYY");
   const end = moment().format("MM-DD-YYYY");
 
@@ -26,7 +25,9 @@ function useIncome() {
 
 export function Income() {
   const { registers } = useIncome();
+
   const incomes = registers?.filter((register) => register.type === "INCOME");
+  
   const incomesToDay = incomes
     ?.filter((register) => {
       return (
@@ -40,7 +41,7 @@ export function Income() {
     }, 0);
 
   return (
-    <div className="flex flex-col relative gap-3 overflow-hidden w-full h-[10rem] bg-gradient-45 from-zinc-900 to-zinc-950 rounded-xl hover:shadow-xl">
+    <div className="flex flex-col relative gap-3 overflow-hidden w-full h-[10rem] bg-gradient-45 from-neutral-950 border dark:border-zinc-800 to-zinc-950 rounded-xl hover:shadow-xl">
       <ResponsiveContainer width="100%" height="80%">
         <LineChart width={500} height={300} data={incomes} margin={{ top: 20, bottom: 20 }}>
           <Line

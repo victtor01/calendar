@@ -58,7 +58,7 @@ export default function Accounts() {
     <S.Container
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-3 m-auto border dark:border-zinc-800 rounded w-[100%] max-w-[50rem] flex flex-col gap-2"
+      className="p-3 border dark:border-zinc-800 rounded w-[100%] flex flex-col gap-2"
     >
       <header
         className={`${fontOpenSans} overflow-auto flex items-center justify-between gap-2`}
@@ -71,7 +71,7 @@ export default function Accounts() {
         </Link>
         <Link
           href={"/finance/accounts/create/"}
-          className="bg-gradient-45 from-purple-500 to-blue-500 flex items-center gap-3 text-white p-2 px-3  rounded opacity-90 hover:opacity-100 "
+          className="bg-gradient-45 from-indigo-600 to-blue-500 flex items-center gap-3 text-white p-3 px-4  rounded opacity-90 hover:opacity-100 "
         >
           <IoMdAdd />
           Criar nova conta

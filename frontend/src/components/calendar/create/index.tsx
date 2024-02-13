@@ -68,7 +68,11 @@ const createEventsFormSchema = z
     }
   );
 
-function useAddEvent() {
+function useAddEvent({
+  setSelectedDay,
+}: {
+  setSelectedDay: Dispatch<SetStateAction<{ start: Date; end: Date } | null>>;
+}) {
   const {
     control,
     register,
@@ -92,20 +96,30 @@ function useAddEvent() {
   async function addEvent(data: CreateEventsFormData) {
     const { start, end, ...rest } = data;
 
-    const res = api.post("/events/create", {
-      ...rest,
-      start: new Date(data.start),
-      end: new Date(data.end),
-    });
+    try {
+      const res = api.post("/events/create", {
+        ...rest,
+        start: new Date(data.start),
+        end: new Date(data.end),
+      });
 
-    await toast.promise(res, {
-      pending: "Salvando alterações",
-      success: "Salvo com sucesso!",
-      error: "Houve um erro! Tente novamente mais tarde! ",
-    });
+      await toast.promise(res, {
+        pending: "Salvando alterações",
+        success: "Salvo com sucesso!",
+        error: "Houve um erro! Tente novamente mais tarde! ",
+      });
 
-    await queryClient.invalidateQueries(["events"]);
-    await queryClient.invalidateQueries(["events", "events-week"]);
+      await Promise.all([
+        queryClient.invalidateQueries(["events"]),
+        queryClient.invalidateQueries(["events", "events-week"]),
+      ]);
+      
+    } catch (error) {
+      /* case error */
+      toast.error("Houve um erro, tente novamente mais tarde!");
+    } finally {
+      setSelectedDay(null);
+    }
   }
 
   return {
@@ -148,7 +162,7 @@ export default function AddClient(props: AddClientProps) {
       control,
       register,
     },
-  } = useAddEvent();
+  } = useAddEvent({ setSelectedDay });
 
   if (isLoading) {
     return (
@@ -159,7 +173,7 @@ export default function AddClient(props: AddClientProps) {
   }
 
   return (
-    <Modal className="p-8 dark:bg-zinc-900">
+    <Modal className="p-8 dark:bg-zinc-900 text-zinc-800 dark:text-white">
       <form onSubmit={handleSubmit(addEvent)}>
         <header className="flex items-center justify-between p-2">
           <div className="font-semibold capitalize text-lg">
@@ -414,9 +428,6 @@ export default function AddClient(props: AddClientProps) {
         <footer className=" py-2 border-zinc-200 dark:border-zinc-700  mt-2">
           <button
             className="p-2 px-3 opacity-90 hover:opacity-100 rounded bg-gradient-45 from-purple-600 to-blue-600 "
-            onClick={() => {
-              setSelectedDay(null);
-            }}
             type="submit"
           >
             <span className="font-semibold text-lg text-white">Pronto!</span>

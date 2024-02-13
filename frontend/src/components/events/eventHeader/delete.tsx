@@ -49,12 +49,12 @@ export function Delete({ event }: { event: Event }) {
 
   return (
     <>
-      <Button
+      <button
         onClick={handleShowModalDelete}
-        className="flex opacity-60 hover:bg-zinc-500  hover:bg-opacity-20 items-center justify-center rounded-full w-10 h-10"
+        className="flex opacity-90 bg-zinc-50 hover:bg-zinc-900 p-3 rounded hover:text-white items-center justify-center  w-10 h-10"
       >
-        <FiTrash size="20" />
-      </Button>
+        <FiTrash size="22" />
+      </button>
       {showModalDelete && (
         <Modal className="gap-7 flex flex-col max-w-[30rem] p-5">
           <header className="w-full flex items-center  justify-between gap-3">

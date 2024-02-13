@@ -66,8 +66,9 @@ export default function Home() {
                 onClick={() => setShowModalFilter(true)}
                 layoutId={"filter"}
                 whileTap={{ scale: 0.9, transition: { type: "spring" } }}
-                className="bg-indigo-600 text-white z-[3] flex gap-2 items-center rounded p-3"
+                className="bg-indigo-600 text-white z-[3] px-5 flex gap-2 items-center rounded p-3"
               >
+                Filtrar
                 <FaFilter />
               </motion.button>
               {showModalFilter && (
@@ -87,7 +88,7 @@ export default function Home() {
                     </button>
                   </motion.div>
                   <section>
-                    <Building/>
+                    <Building />
                   </section>
                 </Modal>
               )}

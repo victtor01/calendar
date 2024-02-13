@@ -18,115 +18,10 @@ import {
 import { useClients as useClientsHook } from "@/hooks/useClients";
 import { IoMdAdd } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
-import { FaAngleRight, FaPhoneSquareAlt } from "react-icons/fa";
-import { MdAccessTime, MdEmail, MdFilterList } from "react-icons/md";
 import moment from "moment-timezone";
 import * as S from "./style";
-import { fontOpenSans, fontValela } from "@/app/fonts";
-import Image from "next/image";
-import { Server } from "@/constants/server";
+import { ClientComponent } from "./client-component";
 import { Clients as Client } from "@/types/clients";
-
-moment.locale("pt-br");
-
-const ClientComponent = ({ item, index }: { item: Client; index: number }) => {
-  const [showDetails, setShowDetails] = useState<boolean>(false);
-
-  const handleShowDetails = () => setShowDetails((prev) => !prev);
-
-  return (
-    <motion.div
-      key={index}
-      initial={{ opacity: 0, y: 9 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index / 4, type: "spring" }}
-      className="flex w-[15rem] h-auto flex-col gap-2"
-    >
-      <Link
-        href={`/clients/${item.code}`}
-        className="w-full h-[10rem] bg-zinc-500 relative bg-opacity-10 overflow-hidden opacity-90 hover:opacity-100"
-      >
-        {item.photo && (
-          <Image
-            className="hover:scale-[1.1] transition-all"
-            src={`${Server}/uploads/clients/${item?.photo}`}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority
-            fill
-            quality={50}
-            style={{ objectFit: "cover" }}
-            alt="Foto do cliente"
-          />
-        )}
-        {!item.photo && (
-          <div className="flex flex-1 w-full h-full justify-center items-center">
-            <span className={`text-lg ${fontOpenSans}`}>Sem foto</span>
-          </div>
-        )}
-      </Link>
-      <div className="relative max-h-[4.4rem] min-h-[4.4rem]">
-        <S.ClientContent
-          initial={{ maxHeight: "4.4rem" }}
-          animate={{ maxHeight: showDetails ? "8.4rem" : "4.6rem" }}
-          transition={{ duration: 1, type: "spring" }}
-          style={{ zIndex: showDetails ? 10 : 1 }}
-          className={
-            "bg-zinc-600 bg-opacity-30 absolute relative p-3 flex flex-col gap-1 overflow-hidden transition-shadow" +
-            ` ${showDetails ? "shadow-2xl" : "shadow-none"}`
-          }
-        >
-          <h2 className={`text-lg font-semibold ${fontValela}`}>
-            {item.firstName}
-          </h2>
-          <button
-            onClick={handleShowDetails}
-            className="absolute opacity-60 right-0 top-1 p-1 flex items-center gap-1"
-          >
-            <span className="text-sm">Detalhes</span>
-            <FaAngleRight
-              size="17"
-              className={`${
-                showDetails ? "rotate-[90deg]" : "rotate-[0deg]"
-              } transition-[transform]`}
-            />
-          </button>
-          <motion.span className="text-md opacity-70 flex items-center gap-1">
-            <MdEmail />
-            {item?.email}
-          </motion.span>
-          <motion.span
-            animate={{
-              opacity: showDetails ? 0.7 : 0,
-              y: showDetails ? 0 : 10,
-            }}
-            transition={{
-              delay: showDetails ? 0 : 0.2,
-            }}
-            className="text-md opacity-70 flex items-center gap-1"
-          >
-            <FaPhoneSquareAlt />
-            <span>{item.phone}</span>
-          </motion.span>
-          <motion.span
-            animate={{
-              opacity: showDetails ? 0.7 : 0,
-              y: showDetails ? 0 : 10,
-            }}
-            transition={{
-              delay: showDetails ? 0.2 : 0,
-            }}
-            className="text-md opacity-70 flex items-center gap-1"
-          >
-            <MdAccessTime />
-            <span>
-              {moment(item.createdAt).format("ddd,  DD [de] MMM [de] YYYY")}
-            </span>
-          </motion.span>
-        </S.ClientContent>
-      </div>
-    </motion.div>
-  );
-};
 
 const useClients = () => {
   const [itemDelete, setItemDelete] = useState<Client | null>(null);
@@ -176,25 +71,26 @@ export default function Clients() {
           <div className="flex items-center gap-3">
             <Link
               href="/clients/create"
-              className="bg-gradient-45 from-purple-500 to-cyan-400 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
+              className="bg-indigo-600 shadow flex items-center gap-3 text-gray-200 font-semibold hover:translate-y-[-0.4rem] transition-transform p-3 px-4 opacity-90 hover:opacity-100"
             >
-              <IoMdAdd />
+              <IoMdAdd size="20" />
               Criar
-            </Link>
-            <Link
-              href="/clients/create"
-              className="bg-gradient-45 from-cyan-500 to-blue-400 flex items-center gap-3 text-white p-3 px-4 opacity-70 hover:opacity-100 rounded-md"
-            >
-              <MdFilterList />
-              Filtrar
             </Link>
           </div>
         </div>
         <div className="flex gap-3 items-center w-auto backdrop-blur-md">
-          <input className="focus:shadow rounded-lg w-full outline-none p-1 transition-shadow border-none p-3 bg-zinc-400 bg-opacity-10" />
-          <button className="w-[4rem] h-[3rem] rounded-md opacity-70 hover:opacity-80 bg-cyan-400 items-center justify-center flex">
-            <GoSearch size="20" className="text-white" />
-          </button>
+          <label
+            htmlFor="search"
+            className="bg-white flex border dark:border-zinc-600 rounded overflow-hidden"
+          >
+            <input
+              placeholder="Pesquise por cliente..."
+              className="w-full outline-none border-none p-3 dark:bg-zinc-900"
+            />
+            <button className="w-[4rem] h-[3rem] opacity-90 hover:opacity-100 bg-indigo-600 items-center justify-center flex">
+              <GoSearch size="20" className="text-white" />
+            </button>
+          </label>
         </div>
       </motion.div>
 

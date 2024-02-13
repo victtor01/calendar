@@ -1,17 +1,18 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
 import useApiPrivate from "@/hooks/apiPrivate";
 import { useQuery } from "@tanstack/react-query";
-import RegistersComponent from "@/components/registers";
+import RegistersComponent from "./all-registers";
 import { useState } from "react";
 import moment from "moment-timezone";
 import { AnimatePresence, motion } from "framer-motion";
 import * as S from "./style";
 import SkeletonRegister from "@/components/registerSkeleton";
-import Pagination from "@/components/pagination";
 import { MdFilterList } from "react-icons/md";
 import { GoSearch } from "react-icons/go";
+import styles from "./finance.module.css";
 
 export type RegisterType = "INCOME" | "EXPENSE";
 
@@ -66,8 +67,7 @@ export default function Registers() {
   const currentPage: number = post ? Number(post) : 1;
 
   //Get all items of hook
-  const { isLoading, data } =
-    useRegisters(currentPage);
+  const { isLoading, data } = useRegisters(currentPage);
 
   // all Registers
   const registers: Register[] = data?.registers || [];
@@ -102,7 +102,8 @@ export default function Registers() {
     moment().diff(labels[0]?.registers[0]?.createdAt, "days") || 0;
 
   return (
-    <div className="whitespace-nowrap w-full  flex-col m-auto flex ">
+    <div className="whitespace-nowrap w-full flex-col m-auto flex p-4 border dark:border-zinc-800 bg-white dark:bg-neutral-950">
+
       <header className="relative flex p-2 items-center justify-between rounded">
         <S.Bubble />
         <div className="z-10">
@@ -113,26 +114,25 @@ export default function Registers() {
             className="flex items-center gap-3"
           >
             <AnimatePresence>
-              <motion.button className="rounded-md items-center p-3 px-4 opacity-70 hover:opacity-100 flex gap-3 bg-cyan-500 text-white">
+              <motion.button className="rounded items-center p-3 px-4 opacity-90 hover:opacity-100 flex gap-3 bg-indigo-600 text-white">
                 <MdFilterList size="20" />
                 <span>Filtrar</span>
               </motion.button>
             </AnimatePresence>
           </motion.div>
         </div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="flex gap-3 items-center w-auto backdrop-blur-md"
-        >
-          <input className="focus:shadow rounded-lg w-full outline-none  transition-shadow border-none p-3 bg-zinc-400 bg-opacity-10" />
-          <button className="w-[4rem] h-[3rem] rounded-md opacity-70 hover:opacity-80 bg-cyan-400 items-center justify-center flex">
-            <GoSearch size="20" className="text-white" />
-          </button>
-        </motion.div>
+        <div className="flex gap-3 items-center w-auto backdrop-blur-md">
+          <label htmlFor="search" className="flex rounded-md overflow-hidden border dark:border-zinc-700">
+            <input placeholder="Pesquise por algum item..." className="focus:shadow w-full outline-none transition-shadow border-none p-3 bg-white dark:bg-zinc-800" />
+            <button className="w-[4rem] h-[3rem] hover:opacity-80 bg-indigo-600 items-center justify-center flex">
+              <GoSearch size="20" className="text-white" />
+            </button>
+          </label>
+        </div>
       </header>
+
       <AnimatePresence>
+
         {!!financeToDay && !isLoading && (
           <motion.div
             key={"modal-attention"}
@@ -153,6 +153,7 @@ export default function Registers() {
             </div>
           </motion.div>
         )}
+
         {!labels?.length && !isLoading && (
           <div className="w-auto rounded-xl shadow-xl m-2 p-6 flex bg-gradient-45 from-purple-600 to-blue-600">
             <div className="text-white flex gap-1">
@@ -165,7 +166,9 @@ export default function Registers() {
             </div>
           </div>
         )}
+
       </AnimatePresence>
+      
       <section className=" flex items-center flex-col p-1 h-auto w-full">
         <div className="w-full  flex flex-col gap-2">
           {isLoading && (
@@ -194,6 +197,7 @@ export default function Registers() {
           )}
         </div>
       </section>
+
     </div>
   );
 }

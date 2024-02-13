@@ -25,18 +25,12 @@ export default function Layout({ children }: layoutProps) {
 
   return (
     <>
-      <motion.header
-        initial={{ opacity: 0, y: -100 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, type: "linear", duration: 0.3 }}
-        className="relative top-0 bg-white dark:bg-zinc-900 mx-auto p-2 rounded-xl dark:bg-opacity-50 flex w-full shadow hover:shadow-md my-3 transition-shadow items-center gap-2 justify-center"
-      >
-        <S.BubbleHeader />
+      <header className="relative top-0 bg-zinc-900 z-20 mx-auto p-2 border border-b-transparent text-white flex w-full transition-shadow items-center gap-2 justify-center dark:border-zinc-800">
         {Object.entries(links).map(([name, value]: any) => {
           const { path, icon: Icon } = value;
           const selected = pathName === path;
           const selectedClass = selected
-            ? "bg-indigo-500 dark:bg-indigo-700 text-white"
+            ? "bg-zinc-700 dark:bg-indigo-700 text-white"
             : "";
 
           return (
@@ -51,7 +45,7 @@ export default function Layout({ children }: layoutProps) {
             </Link>
           );
         })}
-      </motion.header>
+      </header>
       {children}
     </>
   );

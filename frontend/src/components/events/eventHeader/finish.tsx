@@ -34,11 +34,15 @@ function useFinish({ event }: { event: Event }) {
 
     const status: StatusEvent = "CONCLUDED";
 
+    // update event
+
     await api.patch(`/events/update-status/${event.id}`, {
       status,
     });
 
     const { services } = event;
+
+    // create registers in finance
 
     if (services?.length) {
       const allPriceEventsService = services
@@ -56,10 +60,11 @@ function useFinish({ event }: { event: Event }) {
       });
     }
 
-    queryClient.invalidateQueries(["event", event.code]);
+    await queryClient.invalidateQueries(["event", event.code]);
 
-    queryClient.invalidateQueries(["events"]);
+    await queryClient.invalidateQueries(["events"]);
 
+    setSelectedAccount(null);
     setShowModalFinish(false);
   }
 
@@ -90,7 +95,7 @@ function useFinish({ event }: { event: Event }) {
 export default function Finish({ event }: { event: Event }) {
   const {
     finish: { handleShowModalFinish, showModalFinish, finishEvent },
-    accounts: { accounts, loadingAccounts },
+    accounts: { accounts },
     selectedAccount: { setSelectedAccount, selectedAccount },
   } = useFinish({ event });
 
@@ -98,7 +103,7 @@ export default function Finish({ event }: { event: Event }) {
     <>
       <motion.button
         onClick={handleShowModalFinish}
-        className="opacity-90 hover:opacity-100 rounded p-3 items-center font-bold bg-gradient-45 from-purple-500 to-blue-500 text-white"
+        className="opacity-90 hover:opacity-100 rounded p-3 items-center font-bold bg-gradient-45 from-purple-500 to-indigo-500 text-white"
       >
         Finalizar Evento
       </motion.button>
@@ -130,9 +135,9 @@ export default function Finish({ event }: { event: Event }) {
                   {event?.name}
                 </p>
               </Label.Root>
-              <Label.Root className="my-0 gap-0 w-auto min-w-[10rem]">
+              <Label.Root className="my-0 gap-0 w-auto min-w-[10rem] flex-col flex">
                 <span className={`${fontInter} text-sm`}>Descrição</span>
-                <p className="font-semibold opacity-90 text-lg">
+                <p className="font-semibold opacity-90 text-lg overflow-hidden">
                   {event?.description}
                 </p>
               </Label.Root>

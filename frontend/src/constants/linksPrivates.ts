@@ -17,9 +17,9 @@ export const pages: Page[] = [
   { name: "Financeiro", icon: FaCircleDollarToSlot, href: "/finance" },
   { name: "Clientes", icon: GoPersonFill, href: "/clients" },
   { name: "Serviços", icon: RiSuitcaseFill, href: "/services" },
-  { name: "To-do", icon: CiCircleList, href: "/todo" },
 ];
 
+/* { name: "To-do", icon: CiCircleList, href: "/todo" }, */
 /* { name: "Configurar", icon: GoGear, href: "/configurations" }, */
 
 export const otherPages: Page[] = [

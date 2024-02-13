@@ -1,0 +1,13 @@
+.register {
+  position: relative;
+}
+.register::before {
+  content: "";
+  position: absolute;
+  height: 97%;
+  width: 2px;
+  left: -2px;
+  bottom: 0;
+  border-radius: 2px 0 0 2px;
+  @apply bg-gradient-to-b from-indigo-500 to-transparent;
+}/*# sourceMappingURL=finance.module.css.map */

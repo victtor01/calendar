@@ -16,15 +16,6 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment-timezone";
 import { Clients } from "@/types/clients";
 
-const data: any = [];
-for (let i = 1; i < 10; i++) {
-  data.push({
-    id: i,
-    name: `client-${i}`,
-    value: Math.floor(Math.random() * (100 - 5) + 5),
-  });
-}
-
 function useTopClients() {
   const api = useApiPrivate();
 
@@ -45,6 +36,21 @@ function useTopClients() {
   };
 }
 
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white dark:bg-zinc-700 backdrop-blur-xl flex p-3 flex-col shadow-md rounded">
+        <div className={`justify-center items-center `}>{label}</div>
+        <p className="text-gray-700 dark:text-gray-200">
+          valor: {`${convertToRealMoney.format(payload[0].value)}`}
+        </p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
 export function TopClients() {
   const { clients, loadingClients } = useTopClients();
 
@@ -56,8 +62,6 @@ export function TopClients() {
     name: client?.firstName,
     value: client?.events?.length || 0,
   }));
-
-  console.log(clients?.length)
 
   return (
     <div className="flex flex-1 p-2 rounded-md w-[100%] flex-col z-40 backdrop-blur-xl">
@@ -94,7 +98,10 @@ export function TopClients() {
             opacity={0.8}
             tickMargin={10}
           />
-          <Tooltip cursor={{ fill: "transparent" }} />
+          <Tooltip
+            cursor={{ fill: "transparent" }}
+            content={<CustomTooltip />}
+          />
           <Bar dataKey="value" fill="url(#color)" radius={20} />
         </BarChart>
       </ResponsiveContainer>

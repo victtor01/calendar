@@ -138,6 +138,7 @@ export default function Services() {
               <Register.Root
                 layout
                 key={index}
+                className="bg-white dark:bg-zinc-800"
                 transition={{ delay: index / 10, type: "spring" }}
               >
                 <Register.Compartiment>

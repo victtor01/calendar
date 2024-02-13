@@ -1,11 +1,52 @@
+"use client";
+
+import { Server } from "@/constants/server";
+import { useSessionContext } from "@/contexts/sessionContext";
+import Image from "next/image";
+
 export default function Configurations() {
+  const {
+    userInfo: { photo, firstName },
+  } = useSessionContext();
+
   return (
     <main className="m-auto w-full flex-col flex gap-5">
-      <div className="flex flex-col bg-white dark:bg-zinc-800 shadow-md">
+      <div className="flex flex-col bg-white dark:bg-zinc-900 dark:shadow-black shadow-md">
         <header className="flex w-full justify-between bg-indigo-600 text-white">
           <div className="p-3 font-semibold">Configurações da conta.</div>
         </header>
-        <div className="p-4"></div>
+        <div className="p-2 flex flex-col">
+          <div className="w-full p-2 ">
+            <h1 className="capitalize font-semibold text-gray-600 text-lg">
+              {" "}
+              Informações do usuário.{" "}
+            </h1>
+          </div>
+          <div className="flex flex-col px-2 gap-3">
+
+            <div className="bg-gradient-45 border-2 border-zinc-600 shadow-inner from-purple-600 to-blue-600 w-[6rem] h-[6rem] relative overflow-hidden opacity-90">
+              <Image
+                src={`${Server}/uploads/${photo}`}
+                sizes="(max-width: 6rem) 6rem, 1200px"
+                fill
+                quality={100}
+                style={{ objectFit: "cover" }}
+                alt="Foto do usuario"
+              />
+            </div>
+
+            <div className="flex flex-col flex-1">
+              <label htmlFor="" className="flex flex-col">
+                <span className="text-gray-600 dark:text-gray-100 font-semibold">
+                  Nome:
+                </span>
+                <div className="flex text-lg text-bold text-gray-700 dark:text-white font-bold">
+                  {firstName}
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-col bg-white dark:bg-zinc-800 shadow-md">

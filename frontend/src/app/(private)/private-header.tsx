@@ -8,6 +8,7 @@ import { BsFillMoonStarsFill } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
 import { IoMdExit } from "react-icons/io";
 import { TbSunFilled } from "react-icons/tb";
+import { fontInter } from "../fonts";
 
 const HeaderPrivate = () => {
   const { theme, handleTheme } = useContext(ThemeContext);
@@ -17,33 +18,24 @@ const HeaderPrivate = () => {
 
   return (
     <header
-      className="p-2 shadow justify-between flex pr-4 h-auto z-30 bg-zinc-50 text-black dark:bg-zinc-900 dark:text-gray-100 items-center"
+      className="p-2 justify-between flex h-auto bg-zinc-950 dark:border-zinc-800 border-b shadow-md text-white items-center z-40"
       style={{ gridArea: "header" }}
     >
       <div className="flex gap-3">
-        <label
-          htmlFor="search"
-          className="flex border rounded-md overflow-hidden dark:border-zinc-800"
-        >
-          <button className="p-3">
-            <FaSearch />
-          </button>
-          <input
-            type="text"
-            className="bg-zinc-100 dark:bg-zinc-800 outline-none px-3"
-          />
-        </label>
+        <div className="text-white font-semibold text-gray-100">
+          <span className={fontInter}>NOME EMPRESA</span>
+        </div>
       </div>
-      <div className="flex gap-2 ">
+      <div className="flex gap-2 text-gray-200">
         <button
           onClick={handleTheme}
-          className="p-3 rounded-lg hover:bg-zinc-100  hover:dark:bg-zinc-700"
+          className="p-3 rounded-lg hover:bg-zinc-100 hover:bg-opacity-10"
         >
           <IconTheme size="18" />
         </button>
         <button
           onClick={logout}
-          className="p-3 rounded-lg hover:bg-zinc-100  hover:dark:bg-zinc-700"
+          className="p-3 rounded-lg hover:bg-zinc-100 hover:bg-opacity-10"
         >
           <BiSolidExit size="20" />
         </button>

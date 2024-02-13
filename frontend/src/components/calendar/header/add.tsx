@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { IoAddSharp } from "react-icons/io5";
 import AddClient from "../create";
@@ -18,7 +20,7 @@ export default function Add() {
             end: new Date(),
           });
         }}
-        className={`h-12 w-auto px-4 gap-2 rounded-md text-md font-semibold capitalize flex justify-center transition-background items-center opacity-100 relative hover:bg-zinc-100 hover:dark:bg-zinc-800`}
+        className={`h-12 w-auto px-4 gap-2 text-md font-semibold capitalize flex justify-center transition-background items-center opacity-80 hover:opacity-100  relative hover:bg-zinc-800`}
       >
         <IoAddSharp size="20" />
         Criar

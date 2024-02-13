@@ -132,22 +132,22 @@ body {
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-  @apply bg-cyan-500 bg-opacity-30;
+  @apply bg-blue-50 dark:bg-zinc-800;
 }
 
 .fc .fc-button {
-  @apply bg-cyan-800 hover:bg-cyan-900;
+  @apply bg-zinc-700 hover:bg-cyan-900;
 }
 
 .fc .fc-button-primary:not(:disabled).fc-button-active {
-  @apply bg-cyan-600;
+  @apply bg-zinc-600;
 }
 
 .fc .fc-button-primary:disabled {
-  @apply bg-cyan-600;
+  @apply bg-zinc-600;
 }
 .fc-v-event {
-  @apply bg-cyan-500 border-none;
+  @apply bg-zinc-500 border-none;
 }
 
 .scroll-none::-webkit-scrollbar {

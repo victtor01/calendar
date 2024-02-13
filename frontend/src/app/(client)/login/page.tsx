@@ -169,7 +169,7 @@ export default function Login() {
             required
             type="password"
             autoComplete="off"
-            className={`border focus:border-cyan-500 rounded bg-white dark:bg-zinc-800`}
+            className={`border border-zinc-200 focus:border-cyan-500 rounded bg-white dark:bg-zinc-800 `}
           >
             <div className="absolute z-10 right-4 pointer-events-none ">
               <ImLock className="opacity-40" size="20" />

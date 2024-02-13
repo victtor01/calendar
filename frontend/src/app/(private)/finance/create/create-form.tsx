@@ -329,7 +329,7 @@ export const Create = () => {
       <motion.button
         whileTap={{ scale: 0.97 }}
         type="submit"
-        className="z-2 text-white font-semibold text-lg bg-gradient-45 from-purple-500 to-blue-500 w-full mt-4 py-4 rounded"
+        className="z-2 text-white font-semibold text-lg bg-gradient-45 from-indigo-600 to-blue-500 w-full mt-4 py-4 rounded"
       >
         {isSubmitting ? <Spinner /> : "Enviar"}
       </motion.button>

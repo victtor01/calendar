@@ -33,7 +33,7 @@ function useWeek() {
       return (await api.get("/events/find/week")).data;
     },
   });
-  const [itemsForDelete, setItemsForDelete] = useState<number[] | null>(null);
+  const [itemsForDelete] = useState<number[] | null>(null);
   const [showModalDeleteItems, setShowModalDeleteItems] =
     useState<boolean>(false);
 
@@ -134,33 +134,27 @@ export default function Week() {
   })();
 
   return (
-    <div className="flex flex-col w-full p-2 items-center gap-3 mt-0">
+    <div className="flex flex-col w-full p-2 items-center gap-3 mt-0 bg-white dark:bg-zinc-950">
       <header className="w-full flex min-h-[3rem] rounded justify-between items-center">
-        <Link
-          href={"/calendar"}
-          className="flex items-center gap-3 opacity-50 hover:opacity-90"
-        >
-          <BsArrowLeft />
-          <h1 className={`text-lg ${fontInter}`}>Calendário</h1>
-        </Link>
+        <div></div>
         <div className="flex gap-2">
-          <button onClick={() => scroll().left()}>
+          <button onClick={() => scroll().left()} className="p-2 bg-zinc-50 dark:bg-zinc-700 rounded-full hover:shadow">
             <FaAngleLeft size="25" />
           </button>
-          <button onClick={() => scroll().right()}>
+          <button onClick={() => scroll().right()} className="p-2 bg-zinc-50 dark:bg-zinc-700 rounded-full hover:shadow">
             <FaAngleRight size="25" />
           </button>
         </div>
       </header>
       <div
         id="scroll-component"
-        className="flex overflow-x-scroll snap-x scroll-none scroll-smooth min-h-[40rem] h-auto gap-2 w-full max-w-[160rem]"
+        className="flex overflow-x-scroll snap-x scroll-none scroll-smooth min-h-[40rem] h-auto gap-2 w-full max-w-[160rem] bg-white dark:bg-zinc-950 rounded-xl"
       >
         {eventsGroups &&
           Object.entries(eventsGroups)?.map(([date, value], index: number) => (
-            <S.ThemeComponent
+            <div
               key={index}
-              className={`bg-zinc-400 gap-3 w-full bg-opacity-10 min-w-[20rem] mx-auto p-3 rounded-xl opacity-80 transition-opacity hover:opacity-100`}
+              className={`bg-gradient-to-b from-gray-100 to-transparent dark:from-zinc-800 gap-3 w-full min-w-[20rem] mx-auto p-3 rounded-xl opacity-80 transition-opacity hover:opacity-100`}
             >
               <header className="py-3 font-semibold text-lg flex justify-between">
                 {moment(date, "DD/MM/YYYY").format("DD/MM") ===
@@ -183,7 +177,7 @@ export default function Week() {
                     >
                       <header className="flex justify-between w-auto items-center w-full">
                         <span
-                          className={`font-semibold opacity-80 font-semibold ${fontOpenSans}`}
+                          className={`font-semibold opacity-80 ${fontOpenSans}`}
                         >
                           {event.name}
                         </span>
@@ -201,7 +195,7 @@ export default function Week() {
                       <section
                         className={`flex flex-col w-full items-start gap-2 ${fontRoboto}`}
                       >
-                        <div className="p-2 bg-zinc-500 bg-opacity-5 shadow-inner w-full text-left items-start">
+                        <div className="p-2 bg-zinc-500 overflow-hidden bg-opacity-5 shadow-inner w-full text-left items-start">
                           {event?.description || "Nenhum descrição"}
                         </div>
                         <div
@@ -267,7 +261,7 @@ export default function Week() {
                   );
                 })}
               </section>
-            </S.ThemeComponent>
+            </div>
           ))}
       </div>
       <Modal

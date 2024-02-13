@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLMotionProps, motion } from "framer-motion";
+import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import * as S from "./style";
 

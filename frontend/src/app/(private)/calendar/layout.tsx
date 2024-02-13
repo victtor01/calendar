@@ -7,9 +7,9 @@ export default function Layout({
 }) {
 
   return (
-    <>
+    <main className="flex w-full flex-col border dark:border-zinc-700 bg-white">
       <Header />
       {children}
-    </>
+    </main>
   );
 }

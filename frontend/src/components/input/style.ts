@@ -34,7 +34,6 @@ export const Input = styled.div`
     z-index: 1;
     padding: 0rem 0.2rem 0 1rem;
     align-items: center;
-    border: none;
     outline: none;
     transition: 0.2s;
     font-weight: 600;

@@ -43,7 +43,7 @@ export default function Details({ params: { code } }: DetailsProps) {
   if (!event) {
     return (
       <div className="p-10 font-semibold opacity-60 flex gap-3 items-center ">
-        Nenhum evento,
+        Nenhum evento encontrado,
         <Link href={"/calendar/"} className="bg-purple-600 p-2 rounded text-white">
           Voltar
         </Link>
@@ -52,7 +52,7 @@ export default function Details({ params: { code } }: DetailsProps) {
   }
 
   return (
-    <main className="flex bg-transparent  relative w-full mx-auto mt-0 flex-col pb-5 gap-2 rounded-md">
+    <main className="flex bg-transparent relative w-full mx-auto mt-0 flex-col pb-5 gap-2 rounded-md">
       <header className="flex justify-between gap-3 rounded items-center">
         <div className="flex flex-1">
           <Link
@@ -62,8 +62,6 @@ export default function Details({ params: { code } }: DetailsProps) {
             <IoClose size="24" />
           </Link>
         </div>
-
-
         <EventHeader event={event} />
       </header>
       <div className="w-full overflow-auto h-auto pt-3 gap-3 flex relative justify-between flex-wrap">
