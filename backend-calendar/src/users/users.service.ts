@@ -58,13 +58,13 @@ export class UsersService {
 
     if (codeExists?.id) {
       // verify hour
-      const diffInMinutes = differenceInMinutes(
+       const diffInMinutes = differenceInMinutes(
         new Date(),
         new Date(codeExists.createdAt),
       );
 
       // if the difference is greater than 5 minutes
-
+      
       if (diffInMinutes < 5) {
         return new BadRequestException({
           message: 'Espere um pouco antes de pedir o código novamente!',
@@ -91,9 +91,11 @@ export class UsersService {
       const sendEmail: boolean = await this.emailService.sendEmail({
         to: userExists.email,
         subject: 'Código de confirmação.',
-        text: `
-        ${code.toString()}
-        `,
+        html: `
+        <p>Olá,</p>
+        <p>Para redefinir sua senha, clique no link abaixo:</p>
+        <a href="http://localhost:3000/redefine-password/${code}">redefinir senha</a>
+      `,
       });
 
       return {

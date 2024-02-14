@@ -5,8 +5,6 @@ import { ThemeContext } from "@/contexts/themeContext";
 import { useContext } from "react";
 import { BiSolidExit } from "react-icons/bi";
 import { BsFillMoonStarsFill } from "react-icons/bs";
-import { FaSearch } from "react-icons/fa";
-import { IoMdExit } from "react-icons/io";
 import { TbSunFilled } from "react-icons/tb";
 import { fontInter } from "../fonts";
 
@@ -18,24 +16,24 @@ const HeaderPrivate = () => {
 
   return (
     <header
-      className="p-2 justify-between flex h-auto bg-zinc-950 dark:border-zinc-800 border-b shadow-md text-white items-center z-40"
+      className="p-2 justify-between flex h-auto bg-white dark:bg-zinc-950 dark:border-zinc-800 border-b shadow text-gray-600 dark:text-gray-100 items-center z-40"
       style={{ gridArea: "header" }}
     >
       <div className="flex gap-3">
-        <div className="text-white font-semibold text-gray-100">
+        <div className="font-semibold text-sm px-3">
           <span className={fontInter}>NOME EMPRESA</span>
         </div>
       </div>
-      <div className="flex gap-2 text-gray-200">
-        <button
+      <div className="flex gap-2">
+        <button 
           onClick={handleTheme}
-          className="p-3 rounded-lg hover:bg-zinc-100 hover:bg-opacity-10"
+          className="p-2 rounded-lg hover:bg-zinc-100 hover:bg-opacity-10"
         >
           <IconTheme size="18" />
         </button>
         <button
           onClick={logout}
-          className="p-3 rounded-lg hover:bg-zinc-100 hover:bg-opacity-10"
+          className="p-2 rounded-lg hover:bg-zinc-100 hover:bg-opacity-10"
         >
           <BiSolidExit size="20" />
         </button>

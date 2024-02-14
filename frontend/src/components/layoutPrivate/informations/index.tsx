@@ -95,11 +95,11 @@ export default function Information() {
   return (
     <div
       style={{ gridArea: "user" }}
-      className="bg-transparent flex h-auto overflow-auto dark:bg-zinc-950 dark:border-zinc-800 border-l flex-col gap-1 w-[18rem] z-10 bg-white "
+      className="bg-transparent flex h-auto m-2 rounded-md shadow-md dark:shadow-black overflow-auto dark:bg-zinc-950 flex-col gap-1 w-[18rem] z-10 bg-white "
     >
       <div className="flex flex-col gap-2 p-3">
         <header className="flex justify-between gap-20">
-          <div className="bg-gradient-45 border-2 border-zinc-600 shadow-inner from-purple-600 to-blue-600 w-14 h-14 relative rounded-full overflow-hidden opacity-90">
+          <div className="bg-gradient-45 border-1 border-zinc-600 shadow-inner from-purple-600 to-blue-600 w-14 h-14 relative rounded-3xl overflow-hidden opacity-90">
             <Image
               src={`${Server}/uploads/${userInfo.photo}`}
               sizes="(max-width: 2rem) 2rem, 1200px"

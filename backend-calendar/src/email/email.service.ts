@@ -16,18 +16,22 @@ export class EmailService {
         user: 'josevictot.ar@gmail.com',
         pass: 'tmxpeqzeaqbsuswx',
       },
+      headers: {
+        'Content-Type': 'text/html',
+      },
       tls: {
         rejectUnauthorized: false,
       },
     });
   }
 
-  async sendEmail({ to, subject, text }: SendEmailDto): Promise<boolean> {
+  async sendEmail({ to, subject, text, html}: SendEmailDto): Promise<boolean> {
     const mailOptions = {
       from: 'josevictot.ar@gmail.com',
       to,
       subject,
       text,
+      html,
     };
 
     try {

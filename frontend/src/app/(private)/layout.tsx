@@ -82,7 +82,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <PrivateRoute>
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         <ThemeContext.Provider value={{ theme, handleTheme }}>
-          <S.Container className="bg-gray-50 dark:bg-gradient-45 from-zinc-950 via-zinc-900 to-zinc-950">
+          <S.Container className="bg-gray-50 dark:bg-gradient-45 from-gray-900 via-zinc-900 to-zinc-950">
 
             <SidebarRelative />
 

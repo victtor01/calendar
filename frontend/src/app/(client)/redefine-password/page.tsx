@@ -22,31 +22,39 @@ const useRedefinePassword = () => {
 
     // request of send email
 
-    const { data } =
-      (await api.post("/users/send-email-redefine-password", {
+    try {
+      const response = api.post("/users/send-email-redefine-password", {
         email,
-      })) || null;
+      });
 
-    // if error
+      // if error
+      const data = await (await toast.promise(response, {
+        pending: "Enviando email...",
+        error: "Houve um erro, tente novamente mais tarde!",
+        success: "Email enviado com sucesso!",
+      })).data || null;
 
-    if (!data?.message || data.error) {
-      if (data?.message) {
-        toast.error(data.message);
+      if (!data?.message || data.error) {
+        if (data?.message) {
+          toast.error(data.message);
+          return;
+        }
+        toast.error("Houve um erro, tente novamente mais tarde!");
+      }
+
+      if (data?.error && data?.error === false) {
+        toast.success("Email de recupareção enviado com sucesso!");
         return;
       }
-      toast.error("Houve um erro, tente novamente mais tarde!");
+    } catch (error) {
+      toast.error(
+        "Houve um erro, verifique o campo email e tente novamente mais tarde!"
+      );
+    } finally {
+      router.push("/login");
     }
-
-    if (data?.error && data?.error === false) {
-      toast.success("Email de recupareção enviado com sucesso!");
-      return;
-    }
-
-    console.log(data);
 
     // redirect
-
-    router.push("/login");
   };
 
   return {
