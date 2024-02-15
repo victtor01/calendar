@@ -17,7 +17,7 @@ const links = {
   add: { path: "/finance/create", icon: IoAdd, name: "Adicionar" },
   registers: { path: "/finance", icon: IoHome, name: "Home" },
   accounts: { path: "/finance/accounts", icon: FaCreditCard, name: "Contas" },
-  reminder: { path: "/finance/list", icon: CiCircleList, name: "Lembrar" },
+/*   reminder: { path: "/finance/list", icon: CiCircleList, name: "Lembrar" }, */
 };
 
 export default function Layout({ children }: layoutProps) {

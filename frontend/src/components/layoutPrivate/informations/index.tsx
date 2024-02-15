@@ -80,7 +80,7 @@ export default function Information() {
     return (
       <div
         style={{ gridArea: "user" }}
-        className="w-[2rem] border-l h-full bg-blue-50 dark:bg-zinc-900 dark:border-zinc-700 relative"
+        className="w-[2rem] shadow h-auto rounded bg-white m-2 dark:bg-zinc-900 dark:border-zinc-700 relative"
       >
         <button
           onClick={() => setInformationOpen((prev) => !prev)}

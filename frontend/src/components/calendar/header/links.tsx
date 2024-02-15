@@ -30,7 +30,7 @@ export const Links = () => {
     const Icon = value.icon;
     const selected = pathName === value.path;
     const selectedClass = selected
-      ? "bg-zinc-700 opacity-100"
+      ? "bg-zinc-700 opacity-100 text-white"
       : "hover:bg-zinc-800 opacity-80 hover:opacity-100";
 
     return (

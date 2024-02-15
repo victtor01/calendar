@@ -16,7 +16,7 @@ export function SidebarRelative() {
     <Sidebar
       bgTheme={false}
       style={{ gridArea: "sidebar" }}
-      className={`w-[4rem] lg:w-[15rem] text-gray-800 shadow-gray-200 m-2 rounded-md shadow-2xl dark:shadow-black dark:border-zinc-800 z-20 dark:text-white bg-white dark:bg-zinc-950  relative items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
+      className={`w-[4rem] lg:w-[15rem] text-gray-800 shadow-gray-400 m-2 rounded-md shadow-md dark:shadow-black dark:from-zinc-900 dark:to-zinc-950 bg-gradient-45 from-zinc-50 to-blue-50 z-20 dark:text-white  relative items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
     >
       <header className="w-full flex dark:border-zinc-800 lg:p-2 items-center lg:mb-0 lg:justify-between relative h-auto pt-0 h-18 justify-center">
         <div
@@ -45,14 +45,14 @@ export function SidebarRelative() {
           {pages.map(({ name, icon: Icon, href }, index: number) => {
             const selected = currentPath === href.substring(1);
             const selectedClass = selected
-              ? "opacity-100 cursor-default text-white bg-gradient-45 from-indigo-600 to-blue-500 text-white"
+              ? "opacity-100 cursor-default text-black dark:text-white translate-x-4 "
               : "opacity-80 cursor-pointer dark:text-gray-200";
 
             return (
               <Link
                 key={index}
                 href={href}
-                className={`${fontOpenSans} ${selectedClass} lg:px-4 flex-nowrap w-ful rounded text-md justify-center relative lg:justify-start flex py-2 items-center gap-4 hover:opacity-100 font-semibold`}
+                className={`${fontOpenSans} ${selectedClass} lg:px-4 flex-nowrap w-full transition-all rounded text-md justify-center relative lg:justify-start flex py-2 items-center gap-4 hover:opacity-100 font-semibold`}
               >
                 {Icon && <Icon size="18" />}
                 <span className="hidden lg:flex">{name}</span>

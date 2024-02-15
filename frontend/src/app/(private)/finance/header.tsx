@@ -1,9 +1,8 @@
-import Link from "next/link";
+
 import * as S from "./style";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdFilterList } from "react-icons/md";
 import { GoSearch } from "react-icons/go";
-
 
 export const Header = () => {
   return (

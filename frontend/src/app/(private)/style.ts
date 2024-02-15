@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 export const Container = styled.main`
   display: grid;
   grid-template-areas:
-    "header header header header header"
+    "sidebar header header header header"
     "sidebar content content content user"
     "sidebar content content content user";
   grid-template-rows: auto 1fr 1fr ;

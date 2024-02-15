@@ -7,7 +7,7 @@ export default function Layout({
 }) {
 
   return (
-    <main className="flex w-full flex-col border dark:border-zinc-700 bg-white">
+    <main className="flex w-full flex-col gap-4">
       <Header />
       {children}
     </main>
