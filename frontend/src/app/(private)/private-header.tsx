@@ -16,7 +16,7 @@ const HeaderPrivate = () => {
 
   return (
     <header
-      className="p-2 justify-between flex h-auto mt-2 mr-2 rounded-md bg-white dark:bg-zinc-950 shadow-md text-gray-600 dark:text-gray-100 items-center z-40"
+      className="p-2 justify-between flex h-auto mt-2 mr-2 rounded-md bg-white dark:bg-zinc-950 shadow text-gray-600 dark:text-gray-100 items-center z-40"
       style={{ gridArea: "header" }}
     >
       <div className="flex gap-3">

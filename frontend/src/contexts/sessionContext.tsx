@@ -20,6 +20,7 @@ interface DataType {
   email: string;
   firstName: string;
   lastName: string;
+  cpf: string;
 }
 
 export const SessionContext = createContext<ContextProps>({

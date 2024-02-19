@@ -16,7 +16,7 @@ export default function DashboardComponent({
     <S.Container
       {...rest}
       className={twMerge(
-        "flex flex-1 bg-white dark:bg-neutral-800 dark:bg-opacity-50 flex-col relative dark:border-none border p-1 ",
+        "flex flex-1 bg-white rounded-xl dark:bg-neutral-800 dark:bg-opacity-50 flex-col relative dark:border-none border p-1 ",
         className
       )}
     >

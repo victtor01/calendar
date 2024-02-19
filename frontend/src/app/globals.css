@@ -2,12 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 90deg;
+  inherits: true;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   --purple: #6157ff;
   --green: #74febd;
+
+  --d: 2500ms;
+  --angle: 90deg;
+  --gradX: 100%;
+  --gradY: 50%;
+  --c1: rgba(168, 239, 255, 1);
+  --c2: rgba(168, 239, 255, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -70,8 +83,7 @@ body {
   @apply border-cyan-600 !important;
 }
 
-
-.fc-timeGridWeek-view  {
+.fc-timeGridWeek-view {
   background: transparent !important;
 }
 
@@ -86,7 +98,10 @@ body {
   @aplly bg-red-700 !important;
 }
 
-.fc-scrollgrid, .fc-scrollgrid-section, .fc-scrollgrid-sync-table td, .fc-scrollgrid-sync-table table{
+.fc-scrollgrid,
+.fc-scrollgrid-section,
+.fc-scrollgrid-sync-table td,
+.fc-scrollgrid-sync-table table {
   @apply border-zinc-500 border-opacity-20 !important;
 }
 
@@ -95,9 +110,8 @@ body {
 } */
 
 .fc-scrollgrid * {
-  @Apply border-none !important;
+  @apply border-none !important;
 }
-
 
 /* Configure header */
 .fc-col-header {
@@ -109,8 +123,8 @@ body {
 
 .fc-dayGridMonth-view {
   /*  @apply bg-zinc-100 border-none bg-opacity-10 !important; */
-   background-color: transparent !important;
- }
+  background-color: transparent !important;
+}
 
 .fc-view-harness {
   background-color: transparent !important;
@@ -171,4 +185,42 @@ body {
 .scroll-none::-webkit-scrollbar-track {
   display: none;
   opacity: 0;
+}
+
+.border-animation-gradient {
+  --border-width: 2px;
+  position: relative;
+  display: flex;
+}
+
+.border-animation-gradient:hover::after {
+  content: "";
+  transition: all 2s;
+  position: absolute;
+  top: calc(-1 * var(--border-width));
+  left: calc(-1 * var(--border-width));
+  z-index: -1;
+  width: calc(100% + var(--border-width) * 2);
+  height: calc(100% + var(--border-width) * 2);
+  background: linear-gradient(
+    60deg,
+    hsl(224, 85%, 66%),
+    hsl(269, 85%, 66%),
+    hsl(314, 85%, 66%),
+    hsl(359, 85%, 66%),
+    hsl(44, 85%, 66%),
+    hsl(89, 85%, 66%),
+    hsl(134, 85%, 66%),
+    hsl(179, 85%, 66%)
+  );
+  background-size: 300% 300%;
+  background-position: 0 50%;
+  border-radius: calc(2 * var(--border-width));
+  animation: moveGradient 4s alternate infinite;
+}
+
+@keyframes moveGradient {
+  50% {
+    background-position: 100% 50%;
+  }
 }

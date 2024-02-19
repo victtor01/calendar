@@ -20,7 +20,7 @@ export default function Add() {
             end: new Date(),
           });
         }}
-        className={`h-12 w-auto px-4 gap-2 text-md font-semibold capitalize flex justify-center transition-background items-center opacity-80 hover:opacity-100  relative hover:bg-zinc-800`}
+        className={`h-12 w-auto px-4 gap-2 text-md font-semibold capitalize rounded-md hover:text-white flex justify-center transition-background items-center opacity-80 hover:opacity-100  relative hover:bg-zinc-800`}
       >
         <IoAddSharp size="20" />
         Criar

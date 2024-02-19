@@ -78,6 +78,7 @@ export default function PrivateRoute({
         firstName: data.firstName,
         lastName: data.lastName,
         photo: data.photo,
+        cpf: data.cpf,
       });
     }
     setLoading(false);

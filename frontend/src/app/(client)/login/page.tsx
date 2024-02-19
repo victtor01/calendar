@@ -194,11 +194,7 @@ export default function Login() {
               Esqueceu sua senha?
             </Link>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.04 }}
-            transition={{ type: "spring", duration: 0.2 }}
-            className="py-3 mt-5 bg-gradient-45 from-purple-600 to-blue-500 w-full text-white text-lg rounded font-semibold"
-          >
+          <motion.button className="opacity-90 hover:opacity-100 py-3 mt-5 bg-gradient-45 from-purple-600 to-blue-500 w-full text-white text-lg rounded font-semibold">
             {isSubmitting ? (
               <Spinner className="w-[1.3rem] h-[1.3rem]" />
             ) : (

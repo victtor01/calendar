@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Configurations() {
   const {
-    userInfo: { photo, firstName },
+    userInfo: { photo, firstName, email, cpf },
   } = useSessionContext();
 
   return (
@@ -22,29 +22,46 @@ export default function Configurations() {
               Informações do usuário.{" "}
             </h1>
           </div>
-          <div className="flex flex-col px-2 gap-3">
-
-            <div className="bg-gradient-45 border-2 border-zinc-600 shadow-inner from-purple-600 to-blue-600 w-[6rem] h-[6rem] relative overflow-hidden opacity-90">
-              <Image
-                src={`${Server}/uploads/${photo}`}
-                sizes="(max-width: 6rem) 6rem, 1200px"
-                fill
-                quality={100}
-                style={{ objectFit: "cover" }}
-                alt="Foto do usuario"
-              />
+          <div className="flex px-2 gap-3 flex-wrap">
+            <div className="flex flex-1">
+              <div className="bg-gradient-45 border-2 border-zinc-600 shadow-inner from-purple-600 to-blue-600 w-[6rem] h-[6rem] relative overflow-hidden opacity-90">
+                <Image
+                  src={`${Server}/uploads/${photo}`}
+                  sizes="(max-width: 6rem) 6rem, 1200px"
+                  fill
+                  quality={100}
+                  style={{ objectFit: "cover" }}
+                  alt="Foto do usuario"
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col flex-1">
-              <label htmlFor="" className="flex flex-col">
-                <span className="text-gray-600 dark:text-gray-100 font-semibold">
-                  Nome:
-                </span>
-                <div className="flex text-lg text-bold text-gray-700 dark:text-white font-bold">
-                  {firstName}
-                </div>
-              </label>
-            </div>
+            <label htmlFor="Nome" className="flex flex-col flex-1">
+              <span className="text-gray-600 dark:text-gray-100 font-semibold">
+                Nome:
+              </span>
+              <div className="flex text-lg text-bold text-gray-600 dark:text-white font-bold">
+                {firstName}
+              </div>
+            </label>
+
+            <label htmlFor="Sobrenome" className="flex flex-col flex-1">
+              <span className="text-gray-600 dark:text-gray-100 font-semibold">
+                Email:
+              </span>
+              <div className="flex text-lg text-bold text-gray-600 dark:text-white font-bold">
+                {email || "-"}
+              </div>
+            </label>
+
+            <label htmlFor="Sobrenome" className="flex flex-col flex-1">
+              <span className="text-gray-600 dark:text-gray-100 font-semibold">
+                CPF:
+              </span>
+              <div className="flex text-lg text-bold text-gray-600 dark:text-white font-bold">
+                {cpf || "-"}
+              </div>
+            </label>
           </div>
         </div>
       </div>

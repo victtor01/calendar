@@ -11,7 +11,8 @@ export interface User {
   repeatPassword: string;
   phone: string;
   birth: Date;
+  cpf: string;
 }
 
 export type UserRole = "ADMIN" | "USER";
-export type UserStatus = 'CREATED' | 'VERIFIED' | 'APPROVED'
+export type UserStatus = "CREATED" | "VERIFIED" | "APPROVED";

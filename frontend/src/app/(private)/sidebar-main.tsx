@@ -1,8 +1,7 @@
 import { otherPages, pages } from "@/constants/linksPrivates";
 import { FaCrown, FaSearch } from "react-icons/fa";
-import { fontFiraCode, fontOpenSans } from "@/app/fonts";
+import { fontOpenSans } from "@/app/fonts";
 import { usePathname } from "next/navigation";
-import { useContext } from "react";
 import * as S from "./style";
 
 /* components */
@@ -18,10 +17,8 @@ export function SidebarRelative() {
       style={{ gridArea: "sidebar" }}
       className={`w-[4rem] lg:w-[15rem] text-gray-800 shadow-gray-400 m-2 rounded-md shadow-md dark:shadow-black dark:from-zinc-900 dark:to-zinc-950 bg-gradient-45 from-zinc-50 to-blue-50 z-20 dark:text-white  relative items-center lg:items-start flex flex-col font-semibold ${fontOpenSans}`}
     >
-      <header className="w-full flex dark:border-zinc-800 lg:p-2 items-center lg:mb-0 lg:justify-between relative h-auto pt-0 h-18 justify-center">
-        <div
-          className={` items-center text-md flex w-full gap-0 `}
-        >
+      <header className="w-full hidden lg:flex dark:border-zinc-800 lg:p-2 items-center lg:mb-0 lg:justify-between relative h-auto pt-0 h-18 justify-center">
+        <div className={` items-center text-md flex w-full gap-0 `}>
           <label
             htmlFor="search"
             className="flex overflow-hidden bg-gray-50 dark:bg-zinc-800 rounded"
@@ -38,14 +35,14 @@ export function SidebarRelative() {
         </div>
       </header>
 
-      <span className="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-200 dark:via-zinc-600 to-transparent"/>
+      <span className="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-200 dark:via-zinc-600 to-transparent hidden lg:flex" />
 
       <section className="flex flex-1 flex-col  w-full overflow-y-auto scroll-none gap-4">
         <div className="flex font-normal flex-col gap-1  relative flex-nowrap w-full p-2">
           {pages.map(({ name, icon: Icon, href }, index: number) => {
             const selected = currentPath === href.substring(1);
             const selectedClass = selected
-              ? "opacity-100 cursor-default text-black dark:text-white translate-x-4 "
+              ? "opacity-100 cursor-default text-black dark:text-white lg:translate-x-4 "
               : "opacity-80 cursor-pointer dark:text-gray-200";
 
             return (
@@ -61,7 +58,7 @@ export function SidebarRelative() {
           })}
         </div>
 
-        <span className="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-200 dark:via-zinc-600 to-transparent"/>
+        <span className="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-200 dark:via-zinc-600 to-transparent hidden lg:flex" />
 
         <div className="flex-1 w-full flex-col lg:flex hidden mt-4 ">
           {otherPages.map(({ name, href }, index: number) => {
@@ -86,8 +83,10 @@ export function SidebarRelative() {
       </section>
 
       <footer className="flex flex-col gap-4 w-full lg:p-1">
-      <span className="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-200 dark:via-zinc-600 to-transparent"/>
-        <button className="p-3 lg:m-0lg:px-5 w-auto flex-col text-normal text-white transition-opacity shadow-2xl  hover:shadow-xl text-md py-4 dark:opacity-60 opacity-90 hover:dark:opacity-100 hover:opacity-100 justify-center flex bg-gradient-45 from-zinc-900  to-zinc-950 rounded-md">
+        <span className="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-200 dark:via-zinc-600 to-transparent" />
+        <button
+          className={`bg-white dark:bg-zinc-900 border-animation-gradient p-3 lg:m-0 lg:px-5 w-auto flex-col text-normal transition-all shadow-2xl hover:shadow-xl text-md py-4 justify-center flex rounded`}
+        >
           <div className="flex gap-3 w-full  justify-center lg:justify-between">
             <span className="hidden lg:flex">Meu plano.</span>
             <FaCrown size="20" />

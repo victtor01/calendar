@@ -2,17 +2,10 @@
 
 import PrivateRoute from "@/components/privateRoute";
 import { usePathname } from "next/navigation";
-import { IconType } from "react-icons";
 import { Suspense, useEffect, useState } from "react";
-import { FaCalendar } from "react-icons/fa";
 import { ThemeProvider } from "styled-components";
-import { RiMoonLine, RiSuitcaseFill, RiSunLine } from "react-icons/ri";
 import Loading from "@/components/loading";
-import UserComponents from "@/components/userComponents";
 import { Theme, ToastContainer } from "react-toastify";
-import { GoGear, GoHomeFill, GoPersonFill } from "react-icons/go";
-import { CiCircleList } from "react-icons/ci";
-import { FaCircleDollarToSlot } from "react-icons/fa6";
 import { SidebarRelative } from "./sidebar-main";
 import { ThemeContext } from "@/contexts/themeContext";
 import Information from "@/components/layoutPrivate/informations";
@@ -82,7 +75,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <PrivateRoute>
       <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
         <ThemeContext.Provider value={{ theme, handleTheme }}>
-          <S.Container className="bg-gradient-45 from-purple-50 to-blue-50 dark:from-zinc-800 dark:to-zinc-800">
+          <S.Container className="bg-gradient-45 from-purple-50 to-blue-50 dark:from-black dark:to-black">
 
             <SidebarRelative />
 
