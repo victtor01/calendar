@@ -1,4 +1,4 @@
-export const Server = "http://localhost:8000";
+export const Server = "https://backend-calendar-s71x.onrender.com";
 export const ServerClient = "https://calendar-frontend-two.vercel.app";
 
 /* "https://backend-calendar-s71x.onrender.com" */
