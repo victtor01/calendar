@@ -50,7 +50,7 @@ export class ConfirmationCodesService {
     userId: number;
     code: string;
   }): Promise<ConfirmationCodes> {
-    return this.prismaCodesConfirmationRepository.create({
+    return await this.prismaCodesConfirmationRepository.create({
       userId,
       code,
     });
