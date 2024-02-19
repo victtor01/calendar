@@ -37,12 +37,10 @@ export class ConfirmationCodesService {
       return codeExists;
     }
 
-    const code = await this.prismaCodesConfirmationRepository.create({
+    return await this.prismaCodesConfirmationRepository.create({
       userId,
       code: randomCode,
     });
-
-    return code;
   }
 
   async createCustomize({
