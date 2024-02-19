@@ -94,7 +94,7 @@ export class UsersService {
         html: `
         <p>Olá,</p>
         <p>Para redefinir sua senha, clique no link abaixo:</p>
-        <a href="https://calendar-frontend-two.vercel.app/redefine-password/${code}">redefinir senha</a>
+        <a href="https://calendar-frontend-two.vercel.app/redefine-password/${code}">Redefina sua senha</a>
       `,
       });
 
